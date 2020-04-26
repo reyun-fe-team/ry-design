@@ -1,6 +1,7 @@
 import Input from "./components/input";
+import Button from "./components/button";
 
-const components = [Input];
+const components = [Input, Button];
 const install = function (Vue) {
   components.forEach(component => {
     Vue.component(component.name, component);
