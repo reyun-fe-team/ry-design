@@ -1,9 +1,13 @@
 <template>
-    <div :class="classes">button</div>
+  <component :is="tagName" :class="classes">
+    <Icon></Icon>
+    <Icon></Icon>
+    <span><slot></slot></span>
+  </component>
 </template>
 
 <script>
-const prefixCls = "ry-btn"
+const prefixCls = "ry-btn";
 export default {
   name: "ryButton",
   props: {
@@ -19,10 +23,11 @@ export default {
   },
   computed: {
     classes() {
-      return [
-        `${prefixCls}`,
-        `${prefixCls}-${this.type}`,
-      ]
+      return [`${prefixCls}`, `${prefixCls}-${this.type}`];
+    },
+    // 要渲染什么标签
+    tagName() {
+      return "button";
     }
   }
 };
