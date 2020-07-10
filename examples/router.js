@@ -6,10 +6,10 @@ const router = new VueRouter({
   mode: "history",
   routes: [{
     path: "/input",
-    component: resolve => require(["./routers/input.vue"], resolve)
+    component: resolve => require(["./routers/input"], resolve)
   }, {
     path: "/button",
-    component: resolve => require(["./routers/button.vue"], resolve)
+    component: resolve => require(["./routers/button"], resolve)
   }]
 });
 

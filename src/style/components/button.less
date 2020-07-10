@@ -1,57 +1,73 @@
-@ry-btn: 'ry-btn';
+@btn-prefix-cls: ~"@{css-prefix}btn";
 
-.ry-btn {
-    width                     : 80px;
-    height                    : 32px;
-    background                : rgba(255, 255, 255, 1);
-    border-radius             : 4px;
-    text-align                : center;
-    vertical-align            : middle;
-    font-size                 : 12px;
-    font-weight               : 500;
-    color                     : #54667E;
-    border                    : 1px solid transparent;
-    border-radius             : 4px;
-    cursor                    : pointer;
-    outline                   : 0;
-    text-decoration           : none;
-    transition                : color .2s linear, background-color .2s linear, border .2s linear, box-shadow .2s linear;
-    transition-property       : color, background-color, border, box-shadow;
-    transition-duration       : 0.2s, 0.2s, 0.2s, 0.2s;
-    transition-timing-function: linear, linear, linear, linear;
-    transition-delay          : 0s, 0s, 0s, 0s;
+// btn-prefix-cls = ry-btn
+.@{btn-prefix-cls} {
+    .btn;
+    .btn-default;
 
-    &:hover {
-        border-color: #5D9FF0;
-        color       : #5D9FF0;
-    }
-
-    &-default {
-        border-color: rgba(221, 221, 221, 1);
-
-
+    &-long {
+        width: 100%;
     }
 
     &-primary {
-        color           : #fff;
-        background-color: #5D9FF0;
-        text-shadow     : 0 -1px 0 rgba(0, 0, 0, .12);
-        box-shadow      : 0 2px 0 rgba(0, 0, 0, .045);
-
-        &:hover {
-            background-color: #86BCFF;
-            color           : #fff;
-            border-color    : transparent;
-        }
+        .btn-primary;
     }
 
     &-dashed {
-        border: 1px dashed rgb(220, 222, 226);
+        .btn-dashed;
     }
 
     &-text {
         border: none;
     }
 
+    &-ghost {
+        .btn-ghost;
+    }
 
+    &-ghost&-primary {
+        border             : 1px solid @primary-color;
+        color              : @primary-color;
+        // background-color: transparent;
+
+
+        &:hover {
+            // border-color: tint(@primary-color, 20%);
+        }
+    }
+
+    &[disabled] {
+        color           : #c5c8ce;
+        background-color: #f7f7f7;
+        border-color    : #dcdee2;
+        cursor          : not-allowed;
+    }
+
+    // &-ghost&-dashed,
+    // &-ghost&-default {
+    //     border: 1px solid #fff;
+    //     color : #fff;
+
+    //     &:hover {
+    //         color          : red;
+    //         // border-color: tint(@primary-color, 20%);
+    //     }
+    // }
+
+
+
+    &-ghost&-default[disabled],
+    &-ghost&-dashed[disabled],
+    &-ghost&-primary[disabled],
+    &-ghost&-text[disabled] {
+        background  : transparent;
+        color       : fade(#000, 25%);
+        border-color: @btn-disable-border;
+
+    }
+
+    &-ghost&-text[disabled] {
+        background: transparent;
+        color     : fade(#000, 25%);
+    }
 }

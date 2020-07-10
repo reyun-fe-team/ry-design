@@ -1,0 +1,69 @@
+.button-size(@height; @padding; @font-size; @border-radius) {
+    height          : @height;
+    padding         : @padding;
+    font-size       : @font-size;
+    // border-radius: @border-radius;
+}
+
+.btn () {
+    // init
+    // common: size/icon
+    height                    : 32px;
+    background                : rgba(255, 255, 255, 1);
+    border-radius             : 4px;
+    text-align                : center;
+    vertical-align            : middle;
+    font-size                 : 12px;
+    font-weight               : 500;
+    color                     : #54667E;
+    border                    : 1px solid transparent;
+    border-radius             : 4px;
+    cursor                    : pointer;
+    outline                   : 0;
+    padding                   : 4px 15px;
+    text-decoration           : none;
+    transition                : color .2s linear, background-color .2s linear, border .2s linear, box-shadow .2s linear;
+    transition-property       : color, background-color, border, box-shadow;
+    transition-duration       : 0.2s, 0.2s, 0.2s, 0.2s;
+    transition-timing-function: linear, linear, linear, linear;
+    transition-delay          : 0s, 0s, 0s, 0s;
+
+    &-large {
+        .button-size(@btn-height-large; @btn-padding-large; @btn-font-size-large; @btn-border-radius);
+    }
+
+    &-small {
+        .button-size(@btn-height-small; @btn-padding-small; @btn-font-size-small; @btn-border-radius-small);
+    }
+}
+
+.btn-default() {
+    border-color: rgba(221, 221, 221, 1);
+
+    &:hover {
+        border-color: @primary-color;
+        color       : @primary-color;
+    }
+}
+
+.btn-primary () {
+    color           : #fff;
+    background-color: @primary-color;
+    text-shadow     : 0 -1px 0 rgba(0, 0, 0, .12);
+    box-shadow      : 0 2px 0 rgba(0, 0, 0, .045);
+
+    &:hover {
+        color           : #fff;
+        border-color    : transparent;
+        background-color: #86BCFF;
+    }
+}
+
+.btn-dashed() {
+    border: 1px dashed rgb(220, 222, 226);
+}
+
+.btn-ghost() {
+    color           : #fff;
+    background-color: transparent;
+}

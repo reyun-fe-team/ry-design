@@ -1,17 +1,4 @@
 /*防抖*/
-// export function debounce({ func, wait, immediate }) {
-//     let timer, result;
-//     return function () {
-//         let context = this;
-//         let args = arguments;
-//         if (timer) clearTimeout(timer)
-//         if(immediate) {
-//             let callNow = !timer
-
-//         }
-//     }
-// }
-
 export function debounce({ func, wait, immediate }) {
     let timer, result;
     let debounce = function () {
