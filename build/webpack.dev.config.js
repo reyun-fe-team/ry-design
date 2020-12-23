@@ -74,10 +74,7 @@ module.exports = {
                         options: {
                             sourceMap: true,
                         },
-                    },
-                    {
-                        loader: '\'autoprefixer-loader\'',
-                    },
+                    }
                 ]
             },
             {

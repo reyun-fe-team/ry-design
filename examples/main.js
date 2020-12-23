@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import App from "./app.vue";
 import ryDesign from '../src/index';
 import "./styles/index.less";
+// import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.use(VueRouter);
 Vue.use(ryDesign);
@@ -18,6 +19,9 @@ const router = new VueRouter({
   routes: [{
     path: "/input",
     component: resolve => require(["./routers/input.vue"], resolve)
+  }, {
+    path: "/transfer",
+    component: resolve => require(["./routers/transfer.vue"], resolve)
   }]
 });
 
