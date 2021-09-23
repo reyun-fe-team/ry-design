@@ -1,6 +1,3 @@
-<style  scoped>
-
-</style>
 <template>
   <main class="inline-block">
     <div :class="classes">
