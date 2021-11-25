@@ -17,7 +17,7 @@
           :parent-right-key='getParentKey(index,"right")'
           :prefixCls="prefixCls + '-list'"
           @move-to="moveTo($event,index)"
-          @to-left-disabled="onLeftbtnDisabled($event,index)"
+          @to-left-disabled="onLeftButtonDisabled($event,index)"
           ></List>
   </main>
 </template>
@@ -104,7 +104,7 @@ export default {
       this.$set(this.current, toIndex, toOption)
       this.$set(this.current, currentIndex, currentOption)
     },
-    onLeftbtnDisabled(active, index) {
+    onLeftButtonDisabled(active, index) {
       if (!index) return
       let data = this.current[index - 1]
       data.leftActive = active

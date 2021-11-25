@@ -22,6 +22,9 @@ const router = new VueRouter({
   }, {
     path: "/transfer",
     component: resolve => require(["./routers/transfer.vue"], resolve)
+  },{
+    path: "/multi-cascader",
+    component: resolve => require(["./routers/multi-cascader.vue"], resolve)
   }]
 });
 

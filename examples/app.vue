@@ -1,6 +1,6 @@
 <template>
   <div>
-    app
+    事例：请通过router进行访问
     <router-view></router-view>
   </div>
 </template>
