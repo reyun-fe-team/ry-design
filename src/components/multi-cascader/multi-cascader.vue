@@ -1,44 +1,43 @@
 <template>
-  <div class="multi-cascader">
-    <Dropdown :trigger="'click'"
+  <div :class="[prefixCls]">
+    <Dropdown trigger="click"
               :placement="placement"
               :transfer="transfer"
-              :stop-propagation="true"
+              stop-propagation
               :transfer-class-name="`${popperClass} ${unid}`"
               @on-visible-change="visibleChange"
               v-bind="$attrs">
-      <div class="labels"
+      <div :class="[prefixCls+'-labels']"
            @mouseenter="handleMouseenter"
            @mouseleave="handleMouseleave">
         <div v-if="selectedLabels.length > 0"
-             class="tags">
+             :class="[prefixCls+'-labels-tags']">
           <Tag v-for="tag in selectedLabels"
                :fade="false"
                :key="getKey(tag)"
                closable
                @on-close="removeOne(tag)">
-            <span class="text"
+            <span :class="[prefixCls+'-labels-tags-text']"
                   :title="tag">{{tag}}</span>
           </Tag>
         </div>
         <p v-else
-           class="placeholder-text">{{placeholder}}</p>
+           :class="[prefixCls+'-labels-placeholder-text']">{{placeholder}}</p>
         <!-- 清空 -->
         <Icon v-show="showClearBtn"
-              class="r-icon"
+              :class="[prefixCls+'-labels-icon']"
               @click.stop.prevent="handleClear"
               type="ios-close-circle-outline"></Icon>
         <!-- 下拉icon -->
         <Icon v-show="!showClear"
-              class="r-icon exp"
+              :class="[prefixCls+'-labels-icon']"
               type="ios-arrow-down"></Icon>
       </div>
-      <div slot="list"
-           class="dropdown-items">
-        <div class="ground"
+      <div slot="list">
+        <div :class="[prefixCls+'-ground']"
              @click.stop>
-          <div class="ground-item">
-            <render-list :list="root.childNodes"
+          <div>
+            <multi-cascader-list :list="root.childNodes"
                          :level="1"
                          :active-list="activeList"
                          :notUseAble="notUseAble"
@@ -48,14 +47,14 @@
                          @handle-check="handleCheck"
                          @handle-checkAll="handleCheckAll"
                          :label-key="labelKey"
-                         :expand-trigger="expandTrigger"></render-list>
+                         :expand-trigger="expandTrigger"></multi-cascader-list>
           </div>
           <template v-for="item in maxLevellist">
             <div v-if="item.rendered && showData[item.id].length"
                  v-show="activeList.length >= item.id"
                  :key="getKey(item)"
-                 class="ground-item ground-pos">
-              <render-list :list="showData[item.id]"
+                 :class="[prefixCls+'-ground-pos']">
+              <multi-cascader-list :list="showData[item.id]"
                            :level="item.id + 1"
                            :active-list="activeList"
                            :notUseAble="notUseAble"
@@ -65,7 +64,7 @@
                            @handle-check="handleCheck"
                            @handle-checkAll="handleCheckAll"
                            :label-key="labelKey"
-                           :expand-trigger="expandTrigger"></render-list>
+                           :expand-trigger="expandTrigger"></multi-cascader-list>
             </div>
           </template>
         </div>
@@ -75,13 +74,14 @@
 </template>
 
 <script>
+const {prefixCls} = require('../../config.js');
 import TreeStore from './lib/Tree.js'
-import renderList from './render-list.vue'
+import multiCascaderList from './multi-cascader-list.vue'
 import _ from 'lodash'
 export default {
-  name: 'iv-cascader-multi',
+  name: prefixCls+'-cascader-multi',
   components: {
-    renderList
+    multiCascaderList
   },
   props: {
     // 是否要回显labels
@@ -218,6 +218,7 @@ export default {
   },
   data() {
     return {
+      prefixCls: prefixCls+'-multi-cascader',
       // 显示清空
       showClear: false,
       // 缓存传入的label和value
@@ -690,111 +691,111 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.multi-cascader {
-  width: 160px;
-  min-width: 160px;
-  position: relative;
-  /deep/ .ivu-dropdown {
-    width: 100%;
-  }
-  /deep/ .ivu-select-dropdown {
-    max-height: none !important;
-    left: 0 !important;
-    width: fit-content;
-  }
-  /deep/ .ivu-tag {
-    display: flex;
-    align-items: center;
-    .ivu-tag-text {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      word-break: break-all;
-    }
-  }
-}
-// 显示点击
-.labels {
-  position: relative;
-  overflow-y: auto;
-  max-height: 132px;
-  min-height: 32px;
-  border-radius: 3px;
-  border: 1px solid #dddddd;
-  width: 100%;
-  height: auto;
-  overflow: -moz-scrollbars-none;
-  -ms-overflow-style: none;
+// .multi-cascader {
+//   width: 160px;
+//   min-width: 160px;
+//   position: relative;
+//   /deep/ .ivu-dropdown {
+//     width: 100%;
+//   }
+//   /deep/ .ivu-select-dropdown {
+//     max-height: none !important;
+//     left: 0 !important;
+//     width: fit-content;
+//   }
+//   /deep/ .ivu-tag {
+//     display: flex;
+//     align-items: center;
+//     .ivu-tag-text {
+//       white-space: nowrap;
+//       text-overflow: ellipsis;
+//       overflow: hidden;
+//       word-break: break-all;
+//     }
+//   }
+// }
+// // 显示点击
+// .labels {
+//   position: relative;
+//   overflow-y: auto;
+//   max-height: 132px;
+//   min-height: 32px;
+//   border-radius: 3px;
+//   border: 1px solid #dddddd;
+//   width: 100%;
+//   height: auto;
+//   overflow: -moz-scrollbars-none;
+//   -ms-overflow-style: none;
 
-  /* 设置滚动条的样式 */
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  /* 滚动槽 */
-  &::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
-  }
-  /* 滚动条滑块 */
-  &::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    background: rgba(0, 0, 0, 0.05);
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-  }
+//   /* 设置滚动条的样式 */
+//   &::-webkit-scrollbar {
+//     width: 6px;
+//   }
+//   /* 滚动槽 */
+//   &::-webkit-scrollbar-track {
+//     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//     border-radius: 5px;
+//   }
+//   /* 滚动条滑块 */
+//   &::-webkit-scrollbar-thumb {
+//     border-radius: 5px;
+//     background: rgba(0, 0, 0, 0.05);
+//     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+//   }
 
-  .placeholder-text {
-    height: 32px;
-    line-height: 32px;
-    font-size: 12px;
-    color: #b8b9bb;
-    padding-left: 7px;
-    padding-right: 33px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    word-break: break-all;
-  }
-  .tags {
-    padding-left: 5px;
-    padding-right: 18px;
-    height: auto;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    .text {
-      cursor: default;
-    }
-  }
-  .r-icon {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    /deep/ .ivu-icon {
-      font-size: 15px;
-    }
-  }
-}
-// 面板
-.ground {
-  display: flex;
-  justify-content: flex-start;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: relative;
-  &:after {
-    content: '';
-    display: block;
-    clear: both;
-  }
-  .ground-pos {
-    border-left: 1px solid #eee;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-}
+//   .placeholder-text {
+//     height: 32px;
+//     line-height: 32px;
+//     font-size: 12px;
+//     color: #b8b9bb;
+//     padding-left: 7px;
+//     padding-right: 33px;
+//     white-space: nowrap;
+//     text-overflow: ellipsis;
+//     overflow: hidden;
+//     word-break: break-all;
+//   }
+//   .tags {
+//     padding-left: 5px;
+//     padding-right: 18px;
+//     height: auto;
+//     width: 100%;
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: flex-start;
+//     .text {
+//       cursor: default;
+//     }
+//   }
+//   .r-icon {
+//     position: absolute;
+//     right: 8px;
+//     top: 50%;
+//     transform: translateY(-50%);
+//     cursor: pointer;
+//     /deep/ .ivu-icon {
+//       font-size: 15px;
+//     }
+//   }
+// }
+// // 面板
+// .ground {
+//   display: flex;
+//   justify-content: flex-start;
+//   overflow-y: auto;
+//   overflow-x: hidden;
+//   position: relative;
+//   &:after {
+//     content: '';
+//     display: block;
+//     clear: both;
+//   }
+//   .ground-pos {
+//     border-left: 1px solid #eee;
+//     overflow-y: auto;
+//     overflow-x: hidden;
+//   }
+// }
 </style>
 <style lang="less">
 .ivu-multi-cascader {

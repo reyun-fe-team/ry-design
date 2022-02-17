@@ -22,13 +22,11 @@
   </main>
 </template>
 <script>
-const prefixCls = 'ry-transfer';
+const {prefixCls} = require('../../config.js');
 import List from './list.vue'
 import {deepCopy } from '../../util/assist';
-
-// 组件定义:ry-transfer为基础组件，可配置多个穿梭框
 export default {
-  name: 'ry-transfer',
+  name: prefixCls+'-transfer',
   components: { List },
   props: {
     // 数据源
@@ -61,7 +59,7 @@ export default {
   },
   data() {
     return {
-      prefixCls: prefixCls,
+      prefixCls: prefixCls+'-transfer',
       current: this.setCurrent(this.data)
     }
   },

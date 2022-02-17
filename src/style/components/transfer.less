@@ -1,7 +1,8 @@
 
-// @transfer-prefix-cls: ~"@{css-prefix}transfer";
-// .@{transfer-prefix-cls} {
-.ry-transfer {
+@css-prefix             :rd-;
+@multi-transfer: ~"@{css-prefix}transfer";
+
+.@{multi-transfer} {
     position   : relative;
     line-height: @line-height-base;
 
@@ -128,7 +129,6 @@
 
         &-operation {
             display       : inline-block;
-            //overflow: hidden;
             margin        : 0 16px;
             vertical-align: middle;
 

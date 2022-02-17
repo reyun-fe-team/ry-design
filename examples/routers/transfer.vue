@@ -5,12 +5,12 @@
     <hr>
     {{selectedData}}
 
-    <ry-transfer
+    <rd-transfer
       :data="data"
       filterable
       @on-keys-change="selectedKeys=$event"
       @on-data-change="selectedData=$event"
-    ></ry-transfer>
+    ></rd-transfer>
   </main>
 </template>
 

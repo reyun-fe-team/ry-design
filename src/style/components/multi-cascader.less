@@ -1,0 +1,184 @@
+// Prefix
+@css-prefix             :rd-;
+@multi-cascader: ~"@{css-prefix}multi-cascader";
+@multi-cascader-list: ~"@{css-prefix}multi-cascader-list";
+
+// multi-cascader组件
+.@{multi-cascader} {
+    width    : 160px;
+    min-width: 160px;
+    position : relative;
+
+    /deep/ .ivu-dropdown {
+        width: 100%;
+    }
+
+    /deep/ .ivu-select-dropdown {
+        max-height: none !important;
+        left      : 0 !important;
+        width     : fit-content;
+    }
+
+    /deep/ .ivu-tag {
+        display    : flex;
+        align-items: center;
+
+        .ivu-tag-text {
+            white-space  : nowrap;
+            text-overflow: ellipsis;
+            overflow     : hidden;
+            word-break   : break-all;
+        }
+    }
+
+    // 显示点击
+    &-labels {
+        position          : relative;
+        overflow-y        : auto;
+        max-height        : 132px;
+        min-height        : 32px;
+        border-radius     : 3px;
+        border            : 1px solid #dddddd;
+        width             : 100%;
+        height            : auto;
+        overflow          : -moz-scrollbars-none;
+        -ms-overflow-style: none;
+
+        /* 设置滚动条的样式 */
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        /* 滚动槽 */
+        &::-webkit-scrollbar-track {
+            box-shadow   : inset 0 0 6px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+
+        /* 滚动条滑块 */
+        &::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background   : rgba(0, 0, 0, 0.05);
+            box-shadow   : inset 0 0 6px rgba(0, 0, 0, 0.5);
+        }
+
+        &-placeholder-text {
+            height       : 32px;
+            line-height  : 32px;
+            font-size    : 12px;
+            color        : #b8b9bb;
+            padding-left : 7px;
+            padding-right: 33px;
+            white-space  : nowrap;
+            text-overflow: ellipsis;
+            overflow     : hidden;
+            word-break   : break-all;
+        }
+
+        &-tags {
+            padding-left   : 5px;
+            padding-right  : 18px;
+            height         : auto;
+            width          : 100%;
+            display        : flex;
+            flex-wrap      : wrap;
+            justify-content: flex-start;
+
+            &-text {
+                cursor: default;
+            }
+        }
+
+        &-icon {
+            position : absolute;
+            right    : 8px;
+            top      : 50%;
+            transform: translateY(-50%);
+            cursor   : pointer;
+
+            /deep/ .ivu-icon {
+                font-size: 15px;
+            }
+        }
+    }
+
+    // 面板
+    &-ground {
+        display        : flex;
+        justify-content: flex-start;
+        overflow-y     : auto;
+        overflow-x     : hidden;
+        position       : relative;
+
+        &:after {
+            content: '';
+            display: block;
+            clear  : both;
+        }
+
+        &-ground-pos {
+            border-left: 1px solid #eee;
+            overflow-y : auto;
+            overflow-x : hidden;
+        }
+    }
+}
+
+// multi-cascader-list 组件
+
+.@{multi-cascader-list} {
+    padding-left: 0;
+    max-height  : 224px;
+    overflow-x  : hidden;
+    overflow-y  : auto;
+
+    &-turn {
+        animation: rdTurn 1s linear infinite;
+    }
+
+    &-li {
+        height         : 32px;
+        line-height    : 32px;
+        font-size      : 12px;
+        padding        : 0 10px;
+        box-sizing     : border-box;
+        list-style     : none;
+        width          : 160px;
+        cursor         : pointer;
+        white-space    : nowrap;
+        overflow       : hidden;
+        text-overflow  : ellipsis;
+        display        : flex;
+        align-content  : center;
+        justify-content: flex-start;
+
+        &:hover,
+        &-active {
+            background: #f3f3f3;
+            color     : #3989fa;
+        }
+
+        &-label {
+            display        : flex;
+            align-items    : center;
+            justify-content: flex-start;
+            width          : 100%;
+            box-sizing     : border-box;
+            margin-top     : 0;
+            margin-bottom  : 0;
+
+            span {
+                text-overflow: ellipsis;
+                white-space  : nowrap;
+                overflow     : hidden;
+                flex         : 1;
+                height       : 100%;
+            }
+
+            &-icon {
+                width : 12px;
+                height: 12px;
+            }
+        }
+    }
+}
