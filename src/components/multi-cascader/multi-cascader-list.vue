@@ -1,6 +1,6 @@
 <template>
   <ul :class="[prefixCls]">
-    <li v-if="!useMax && showCheckBox" :class="[prefixCls+'-li']">
+    <li v-if="!useMax && showCheckBox" :class="[prefixCls + '-li']">
       <Checkbox
         ref="CheckAllRef"
         style="margin-right: 5px"
@@ -10,17 +10,16 @@
         :value="checkedAll"
         :disabled="disabledAll || notUseAble"
       ></Checkbox>
-      <p :class="[prefixCls+'-li-label']">
+      <p :class="[prefixCls + '-li-label']">
         <span style="margin-left: 5px">全选</span>
       </p>
     </li>
     <li
-     
       v-for="(node, nodeIndex) in list"
       :key="getKey(node)"
       :class="[
-        prefixCls+'-li',
-        {[prefixCls+'-li-active']: activeList[level - 1] === node.id}
+        prefixCls + '-li',
+        { [prefixCls + '-li-active']: activeList[level - 1] === node.id },
       ]"
       @mouseover="handleMouseEnter(node, nodeIndex, level)"
       @mouseout="allowEmit = true"
@@ -35,7 +34,7 @@
         :disabled="node.disabled || notUseAble"
       ></Checkbox>
       <p
-        :class="[prefixCls+'-li-label']"
+        :class="[prefixCls + '-li-label']"
         @click="handleClick(node, nodeIndex, level)"
       >
         <span :title="node[labelKey]" style="margin-left: 5px">
@@ -43,12 +42,12 @@
         </span>
         <Icon
           v-if="node.loading"
-          :class="[prefixCls+'-li-label-icon',prefixCls+'-turn']"
+          :class="[prefixCls + '-li-label-icon', prefixCls + '-turn']"
           type="ios-sync"
         />
         <Icon
           v-if="showNextIcon(node)"
-          :class="[prefixCls+'-li-label-icon']"
+          :class="[prefixCls + '-li-label-icon']"
           type="ios-arrow-forward"
         />
       </p>
@@ -58,12 +57,12 @@
 
 <script>
 const { prefix } = require("../../config.js");
-const prefixCls=prefix+'multi-cascader-list'
+const prefixCls = prefix + "multi-cascader-list";
 export default {
-  name:prefixCls,
+  name: prefixCls,
   data() {
     return {
-      prefixCls:prefixCls,
+      prefixCls: prefixCls,
       allowEmit: true,
     };
   },
@@ -159,7 +158,7 @@ export default {
         let v = c === "x" ? r : (r & 0x3) | 0x8;
         return v.toString(16);
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -1,7 +1,7 @@
-import ryMultiCascader from "./multi-cascader.vue";
+import MultiCascader from "./multi-cascader.vue";
 
-ryMultiCascader.install = function (Vue) {
-    Vue.component(ryMultiCascader.name, ryMultiCascader);
+MultiCascader.install = function (Vue) {
+    Vue.component(MultiCascader.name, MultiCascader);
 };
 
-export default ryMultiCascader;
+export default MultiCascader;
