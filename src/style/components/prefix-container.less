@@ -1,0 +1,44 @@
+@prefix-container: ~"@{css-prefix}prefix-container";
+ .@{prefix-container} {
+    &-wrapper {
+        line-height: normal;
+    }
+
+    &-group {
+        display: table;
+
+        &-prepend {
+            padding         : 4px 7px;
+            font-size       : inherit;
+            font-weight     : 400;
+            line-height     : 1;
+            color           : #515a6e;
+            text-align      : center;
+            background-color: #F9F9FA;
+            border          : 1px solid #dcdee2;
+            border-radius   : 4px 0 0 4px;
+            width           : 1px;
+            white-space     : nowrap;
+            vertical-align  : middle;
+            display         : table-cell;
+            border-right    : 0;
+        }
+
+        &-append {
+            padding         : 4px 7px;
+            font-size       : inherit;
+            font-weight     : 400;
+            line-height     : 1;
+            color           : #515a6e;
+            text-align      : center;
+            background-color: #F9F9FA;
+            border          : 1px solid #dcdee2;
+            border-radius   : 0 4px 4px 0;
+            border-left     : 0;
+            width           : 1px;
+            white-space     : nowrap;
+            vertical-align  : middle;
+            display         : table-cell;
+        }
+    }
+}

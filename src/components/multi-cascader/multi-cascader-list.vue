@@ -57,11 +57,13 @@
 </template>
 
 <script>
-const {prefixCls} = require('../../config.js');
+const { prefix } = require("../../config.js");
+const prefixCls=prefix+'multi-cascader-list'
 export default {
+  name:prefixCls,
   data() {
     return {
-      prefixCls:prefixCls+'-multi-cascader-list',
+      prefixCls:prefixCls,
       allowEmit: true,
     };
   },

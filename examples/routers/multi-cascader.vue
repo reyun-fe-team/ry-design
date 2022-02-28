@@ -1,12 +1,12 @@
 <template>
   <div>
-    <rd-cascader-multi style="width: 200px;"
+    <rd-multi-cascader style="width: 200px;"
               v-model="list"
               :echoLabel="labels"
               :data="data2"
               sync
               @getLables="getLables"
-              :syncCallBack="syncCallBack"></rd-cascader-multi>
+              :syncCallBack="syncCallBack"></rd-multi-cascader>
   </div>
 </template>
 <script>

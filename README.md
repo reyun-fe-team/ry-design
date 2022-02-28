@@ -2,7 +2,7 @@
 
 ## 介绍
 
-本库是组件库
+ads组件库 https://github.com/reyun-fe-team/ry-design
 
 ## 开发
 

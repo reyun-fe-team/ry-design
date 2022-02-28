@@ -17,14 +17,14 @@ const router = new VueRouter({
   esModule: false,
   mode: "history",
   routes: [{
-    path: "/input",
-    component: resolve => require(["./routers/input.vue"], resolve)
-  }, {
     path: "/transfer",
     component: resolve => require(["./routers/transfer.vue"], resolve)
   },{
     path: "/multi-cascader",
     component: resolve => require(["./routers/multi-cascader.vue"], resolve)
+  },{
+    path: "/prefix-container",
+    component: resolve => require(["./routers/prefix-container.vue"], resolve)
   }]
 });
 
