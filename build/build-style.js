@@ -9,7 +9,7 @@ gulp.task('compile-css', () => {
         .pipe(less())
         .pipe(cssmin())
         .pipe(rename(`${Config.filename}.css`))
-        .pipe(gulp.dest('../dist/'));
+        .pipe(gulp.dest('../dist/style/'));
 });
 
 gulp.task('default', ['compile-css']);
