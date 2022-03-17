@@ -1,44 +1,84 @@
 @prefix-container: ~"@{css-prefix}prefix-container";
- .@{prefix-container} {
-    &-wrapper {
-        line-height: normal;
+
+.@{prefix-container} {
+  &-wrapper {
+    display: flex;
+    width: 100%;
+    line-height: normal;
+  }
+
+  &-group {
+    &-prepend {
+      white-space: nowrap;
+      vertical-align: middle;
+      padding: 5px 8px;
+      font-size: inherit;
+      font-weight: 400;
+      color: #515a6e;
+      text-align: center;
+      background-color: #f8f8f9;
+      border: 1px solid #dcdee2;
+      border-right: 0;
+      border-radius: 4px;
+      display: inline-block;
+      border-bottom-right-radius: 0 !important;
+      border-top-right-radius: 0 !important;
+
+      // 内置 select
+      .ivu-select {
+        margin: -5px -6px;
+      }
+
+      .ivu-select-selection {
+        background-color: inherit;
+        margin: -1px;
+        border: 1px solid transparent;
+      }
+
+      // 内置 Button
+      .ivu-btn {
+        border-color: transparent;
+        background-color: transparent;
+        color: inherit;
+        margin: -6px -7px;
+      }
     }
 
-    &-group {
-        display: table;
+    &-append {
+      white-space: nowrap;
+      vertical-align: middle;
+      padding: 5px 8px;
+      font-size: inherit;
+      font-weight: 400;
+      color: #515a6e;
+      text-align: center;
+      background-color: #f8f8f9;
+      border: 1px solid #dcdee2;
+      border-left: 0;
+      border-radius: 4px;
+      border-left: 0;
+      display: inline-block;
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
 
-        &-prepend {
-            padding         : 4px 7px;
-            font-size       : inherit;
-            font-weight     : 400;
-            line-height     : 1;
-            color           : #515a6e;
-            text-align      : center;
-            background-color: #F9F9FA;
-            border          : 1px solid #dcdee2;
-            border-radius   : 4px 0 0 4px;
-            width           : 1px;
-            white-space     : nowrap;
-            vertical-align  : middle;
-            display         : table-cell;
-            border-right    : 0;
-        }
+      // 内置 select
+      .ivu-select {
+        margin: -5px -6px;
+      }
 
-        &-append {
-            padding         : 4px 7px;
-            font-size       : inherit;
-            font-weight     : 400;
-            line-height     : 1;
-            color           : #515a6e;
-            text-align      : center;
-            background-color: #F9F9FA;
-            border          : 1px solid #dcdee2;
-            border-radius   : 0 4px 4px 0;
-            border-left     : 0;
-            width           : 1px;
-            white-space     : nowrap;
-            vertical-align  : middle;
-            display         : table-cell;
-        }
+      .ivu-select-selection {
+        background-color: inherit;
+        margin: -1px;
+        border: 1px solid transparent;
+      }
+
+      // 内置 Button
+      .ivu-btn {
+        border-color: transparent;
+        background-color: transparent;
+        color: inherit;
+        margin: -6px -7px;
+      }
     }
+  }
 }

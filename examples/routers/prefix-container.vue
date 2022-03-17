@@ -17,7 +17,7 @@
           :label="item.label"
         >
           <Option
-            v-for="(el,index) in item.children"
+            v-for="(el, index) in item.children"
             :disabled="item.disabled"
             :key="index"
             :value="el.accountId"
@@ -27,6 +27,21 @@
       </Select>
       <span slot="append">后缀</span>
     </rd-prefix-container>
+
+    <rd-prefix-container style="margin-top:16px">
+      <Select v-model="select1" slot="prepend" style="width: 80px">
+        <Option value="http">http://</Option>
+        <Option value="https">https://</Option>
+      </Select>
+      <InputNumber
+        :max="10"
+        :min="1"
+        v-model="value1"
+        class="prefix-container-basic-number"
+      ></InputNumber>
+      <Button slot="append" icon="ios-search"></Button>
+    </rd-prefix-container>
+
   </main>
 </template>
 
@@ -34,7 +49,9 @@
 export default {
   data() {
     return {
-      accountIds:[],
+      value1:1,
+      select1: 'http',
+      accountIds: [],
       accountList: [
         {
           label: "西瓜科技有限公司",
@@ -69,10 +86,13 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .select {
   /deep/.ivu-select-selection {
     border-radius: 0;
   }
+}
+.prefix-container-basic-number {
+  border-radius: 0;
 }
 </style>
