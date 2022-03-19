@@ -3,6 +3,8 @@ import Transfer from "./components/transfer"
 import MultiCascader from "./components/multi-cascader/index.js";
 import PrefixContainer from "./components/prefix-container/index.js";
 import ViewUI from 'view-design';
+import 'view-design/dist/styles/iview.css';
+import "./style/index.less";
 
 Vue.use(ViewUI);
 console.log('进入ryDesign')
