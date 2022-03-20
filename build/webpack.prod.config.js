@@ -4,9 +4,6 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const Config = require("../src/config.js");
 const pkg = require("../package.json");
 process.env.NODE_ENV = "production";
-// multiple extract instances
-let extractCSS = new ExtractTextPlugin("stylesheets/[name].css");
-let extractLESS = new ExtractTextPlugin("stylesheets/[name].less");
 module.exports = {
   entry: "./src/index.js",
   output: {
@@ -22,23 +19,22 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: "vue-loader",
-        // options: {
-        //   loaders: {
-        //     less: ExtractTextPlugin.extract({
-        //       use: [
-        //         "css-loader?minimize",
-        //         "autoprefixer-loader",
-        //         "less-loader",
-        //       ],
-        //       fallback: "vue-style-loader",
-        //     }),
-        //     css: ExtractTextPlugin.extract({
-        //       use: ["css-loader", "autoprefixer-loader", "less-loader"],
-        //       fallback: "vue-style-loader",
-        //     }),
-        //   },
-        //   // other vue-loader options go here
-        // },
+        options: {
+          loaders: {
+            less: ExtractTextPlugin.extract({
+              use: [
+                "css-loader?minimize",
+                "autoprefixer-loader",
+                "less-loader",
+              ],
+              fallback: "vue-style-loader",
+            }),
+            css: ExtractTextPlugin.extract({
+              use: ["css-loader", "autoprefixer-loader", "less-loader"],
+              fallback: "vue-style-loader",
+            })
+          }
+        }
       },
       {
         test: /\.js$/,
@@ -66,9 +62,17 @@ module.exports = {
           name: "[name].[ext]?[hash]",
         },
       },
+      {
+        test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
+        loader: "url-loader",
+        options: {
+          limit: 8192,
+          name: "styles/fonts/[name].[ext]?[hash]",
+        },
+      },
     ],
   },
-  plugins: [extractCSS],
+  plugins: [new ExtractTextPlugin("styles/[name].css")],
   resolve: {
     alias: {
       vue$: "vue/dist/vue.esm.js",
