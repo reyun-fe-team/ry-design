@@ -19,7 +19,7 @@
       :key="getKey(node)"
       :class="[
         prefixCls + '-li',
-        { [prefixCls + '-li-active']: activeList[level - 1] === node.id },
+        { [prefixCls + '-li-active']: activeList[level - 1] === node.id }
       ]"
       @mouseover="handleMouseEnter(node, nodeIndex, level)"
       @mouseout="allowEmit = true"
@@ -56,70 +56,70 @@
 </template>
 
 <script>
-const { prefix } = require("../../config.js");
-const prefixCls = prefix + "multi-cascader-list";
+const { prefix } = require('../../../config.js');
+const prefixCls = prefix + 'multi-cascader-list';
 export default {
   name: prefixCls,
   data() {
     return {
       prefixCls: prefixCls,
-      allowEmit: true,
+      allowEmit: true
     };
   },
   props: {
     // 最大的请求层级 0 为不限制
     maxRequest: {
       type: Number,
-      default: 0,
+      default: 0
     },
     // 是否使用了最大选择个数
     useMax: {
       type: Boolean,
-      default: false,
+      default: false
     },
     // 显示层级列表
     activeList: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     // 显示的数据
     list: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     // 当前层级
     level: {
-      type: [Number, String],
+      type: [Number, String]
     },
     labelKey: {
       type: String,
-      default: "label",
+      default: 'label'
     },
     expandTrigger: {
       type: String,
-      default: "click",
+      default: 'click'
     },
     // 禁用复选框
     notUseAble: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   computed: {
     // 是否显示选择框
     showCheckBox() {
-      return this.list.every((v) => Boolean(v.showCheck));
+      return this.list.every(v => Boolean(v.showCheck));
     },
     indeterminateAll() {
-      const falseAll = this.list.every((v) => !v.checked);
+      const falseAll = this.list.every(v => !v.checked);
       return !(this.checkedAll || falseAll);
     },
     checkedAll() {
-      return this.list.every((v) => v.checked);
+      return this.list.every(v => v.checked);
     },
     disabledAll() {
-      return this.list.every((v) => v.disabled);
-    },
+      return this.list.every(v => v.disabled);
+    }
   },
   methods: {
     // 显示下一级的箭头
@@ -134,31 +134,31 @@ export default {
       return show;
     },
     handleCheckAll(val) {
-      this.$emit("handle-checkAll", val, this.list);
+      this.$emit('handle-checkAll', val, this.list);
     },
     handleMouseEnter(node, levelIndex, level) {
-      if (this.expandTrigger === "hover" && this.allowEmit) {
-        this.$emit("handle-click", node, levelIndex, level);
+      if (this.expandTrigger === 'hover' && this.allowEmit) {
+        this.$emit('handle-click', node, levelIndex, level);
         this.allowEmit = false;
       }
     },
     handleClick(node, levelIndex, level) {
-      if (this.expandTrigger === "click") {
-        this.$emit("handle-click", node, levelIndex, level);
+      if (this.expandTrigger === 'click') {
+        this.$emit('handle-click', node, levelIndex, level);
       }
     },
     handleCheck(v, node) {
       node.checked = v;
-      this.$emit("handle-check", node);
+      this.$emit('handle-check', node);
     },
     // 唯一key v-for
     getKey() {
-      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
         let r = (Math.random() * 16) | 0;
-        let v = c === "x" ? r : (r & 0x3) | 0x8;
+        let v = c === 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
       });
-    },
-  },
+    }
+  }
 };
 </script>

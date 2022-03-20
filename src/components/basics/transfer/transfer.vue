@@ -23,8 +23,8 @@
 </template>
 <script>
 import List from './list.vue';
-import { deepCopy } from '../../util/assist';
-const { prefix } = require('../../config.js');
+import { deepCopy } from '../../../util/assist';
+const { prefix } = require('../../../config.js');
 let prefixCls = prefix + 'transfer';
 export default {
   name: prefixCls,
@@ -33,7 +33,7 @@ export default {
     // 数据源
     data: {
       type: Array,
-      validator(value, validList) {
+      validator(value) {
         return value.length >= 2;
       },
       default() {

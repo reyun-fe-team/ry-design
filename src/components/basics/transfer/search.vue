@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-const { prefix } = require('../../config.js');
+const { prefix } = require('../../../config.js');
 let prefixCls = prefix + 'transfer-list-search';
 export default {
   name: prefixCls,

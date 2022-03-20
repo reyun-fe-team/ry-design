@@ -93,15 +93,15 @@
 </template>
 
 <script>
-const { prefix } = require("../../config.js");
-const prefixCls = prefix + "multi-cascader";
-import TreeStore from "./lib/Tree.js";
-import multiCascaderList from "./multi-cascader-list.vue";
-import _ from "lodash";
+const { prefix } = require('../../../config.js');
+const prefixCls = prefix + 'multi-cascader';
+import TreeStore from './lib/Tree.js';
+import multiCascaderList from './multi-cascader-list.vue';
+import _ from 'lodash';
 export default {
   name: prefixCls,
   components: {
-    multiCascaderList,
+    multiCascaderList
   },
   props: {
     // 是否要回显labels
@@ -109,28 +109,28 @@ export default {
       type: Array,
       default: () => {
         return [];
-      },
+      }
     },
     // 每一级别是否可以选择的数据字段，不填写默认显示选择框。tips: 只有在当前层级全部设置为true才会显示复选框和全选框
     checkKey: {
       type: String,
-      default: "showCheck",
+      default: 'showCheck'
     },
     // @todo 设置上级的全选不用选择下一级的数据
     // false 不用选择下一级 true 必选选择下一级
     notSelectNext: {
       type: Boolean,
-      default: false,
+      default: false
     },
     // 最大的请求层级 0 为不限制
     maxRequest: {
       type: Number,
-      default: 0,
+      default: 0
     },
     // 异步加载子元素 异步传入数据
     sync: {
       type: Boolean,
-      default: false,
+      default: false
     },
     // 异步请求数据的回调 必须开启异步请求开关 sync为true
     syncCallBack: {
@@ -138,103 +138,103 @@ export default {
       default: () => {
         // 默认一个函数
         return () => {};
-      },
+      }
     },
     // label显示的层级 all 全部 / last 最后一层
     labelLv: {
       type: String,
-      default: "all",
+      default: 'all'
     },
     // 下拉菜单出现的位置，可选值为toptop-starttop-endbottombottom-startbottom-endleftleft-startleft-endrightright-startright-en
     placement: {
       type: String,
-      default: "bottom",
+      default: 'bottom'
     },
     // 是否放在body下面展示list
     transfer: {
       type: Boolean,
-      default: false,
+      default: false
     },
     // 占位符
     placeholder: {
       type: String,
-      default: "请选择",
+      default: '请选择'
     },
     // 最大选择数 使用该属性不能使用全选功能
     maxCount: {
-      type: Number,
+      type: Number
     },
     // 标签是否可以全部清空
     clearable: {
       type: Boolean,
-      default: false,
+      default: false
     },
     // 列表数据
     data: {
       type: Array,
       default: () => [],
-      required: true,
+      required: true
     },
     // 是否只显示选中的
     onlyShowChecked: {
       type: Boolean,
-      default: false,
+      default: false
     },
     isShowIndeterminate: {
       // 是否显示半选
       type: Boolean,
-      default: true,
+      default: true
     },
     // v-model值，页面刷新默认值（只需传选中的id，eg：['jiaohu', 'yizhi']）注意不要传重复，传了父节点就不要传子节点（错误案例：['zhinan', 'yizhi']）
     value: {
       type: Array,
-      required: true,
+      required: true
     },
     // 分隔符（onlyShowChecked为false时有效）
     separator: {
       type: String,
-      default: "-",
+      default: '-'
     },
     // ------暂不支持搜索---------------
     // 是否可搜索
     filterable: {
       type: Boolean,
-      default: false,
+      default: false
     },
     // 自定义搜索方法
     filterMethod: {
-      type: Function,
+      type: Function
     },
     // Select 下拉框的类名
     popperClass: {
       type: String,
-      default: prefixCls + "-select",
+      default: prefixCls + '-select'
     },
     // 作为 value 唯一标识的键名，绑定值为对象类型时必填
     valueKey: {
       type: String,
-      default: "value",
+      default: 'value'
     },
     // 作为 label 唯一标识的键名，绑定值为对象类型时必填
     labelKey: {
       type: String,
-      default: "label",
+      default: 'label'
     },
     // 作为 children 唯一标识的键名，绑定值为对象类型时必填
     childrenKey: {
       type: String,
-      default: "children",
+      default: 'children'
     },
     // 下级展开方式
     expandTrigger: {
       type: String,
-      default: "click",
+      default: 'click'
     },
     // 是否允许父子联动
     selectChildren: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   data() {
     return {
@@ -244,11 +244,11 @@ export default {
       // 缓存传入的label和value
       storeEchoData: {
         label: [],
-        value: [],
+        value: []
       },
       // 唯一类 面板
-      unid: "uid-" + this.getKey(),
-      activeClass: "",
+      unid: 'uid-' + this.getKey(),
+      activeClass: '',
       // 选择的label
       selectedLabels: [],
       // 选择的id
@@ -265,8 +265,8 @@ export default {
       showData: {},
       activeList: [],
       // 搜索
-      searchText: "",
-      searchResult: [],
+      searchText: '',
+      searchResult: []
     };
   },
   mounted() {
@@ -288,7 +288,7 @@ export default {
     },
     // 是不是在搜素
     isSearching() {
-      return !(this.searchText.trim() === "");
+      return !(this.searchText.trim() === '');
     },
     // 超出最大选择个数 不可用
     notUseAble() {
@@ -297,18 +297,18 @@ export default {
     // 用了最大限制
     useMax() {
       return Boolean(this.maxCount);
-    },
+    }
   },
   watch: {
     data: {
       deep: true,
       handler() {
         this.init();
-      },
+      }
     },
     selectedNodes() {
-      const selected = this.selectedNodes.map((o) => o[this.valueKey]);
-      this.$emit("change", selected);
+      const selected = this.selectedNodes.map(o => o[this.valueKey]);
+      this.$emit('change', selected);
     },
     // 传入数据变化更新store选中数据
     value: {
@@ -318,7 +318,7 @@ export default {
         if (!n || !o || JS(n) === JS(o)) return;
         // 不可用时不更新数据
         if (this.notUseAble) {
-          this.$emit("input", n.slice(0, this.maxCount));
+          this.$emit('input', n.slice(0, this.maxCount));
         }
         // 清空选择
         this.cleatStoreSeleted();
@@ -328,15 +328,15 @@ export default {
         }
         // 先清空 在选中
         this.renderData();
-      },
+      }
     },
     // 返回labels
     selectedLabels: {
       deep: true,
       handler(n, o) {
-        this.$emit("getLables", n);
-      },
-    },
+        this.$emit('getLables', n);
+      }
+    }
   },
   methods: {
     handleMouseenter() {
@@ -352,13 +352,13 @@ export default {
     // 弹出层的展示和取消
     visibleChange(v) {
       if (!v) {
-        this.searchText = "";
+        this.searchText = '';
       }
-      this.$emit("visible-change", v);
+      this.$emit('visible-change', v);
     },
     // 清空内部数据存储
     cleatStoreSeleted() {
-      this.store.nodeList.forEach((targetNode) => {
+      this.store.nodeList.forEach(targetNode => {
         if (targetNode) {
           targetNode.check(false);
         }
@@ -369,32 +369,32 @@ export default {
     },
     // 全部清空
     handleClear() {
-      this.$emit("input", []);
+      this.$emit('input', []);
       this.cleatStoreSeleted();
-      this.$emit("clear");
+      this.$emit('clear');
     },
     // 搜索
     innerFilterMethod(v) {
       this.searchText = v;
       let tempResult = this.store.nodeList;
-      if (v.trim() !== "") {
-        this.activeClass = "";
-        if (typeof this.filterMethod === "function") {
+      if (v.trim() !== '') {
+        this.activeClass = '';
+        if (typeof this.filterMethod === 'function') {
           this.searchResult = this.filterMethod(tempResult, v);
         } else {
-          tempResult = tempResult.filter((o) => o.isLeaf);
-          tempResult = tempResult.filter((o) => o.showLabel.includes(v));
+          tempResult = tempResult.filter(o => o.isLeaf);
+          tempResult = tempResult.filter(o => o.showLabel.includes(v));
           this.searchResult = tempResult;
         }
       } else {
-        this.activeClass = "1";
+        this.activeClass = '1';
       }
     },
     // 唯一key v-for
     getKey() {
-      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
         let r = (Math.random() * 16) | 0;
-        let v = c === "x" ? r : (r & 0x3) | 0x8;
+        let v = c === 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
       });
     },
@@ -415,10 +415,10 @@ export default {
           // loading状态
           node.nodeSyncSetData({ loading: true });
           this.syncCallBack(node)
-            .then((children) => {
+            .then(children => {
               if (children && children.length > 0) {
                 node.nodeSyncClick(children);
-                children.forEach((child) => {
+                children.forEach(child => {
                   node.insertChild(child);
                 });
 
@@ -427,7 +427,7 @@ export default {
                   (v, i) => {
                     return {
                       id: i + 1,
-                      rendered: true,
+                      rendered: true
                     };
                   }
                 );
@@ -440,16 +440,18 @@ export default {
                   // 存一下需要删除值的索引
                   let indexArr = [];
                   setTimeout(() => {
-                    let { value: echoVal, label: echoName } =
-                      this.storeEchoData;
+                    let {
+                      value: echoVal,
+                      label: echoName
+                    } = this.storeEchoData;
                     node.childNodes &&
-                      node.childNodes.forEach((childNode) => {
+                      node.childNodes.forEach(childNode => {
                         // 当前子节点的value
                         let nodeVal = this.getValueByNode(childNode);
                         // 子节点在回显缓存中的索引
                         let nodeIndex = _.findIndex(
                           echoVal,
-                          (v) => v === nodeVal
+                          v => v === nodeVal
                         );
                         // 缓存中存在该节点的值
                         if (nodeIndex !== -1) {
@@ -469,13 +471,13 @@ export default {
                       });
 
                     // 更新缓存的值
-                    indexArr.forEach((i) => {
-                      echoVal.splice(i, 1, "USED");
-                      echoName.splice(i, 1, "USED");
+                    indexArr.forEach(i => {
+                      echoVal.splice(i, 1, 'USED');
+                      echoName.splice(i, 1, 'USED');
                     });
                     this.storeEchoData = {
-                      value: echoVal.filter((v) => v !== "USED"),
-                      label: echoName.filter((v) => v !== "USED"),
+                      value: echoVal.filter(v => v !== 'USED'),
+                      label: echoName.filter(v => v !== 'USED')
                     };
                     this.updateSelect(this.store.selectedIds);
                   }, 16.7);
@@ -510,12 +512,12 @@ export default {
     // 半选状态
     isIndeterminate(level, nodeList) {
       if (level === 0) return;
-      nodeList.forEach((node) => {
-        let checkedlList = node.childNodes.filter((child) => child.checked);
+      nodeList.forEach(node => {
+        let checkedlList = node.childNodes.filter(child => child.checked);
         if (node.level - level === -1) {
           node.indeterminate = false;
           let indeterminatelist = node.childNodes.filter(
-            (child) => child.indeterminate
+            child => child.indeterminate
           );
           let sumLength = checkedlList.length + indeterminatelist.length;
           if (sumLength && checkedlList.length < node.childNodes.length) {
@@ -532,7 +534,7 @@ export default {
     },
     // 获取单个节点的value
     getValueByNode(node) {
-      let val = node[this.valueKey] || "";
+      let val = node[this.valueKey] || '';
       while (node.parent[this.valueKey]) {
         let pval = node.parent[this.valueKey];
         val = pval + this.separator + val;
@@ -542,14 +544,14 @@ export default {
     },
     // 获取value
     getValue() {
-      let result = this.selectedNodes.map((o) => {
+      let result = this.selectedNodes.map(o => {
         if (!this.onlyShowChecked) {
           let level = o.level;
-          let valueKey = "";
+          let valueKey = '';
           let node = _.cloneDeep(o);
           while (level !== 0) {
             valueKey =
-              node[this.valueKey] + (valueKey ? this.separator : "") + valueKey;
+              node[this.valueKey] + (valueKey ? this.separator : '') + valueKey;
             node = node.parent;
             level--;
           }
@@ -558,7 +560,7 @@ export default {
         return o[this.valueKey];
       });
       // 有不存在的id 小于0的
-      let hasEmptyIndex = _.findIndex(this.selectedIds, (v) => +v < 0);
+      let hasEmptyIndex = _.findIndex(this.selectedIds, v => +v < 0);
       if (hasEmptyIndex !== -1) {
         result = [...this.storeEchoData.value, ...result];
       }
@@ -570,7 +572,7 @@ export default {
       this.selectedIds = this.store.selectedIds;
       this.updateSelect(this.store.selectedIds);
       const result = this.getValue();
-      this.$emit("input", result);
+      this.$emit('input', result);
       this.$nextTick(() => {
         if (this.isShowIndeterminate && this.selectChildren) {
           this.isIndeterminate(node.level, this.root.childNodes);
@@ -579,25 +581,25 @@ export default {
     },
     // 面板复选框全选中
     handleCheckAll(val, list) {
-      list.forEach((node) => node.check(val));
+      list.forEach(node => node.check(val));
       this.selectedIds = this.store.selectedIds;
       this.updateSelect(this.store.selectedIds);
       const result = this.getValue();
-      this.$emit("input", result);
+      this.$emit('input', result);
     },
     // 标签单个删除
     removeOne(label) {
       // 删除传入的数据
       let { label: echoName, value: echoVal } = this.storeEchoData;
       if (echoName.includes(label)) {
-        let index = _.findIndex(echoName, (name) => name === label);
+        let index = _.findIndex(echoName, name => name === label);
         echoName.splice(index, 1);
         echoVal.splice(index, 1);
         this.store.selectedIds.splice(index, 1);
         this.updateSelect(this.store.selectedIds);
         const result = this.getValue();
-        this.$emit("input", result);
-        this.$emit("remove-tag", label);
+        this.$emit('input', result);
+        this.$emit('remove-tag', label);
         return;
       }
       let targetNode = _.find(this.selectedNodes, { showLabel: label });
@@ -607,7 +609,7 @@ export default {
       }
       targetNode.checked = false;
       this.handleCheck(targetNode);
-      this.$emit("remove-tag", label);
+      this.$emit('remove-tag', label);
     },
     // 选中数据更新转态
     updateSelect(data, needCheckNode = false, setValue = false) {
@@ -616,16 +618,16 @@ export default {
       // 不存在的id 设置为小于0
       let newId = 0;
       const { value: echoVal, label: echoName } = this.storeEchoData;
-      const ids = echoVal.map((v) => --newId);
+      const ids = echoVal.map(v => --newId);
 
       let tempSelectedLabels =
         echoName.length === 0 ? [] : _.cloneDeep(echoName);
       let tempSelectedIds = ids.length === 0 ? [] : ids;
 
-      data.forEach((o) => {
+      data.forEach(o => {
         let targetNode;
         if (setValue) {
-          targetNode = _.find(this.store.nodeList, (v) => `${v.id}` === `${o}`);
+          targetNode = _.find(this.store.nodeList, v => `${v.id}` === `${o}`);
           // tempSelectedIds.push(targetNode.id);
           targetNode && !tempSelectedIds.includes(o) && tempSelectedIds.push(o);
         } else {
@@ -634,12 +636,12 @@ export default {
         }
         if (targetNode) {
           needCheckNode && targetNode.check(true);
-          let label = "";
+          let label = '';
           if (!this.onlyShowChecked) {
             let level = targetNode.level;
             let node = _.cloneDeep(targetNode);
             while (level !== 0) {
-              label = node.showLabel + (label ? this.separator : "") + label;
+              label = node.showLabel + (label ? this.separator : '') + label;
               node = node.parent;
               level--;
             }
@@ -647,7 +649,7 @@ export default {
             label = targetNode.showLabel;
           }
           // 显示最后一层
-          if (this.labelLv === "last") {
+          if (this.labelLv === 'last') {
             const labelArr = label.split(this.separator);
             label = labelArr[labelArr.length - 1];
           }
@@ -664,7 +666,7 @@ export default {
       if (this.renShow) {
         this.storeEchoData = {
           value: _.cloneDeep(this.value),
-          label: _.cloneDeep(this.echoLabel),
+          label: _.cloneDeep(this.echoLabel)
         };
       }
       this.store = new TreeStore({
@@ -676,7 +678,7 @@ export default {
         labelKey: this.labelKey,
         childrenKey: this.childrenKey,
         checkKey: this.checkKey,
-        labelLv: this.labelLv,
+        labelLv: this.labelLv
       });
       this.root = this.store.root;
       this.maxLevellist = Array.from(
@@ -685,7 +687,7 @@ export default {
           this.showData[i + 1] = [];
           return {
             id: i + 1,
-            rendered: false,
+            rendered: false
           };
         }
       );
@@ -698,19 +700,19 @@ export default {
       if (this.value.length <= 0) return;
       // 根据this.value找到id组
       let newId = 0;
-      let tempSelectedIds = this.value.map((value) => {
+      let tempSelectedIds = this.value.map(value => {
         const { valueKey, nodeList, separator } = this.store;
         const vs = value.split(separator);
         const last = vs[vs.length - 1];
         const targetNode = _.find(
           nodeList,
-          (item) => `${item[valueKey]}` === `${last}`
+          item => `${item[valueKey]}` === `${last}`
         );
         return targetNode ? targetNode.id : --newId;
       });
       this.updateSelect(tempSelectedIds, true, true);
       this.store.selectedIds = this.selectedIds;
-    },
-  },
+    }
+  }
 };
 </script>

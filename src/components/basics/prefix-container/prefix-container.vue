@@ -10,15 +10,15 @@
   </main>
 </template>
 <script>
-const { prefix } = require("../../config.js");
-const prefixCls = prefix + "prefix-container";
+const { prefix } = require('../../../config.js');
+const prefixCls = prefix + 'prefix-container';
 export default {
   name: prefixCls,
   data() {
     return {
       prefixCls: prefixCls,
       prepend: true,
-      append: true,
+      append: true
     };
   },
   computed: {
@@ -26,14 +26,14 @@ export default {
       return [
         `${prefixCls}-wrapper`,
         {
-          [`${prefixCls}-group`]: this.prepend || this.append,
-        },
+          [`${prefixCls}-group`]: this.prepend || this.append
+        }
       ];
-    },
+    }
   },
   mounted() {
     this.prepend = this.$slots.prepend !== undefined;
     this.append = this.$slots.append !== undefined;
-  },
+  }
 };
 </script>
