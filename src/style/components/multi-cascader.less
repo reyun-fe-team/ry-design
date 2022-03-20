@@ -36,7 +36,7 @@
         max-height        : 132px;
         min-height        : 32px;
         border-radius     : 3px;
-        border            : 1px solid #dddddd;
+        border            : 1px solid @border-color-base;
         width             : 100%;
         height            : auto;
         overflow          : -moz-scrollbars-none;
@@ -64,7 +64,7 @@
             height       : 32px;
             line-height  : 32px;
             font-size    : 12px;
-            color        : #b8b9bb;
+            color        : @placeholder-color;
             padding-left : 7px;
             padding-right: 33px;
             white-space  : nowrap;
@@ -115,7 +115,7 @@
         }
 
         &-ground-pos {
-            border-left: 1px solid #eee;
+            border-left: 1px solid @border-color-base;
             overflow-y : auto;
             overflow-x : hidden;
         }
@@ -135,7 +135,7 @@
     overflow-y  : auto;
 
     &-turn {
-        animation: rdTurn 1s linear infinite;
+        animation: rdTurn @animation-time-quick linear infinite;
     }
 
     &-li {
@@ -156,8 +156,8 @@
 
         &:hover,
         &-active {
-            background: #f3f3f3;
-            color     : #3989fa;
+            background: @background-color-base;
+            color     : @primary-color
         }
 
         &-label {
