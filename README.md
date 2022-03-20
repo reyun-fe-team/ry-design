@@ -56,3 +56,8 @@
 
     basics 基础组件
     business 业务组件
+
+组件命名
+
+      组件文件名为 pascal-case 格式
+      my-component.vue
