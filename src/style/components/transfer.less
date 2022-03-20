@@ -73,13 +73,13 @@
                 text-overflow: ellipsis;
                 padding      : 7px 16px;
                 clear        : both;
-                color        : #515a6e;
+                color        : @text-color;
                 list-style   : none;
                 cursor       : pointer;
-                transition   : background .2s ease-in-out;
+                transition   : background @transition-time @ease-in-out;;
 
                 &:hover {
-                    background: #f3f3f3;
+                    background: @background-color-select-hover;
                 }
 
                 &>span {
