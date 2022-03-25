@@ -1,35 +1,45 @@
 <template>
-  <main style="padding: 20px;">
-    <rd-single-header @on-reset="handleReset"
-                      @on-query="handleQuery">
+  <main style="padding: 20px">
+    <rd-single-header @on-reset="handleReset" @on-query="handleQuery">
       <div slot="content">
-        <Form :label-width="72"
-              @submit.native.prevent
-              class="form-content"
-              inline>
+        <Form
+          :label-width="72"
+          class="form-content"
+          inline
+          @submit.native.prevent
+        >
           <FormItem label="账号">
-            <Select class="select"
-                    v-model="formData.accountIds"
-                    filterable
-                    multiple
-                    style="width: 400px"
-                    :max-tag-count="2"
-                    placeholder="请搜索或选择媒体账号">
-              <OptionGroup v-for="item in accountList"
-                           :key="item.label"
-                           :label="item.label">
-                <Option v-for="(el, index) in item.children"
-                        :disabled="item.disabled"
-                        :key="index"
-                        :value="el.accountId">{{ el.name }}</Option>
+            <Select
+              v-model="formData.accountIds"
+              :max-tag-count="2"
+              class="select"
+              filterable
+              multiple
+              placeholder="请搜索或选择媒体账号"
+              style="width: 400px"
+            >
+              <OptionGroup
+                v-for="item in accountList"
+                :key="item.label"
+                :label="item.label"
+              >
+                <Option
+                  v-for="(el, index) in item.children"
+                  :key="index"
+                  :disabled="item.disabled"
+                  :value="el.accountId"
+                  >{{ el.name }}
+                </Option>
               </OptionGroup>
             </Select>
           </FormItem>
           <FormItem label="搜索">
-            <Input style="width: 184px;"
-                   v-model="formData.search"
-                   clearable
-                   placeholder="输入名称" />
+            <Input
+              v-model="formData.search"
+              clearable
+              placeholder="输入名称"
+              style="width: 184px"
+            />
           </FormItem>
         </Form>
       </div>
@@ -39,7 +49,7 @@
 <script>
 export default {
   data() {
-    return{
+    return {
       formData: {
         accountIds: [],
         search: ''
@@ -74,11 +84,11 @@ export default {
           ]
         }
       ]
-    }
+    };
   },
   methods: {
     handleReset() {},
-    handleQuery() {},
+    handleQuery() {}
   }
-}
+};
 </script>

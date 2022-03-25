@@ -1,4 +1,4 @@
-import SingleHeader from "./single-header.vue";
+import SingleHeader from './single-header.vue';
 
 SingleHeader.install = function (Vue) {
   Vue.component(SingleHeader.name, SingleHeader);

@@ -4,15 +4,23 @@ import MultiCascader from './components/basics/multi-cascader/index.js';
 import PrefixContainer from './components/basics/prefix-container/index.js';
 import SingleHeader from './components/basics/single-header/index.js';
 import ViewUI from 'view-design';
+import Package from '../package.json';
 import 'view-design/dist/styles/iview.css';
 import './style/index.less';
 
 Vue.use(ViewUI);
-console.log('进入ryDesign');
+const consoleLogVersion = () => {
+  window.console.log(
+    '%c%s',
+    'padding:0 20px; color: #4688f1; background: #fff; font-size: 18px;',
+    'welcome ryDesign v' + Package.version + ' 🔥'
+  );
+};
+consoleLogVersion();
 
 const components = [Transfer, PrefixContainer, MultiCascader, SingleHeader];
 
-const install = function(Vue) {
+const install = function (Vue) {
   components.forEach(component => {
     Vue.component(component.name, component);
   });
