@@ -24,6 +24,9 @@ const router = new VueRouter({
   },{
     path: "/prefix-container",
     component: resolve => require(["./routers/prefix-container.vue"], resolve)
+  },{
+    path: "/single-header",
+    component: resolve => require(["./routers/single-header.vue"], resolve)
   }]
 });
 
