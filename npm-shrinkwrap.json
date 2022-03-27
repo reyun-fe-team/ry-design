@@ -1,12 +1,11 @@
 {
   "name": "ry-design",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
-      "name": "ry-design",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "dependencies": {
         "view-design": "^4.4.0",
         "vue": "^2.6.7"

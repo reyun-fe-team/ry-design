@@ -1,18 +1,18 @@
 <template>
   <main :class="classes">
     <List
-      v-model="item.selected"
       v-for="(item, index) in current"
       :key="index"
+      v-model="item.selected"
       :title="item.title"
       :data="item.data"
       :filterable="filterable"
       :bth-opened="index != current.length - 1"
-      :leftActive="item.leftActive"
+      :left-active="item.leftActive"
       :operations="operations"
       :filter-placeholder="filterPlaceholder"
       :not-found-text="notFoundText"
-      :filterMethod="filterMethod"
+      :filter-method="filterMethod"
       :render-format="renderFormat"
       :parent-left-key="getParentKey(index, 'left')"
       :parent-right-key="getParentKey(index, 'right')"
@@ -70,13 +70,13 @@ export default {
     }
   },
   watch: {
-    data: function(newVal) {
+    data: function (newVal) {
       this.current = this.setCurrent(newVal);
     },
     current: {
       deep: true,
       immediate: true,
-      handler: function(newVal) {
+      handler: function (newVal) {
         let { keys, attributes } = this.getSelected(newVal);
         this.$emit('on-keys-change', keys);
         this.$emit('on-data-change', attributes);
@@ -102,7 +102,9 @@ export default {
       this.$set(this.current, currentIndex, currentOption);
     },
     onLeftButtonDisabled(active, index) {
-      if (!index) return;
+      if (!index) {
+        return;
+      }
       let data = this.current[index - 1];
       data.leftActive = active;
       this.$set(this.current, index - 1, data);
@@ -110,7 +112,7 @@ export default {
     isReduce(data, selected) {
       let surplusData = [];
       let selecteds = selected;
-      let selectedData = data.reduce(function(accumulator, current) {
+      let selectedData = data.reduce(function (accumulator, current) {
         if (selected.indexOf(current.key) !== -1) {
           accumulator.push(current);
           selecteds = selecteds.filter(item => {

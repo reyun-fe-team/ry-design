@@ -1,12 +1,14 @@
 <template>
   <div>
-    <rd-multi-cascader style="width: 200px;"
-              v-model="list"
-              :echoLabel="labels"
-              :data="data2"
-              sync
-              @getLables="getLables"
-              :syncCallBack="syncCallBack"></rd-multi-cascader>
+    <rd-multi-cascader
+      v-model="list"
+      style="width: 200px"
+      :echo-label="labels"
+      :data="data2"
+      sync
+      :sync-call-back="syncCallBack"
+      @getLables="getLables"
+    ></rd-multi-cascader>
   </div>
 </template>
 <script>
@@ -90,16 +92,16 @@ export default {
           label: '资源'
         }
       ]
-    }
+    };
   },
   methods: {
     getLables(lbs) {
-      this.labels = lbs
+      this.labels = lbs;
     },
     syncCallBack(data) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          let list = []
+          let list = [];
           if (data.value === 'zhinan') {
             list = [
               {
@@ -110,7 +112,7 @@ export default {
                 value: 'daohang',
                 label: '导航'
               }
-            ]
+            ];
           }
           if (data.value === 'ziyuan') {
             list = [
@@ -122,13 +124,13 @@ export default {
                 value: 'b',
                 label: 'B'
               }
-            ]
+            ];
           }
 
-          resolve(list)
-        }, 1000)
-      })
+          resolve(list);
+        }, 1000);
+      });
     }
   }
-}
+};
 </script>

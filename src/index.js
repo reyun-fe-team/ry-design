@@ -3,6 +3,7 @@ import Transfer from './components/basics/transfer';
 import MultiCascader from './components/basics/multi-cascader/index.js';
 import PrefixContainer from './components/basics/prefix-container/index.js';
 import SingleHeader from './components/basics/single-header/index.js';
+import AccountList from './components/business/account-list/index.js';
 import ViewUI from 'view-design';
 import Package from '../package.json';
 import 'view-design/dist/styles/iview.css';
@@ -18,7 +19,13 @@ const consoleLogVersion = () => {
 };
 consoleLogVersion();
 
-const components = [Transfer, PrefixContainer, MultiCascader, SingleHeader];
+const components = [
+  Transfer,
+  PrefixContainer,
+  MultiCascader,
+  SingleHeader,
+  AccountList
+];
 
 const install = function (Vue) {
   components.forEach(component => {

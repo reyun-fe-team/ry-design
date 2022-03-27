@@ -1,7 +1,7 @@
-import MultiCascader from "./multi-cascader.vue";
+import MultiCascader from './multi-cascader.vue';
 
 MultiCascader.install = function (Vue) {
-    Vue.component(MultiCascader.name, MultiCascader);
+  Vue.component(MultiCascader.name, MultiCascader);
 };
 
 export default MultiCascader;

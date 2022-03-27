@@ -2,70 +2,73 @@
   <main>
     <rd-prefix-container>
       <span slot="prepend">投放账户</span>
-      <Select class="select"
-              v-model="accountIds"
-              filterable
-              multiple
-              style="width: 400px"
-              :max-tag-count="2"
-              placeholder="请搜索或选择媒体账号">
-        <OptionGroup v-for="item in accountList"
-                     :key="item.label"
-                     :label="item.label">
-          <Option v-for="(el, index) in item.children"
-                  :disabled="item.disabled"
-                  :key="index"
-                  :value="el.accountId">{{ el.name }}</Option>
+      <Select
+        v-model="accountIds"
+        class="select"
+        filterable
+        multiple
+        style="width: 400px"
+        :max-tag-count="2"
+        placeholder="请搜索或选择媒体账号"
+      >
+        <OptionGroup
+          v-for="item in accountList"
+          :key="item.label"
+          :label="item.label"
+        >
+          <Option
+            v-for="(el, index) in item.children"
+            :key="index"
+            :disabled="item.disabled"
+            :value="el.accountId"
+            >{{ el.name }}</Option
+          >
         </OptionGroup>
       </Select>
       <span slot="append">后缀</span>
     </rd-prefix-container>
 
-    <rd-prefix-container style="margin-top:16px">
-      <Select v-model="select1"
-              slot="prepend"
-              style="width: 80px">
+    <rd-prefix-container style="margin-top: 16px">
+      <Select slot="prepend" v-model="select1" style="width: 80px">
         <Option value="http">http://</Option>
         <Option value="https">https://</Option>
       </Select>
-      <InputNumber :max="10"
-                   :min="1"
-                   v-model="value1"
-                   class="prefix-container-basic-number"></InputNumber>
-      <Button slot="append"
-              icon="ios-search"></Button>
+      <InputNumber
+        v-model="value1"
+        :max="10"
+        :min="1"
+        class="prefix-container-basic-number"
+      ></InputNumber>
+      <Button slot="append" icon="ios-search"></Button>
     </rd-prefix-container>
 
-    <rd-prefix-container style="margin-top:16px">
-      <Select v-model="select1"
-              slot="prepend"
-              style="width: 80px">
+    <rd-prefix-container style="margin-top: 16px">
+      <Select slot="prepend" v-model="select1" style="width: 80px">
         <Option value="http">http://</Option>
         <Option value="https">https://</Option>
       </Select>
-      <InputNumber :max="10"
-                   :min="1"
-                   v-model="value1"
-                   class="prefix-container-basic-number"></InputNumber>
-      <Select v-model="select1"
-              slot="append"
-              style="width: 80px">
+      <InputNumber
+        v-model="value1"
+        :max="10"
+        :min="1"
+        class="prefix-container-basic-number"
+      ></InputNumber>
+      <Select slot="append" v-model="select1" style="width: 80px">
         <Option value="http">http://</Option>
         <Option value="https">https://</Option>
       </Select>
     </rd-prefix-container>
 
-    <rd-prefix-container style="margin-top:16px">
-      <Button slot="prepend"
-              icon="ios-search"></Button>
-      <InputNumber :max="10"
-                   :min="1"
-                   v-model="value1"
-                   class="prefix-container-basic-number"></InputNumber>
-      <Button slot="append"
-              icon="ios-search">test</Button>
+    <rd-prefix-container style="margin-top: 16px">
+      <Button slot="prepend" icon="ios-search"></Button>
+      <InputNumber
+        v-model="value1"
+        :max="10"
+        :min="1"
+        class="prefix-container-basic-number"
+      ></InputNumber>
+      <Button slot="append" icon="ios-search">test</Button>
     </rd-prefix-container>
-
   </main>
 </template>
 

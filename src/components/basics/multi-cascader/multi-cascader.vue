@@ -6,8 +6,8 @@
       :transfer="transfer"
       stop-propagation
       :transfer-class-name="`${popperClass} ${unid}`"
-      @on-visible-change="visibleChange"
       v-bind="$attrs"
+      @on-visible-change="visibleChange"
     >
       <div
         :class="[prefixCls + '-labels']"
@@ -20,8 +20,8 @@
         >
           <Tag
             v-for="tag in selectedLabels"
-            :fade="false"
             :key="getKey(tag)"
+            :fade="false"
             closable
             @on-close="removeOne(tag)"
           >
@@ -37,8 +37,8 @@
         <Icon
           v-show="showClearBtn"
           :class="[prefixCls + '-labels-icon']"
-          @click.stop.prevent="handleClear"
           type="ios-close-circle-outline"
+          @click.stop.prevent="handleClear"
         ></Icon>
         <!-- 下拉icon -->
         <Icon
@@ -54,14 +54,14 @@
               :list="root.childNodes"
               :level="1"
               :active-list="activeList"
-              :notUseAble="notUseAble"
-              :maxRequest="maxRequest"
-              :useMax="useMax"
+              :not-use-able="notUseAble"
+              :max-request="maxRequest"
+              :use-max="useMax"
+              :label-key="labelKey"
+              :expand-trigger="expandTrigger"
               @handle-click="handleClick"
               @handle-check="handleCheck"
               @handle-checkAll="handleCheckAll"
-              :label-key="labelKey"
-              :expand-trigger="expandTrigger"
             ></multi-cascader-list>
           </div>
           <template v-for="item in maxLevellist">
@@ -75,14 +75,14 @@
                 :list="showData[item.id]"
                 :level="item.id + 1"
                 :active-list="activeList"
-                :notUseAble="notUseAble"
-                :maxRequest="maxRequest"
-                :useMax="useMax"
+                :not-use-able="notUseAble"
+                :max-request="maxRequest"
+                :use-max="useMax"
+                :label-key="labelKey"
+                :expand-trigger="expandTrigger"
                 @handle-click="handleClick"
                 @handle-check="handleCheck"
                 @handle-checkAll="handleCheckAll"
-                :label-key="labelKey"
-                :expand-trigger="expandTrigger"
               ></multi-cascader-list>
             </div>
           </template>
@@ -269,9 +269,6 @@ export default {
       searchResult: []
     };
   },
-  mounted() {
-    this.init();
-  },
   computed: {
     // 显示清空按钮
     showClearBtn() {
@@ -283,7 +280,9 @@ export default {
     },
     // 面板宽度
     activeClassByWidth() {
-      if (!this.activeClass) return 160;
+      if (!this.activeClass) {
+        return 160;
+      }
       return 160 * +this.activeClass;
     },
     // 是不是在搜素
@@ -315,7 +314,9 @@ export default {
       deep: true,
       handler(n, o) {
         const JS = JSON.stringify;
-        if (!n || !o || JS(n) === JS(o)) return;
+        if (!n || !o || JS(n) === JS(o)) {
+          return;
+        }
         // 不可用时不更新数据
         if (this.notUseAble) {
           this.$emit('input', n.slice(0, this.maxCount));
@@ -337,6 +338,9 @@ export default {
         this.$emit('getLables', n);
       }
     }
+  },
+  mounted() {
+    this.init();
   },
   methods: {
     handleMouseenter() {
@@ -440,10 +444,8 @@ export default {
                   // 存一下需要删除值的索引
                   let indexArr = [];
                   setTimeout(() => {
-                    let {
-                      value: echoVal,
-                      label: echoName
-                    } = this.storeEchoData;
+                    let { value: echoVal, label: echoName } =
+                      this.storeEchoData;
                     node.childNodes &&
                       node.childNodes.forEach(childNode => {
                         // 当前子节点的value
@@ -511,7 +513,9 @@ export default {
     },
     // 半选状态
     isIndeterminate(level, nodeList) {
-      if (level === 0) return;
+      if (level === 0) {
+        return;
+      }
       nodeList.forEach(node => {
         let checkedlList = node.childNodes.filter(child => child.checked);
         if (node.level - level === -1) {
@@ -697,7 +701,9 @@ export default {
     // 回显
     renderData() {
       // 数据没有
-      if (this.value.length <= 0) return;
+      if (this.value.length <= 0) {
+        return;
+      }
       // 根据this.value找到id组
       let newId = 0;
       let tempSelectedIds = this.value.map(value => {

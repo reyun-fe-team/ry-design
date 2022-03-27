@@ -4,11 +4,11 @@
       <Checkbox
         ref="CheckAllRef"
         style="margin-right: 5px"
-        @on-change="handleCheckAll"
         :indeterminate="indeterminateAll"
-        @click.native.stop
         :value="checkedAll"
         :disabled="disabledAll || notUseAble"
+        @on-change="handleCheckAll"
+        @click.native.stop
       ></Checkbox>
       <p :class="[prefixCls + '-li-label']">
         <span style="margin-left: 5px">全选</span>
@@ -26,12 +26,12 @@
     >
       <Checkbox
         v-if="showCheckBox"
-        style="margin-right: 5px"
-        @on-change="handleCheck($event, node)"
-        :indeterminate="node.indeterminate"
-        @click.native.stop
         v-model="node.checked"
+        style="margin-right: 5px"
+        :indeterminate="node.indeterminate"
         :disabled="node.disabled || notUseAble"
+        @on-change="handleCheck($event, node)"
+        @click.native.stop
       ></Checkbox>
       <p
         :class="[prefixCls + '-li-label']"
@@ -60,12 +60,6 @@ const { prefix } = require('../../../config.js');
 const prefixCls = prefix + 'multi-cascader-list';
 export default {
   name: prefixCls,
-  data() {
-    return {
-      prefixCls: prefixCls,
-      allowEmit: true
-    };
-  },
   props: {
     // 最大的请求层级 0 为不限制
     maxRequest: {
@@ -104,6 +98,12 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  data() {
+    return {
+      prefixCls: prefixCls,
+      allowEmit: true
+    };
   },
   computed: {
     // 是否显示选择框

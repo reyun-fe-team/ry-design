@@ -24,6 +24,11 @@ export default {
       currentQuery: this.query
     };
   },
+  computed: {
+    icon() {
+      return this.query === '' ? 'ios-search' : 'ios-close-circle';
+    }
+  },
   watch: {
     query(val) {
       this.currentQuery = val;
@@ -32,14 +37,11 @@ export default {
       this.$emit('on-query-change', val);
     }
   },
-  computed: {
-    icon() {
-      return this.query === '' ? 'ios-search' : 'ios-close-circle';
-    }
-  },
   methods: {
     handleClick() {
-      if (this.currentQuery === '') return;
+      if (this.currentQuery === '') {
+        return;
+      }
       this.currentQuery = '';
       this.$emit('on-query-clear');
     }

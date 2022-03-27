@@ -15,12 +15,12 @@
         <span :class="prefixCls + '-header-count'">{{ count }}</span>
       </header>
       <div :class="bodyClasses">
-        <div :class="prefixCls + '-body-search-wrapper'" v-if="filterable">
+        <div v-if="filterable" :class="prefixCls + '-body-search-wrapper'">
           <Search
             :query="query"
+            :placeholder="filterPlaceholder"
             @on-query-clear="handleQueryClear"
             @on-query-change="handleQueryChange"
-            :placeholder="filterPlaceholder"
           ></Search>
         </div>
         <ul :class="prefixCls + '-content'">
@@ -37,14 +37,14 @@
             <span v-html="showLabel(item)"></span>
           </li>
           <li
-            :class="prefixCls + '-content-not-found'"
             v-if="!filterData.length"
+            :class="prefixCls + '-content-not-found'"
           >
             {{ notFoundText }}
           </li>
         </ul>
       </div>
-      <div :class="prefixCls + '-footer'" v-if="showFooter">
+      <div v-if="showFooter" :class="prefixCls + '-footer'">
         <slot></slot>
       </div>
     </div>
@@ -53,8 +53,8 @@
       <Operation
         :prefix-cls="prefixCls"
         :operations="operations"
-        :leftActive="leftActive"
-        :rightActive="rightActive"
+        :left-active="leftActive"
+        :right-active="rightActive"
       ></Operation>
     </template>
   </main>
@@ -70,7 +70,7 @@ export default {
   props: {
     data: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
@@ -109,7 +109,7 @@ export default {
     },
     value: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
@@ -133,17 +133,6 @@ export default {
       rightActive: false,
       showFooter: true
     };
-  },
-  watch: {
-    value: function(newV) {
-      this.checkedKeys = newV;
-    },
-    data(newV) {
-      this.showItems = newV;
-    },
-    checkedKeys: function(newV) {
-      this.onCheckedKeysChange(newV);
-    }
   },
   computed: {
     classes() {
@@ -183,6 +172,17 @@ export default {
     },
     filterData() {
       return this.showItems.filter(item => this.filterMethod(item, this.query));
+    }
+  },
+  watch: {
+    value: function (newV) {
+      this.checkedKeys = newV;
+    },
+    data(newV) {
+      this.showItems = newV;
+    },
+    checkedKeys: function (newV) {
+      this.onCheckedKeysChange(newV);
     }
   },
   mounted() {
@@ -235,7 +235,9 @@ export default {
       return this.checkedKeys.some(key => key === item.key);
     },
     select(item) {
-      if (item.disabled) return;
+      if (item.disabled) {
+        return;
+      }
       const index = this.checkedKeys.indexOf(item.key);
       index > -1
         ? this.checkedKeys.splice(index, 1)
