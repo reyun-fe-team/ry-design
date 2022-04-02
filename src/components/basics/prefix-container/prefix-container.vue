@@ -1,10 +1,12 @@
 <template>
   <main :class="classes">
-    <div v-if="prepend" :class="[prefixCls + '-group-prepend']">
+    <div v-if="prepend"
+         :class="[prefixCls + '-group-prepend']">
       <slot name="prepend"></slot>
     </div>
     <slot></slot>
-    <div v-if="append" :class="[prefixCls + '-group-append']">
+    <div v-if="append"
+         :class="[prefixCls + '-group-append']">
       <slot name="append"></slot>
     </div>
   </main>
