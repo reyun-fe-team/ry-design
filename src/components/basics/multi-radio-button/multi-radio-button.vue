@@ -17,7 +17,6 @@ const { prefix } = require('../../../config.js');
 const prefixCls = prefix + 'multi-radio-button';
 export default {
   name: prefixCls,
-  components: {},
   props: {
     buttonList: {
       type: Array,
@@ -43,10 +42,6 @@ export default {
       prefixCls
     };
   },
-  computed: {},
-  watch: {},
-  created() {},
-  mounted() {},
   methods: {
     className(val) {
       // 不限的处理
@@ -80,6 +75,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang='less'>
-</style>

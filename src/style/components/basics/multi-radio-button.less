@@ -4,6 +4,7 @@
   display: flex;
 
   li {
+
     .top-right-triangle,
     .all-top-right-triangle {
       border-left: 10px solid transparent;
@@ -30,34 +31,35 @@
     display: flex;
     justify-content: center;
     color: #151b39;
-    background-color: #fff;
+    background-color: @component-background;
     min-width: 104px;
     height: 32px;
     line-height: 32px;
     padding: 0 15px;
     border: 1px solid #dcdee2;
     border-left: 0;
+    font-size:@font-size-base;
 
     &:hover {
       z-index: 3;
-      color: #2d8cf0;
+      color: @link-color;
 
       .top-right-triangle,
       .all-top-right-triangle {
-        border-right: 10px solid #2d8cf0;
+        border-right: 10px solid @link-color;
       }
     }
 
     &.active {
       z-index: 3;
-      color: #2d8cf0;
-      border-color: #2d8cf0;
-      box-shadow: -1px 0 0 0 #2d8cf0;
+      color: @link-color;
+      border-color: @link-color;
+      box-shadow: -1px 0 0 0 @link-color;
       background: rgba(45, 140, 240, 0.05);
 
       .top-right-triangle,
       .all-top-right-triangle {
-        border-right: 10px solid #2d8cf0;
+        border-right: 10px solid @link-color;
       }
 
       &:first-child {

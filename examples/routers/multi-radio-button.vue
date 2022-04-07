@@ -8,12 +8,8 @@
                            :button-list="buttonList2"></rd-multi-radio-button>
   </main>
 </template>
-
 <script>
 export default {
-  name: '',
-  components: {},
-  props: {},
   data() {
     return {
       value1: [],
@@ -47,14 +43,6 @@ export default {
         }
       ]
     };
-  },
-  computed: {},
-  watch: {},
-  created() {},
-  mounted() {},
-  methods: {}
+  }
 };
 </script>
-
-<style scoped lang='less'>
-</style>
