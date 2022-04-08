@@ -1,0 +1,90 @@
+@multi-radio-button: ~'@{css-prefix}multi-radio-button';
+
+.@{multi-radio-button} {
+  display: flex;
+
+  li {
+
+    .top-right-triangle,
+    .all-top-right-triangle {
+      border-left: 10px solid transparent;
+      border-right: 10px solid #d2d7dd;
+      border-bottom: 10px solid transparent;
+      height: 0;
+      width: 0;
+      position: absolute;
+      right: 0px;
+      z-index: 3;
+    }
+
+    &:first-child {
+      border-radius: 4px 0 0 4px;
+      border-left: 1px solid #dcdee2;
+    }
+
+    &:last-child {
+      border-radius: 0 4px 4px 0;
+    }
+
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    color: #151b39;
+    background-color: @component-background;
+    min-width: 104px;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 15px;
+    border: 1px solid #dcdee2;
+    border-left: 0;
+    font-size:@font-size-base;
+
+    &:hover {
+      z-index: 3;
+      color: @link-color;
+
+      .top-right-triangle,
+      .all-top-right-triangle {
+        border-right: 10px solid @link-color;
+      }
+    }
+
+    &.active {
+      z-index: 3;
+      color: @link-color;
+      border-color: @link-color;
+      box-shadow: -1px 0 0 0 @link-color;
+      background: rgba(45, 140, 240, 0.05);
+
+      .top-right-triangle,
+      .all-top-right-triangle {
+        border-right: 10px solid @link-color;
+      }
+
+      &:first-child {
+        box-shadow: none;
+      }
+    }
+
+    &:first-child .top-right-triangle {
+      border: none;
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      color: #999;
+      background-color: #fcfcfc;
+      border-color: #edf1f5;
+
+      &:hover {
+        z-index: 0;
+
+        .top-right-triangle,
+        .all-top-right-triangle {
+          border-right: 10px solid #d2d7dd;
+        }
+      }
+    }
+  }
+}
