@@ -3,11 +3,8 @@ import Transfer from './components/basics/transfer';
 import MultiCascader from './components/basics/multi-cascader/index.js';
 import PrefixContainer from './components/basics/prefix-container/index.js';
 import SingleHeader from './components/basics/single-header/index.js';
-<<<<<<< HEAD
 import PageHeader from './components/basics/page-header/index.js';
-=======
 import MultiRadioButton from './components/basics/multi-radio-button/index.js';
->>>>>>> d277494be064aa14582861497623ef4d657ae9aa
 import AccountList from './components/business/account-list/index.js';
 
 import ViewUI from 'view-design';
@@ -30,11 +27,8 @@ const components = [
   PrefixContainer,
   MultiCascader,
   SingleHeader,
-<<<<<<< HEAD
   PageHeader,
-=======
   MultiRadioButton,
->>>>>>> d277494be064aa14582861497623ef4d657ae9aa
   AccountList
 ];
 
@@ -55,9 +49,6 @@ export default {
   MultiCascader,
   PrefixContainer,
   SingleHeader,
-<<<<<<< HEAD
-  PageHeader
-=======
+  PageHeader,
   MultiRadioButton
->>>>>>> d277494be064aa14582861497623ef4d657ae9aa
 };

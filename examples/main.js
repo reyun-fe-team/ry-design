@@ -37,15 +37,13 @@ const router = new VueRouter({
       component: resolve => require(['./routers/account-list'], resolve)
     },
     {
-<<<<<<< HEAD
       path: '/page-header',
       component: resolve => require(['./routers/page-header.vue'], resolve)
     },
-=======
+    {
       path: '/multi-radio-button',
       component: resolve => require(['./routers/multi-radio-button'], resolve)
     }
->>>>>>> d277494be064aa14582861497623ef4d657ae9aa
   ]
 });
 
