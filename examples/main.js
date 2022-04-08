@@ -35,7 +35,11 @@ const router = new VueRouter({
     {
       path: '/account-list',
       component: resolve => require(['./routers/account-list'], resolve)
-    }
+    },
+    {
+      path: '/page-header',
+      component: resolve => require(['./routers/page-header.vue'], resolve)
+    },
   ]
 });
 
