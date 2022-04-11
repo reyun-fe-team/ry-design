@@ -5,6 +5,7 @@ import PrefixContainer from './components/basics/prefix-container/index.js';
 import SingleHeader from './components/basics/single-header/index.js';
 import PageHeader from './components/basics/page-header/index.js';
 import Breadcrumb from './components/basics/breadcrumb/index.js';
+import ModuleHeader from './components/basics/module-header/index.js';
 import MultiRadioButton from './components/basics/multi-radio-button/index.js';
 import AccountList from './components/business/account-list/index.js';
 
@@ -31,7 +32,8 @@ const components = [
   PageHeader,
   Breadcrumb,
   MultiRadioButton,
-  AccountList
+  AccountList,
+  ModuleHeader
 ];
 
 const install = function (Vue) {
@@ -53,5 +55,6 @@ export default {
   SingleHeader,
   PageHeader,
   Breadcrumb,
-  MultiRadioButton
+  MultiRadioButton,
+  ModuleHeader
 };
