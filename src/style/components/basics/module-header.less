@@ -1,0 +1,82 @@
+@module-header: ~"@{css-prefix}module-header";
+
+.@{module-header} {
+  width: 500px;
+  background-color: #eee;
+  margin: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  border-bottom: 1px solid #E0E0E8;
+  border-radius: 4px 4px 0 0;
+
+  &-head-left {
+    height: 56px;
+  }
+
+  &-module-tabs {
+    .ivu-tabs {
+      height: 100%;
+      font-family: MicrosoftYaHei;
+      color: #575B65;
+    }
+
+    .ivu-tabs-bar {
+      border: 0;
+      margin-bottom: 0;
+    }
+
+    .ivu-tabs-nav-container {
+      height: 56px;
+      line-height: 2.6;
+      font-size: 16px;
+
+      .ivu-tabs-ink-bar {
+        display: none;
+      }
+
+
+      .ivu-tabs-nav {
+        height: 56px;
+      }
+
+      .ivu-tabs-tab {
+        margin-right: 0;
+
+      }
+    }
+  }
+
+  &-module-name {
+    padding-left: 16px;
+    color: #151B39;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  &-head-extra {
+    margin-left: 15px;
+    padding-right: 16px;
+  }
+
+  .ivu-breadcrumb-item-separator {
+    font-family: MicrosoftYaHei;
+    color: #515A6E;
+    margin: 0 7px;
+  }
+
+  .ivu-breadcrumb-item-link {
+    font-family: MicrosoftYaHei;
+
+    &:hover {
+      color: #3989FA;
+    }
+  }
+
+  .ivu-breadcrumb>span:last-child {
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: #151B39;
+  }
+}

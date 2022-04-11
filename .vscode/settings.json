@@ -38,6 +38,6 @@
   ],
   // less 格式化插件规则
   "[less]": {
-    "editor.defaultFormatter": "HookyQR.beautify"
+    "editor.defaultFormatter": "michelemelluso.code-beautifier"
   }
 }

@@ -1,3 +1,11 @@
+<!--
+ * @Author: yangyufeng
+ * @Date: 2022-04-02 11:53:02
+ * @LastEditTime: 2022-04-11 15:20:15
+ * @LastEditors: Please set LastEditors
+ * @Description: 下拉多选联动
+ * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader.vue
+-->
 <template>
   <div :class="[prefixCls]">
     <Dropdown
