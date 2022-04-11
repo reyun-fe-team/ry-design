@@ -1,3 +1,11 @@
+<!--
+ * @Author: yangyufeng
+ * @Date: 2022-04-07 14:19:18
+ * @LastEditTime: 2022-04-11 15:20:42
+ * @LastEditors: Please set LastEditors
+ * @Description: 页头组件
+ * @FilePath: /ry-design/src/components/basics/page-header/page-header.vue
+-->
 <template>
   <div :class="classes">
     <!-- 面包屑 -->

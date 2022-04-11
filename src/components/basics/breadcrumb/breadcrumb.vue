@@ -1,3 +1,11 @@
+<!--
+ * @Author: yangyufeng
+ * @Date: 2022-04-11 10:56:06
+ * @LastEditTime: 2022-04-11 15:42:19
+ * @LastEditors: Please set LastEditors
+ * @Description: 面包屑导航组件
+ * @FilePath: /ry-design/src/components/basics/breadcrumb/breadcrumb.vue
+-->
 <template>
   <div :class="classes">
     <Breadcrumb :separator="separator">

@@ -1,3 +1,11 @@
+<!--
+ * @Author: yangyufneg
+ * @Date: 2022-04-02 11:53:02
+ * @LastEditTime: 2022-04-11 15:19:25
+ * @LastEditors: Please set LastEditors
+ * @Description: 下拉多选联动-list面板
+ * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader-list.vue
+-->
 <template>
   <ul :class="[prefixCls]">
     <li v-if="!useMax && showCheckBox" :class="[prefixCls + '-li']">
