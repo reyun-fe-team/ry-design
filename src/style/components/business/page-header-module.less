@@ -35,18 +35,18 @@
       align-items: center;
       justify-content: center;
       font-size: 16px;
-      font-family: MicrosoftYaHeiSemibold;
       color: #575B65;
 
       &.ivu-tabs-tab-active {
         color: #151B39;
+        font-weight: 600;
 
         &::after {
           display: block;
           content: '';
           position: absolute;
           left: 0;
-          bottom: 1px;
+          bottom: 2px;
           z-index: 1;
           width: 100%;
           height: 2px;
@@ -56,6 +56,7 @@
 
       &:hover:not(.ivu-tabs-tab-focused) {
         color: #151B39;
+        font-weight: 600;
       }
     }
   }
