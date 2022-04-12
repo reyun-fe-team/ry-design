@@ -64,17 +64,7 @@ module.exports = {
       },
       {
         test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-        // loader: "url-loader",
-        // loader: 'url-loader?limit=8192'
         loader: 'url-loader'
-        // query: {
-        //   limit: 10000,
-        //   name: path.posix.join('static', '[name].[hash:7].[ext]')
-        // }
-        // options: {
-        //   limit: 8192,
-        //   name: "styles1/fonts/[name].[ext]?[hash]",
-        // },
       }
     ]
   },
