@@ -1,7 +1,7 @@
 {
   "name": "ry-design",
   "main": "dist/ry-design.min.js",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "repository": {
     "type": "git",
     "url": "git@github.com:reyun-fe-team/ry-design.git"
@@ -15,7 +15,7 @@
   },
   "author": "ry",
   "dependencies": {
-    "view-design": "^4.4.0",
+    "view-design": "^4.6.1",
     "vue": "^2.6.7"
   },
   "devDependencies": {
