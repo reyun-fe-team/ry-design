@@ -1,7 +1,7 @@
 <!--
  * @Author: yangyufeng
  * @Date: 2022-04-11 15:11:12
- * @LastEditTime: 2022-04-12 11:55:31
+ * @LastEditTime: 2022-04-12 13:53:24
  * @LastEditors: Please set LastEditors
  * @Description: 模块头部组件
  * @FilePath: /ry-design/src/components/basics/module-header/module-header.vue
@@ -12,12 +12,19 @@
     <div :class="[prefixCls + '-head-left']">
       <!-- 单个标题 -->
       <template v-if="!isTabs">
-        <div v-if="isPropSingleTitle"
-             :class="[prefixCls + '-single-title']">
+        <span v-if="isPropSingleTitle || isHasSolt('singleTitle')"
+              :class="[prefixCls + '-single-title']">
           <slot name="singleTitle">
             <span :class="[prefixCls + '-text']">{{singleTitle}}</span>
           </slot>
-        </div>
+        </span>
+        <!-- 副标题 -->
+        <span v-if="isPropSubTitle || isHasSolt('subTitle')"
+              :class="[prefixCls + '-subtitle']">
+          <slot name="subTitle">
+            <span :class="[prefixCls + '-subtitle-text']">{{subTitle}}</span>
+          </slot>
+        </span>
       </template>
       <!-- 显示tabs -->
       <template v-if="isTabs">
@@ -74,6 +81,11 @@ export default {
     singleTitle: {
       type: String,
       default: ''
+    },
+    // 副标题
+    subTitle: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -89,15 +101,12 @@ export default {
   created() {
     if (this.isRoute) {
       if (!this.isTabs) {
-        const msg =
-          '使用路由关联[isRoute === true],必须开启“Tabs”功能,[isTabs === true]';
-        throw msg;
-      } else {
-        this.newIsRoute = true;
-        this.$nextTick(() => {
-          this.tabInit();
-        });
+        throw '使用路由关联[isRoute === true],必须开启“Tabs”功能,[isTabs === true]';
       }
+      this.newIsRoute = true;
+      this.$nextTick(() => {
+        this.tabInit();
+      });
     }
   },
   watch: {
@@ -114,11 +123,18 @@ export default {
       const classList = [`${prefixCls}`];
       return classList;
     },
-    // 是否传入了名称
+    // 单个标题
     isPropSingleTitle() {
       const { singleTitle, isTabs } = this;
       if (isTabs) return false;
       if (singleTitle) return true;
+      return false;
+    },
+    // 副标题
+    isPropSubTitle() {
+      const { subTitle, isTabs } = this;
+      if (isTabs) return false;
+      if (subTitle) return true;
       return false;
     }
   },
