@@ -1,9 +1,6 @@
-@module-header: ~"@{css-prefix}module-header";
+@page-header-module: ~"@{css-prefix}page-header-module";
 
-.@{module-header} {
-  width: 500px;
-  background-color: #eee;
-  margin: 50px;
+.@{page-header-module} {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -11,20 +8,15 @@
   border-bottom: 1px solid #E0E0E8;
   border-radius: 4px 4px 0 0;
 
-  &-head-left {
-    height: 56px;
-  }
 
   &-module-tabs {
-
     .ivu-tabs-bar {
-      height: 56px;
       border: 0;
       margin-bottom: 0;
     }
 
     .ivu-tabs-ink-bar {
-      // display: none;
+      display: none;
     }
 
     .ivu-tabs-nav {
@@ -68,7 +60,7 @@
     }
   }
 
-  &-module-name {
+  &-single-title {
     padding-left: 16px;
     color: #151B39;
     font-weight: 600;

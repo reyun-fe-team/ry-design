@@ -49,8 +49,8 @@ const router = new VueRouter({
       component: resolve => require(['./routers/breadcrumb'], resolve)
     },
     {
-      path: '/module-header',
-      component: resolve => require(['./routers/module-header'], resolve)
+      path: '/page-header-module',
+      component: resolve => require(['./routers/page-header-module'], resolve)
     }
   ]
 });

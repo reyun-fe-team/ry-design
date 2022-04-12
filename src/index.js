@@ -1,12 +1,14 @@
 import Vue from 'vue';
+// basics
 import Transfer from './components/basics/transfer';
 import MultiCascader from './components/basics/multi-cascader/index.js';
 import PrefixContainer from './components/basics/prefix-container/index.js';
 import SingleHeader from './components/basics/single-header/index.js';
 import PageHeader from './components/basics/page-header/index.js';
 import Breadcrumb from './components/basics/breadcrumb/index.js';
-import ModuleHeader from './components/basics/module-header/index.js';
 import MultiRadioButton from './components/basics/multi-radio-button/index.js';
+// business
+import PageHeaderModule from './components/business/page-header-module/index.js';
 import AccountList from './components/business/account-list/index.js';
 
 import ViewUI from 'view-design';
@@ -33,7 +35,7 @@ const components = [
   Breadcrumb,
   MultiRadioButton,
   AccountList,
-  ModuleHeader
+  PageHeaderModule
 ];
 
 const install = function (Vue) {
@@ -56,5 +58,5 @@ export default {
   PageHeader,
   Breadcrumb,
   MultiRadioButton,
-  ModuleHeader
+  PageHeaderModule
 };
