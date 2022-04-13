@@ -70,7 +70,12 @@ export default {
           valueArr = [];
         }
       }
+      // 返回全部数据
+      const selection = this.buttonList.filter(item =>
+        valueArr.includes(item.value)
+      );
       this.$emit('input', valueArr);
+      this.$emit('on-change', { valueArr, selection });
     }
   }
 };
