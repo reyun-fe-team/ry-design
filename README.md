@@ -15,10 +15,11 @@
 1. 运行 `npm run dev` 可开启实时预览
 2. 预览文件在 `examples/routers/index.vue` 中开发
 
-## 编译
+## 编译 发布
 
-1. 运行 `npm run build` 可打包，这个命令包含两个命令：`npm run build:style` 和 `npm run build:prod`，分别是 CSS 和组件
-2. 编译后的文件在 `dist` 目录
+1. 运行 `npm run build` 可打包, 编译后的文件在 `dist` 目录
+2. 发布npm ,npm login  , npm publish
+
 
 ## 发布
 
