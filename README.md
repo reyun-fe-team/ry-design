@@ -18,14 +18,7 @@
 ## 编译 发布
 
 1. 运行 `npm run build` 可打包, 编译后的文件在 `dist` 目录
-2. 发布npm ,npm login  , npm publish
-
-
-## 发布
-
-1. 可直接复制 dist 目录到业务中使用
-2. npm 下载
-
+2. 发布npm : 运行 `npm login` `npm publish`
 ## 文件目录
 
 **style**
