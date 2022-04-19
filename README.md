@@ -4,9 +4,10 @@
 
 热云 ads 组件库 github 
 官网地址  https://web.adsdesk.cn/#/
-## 引入方式： import ryDesign from "ry-design" 
-            import 'ry-design/dist/styles/main.css'
-            Vue.use(ryDesign)
+## 引入方式 
+    import ryDesign from "ry-design" 
+    import 'ry-design/dist/styles/main.css'
+    Vue.use(ryDesign)
 
 ## 开发
 1. 申请加入reyun-fe-team团队，拉取代码
