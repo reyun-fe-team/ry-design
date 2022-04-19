@@ -2,13 +2,19 @@
 
 ## 介绍
 
-热云 ads 组件库 github 地址： https://github.com/reyun-fe-team/ry-design
+热云 ads 组件库 github 
+官网地址  https://web.adsdesk.cn/#/
+## 引入方式： import ryDesign from "ry-design" 
+            import 'ry-design/dist/styles/main.css'
+            Vue.use(ryDesign)
 
 ## 开发
-
-1. 组件在 `src/component/index.vue` 中编写（打包入口）
-2. 其它依赖的 `.vue` 文件也可以在 `src/component` 目录中创建，或自定义其它路径
-3. 样式在 `src/style/index.less`
+1. 申请加入reyun-fe-team团队，拉取代码
+2. 和设计ui沟通，决策通用设计
+3. 创建分支（根据组件名称）
+4. 组件在 `src/component/index.vue` 中编写（打包入口）
+5. 其它依赖的 `.vue` 文件也可以在 `src/component` 目录中创建，或自定义其它路径
+6. 样式在 `src/style/index.less`
 
 ## 实时预览
 
@@ -53,5 +59,5 @@
 
 组件命名
 
-      组件文件名为 pascal-case 格式
-      my-component.vue
+    组件文件名为 pascal-case 格式
+    page-header.vue
