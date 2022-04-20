@@ -2,93 +2,90 @@
   <main :class="[prefixCls]">
     <div
       :class="prefixCls + '-body'"
-      :style="`width: ${width};height: ${height};`"
-    >
-      <div v-show="showLeft" :class="prefixCls + '-body-left-box'">
-        <div v-if="title" :class="prefixCls + '-body-left-box-title'">
-          {{ title }}
+      :style="`width: ${width};height: ${height};`">
+      <div
+        v-show="showLeft"
+        :class="prefixCls + '-body-left-box'">
+        <div
+          v-if="leftTitle"
+          :class="prefixCls + '-body-left-box-title'">
+          {{ leftTitle }}
         </div>
         <ul :class="prefixCls + '-body-left-box-content'">
           <li
             v-for="(item, index) in dataList"
             :key="item + index"
             :class="itemClasses(item)"
-            @click="choose(item, false)"
-          >
+            @click="choose(item, false)">
             <template v-if="!id">
               <Tooltip
-                style="padding-top: 4px"
-                :content="item[name]"
-                max-width="200"
-                transfer
+                :content="item[itemName]"
                 :delay="1000"
+                max-width="200"
+                style="padding-top: 4px"
                 theme="light"
-              >
+                transfer>
                 <span :class="prefixCls + '-body-left-box-content-item-name'">{{
-                  item[name]
-                }}</span>
+                  item[itemName]
+                }}
+                </span>
               </Tooltip>
             </template>
             <template v-else>
               <Tooltip
-                style="padding-top: 4px"
-                max-width="200"
-                transfer
                 :delay="1000"
+                max-width="200"
+                style="padding-top: 4px"
                 theme="light"
-              >
+                transfer>
                 <span
                   :class="prefixCls + '-body-left-box-content-item-name'"
-                  class="sign"
-                  >{{ item[name] }}</span
-                >
+                  class="sign">{{ item[itemName] }}
+                </span>
                 <span
                   :class="prefixCls + '-body-left-box-content-item-name'"
-                  class="sign id"
-                  >ID:{{ item[id] }}</span
-                >
+                  class="sign id">ID:{{ item[id] }}
+                </span>
 
-                <div slot="content">
-                  <p>{{ item[name] }}</p>
+                <div
+                  slot="content"
+                  class="display-flex flex-direction-column">
+                  <p>{{ item[itemName] }}</p>
                   <p>ID:{{ item[id] }}</p>
                 </div>
               </Tooltip>
             </template>
             <span
-              v-if="item[nameNum] && !item[iconName]"
-              :class="prefixCls + '-body-left-box-content-item-num'"
-              >{{ item[nameNum] }}</span
-            >
+              v-if="item[itemNum] && !item[itemIconCustom] && !item[itemIconIview]"
+              :class="prefixCls + '-body-left-box-content-item-num'">{{ item[itemNum] }}
+            </span>
             <Icon
-              v-if="iconName === 'icon' && item[iconName]"
-              :custom="`${item[iconName]} icon iconfont`"
-              :color="iconColor"
+              v-if="itemIconCustom && item[itemIconCustom] && !item[itemIconIview] && !item[itemNum]"
               :class="prefixCls + '-body-left-box-content-item-icon'"
-              :size="iconSize"
-            />
+              :color="iconColor"
+              :custom="`${item[itemIconCustom]} icon iconfont`"
+              :size="iconSize"></Icon>
             <Icon
-              v-if="iconName === 'iconType' && item[iconName]"
-              :type="item[iconName]"
-              :color="iconColor"
+              v-if="itemIconIview && item[itemIconIview] && !item[itemIconCustom] && !item[itemNum]"
               :class="prefixCls + '-body-left-box-content-item-icon'"
+              :color="iconColor"
               :size="iconSize"
-            />
+              :type="item[itemIconIview]"></Icon>
           </li>
         </ul>
       </div>
       <div
         v-if="isRenderRight"
         :class="prefixCls + '-body-right-box'"
-        :style="rightBoxStyle"
-      >
+        :style="rightBoxStyle">
         <slot></slot>
       </div>
     </div>
   </main>
 </template>
 <script>
-const { prefix } = require('../../../config.js');
-const prefixCls = prefix + 'account-list';
+const {prefix} = require('../../../config.js')
+const prefixCls = prefix + 'account-list'
 export default {
   name: prefixCls,
   props: {
@@ -109,21 +106,25 @@ export default {
       type: [String, Number],
       default: ''
     },
-    name: {
+    itemName: {
       type: String,
       default: 'adsMediaAccountName'
     },
-    nameValue: {
+    itemId: {
       type: String,
       default: 'adsMediaAccountId'
     },
-    nameNum: {
+    itemNum: {
       type: String,
       default: 'num'
     },
-    iconName: {
+    itemIconCustom: {
       type: String,
-      default: 'icon'
+      default: 'iconCustom'
+    },
+    itemIconIview: {
+      type: String,
+      default: 'iconIview'
     },
     iconSize: {
       type: Number,
@@ -137,9 +138,13 @@ export default {
       type: Boolean,
       default: true
     },
-    title: {
+    leftTitle: {
       type: [String, Boolean],
       default: '账户'
+    },
+    showLeft: {
+      type: Boolean,
+      default: true
     },
     defaultActive: {
       type: [String, Number],
@@ -148,10 +153,6 @@ export default {
     rightBoxStyle: {
       type: [Object, String],
       default: null
-    },
-    showLeft: {
-      type: Boolean,
-      default: true
     }
   },
   data() {
@@ -159,61 +160,61 @@ export default {
       prefixCls: prefixCls,
       active: '',
       isRenderRight: true
-    };
+    }
   },
   created() {
     this.$nextTick(() => {
-      this.init();
-    });
+      this.init()
+    })
   },
   mounted() {
-    this.isRenderRight = this.$slots.default !== undefined;
+    this.isRenderRight = this.$slots.default !== undefined
   },
   methods: {
     itemClasses(item) {
-      let { nameValue, active } = this;
+      let {itemId, active} = this
       return [
         `${this.prefixCls}-body-left-box-content-item`,
         {
           [`${this.prefixCls}-body-left-box-content-item-active`]:
-            item[nameValue] === active
+          item[itemId] === active
         }
-      ];
+      ]
     },
     init() {
       this.$nextTick(() => {
-        if (!this.dataList.length) {
-          return;
+        if(!this.dataList.length) {
+          return
         }
         this.active = this.defaultActive
-          ? this.defaultActive
-          : this.dataList[0][this.nameValue];
+            ? this.defaultActive
+            : this.dataList[0][this.itemId]
         const defaultActiveData = this.dataList.find(
-          item => item[this.nameValue] === this.defaultActive
-        );
-        const item = this.defaultActive ? defaultActiveData : this.dataList[0];
-        this.choose(item, true);
-      });
+            item => item[this.itemId] === this.defaultActive
+        )
+        const item = this.defaultActive ? defaultActiveData : this.dataList[0]
+        this.choose(item, true)
+      })
     },
     choose(item, isFirst = true) {
-      if (!this.showLeft) {
-        return;
+      if(!this.showLeft) {
+        return
       }
-      const { nameValue } = this;
-      if (item[nameValue] === this.active && !isFirst) {
-        return;
+      const {itemId} = this
+      if(item[itemId] === this.active && !isFirst) {
+        return
       }
-      const active = this.isEvent ? item[nameValue] : this.active;
-      this.active = active;
-      this.$emit('on-change', active, isFirst);
+      const active = this.isEvent ? item[itemId] : this.active
+      this.active = active
+      this.$emit('on-change', active, isFirst)
     },
     reset() {
-      this.init();
+      this.init()
     }
   }
-};
+}
 </script>
 
-<style scoped lang="less">
+<style>
 
 </style>

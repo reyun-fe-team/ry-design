@@ -1,57 +1,57 @@
-@account-list   :~"@{css-prefix}account-list";
-@item-active    :~"@{css-prefix}account-list-body-left-box-content-item";
+@account-list: ~"@{css-prefix}account-list";
+@item-active: ~"@{css-prefix}account-list-body-left-box-content-item";
 
 .@{account-list} {
   &-body {
-    border   : 1px solid @border-color-base;
-    display  : flex;
+    border: 1px solid @border-color-base;
+    display: flex;
     flex-wrap: nowrap;
 
     &-left-box {
-      width       : 184px;
+      width: 184px;
       border-right: 1px solid @border-color-base;
 
       &-title {
-        background   : #F9F9F9;
+        background: #F9F9F9;
         border-bottom: 1px solid @border-color-base;
-        height       : 32px;
-        line-height  : 32px;
-        padding      : 0 10px;
-        color        : #151B39;
-        font-weight  : bold;
+        height: 32px;
+        line-height: 32px;
+        padding: 0 10px;
+        color: #151B39;
+        font-weight: bold;
       }
 
       &-content {
-        height    : 405px;
+        height: 405px;
         overflow-y: auto;
 
         &::-webkit-scrollbar {
           -webkit-appearance: none;
-          width             : 7px;
+          width: 7px;
         }
 
         &-item {
-          height         : 48px;
-          width          : 100%;
-          padding        : 8px 10px;
-          cursor         : pointer;
-          display        : flex;
+          height: 48px;
+          width: 100%;
+          padding: 8px 10px;
+          cursor: pointer;
+          display: flex;
           justify-content: space-between;
-          align-items    : center;
-          flex-wrap      : nowrap;
+          align-items: center;
+          flex-wrap: nowrap;
           cursor: pointer;
 
           &-name {
-            width             : 100%;
-            display           : inline-block;
-            overflow          : hidden;
-            text-overflow     : ellipsis;
-            display           : -webkit-box;
+            width: 100%;
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
-            font-size         : 12px;
-            color             : #151B39;
-            word-break        : break-all;
+            font-size: 12px;
+            color: #151B39;
+            word-break: break-all;
 
             &.sign {
               -webkit-line-clamp: 1;
@@ -63,53 +63,61 @@
           }
 
           &-num {
-            display         : inline-block;
+            display: inline-block;
             background-color: #3A88FA;
-            color           : #fff;
-            height          : 16px;
-            line-height     : 16px;
-            border-radius   : 3px;
-            padding         : 0 4px;
-            text-align      : center;
-            margin-left     : 9px;
-            opacity         : 0.6;
-            white-space     : nowrap;
+            color: #fff;
+            height: 16px;
+            line-height: 16px;
+            border-radius: 3px;
+            padding: 0 4px;
+            text-align: center;
+            margin-left: 9px;
+            opacity: 0.6;
+            white-space: nowrap;
           }
 
           &-icon {
-            opacity         : 0.6;
+            opacity: 0.6;
           }
         }
 
         &-item-active {
-          background: #F1F3F5!important;
+          background: #F1F3F5 !important;
 
           .@{item-active}-icon {
-            opacity         : 1!important;
+            opacity: 1 !important;
           }
 
           .@{item-active}-num {
-            opacity         : 1!important;
+            opacity: 1 !important;
           }
 
           .@{item-active}-icon {
-            opacity         : 1!important;
+            opacity: 1 !important;
           }
         }
       }
 
       ::-webkit-scrollbar-thumb {
-        border-radius        : 4px;
-        background-color     : rgba(0, 0, 0, 0.4);
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.4);
       }
 
     }
 
     &-right-box {
-      padding   : 16px;
-      flex      : 1;
+      padding: 16px;
+      flex: 1;
       overflow-y: auto;
     }
+  }
+
+  .display-flex {
+    display: flex;
+  }
+
+  .flex-direction-column {
+    flex-direction: column;
   }
 
 }
