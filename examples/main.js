@@ -1,15 +1,15 @@
-import 'babel-polyfill';
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import App from './app.vue';
-import ryDesign from '../src/index';
+import 'babel-polyfill'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import App from './app.vue'
+import ryDesign from '../src/index'
 // import "./styles/index.less";
 
-Vue.use(VueRouter);
-Vue.use(ryDesign);
+Vue.use(VueRouter)
+Vue.use(ryDesign)
 
 // 开启debug模式
-Vue.config.debug = true;
+Vue.config.debug = true
 
 // 路由配置
 const router = new VueRouter({
@@ -51,15 +51,19 @@ const router = new VueRouter({
     {
       path: '/page-header-module',
       component: resolve => require(['./routers/page-header-module'], resolve)
+    },
+    {
+      path: '/radio-group',
+      component: resolve => require(['./routers/radio-group'], resolve)
     }
   ]
-});
+})
 
 router.afterEach(_ => {
-  window.scrollTo(0, 0);
-});
+  window.scrollTo(0, 0)
+})
 
 const app = new Vue({
   router: router,
   render: h => h(App)
-}).$mount('#app');
+}).$mount('#app')
