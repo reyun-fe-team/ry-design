@@ -16,34 +16,34 @@ export default {
       value: '111',
       list: [
         {
-          _label: '按展示付费(oCPM)',
-          _value: 'PRICING_OCPM',
-          _tooltip: '11111111111111',
-          _disabled: true
+          label: '按展示付费(oCPM)',
+          value: 'PRICING_OCPM',
+          tooltip: ['11111111111111', '22222222'],
+          disabled: true
         },
         {
-          _label: '按点击付费（oCPC）',
-          _value: 'PRICING_OCPC'
+          label: '按点击付费（oCPC）',
+          value: 'PRICING_OCPC'
         },
         {
-          _label: '按点击付费（CPC）',
-          _value: 'PRICING_CPC',
-          _tooltip: '11111111111111'
+          label: '按点击付费（CPC）',
+          value: 'PRICING_CPC',
+          tooltip: '11111111111111'
         },
         {
-          _label: '按展示付费（CPM）',
-          _value: 'PRICING_CPM'
+          label: '按展示付费（CPM）',
+          value: 'PRICING_CPM'
         },
         {
-          _label: '按转化付费（CPA）',
-          _value: 'PRICING_CPA'
+          label: '按转化付费（CPA）',
+          value: 'PRICING_CPA'
         }
       ]
     }
   },
   methods: {
     isDisabledItemFun(e) {
-      return e._value === 'PRICING_CPA'
+      return e._value === 'PRICING_CPA' || e.value === 'PRICING_CPA'
     },
     onChange(e) {
       console.log(e)

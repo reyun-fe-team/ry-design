@@ -7,16 +7,28 @@
       <Radio
         v-for="(e, i) in defaultList"
         :key="i"
-        :disabled="isDisabledAll || e._disabled || isDisabledItemFun(e)"
-        :label="e._value">
-        <span>{{ e._label }}</span>
+        :disabled="isDisabledAll || e.disabled || isDisabledItemFun(e)"
+        :label="e.value">
+        <span>{{ e.label }}</span>
         <Tooltip
-          v-if="e._tooltip"
+          v-if="e.tooltip"
           :transfer="true"
-          max-width="300"
-          placement="top"
+          :delay="delay"
+          :max-width="maxWidth"
+          :placement="placement"
           theme="light">
-          <div slot="content">{{ e._tooltip }}</div>
+          <div
+            slot="content"
+            class="display-flex flex-direction-column">
+            <template v-if="isArray(e.tooltip)">
+              <p
+                v-for="(item, index) in e.tooltip"
+                :key="index">{{ item }}</p>
+            </template>
+            <template v-if="isString(e.tooltip)">
+              <p>{{ e.tooltip }}</p>
+            </template>
+          </div>
           <Icon
             :type="iconIview"
             class="cursor-pointer icon-question tip-icon"
@@ -57,6 +69,18 @@ export default {
     iconIview: {
       type: String,
       default: 'ios-help-circle-outline'
+    },
+    maxWidth: {
+      type: [String, Number],
+      default: '300'
+    },
+    placement: {
+      type: String,
+      default: 'top'
+    },
+    delay: {
+      type: Number,
+      default: 1000
     }
   },
   data() {
@@ -72,10 +96,19 @@ export default {
           let {
             defaultList
           } = this
-          if(defaultList.map(e => e._value).includes(n)) {
+          if(defaultList.map(e => e.value).includes(n)) {
             this.newValue = n
           } else {
-            this.newValue = (defaultList && defaultList.length) ? defaultList.find(e => !e._disabled)._value : null
+            if(defaultList && defaultList.length) {
+              let f = defaultList.find(e => !e.disabled)
+              if(f) {
+                this.newValue = f.value || null
+              } else {
+                this.newValue = null
+              }
+            } else {
+              this.newValue = null
+            }
           }
         }
       },
@@ -84,6 +117,12 @@ export default {
     }
   },
   methods: {
+    isString(e) {
+      return Object.prototype.toString.call(e) === '[object String]'
+    },
+    isArray(e) {
+      return Object.prototype.toString.call(e) === '[object Array]'
+    },
     onChange(val) {
       this.$emit('input', val)
       this.$emit('on-change', val)
