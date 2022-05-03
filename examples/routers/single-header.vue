@@ -1,13 +1,14 @@
 <template>
   <main style="padding: 20px">
-    <rd-single-header @on-reset="handleReset" @on-query="handleQuery">
+    <rd-single-header
+      @on-reset="handleReset"
+      @on-query="handleQuery">
       <div slot="content">
         <Form
           :label-width="72"
           class="form-content"
           inline
-          @submit.native.prevent
-        >
+          @submit.native.prevent>
           <FormItem label="账号">
             <Select
               v-model="formData.accountIds"
@@ -16,19 +17,17 @@
               filterable
               multiple
               placeholder="请搜索或选择媒体账号"
-              style="width: 400px"
-            >
+              style="width: 400px">
               <OptionGroup
                 v-for="item in accountList"
                 :key="item.label"
-                :label="item.label"
-              >
+                :label="item.label">
                 <Option
                   v-for="(el, index) in item.children"
                   :key="index"
                   :disabled="item.disabled"
-                  :value="el.accountId"
-                  >{{ el.name }}
+                  :value="el.accountId">
+                  {{ el.name }}
                 </Option>
               </OptionGroup>
             </Select>
@@ -38,8 +37,7 @@
               v-model="formData.search"
               clearable
               placeholder="输入名称"
-              style="width: 184px"
-            />
+              style="width: 184px"></Input>
           </FormItem>
         </Form>
       </div>
@@ -84,11 +82,11 @@ export default {
           ]
         }
       ]
-    };
+    }
   },
   methods: {
     handleReset() {},
     handleQuery() {}
   }
-};
+}
 </script>

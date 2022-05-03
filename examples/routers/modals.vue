@@ -1,0 +1,198 @@
+<template>
+  <main style="padding: 20px">
+    <Button @click="onClick1">带副标题的弹框</Button>
+    <Button @click="onClick2">普通弹框</Button>
+    <div v-if="modalVisible1">
+      <rd-modals
+        v-model="modalVisible1"
+        is-slot-default-header
+        footer-border-none
+        :header-obj="headerObj"
+        :width="600"
+        class-name="center-modal mini-scroll-y"
+        @on-cancel="handleCancel1">
+        <div slot="content">
+          <div style="height: 1000px; background: #2b85e4; width: 300px"></div>
+          <Form
+            :label-width="72"
+            class="form-content"
+            @submit.native.prevent>
+            <FormItem label="账号">
+              <Select
+                v-model="formData.accountIds"
+                :max-tag-count="2"
+                class="select"
+                filterable
+                multiple
+                placeholder="请搜索或选择媒体账号"
+                style="width: 400px">
+                <OptionGroup
+                  v-for="item in accountList"
+                  :key="item.label"
+                  :label="item.label">
+                  <Option
+                    v-for="(el, index) in item.children"
+                    :key="index"
+                    :disabled="item.disabled"
+                    :value="el.accountId">
+                    {{ el.name }}
+                  </Option>
+                </OptionGroup>
+              </Select>
+            </FormItem>
+            <FormItem label="搜索">
+              <Input
+                v-model="formData.search"
+                clearable
+                placeholder="输入名称"
+                style="width: 184px"></Input>
+            </FormItem>
+          </Form>
+        </div>
+      </rd-modals>
+    </div>
+    <div v-if="modalVisible2">
+      <rd-modals
+        v-model="modalVisible2"
+        is-reset
+        title="普通弹框"
+        :width="600"
+        class-name="center-modal mini-scroll-y"
+        @on-cancel="handleCancel2">
+        <div slot="content">
+          <Form
+            :label-width="72"
+            class="form-content"
+            @submit.native.prevent>
+            <FormItem label="账号">
+              <Select
+                v-model="formData.accountIds"
+                :max-tag-count="2"
+                class="select"
+                filterable
+                multiple
+                placeholder="请搜索或选择媒体账号"
+                style="width: 400px">
+                <OptionGroup
+                  v-for="item in accountList"
+                  :key="item.label"
+                  :label="item.label">
+                  <Option
+                    v-for="(el, index) in item.children"
+                    :key="index"
+                    :disabled="item.disabled"
+                    :value="el.accountId">
+                    {{ el.name }}
+                  </Option>
+                </OptionGroup>
+              </Select>
+            </FormItem>
+            <FormItem label="搜索">
+              <Input
+                v-model="formData.search"
+                clearable
+                placeholder="输入名称"
+                style="width: 184px"></Input>
+            </FormItem>
+          </Form>
+        </div>
+      </rd-modals>
+    </div>
+  </main>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      modalVisible1: false,
+      modalVisible2: false,
+      headerObj: {
+        title: '带副标题的弹框',
+        subTitle: '个广告计划',
+        subNum: 3,
+        titleNum: 5,
+        total: 500
+      },
+      formData: {
+        accountIds: [],
+        search: ''
+      },
+      accountList: [
+        {
+          label: '西瓜科技有限公司',
+          disabled: false,
+          children: [
+            {
+              accountId: 'a-1',
+              name: '账户a-1'
+            },
+            {
+              accountId: 'a-2',
+              name: '账户a-2'
+            }
+          ]
+        },
+        {
+          label: '芒果科技有限公司',
+          disabled: false,
+          children: [
+            {
+              accountId: 'b-1',
+              name: '账户a-1'
+            },
+            {
+              accountId: 'b-2',
+              name: '账户a-2'
+            }
+          ]
+        }
+      ]
+    }
+  },
+  methods: {
+    onClick1() {
+      this.modalVisible1 = true
+    },
+    handleCancel1() {
+      this.modalVisible1 = false
+    },
+    onClick2() {
+      this.modalVisible2 = true
+    },
+    handleCancel2() {
+      this.modalVisible2 = false
+    }
+  }
+}
+</script>
+
+<style lang="less">
+.center-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .ivu-modal {
+    top: 0;
+  }
+}
+.mini-scroll-y {
+  & ::-webkit-scrollbar {
+    width: 4px; //竖轴宽度
+    height: 0; //横轴宽度
+  }
+
+  /* 滚动槽 */
+  & ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  & ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.08);
+  }
+}
+</style>

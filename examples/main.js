@@ -55,6 +55,10 @@ const router = new VueRouter({
     {
       path: '/radio-group',
       component: resolve => require(['./routers/radio-group'], resolve)
+    },
+    {
+      path: '/modals',
+      component: resolve => require(['./routers/modals'], resolve)
     }
   ]
 })

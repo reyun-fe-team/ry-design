@@ -1,6 +1,8 @@
 <template>
   <main :class="classes">
-    <div v-if="isShowTitle" :class="prefixCls + '-title'">
+    <div
+      v-if="isShowTitle"
+      :class="prefixCls + '-title'">
       {{ titleName }}
     </div>
     <div :class="prefixCls + '-content'">
@@ -8,15 +10,17 @@
         <slot name="content"></slot>
       </div>
       <div :class="prefixCls + '-content-button-group'">
-        <Button :class="prefixCls + '-content-button'" @click="handleReset"
-          >{{ resetText }}
+        <Button
+          :class="prefixCls + '-content-button'"
+          @click="handleReset">
+          {{ resetText }}
         </Button>
         <Button
           :class="prefixCls + '-content-button'"
           :loading="loading"
           type="primary"
-          @click="handleQuery"
-          >{{ queryText }}
+          @click="handleQuery">
+          {{ queryText }}
         </Button>
       </div>
     </div>
@@ -24,8 +28,8 @@
 </template>
 
 <script>
-const { prefix } = require('../../../config.js');
-const prefixCls = prefix + 'single-header';
+const { prefix } = require('../../../config.js')
+const prefixCls = prefix + 'single-header'
 export default {
   name: prefixCls,
   props: {
@@ -53,7 +57,7 @@ export default {
   data() {
     return {
       prefixCls
-    };
+    }
   },
   computed: {
     classes() {
@@ -62,18 +66,18 @@ export default {
         {
           [`${prefixCls}-group`]: this.prepend || this.append
         }
-      ];
+      ]
     }
   },
   methods: {
     // 重置
     handleReset() {
-      this.$emit('on-reset');
+      this.$emit('on-reset')
     },
     // 查询
     handleQuery() {
-      this.$emit('on-query');
+      this.$emit('on-query')
     }
   }
-};
+}
 </script>
