@@ -62,5 +62,6 @@ export default {
   PageHeader,
   Breadcrumb,
   MultiRadioButton,
-  PageHeaderModule
+  PageHeaderModule,
+  Modals
 }
