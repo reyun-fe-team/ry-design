@@ -2,7 +2,6 @@
   <!--  class-name="rd-center-modal mini-scroll-y"-->
   <Modal
     :value="value"
-    :loading="comLoading"
     :class-name="className"
     :class="classes"
     :draggable="draggable"
@@ -83,11 +82,6 @@ const prefixCls = prefix + 'modals'
 export default {
   name: prefixCls,
   props: {
-    // modal组件异步
-    comLoading: {
-      type: Boolean,
-      default: false
-    },
     value: {
       type: Boolean,
       default: false
