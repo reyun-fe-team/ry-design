@@ -8,6 +8,8 @@
       sync
       :sync-call-back="syncCallBack"
       @getLables="getLables"
+      :maxTagCount="3"
+      :maxTagPlaceholder="(num) => `更多${num}个`"
     ></rd-multi-cascader>
   </div>
 </template>
