@@ -51,6 +51,14 @@ export default {
     disabled: {
       type: Function,
       default: () => {}
+    },
+    tooltipMaxWidth: {
+      type: String,
+      default: '300'
+    },
+    tooltipPlacement: {
+      type: String,
+      default: 'top'
     }
   },
   data() {
@@ -87,8 +95,10 @@ export default {
           valueArr = [item.value]
         }
       }
+      // 返回全部数据
+      const selection = this.buttonList.filter(item => valueArr.includes(item.value))
       this.$emit('input', valueArr)
-      this.$emit('on-change', valueArr)
+      this.$emit('on-change', valueArr, selection)
     }
   }
 }
