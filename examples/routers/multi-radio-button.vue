@@ -1,48 +1,48 @@
 <template>
   <main>
-    <rd-multi-radio-button v-model="value1"
-                           :button-list="buttonList1"></rd-multi-radio-button>
-    <br />
-    <rd-multi-radio-button v-model="value2"
-                           all-triangle
-                           :button-list="buttonList2"></rd-multi-radio-button>
+    <rd-multi-radio-button
+      v-model="value"
+      :button-list="buttonList"
+      :disabled="handleDisabled"></rd-multi-radio-button>
   </main>
 </template>
 <script>
 export default {
   data() {
     return {
-      value1: [],
-      value2: [],
-      buttonList1: [
+      value: [],
+      buttonList: [
         {
-          label: '不限',
-          value: ''
+          label: '多选自定义1',
+          value: 'CUSTOM1',
+          isMulti: true,
+          tip: ['1.多选tip1', '2.多选tip2']
         },
         {
-          label: '自定义1',
-          value: 'CUSTOM'
+          label: '多选自定义2',
+          value: 'CUSTOM2',
+          isMulti: true
         },
         {
-          label: '自定义2',
-          value: 'CUSTOM2'
-        }
-      ],
-      buttonList2: [
-        {
-          label: '自定义1',
-          value: 'CUSTOM'
+          label: '单选自定义3',
+          value: 'CUSTOM3',
+          isMulti: false
         },
         {
-          label: '自定义2',
-          value: 'CUSTOM2'
-        },
-        {
-          label: '自定义3',
-          value: 'CUSTOM3'
+          label: '单选自定义4',
+          value: 'CUSTOM4',
+          isMulti: false
         }
       ]
-    };
+    }
+  },
+  methods: {
+    handleDisabled(item) {
+      if (item.value === 'CUSTOM4') {
+        return true
+      }
+      return false
+    }
   }
-};
+}
 </script>
