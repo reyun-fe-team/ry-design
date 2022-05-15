@@ -1,0 +1,90 @@
+@edit-row-bid: ~"@{css-prefix}edit-row-bid";
+
+.@{edit-row-bid} {
+  display: inline-block;
+
+  // 按钮
+  &-icon {
+    font-size: 15px;
+    margin-left: 8px;
+    color: rgba(149, 152, 164, 1);
+    display: inline-block;
+    cursor: pointer;
+
+    &.disabled {
+      cursor: not-allowed;
+      color: #ccc !important;
+    }
+
+    &:hover {
+      color: #2d8cf0;
+    }
+  }
+}
+
+// 悬浮窗
+.@{edit-row-bid}-popper {
+  .form-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .@{edit-row-bid}-poptip {
+    position: relative;
+
+    .ivu-form-item {
+      margin-bottom: 16px;
+    }
+
+    // 名称
+    &-name {
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    // 文本输入
+    &-wrap-text {
+      .show-max-count {
+        width: calc(~"100% - 50px");
+      }
+
+      .text-limit {
+        display: inline-block;
+        width: 50px;
+        text-align: right;
+
+        .error {
+          color: #f00;
+        }
+      }
+    }
+
+    // 数字输入
+    &-wrap-number {
+      .ivu-input-number {
+        width: 100%;
+      }
+    }
+
+    // 单选
+    &-wrap-radio {
+      .ivu-radio-group-item {
+        min-width: 75px;
+        padding: 0 15px;
+        text-align: center;
+      }
+    }
+
+    // 尾部
+    &-footer {
+      display: flex;
+      justify-content: flex-end;
+
+      .ivu-btn {
+        width: 70px;
+        margin-left: 10px;
+      }
+    }
+
+  }
+}

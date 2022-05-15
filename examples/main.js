@@ -15,8 +15,7 @@ Vue.config.debug = true
 const router = new VueRouter({
   esModule: false,
   mode: 'history',
-  routes: [
-    {
+  routes: [{
       path: '/transfer',
       component: resolve => require(['./routers/transfer.vue'], resolve)
     },
@@ -59,6 +58,10 @@ const router = new VueRouter({
     {
       path: '/modals',
       component: resolve => require(['./routers/modals'], resolve)
+    },
+    {
+      path: '/edit-row-bid',
+      component: resolve => require(['./routers/edit-row-bid'], resolve)
     }
   ]
 })
