@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-07 18:51:54
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-15 17:05:27
+ * @LastEditTime: 2022-05-15 18:05:07
  * @FilePath: /ry-design/src/components/basics/edit-row-bid/edit-bid.vue
  * @Description: 编辑出价|名称|自定义内容
 -->
@@ -88,7 +88,10 @@
                       <Radio v-for="option in newRadioList"
                              :key="option.value"
                              :label="option.value"
-                             :disabled="option.disabled">{{option.name}}
+                             :disabled="option.disabled">
+                        <render v-if="typeof option.name === 'function'"
+                                :render="option.name"></render>
+                        <span v-else>{{option.name}} </span>
                       </Radio>
                     </RadioGroup>
                   </FormItem>
@@ -120,10 +123,14 @@
   </div>
 </template>
 <script>
+import Render from './../../base/render';
 const { prefix } = require('../../../config.js')
 const prefixCls = prefix + 'edit-row-bid'
 export default {
   name: prefixCls,
+  components: {
+    Render
+  },
   props: {
     // 输入类型
     // text 输入文本
@@ -165,7 +172,7 @@ export default {
       type: Boolean,
       default: false
     },
-    // 浮层是否禁用
+    // 浮层宽度
     poptipWidth: {
       type: [String, Number],
       default: 320
@@ -205,7 +212,7 @@ export default {
     numberMax: {
       type: Number
     },
-    // 数字最大值
+    // 数字步长
     numberStep: {
       type: Number
     },
