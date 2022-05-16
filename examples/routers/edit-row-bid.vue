@@ -8,7 +8,8 @@
 -->
 <template>
   <main class="edit-row-bid">
-    <div> <span>输入文本</span>
+    <div>
+      <span>输入文本</span>
       <rd-edit-row-bid :value="value"
                        showTextLimit
                        :maxTextNum="10"
