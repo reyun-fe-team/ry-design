@@ -2,12 +2,12 @@
 
 | 参数                | 说明                                                         | 类型     | 可选值                                                       | 默认值   |
 | ------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ | -------- |
-| type | 输入类型 | string | text 输入文本、 number 输入数字、radio 单选选择、custom 自定义内容             | text |
+| type | 输入类型 | 输入类型 | text 输入文本、 number 输入数字、radio 单选选择、custom 自定义内容             | text |
 | value | 需要编辑的数据(必填) | number\| string | -                                         | - |
-| iconType | 显示的按钮类型 Icon type。 | string\|slot | 显示的按钮类型 Icon type http://v1.iviewui.com/components/icon | md-create |
+| iconType | 显示的按钮类型 Icon type | string\|slot | 显示的按钮类型 Icon type http://v1.iviewui.com/components/icon | md-create |
 | title | 显示标题 | string \|slot | - | - |
 | rules | 校验规则（数据同 iview Form Rules）,校验字段只有 value | array | - | - |
-| placement | 单个标题的副标题。关闭 isTabs 时有效 | string | 提示框出现的位置，可选值为`top``top-start``top-end``bottom``bottom-start``bottom-end``left``left-start``left-end``right``right-start``right-end` | bottom |
+| placement | 提示框出现的位置 | string           | 可选值：`top`、`top-start`、`top-end`、`bottom`、`bottom-start`、`bottom-end`、`left`、`left-start`、`left-end`、`right`、`right-start`、`right-end` | bottom |
 | poptipDisabled | 浮层是否禁用 | boolean | - | false |
 | poptipWidth | 浮层宽度 | string \| number | - | 320 |
 | showFooter      | 是否显示尾部按钮区域 | boolean | - | true |
