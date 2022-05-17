@@ -1,7 +1,7 @@
 <!--
  * @Author: yangyufeng
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-05-05 16:54:34
+ * @LastEditTime: 2022-05-17 15:55:20
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
  * @Description: 下拉多选联动
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader.vue
@@ -448,73 +448,82 @@ export default {
         // 最大层级了不能再点击了
         if (!canMax) {
           node.nodeSyncSetData({ showExpIcon: false })
-        }
-        if (canSync && canMax) {
-          // loading状态
-          node.nodeSyncSetData({ loading: true })
-          this.syncCallBack(node)
-            .then(children => {
-              if (children && children.length > 0) {
-                node.nodeSyncClick(children)
-                children.forEach(child => {
-                  node.insertChild(child)
-                })
+        } else {
+          // 可以异步请求
+          if (canSync) {
+            // loading状态
+            node.nodeSyncSetData({ loading: true })
+            this.syncCallBack(node)
+              .then(children => {
+                // 数据为一个数据并有值
+                if (Array.isArray(children) && children.length > 0) {
+                  node.nodeSyncClick(children)
+                  children.forEach(child => {
+                    node.insertChild(child)
+                  })
 
-                this.maxLevellist = Array.from({ length: this.store.maxLevel - 1 }, (v, i) => {
-                  return {
-                    id: i + 1,
-                    rendered: true
-                  }
-                })
+                  this.maxLevellist = Array.from({ length: this.store.maxLevel - 1 }, (v, i) => {
+                    return {
+                      id: i + 1,
+                      rendered: true
+                    }
+                  })
+                  node.nodeSyncSetData({ loading: false })
+                  this.showNext(node, levelIndex, level)
+                  // 有了数据更新前后状态
+                  this.$nextTick(() => {
+                    node.checked = false
+                    this.handleCheck(node)
+                    // 存一下需要删除值的索引
+                    let indexArr = []
+                    setTimeout(() => {
+                      let { value: echoVal, label: echoName } = this.storeEchoData
+                      node.childNodes &&
+                        node.childNodes.forEach(childNode => {
+                          // 当前子节点的value
+                          let nodeVal = this.getValueByNode(childNode)
+                          // 子节点在回显缓存中的索引
+                          let nodeIndex = _.findIndex(echoVal, v => v === nodeVal)
+                          // 缓存中存在该节点的值
+                          if (nodeIndex !== -1) {
+                            childNode.check(true)
+                            // 选择完会加上该节点的id
+                            // 思路：选择的节点中有回显的值，将该节点的id替换回显中的id
+                            this.store.selectedIds.pop()
+                            // 存索引 用于当前列的值替换完了后，更新缓存的值，已经的替换的就删除缓存的值
+                            indexArr.push(nodeIndex)
+                            // 替换
+                            this.store.selectedIds.splice(nodeIndex, 1, childNode.id)
+                          }
+                        })
+
+                      // 更新缓存的值
+                      indexArr.forEach(i => {
+                        echoVal.splice(i, 1, 'USED')
+                        echoName.splice(i, 1, 'USED')
+                      })
+                      this.storeEchoData = {
+                        value: echoVal.filter(v => v !== 'USED'),
+                        label: echoName.filter(v => v !== 'USED')
+                      }
+                      this.updateSelect(this.store.selectedIds)
+                    }, 16.7)
+                  })
+                } else {
+                  // 没有数据
+                  node.nodeSyncSetData({ loading: false, showExpIcon: false })
+                  this.showNext(node, levelIndex, level)
+                }
+              })
+              .catch(() => {
+                // 请求失败了
                 node.nodeSyncSetData({ loading: false })
                 this.showNext(node, levelIndex, level)
-                // 有了数据更新前后状态
-                this.$nextTick(() => {
-                  node.checked = false
-                  this.handleCheck(node)
-                  // 存一下需要删除值的索引
-                  let indexArr = []
-                  setTimeout(() => {
-                    let { value: echoVal, label: echoName } = this.storeEchoData
-                    node.childNodes &&
-                      node.childNodes.forEach(childNode => {
-                        // 当前子节点的value
-                        let nodeVal = this.getValueByNode(childNode)
-                        // 子节点在回显缓存中的索引
-                        let nodeIndex = _.findIndex(echoVal, v => v === nodeVal)
-                        // 缓存中存在该节点的值
-                        if (nodeIndex !== -1) {
-                          childNode.check(true)
-                          // 选择完会加上该节点的id
-                          // 思路：选择的节点中有回显的值，将该节点的id替换回显中的id
-                          this.store.selectedIds.pop()
-                          // 存索引 用于当前列的值替换完了后，更新缓存的值，已经的替换的就删除缓存的值
-                          indexArr.push(nodeIndex)
-                          // 替换
-                          this.store.selectedIds.splice(nodeIndex, 1, childNode.id)
-                        }
-                      })
-
-                    // 更新缓存的值
-                    indexArr.forEach(i => {
-                      echoVal.splice(i, 1, 'USED')
-                      echoName.splice(i, 1, 'USED')
-                    })
-                    this.storeEchoData = {
-                      value: echoVal.filter(v => v !== 'USED'),
-                      label: echoName.filter(v => v !== 'USED')
-                    }
-                    this.updateSelect(this.store.selectedIds)
-                  }, 16.7)
-                })
-              } else {
-                node.nodeSyncSetData({ loading: false, showExpIcon: false })
-              }
-            })
-            .catch(() => {
-              node.nodeSyncSetData({ loading: false })
-              this.showNext(node, levelIndex, level)
-            })
+              })
+          } else {
+            // 不用在请求了
+            this.showNext(node, levelIndex, level)
+          }
         }
       } else {
         this.showNext(node, levelIndex, level)
