@@ -13,6 +13,7 @@ import RadioGroup from './components/basics/radio-group'
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'
 import EditRowBid from './components/business/edit-row-bid'
+import ReverseButton from './components/business/reverse-button'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -41,10 +42,11 @@ const components = [
   PageHeaderModule,
   RadioGroup,
   Modals,
-  EditRowBid
+  EditRowBid,
+  ReverseButton
 ]
 
-const install = function(Vue) {
+const install = function (Vue) {
   components.forEach(component => {
     Vue.component(component.name, component)
   })
@@ -66,5 +68,6 @@ export default {
   MultiRadioButton,
   PageHeaderModule,
   Modals,
-  EditRowBid
+  EditRowBid,
+  ReverseButton
 }
