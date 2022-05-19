@@ -44,7 +44,7 @@ const components = [
   EditRowBid
 ]
 
-const install = function(Vue) {
+const install = function (Vue) {
   components.forEach(component => {
     Vue.component(component.name, component)
   })

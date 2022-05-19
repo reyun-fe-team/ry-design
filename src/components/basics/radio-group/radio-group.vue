@@ -23,7 +23,9 @@
             <template v-if="isArray(e.tooltip)">
               <p
                 v-for="(item, index) in e.tooltip"
-                :key="index">{{ item }}</p>
+                :key="index">
+                {{ item }}
+              </p>
             </template>
             <template v-if="isString(e.tooltip)">
               <p>{{ e.tooltip }}</p>
@@ -40,7 +42,8 @@
 </template>
 
 <script>
-const {prefix} = require('../../../config.js')
+import _isEqual from 'lodash/isEqual'
+const { prefix } = require('../../../config.js')
 const prefixCls = prefix + 'radio-group'
 export default {
   name: prefixCls,
@@ -62,7 +65,7 @@ export default {
     },
     isDisabledItemFun: {
       type: Function,
-      default: (e) => {
+      default: () => {
         return false
       }
     },
@@ -92,16 +95,14 @@ export default {
   watch: {
     value: {
       handler(n, o) {
-        if(!_.isEqual(n, o)) {
-          let {
-            defaultList
-          } = this
-          if(defaultList.map(e => e.value).includes(n)) {
+        if (!_isEqual(n, o)) {
+          let { defaultList } = this
+          if (defaultList.map(e => e.value).includes(n)) {
             this.newValue = n
           } else {
-            if(defaultList && defaultList.length) {
+            if (defaultList && defaultList.length) {
               let f = defaultList.find(e => !e.disabled)
-              if(f) {
+              if (f) {
                 this.newValue = f.value || null
               } else {
                 this.newValue = null

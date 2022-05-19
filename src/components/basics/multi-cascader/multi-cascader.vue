@@ -8,25 +8,30 @@
 -->
 <template>
   <div :class="[prefixCls]">
-    <Dropdown trigger="click"
-              :placement="placement"
-              :transfer="transfer"
-              stop-propagation
-              :transfer-class-name="`${popperClass} ${unid}`"
-              v-bind="$attrs"
-              @on-visible-change="visibleChange">
-      <div :class="[prefixCls + '-labels']"
-           @mouseenter="handleMouseenter"
-           @mouseleave="handleMouseleave">
-        <div v-if="selectedLabels.length > 0"
-             :class="[prefixCls + '-labels-tags']">
-          <Tag v-for="tag in newSelectedLabels"
-               :key="getKey(tag)"
-               :fade="false"
-               closable
-               @on-close="removeOne(tag)">
-            <span :class="[prefixCls + '-labels-tags-text']"
-                  :title="tag">
+    <Dropdown
+      trigger="click"
+      :placement="placement"
+      :transfer="transfer"
+      stop-propagation
+      :transfer-class-name="`${popperClass} ${unid}`"
+      v-bind="$attrs"
+      @on-visible-change="visibleChange">
+      <div
+        :class="[prefixCls + '-labels']"
+        @mouseenter="handleMouseenter"
+        @mouseleave="handleMouseleave">
+        <div
+          v-if="selectedLabels.length > 0"
+          :class="[prefixCls + '-labels-tags']">
+          <Tag
+            v-for="tag in newSelectedLabels"
+            :key="getKey(tag)"
+            :fade="false"
+            closable
+            @on-close="removeOne(tag)">
+            <span
+              :class="[prefixCls + '-labels-tags-text']"
+              :title="tag">
               {{ tag }}
             </span>
           </Tag>
@@ -39,52 +44,59 @@
             </Tag>
           </template>
         </div>
-        <p v-else
-           :class="[prefixCls + '-labels-placeholder-text']">
+        <p
+          v-else
+          :class="[prefixCls + '-labels-placeholder-text']">
           {{ placeholder }}
         </p>
         <!-- 清空 -->
-        <Icon v-show="showClearBtn"
-              :class="[prefixCls + '-labels-icon']"
-              type="ios-close-circle-outline"
-              @click.stop.prevent="handleClear"></Icon>
+        <Icon
+          v-show="showClearBtn"
+          :class="[prefixCls + '-labels-icon']"
+          type="ios-close-circle-outline"
+          @click.stop.prevent="handleClear"></Icon>
         <!-- 下拉icon -->
-        <Icon v-show="!showClear"
-              :class="[prefixCls + '-labels-icon']"
-              type="ios-arrow-down"></Icon>
+        <Icon
+          v-show="!showClear"
+          :class="[prefixCls + '-labels-icon']"
+          type="ios-arrow-down"></Icon>
       </div>
       <div slot="list">
-        <div :class="[prefixCls + '-ground']"
-             @click.stop>
+        <div
+          :class="[prefixCls + '-ground']"
+          @click.stop>
           <div>
-            <multi-cascader-list :list="root.childNodes"
-                                 :level="1"
-                                 :active-list="activeList"
-                                 :not-use-able="notUseAble"
-                                 :max-request="maxRequest"
-                                 :use-max="useMax"
-                                 :label-key="labelKey"
-                                 :expand-trigger="expandTrigger"
-                                 @handle-click="handleClick"
-                                 @handle-check="handleCheck"
-                                 @handle-checkAll="handleCheckAll"></multi-cascader-list>
+            <multi-cascader-list
+              :list="root.childNodes"
+              :level="1"
+              :active-list="activeList"
+              :not-use-able="notUseAble"
+              :max-request="maxRequest"
+              :use-max="useMax"
+              :label-key="labelKey"
+              :expand-trigger="expandTrigger"
+              @handle-click="handleClick"
+              @handle-check="handleCheck"
+              @handle-checkAll="handleCheckAll"></multi-cascader-list>
           </div>
           <template v-for="item in maxLevellist">
-            <div v-if="item.rendered && showData[item.id].length"
-                 v-show="activeList.length >= item.id"
-                 :key="getKey(item)"
-                 :class="[prefixCls + '-ground-pos']">
-              <multi-cascader-list :list="showData[item.id]"
-                                   :level="item.id + 1"
-                                   :active-list="activeList"
-                                   :not-use-able="notUseAble"
-                                   :max-request="maxRequest"
-                                   :use-max="useMax"
-                                   :label-key="labelKey"
-                                   :expand-trigger="expandTrigger"
-                                   @handle-click="handleClick"
-                                   @handle-check="handleCheck"
-                                   @handle-checkAll="handleCheckAll"></multi-cascader-list>
+            <div
+              v-if="item.rendered && showData[item.id].length"
+              v-show="activeList.length >= item.id"
+              :key="getKey(item)"
+              :class="[prefixCls + '-ground-pos']">
+              <multi-cascader-list
+                :list="showData[item.id]"
+                :level="item.id + 1"
+                :active-list="activeList"
+                :not-use-able="notUseAble"
+                :max-request="maxRequest"
+                :use-max="useMax"
+                :label-key="labelKey"
+                :expand-trigger="expandTrigger"
+                @handle-click="handleClick"
+                @handle-check="handleCheck"
+                @handle-checkAll="handleCheckAll"></multi-cascader-list>
             </div>
           </template>
         </div>
@@ -98,7 +110,9 @@ const { prefix } = require('../../../config.js')
 const prefixCls = prefix + 'multi-cascader'
 import TreeStore from './lib/Tree.js'
 import multiCascaderList from './multi-cascader-list.vue'
-import _ from 'lodash'
+import _cloneDeep from 'lodash/cloneDeep'
+import _find from 'lodash/find'
+import _findIndex from 'lodash/findIndex'
 export default {
   name: prefixCls,
   components: {
@@ -368,7 +382,7 @@ export default {
     // 返回labels
     selectedLabels: {
       deep: true,
-      handler(n, o) {
+      handler(n) {
         this.$emit('getLables', n)
       }
     }
@@ -483,7 +497,7 @@ export default {
                           // 当前子节点的value
                           let nodeVal = this.getValueByNode(childNode)
                           // 子节点在回显缓存中的索引
-                          let nodeIndex = _.findIndex(echoVal, v => v === nodeVal)
+                          let nodeIndex = _findIndex(echoVal, v => v === nodeVal)
                           // 缓存中存在该节点的值
                           if (nodeIndex !== -1) {
                             childNode.check(true)
@@ -535,7 +549,7 @@ export default {
         this.maxLevellist[level - 1].rendered = true
       }
       this.activeClass = `${node.isLeaf ? level : level + 1}`
-      let tempList = _.cloneDeep(this.activeList)
+      let tempList = _cloneDeep(this.activeList)
       if (level < tempList.length) {
         tempList.splice(level)
       }
@@ -582,7 +596,7 @@ export default {
         if (!this.onlyShowChecked) {
           let level = o.level
           let valueKey = ''
-          let node = _.cloneDeep(o)
+          let node = _cloneDeep(o)
           while (level !== 0) {
             valueKey = node[this.valueKey] + (valueKey ? this.separator : '') + valueKey
             node = node.parent
@@ -593,7 +607,7 @@ export default {
         return o[this.valueKey]
       })
       // 有不存在的id 小于0的
-      let hasEmptyIndex = _.findIndex(this.selectedIds, v => +v < 0)
+      let hasEmptyIndex = _findIndex(this.selectedIds, v => +v < 0)
       if (hasEmptyIndex !== -1) {
         result = [...this.storeEchoData.value, ...result]
       }
@@ -625,7 +639,7 @@ export default {
       // 删除传入的数据
       let { label: echoName, value: echoVal } = this.storeEchoData
       if (echoName.includes(label)) {
-        let index = _.findIndex(echoName, name => name === label)
+        let index = _findIndex(echoName, name => name === label)
         echoName.splice(index, 1)
         echoVal.splice(index, 1)
         this.store.selectedIds.splice(index, 1)
@@ -635,10 +649,10 @@ export default {
         this.$emit('remove-tag', label)
         return
       }
-      let targetNode = _.find(this.selectedNodes, { showLabel: label })
+      let targetNode = _find(this.selectedNodes, { showLabel: label })
       if (!this.onlyShowChecked) {
         let str = label.substring(label.lastIndexOf(this.separator) + 1)
-        targetNode = _.find(this.selectedNodes, { showLabel: str })
+        targetNode = _find(this.selectedNodes, { showLabel: str })
       }
       targetNode.checked = false
       this.handleCheck(targetNode)
@@ -653,13 +667,13 @@ export default {
       const { value: echoVal, label: echoName } = this.storeEchoData
       const ids = echoVal.map(v => --newId)
 
-      let tempSelectedLabels = echoName.length === 0 ? [] : _.cloneDeep(echoName)
+      let tempSelectedLabels = echoName.length === 0 ? [] : _cloneDeep(echoName)
       let tempSelectedIds = ids.length === 0 ? [] : ids
 
       data.forEach(o => {
         let targetNode
         if (setValue) {
-          targetNode = _.find(this.store.nodeList, v => `${v.id}` === `${o}`)
+          targetNode = _find(this.store.nodeList, v => `${v.id}` === `${o}`)
           // tempSelectedIds.push(targetNode.id);
           targetNode && !tempSelectedIds.includes(o) && tempSelectedIds.push(o)
         } else {
@@ -671,7 +685,7 @@ export default {
           let label = ''
           if (!this.onlyShowChecked) {
             let level = targetNode.level
-            let node = _.cloneDeep(targetNode)
+            let node = _cloneDeep(targetNode)
             while (level !== 0) {
               label = node.showLabel + (label ? this.separator : '') + label
               node = node.parent
@@ -697,8 +711,8 @@ export default {
     init() {
       if (this.renShow) {
         this.storeEchoData = {
-          value: _.cloneDeep(this.value),
-          label: _.cloneDeep(this.echoLabel)
+          value: _cloneDeep(this.value),
+          label: _cloneDeep(this.echoLabel)
         }
       }
       this.store = new TreeStore({
@@ -735,7 +749,7 @@ export default {
         const { valueKey, nodeList, separator } = this.store
         const vs = value.split(separator)
         const last = vs[vs.length - 1]
-        const targetNode = _.find(nodeList, item => `${item[valueKey]}` === `${last}`)
+        const targetNode = _find(nodeList, item => `${item[valueKey]}` === `${last}`)
         return targetNode ? targetNode.id : --newId
       })
       this.updateSelect(tempSelectedIds, true, true)
