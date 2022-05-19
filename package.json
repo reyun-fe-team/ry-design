@@ -11,7 +11,9 @@
     "build:style": "gulp --gulpfile build/build-style.js",
     "build:prod": "cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.config.js",
     "build2": "npm run build:prod && npm run build:style",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.config.js"
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.config.js",
+    "build3": "cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod-1.config.js",
+    "analyz": "cross-env NODE_ENV=production npm_config_report=true npm run build3"
   },
   "author": "ry",
   "dependencies": {
@@ -19,11 +21,11 @@
     "vue": "^2.6.7"
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
     "autoprefixer": "^10.2.1",
     "autoprefixer-loader": "^3.2.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-eslint": "^10.1.0",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^7.1.5",
     "babel-plugin-dynamic-import-node": "^1.2.0",
@@ -86,6 +88,7 @@
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^3.11.0",
+    "webpack-bundle-analyzer": "^4.5.0",
     "webpack-dev-server": "^2.11.5",
     "webpack-merge": "^3.0.0"
   },
