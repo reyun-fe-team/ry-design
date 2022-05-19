@@ -1,0 +1,65 @@
+@gbColor: #F3F3F3;
+.select-box {
+  background: @gbColor;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 4px;
+  display: flex;
+
+  &-body {
+    line-height: 32px;
+    height: 32px;
+    overflow: hidden;
+
+    /deep/.ivu-tooltip,
+    .ivu-tooltip-rel {
+      width: 100%;
+    }
+  }
+
+  &-name {
+    overflow: hidden;
+    line-height: 32px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .label {
+    white-space: nowrap;
+    font-size: 12px;
+    margin: 0 2px;
+  }
+
+  .container {
+    flex: 1;
+    -webkit-flex: 1
+  }
+
+  .select {
+    margin: 0 1%;
+  }
+
+  .close {
+    cursor: pointer;
+    color: #b8b9bb;
+  }
+}
+
+/deep/ .ivu-select-selection {
+  border: none;
+  background: @gbColor;
+
+  &>div {
+    display: flex;
+  }
+}
+
+/deep/ .ivu-select-multiple .ivu-tag {
+  max-width: 200px;
+}
+
+/deep/ .ivu-select-visible .ivu-select-selection {
+  border: none;
+  box-shadow: none;
+}
