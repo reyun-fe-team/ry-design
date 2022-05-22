@@ -4,6 +4,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const Config = require('../src/config.js')
 const pkg = require('../package.json')
 process.env.NODE_ENV = 'production'
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
 module.exports = {
   entry: './src/index.js',
   output: {
@@ -66,7 +68,7 @@ module.exports = {
       }
     ]
   },
-  plugins: [new ExtractTextPlugin('styles/[name].css')],
+  plugins: [new ExtractTextPlugin('styles/[name].css'),new BundleAnalyzerPlugin()],
   resolve: {
     alias: {
       vue$: 'vue/dist/vue.esm.js'
