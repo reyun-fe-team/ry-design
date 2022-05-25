@@ -62,6 +62,10 @@ const router = new VueRouter({
     {
       path: '/edit-row-bid',
       component: resolve => require(['./routers/edit-row-bid'], resolve)
+    },
+    {
+      path: '/layout-module-config',
+      component: resolve => require(['./routers/layout-module-config'], resolve)
     }
   ]
 })
