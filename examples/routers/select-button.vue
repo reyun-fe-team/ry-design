@@ -1,16 +1,16 @@
 <template>
   <div>
-    <rd-reverse-button
+    <rd-select-button
       :text="text"
       :prefix-edit-text="prefixEditText"
       :suffix-edit-text="suffixEditText"
       :status="status"
-      @on-click="handleClick"></rd-reverse-button>
+      @on-click="handleClick"></rd-select-button>
   </div>
 </template>
 <script>
 export default {
-  name: 'ReverseButton',
+  name: 'SelectButton',
   data() {
     return {
       text: '请选择应用',
@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     handleClick() {
-      this.status = this.status === 'select' ? 'edit' : 'select'
+      this.status = this.status === 'select' ? 'loading' : 'select'
     }
   }
 }

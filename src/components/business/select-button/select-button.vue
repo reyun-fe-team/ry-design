@@ -3,15 +3,31 @@
     <Button
       v-if="isSelect"
       type="default"
-      :custom-icon="`iconfont ${customIcon}`"
+      :disabled="disabled"
+      :class="selectClasses"
       @click="handleClick">
+      <Icon
+        :custom="`iconfont ${customIcon}`"
+        size="12"></Icon>
       {{ text }}
+    </Button>
+    <Button
+      v-else-if="isLoading"
+      loading
+      type="default">
+      {{ prefixEditText }}
     </Button>
     <div
       v-else
+      :class="viewClasses"
+      :loading="true"
       @click="handleClick">
+      <!-- <Icon
+        v-if="loading"
+        class="ivu-load-loop"
+        type="ios-loading"></Icon> -->
       <span>{{ prefixEditText }}</span>
-      <span>
+      <span class="m-l-16">
         {{ suffixEditText }}
       </span>
     </div>
@@ -19,7 +35,7 @@
 </template>
 <script>
 import { prefix } from '../../../config.js'
-const prefixCls = prefix + 'reverse-button'
+const prefixCls = prefix + 'select-button'
 export default {
   name: prefixCls,
   inheritAttrs: false,
@@ -47,6 +63,14 @@ export default {
     customIcon: {
       type: String,
       default: 'icon-xinjian'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -57,6 +81,15 @@ export default {
   computed: {
     isSelect() {
       return this.status === 'select'
+    },
+    isLoading() {
+      return this.status === 'loading'
+    },
+    selectClasses() {
+      return `${prefixCls}-select`
+    },
+    viewClasses() {
+      return `${prefixCls}-view  ivu-btn`
     }
   },
   methods: {

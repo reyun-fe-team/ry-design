@@ -13,7 +13,7 @@ import RadioGroup from './components/basics/radio-group'
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'
 import EditRowBid from './components/business/edit-row-bid'
-import ReverseButton from './components/business/reverse-button'
+import SelectButton from './components/business/select-button'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -43,7 +43,7 @@ const components = [
   RadioGroup,
   Modals,
   EditRowBid,
-  ReverseButton
+  SelectButton
 ]
 
 const install = function (Vue) {
@@ -69,5 +69,5 @@ export default {
   PageHeaderModule,
   Modals,
   EditRowBid,
-  ReverseButton
+  SelectButton
 }

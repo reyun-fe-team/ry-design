@@ -1,0 +1,30 @@
+@select-button: ~"@{css-prefix}select-button";
+
+.@{select-button} {
+    &-select {
+        font-size: @font-size-base;
+
+        span {
+            display: flex;
+            align-items: center;
+
+            :first-child {
+                margin-right: 6px;
+            }
+        }
+
+        i {
+            font-size: @font-size-base;
+        }
+    }
+
+    &-view {
+        vertical-align: middle;
+        display: table-cell;
+        font-size: @font-size-base;
+
+        :first-child {
+            margin-right: 16px;
+        }
+    }
+}
