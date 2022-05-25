@@ -23,9 +23,8 @@
             <template v-if="isArray(e.tooltip)">
               <p
                 v-for="(item, index) in e.tooltip"
-                :key="index">
-                {{ item }}
-              </p>
+                :key="index"
+                v-text="item"></p>
             </template>
             <template v-if="isString(e.tooltip)">
               <p>{{ e.tooltip }}</p>
