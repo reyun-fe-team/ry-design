@@ -25,9 +25,9 @@
 | notSelectNext       | 设置上级的全选不用选择下一级的数据 false 不用选择下一级 true 必选选择下一级 | boolean | @todo                                                        | false    |
 | checkKey                     |  每一级别是否可以选择的数据字段，不填写默认显示选择框。tips: 只有在当前层级全部设置为true才会显示复选框和全选框。           | string | - | showCheck |
 | echoLabel | 是否要回显labels | array | - | [] |
-|                     |                                                              |          |                                                              |          |
-|                     |                                                              |          |                                                              |          |
-|                     |                                                              |          |                                                              |          |
+| maxTagCount | 多选时最多显示多少个 tag | number | - | - |
+| maxTagPlaceholder | 隐藏 tag 时显示的内容，参数是剩余项数量 | function | - | - |
+
 
 **Select Events**
 

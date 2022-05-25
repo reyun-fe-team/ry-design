@@ -57,6 +57,10 @@ const router = new VueRouter({
       component: resolve => require(['./routers/radio-group'], resolve)
     },
     {
+      path: '/modals',
+      component: resolve => require(['./routers/modals'], resolve)
+    },
+    {
       path: '/emoji-image-input',
       component: resolve => require(['./routers/emoji-image-input'], resolve)
     }

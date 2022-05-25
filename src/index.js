@@ -7,6 +7,7 @@ import SingleHeader from './components/basics/single-header/index.js'
 import PageHeader from './components/basics/page-header/index.js'
 import Breadcrumb from './components/basics/breadcrumb/index.js'
 import MultiRadioButton from './components/basics/multi-radio-button/index.js'
+import Modals from './components/basics/modals/index.js'
 import EmojiImageInput from './components/basics/emoji-image-input/index.js'
 // business
 import PageHeaderModule from './components/business/page-header-module/index.js'
@@ -39,6 +40,7 @@ const components = [
   AccountList,
   PageHeaderModule,
   RadioGroup,
+  Modals,
   EmojiImageInput
 ]
 
@@ -62,5 +64,7 @@ export default {
   PageHeader,
   Breadcrumb,
   MultiRadioButton,
-  PageHeaderModule
+  PageHeaderModule,
+  Modals,
+  EmojiImageInput
 }

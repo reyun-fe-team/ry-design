@@ -1,11 +1,7 @@
 /* eslint-disable */
 module.exports = {
   root: true,
-  extends: [
-    'plugin:vue/recommended',
-    // 'plugin:prettier-vue/recommended',
-    'eslint:recommended'
-  ],
+  extends: ['plugin:vue/recommended', 'plugin:prettier-vue/recommended', 'eslint:recommended'],
   globals: {
     _: 'readonly',
     $: 'readonly',
@@ -60,4 +56,4 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint'
   }
-};
+}

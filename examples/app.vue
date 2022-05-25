@@ -2,11 +2,14 @@
   <div class="app">
     <div class="coms">
       <p>点击按钮查看组件示例</p>
-      <Button v-for="(item, i) in comsList"
-              class="com-btn"
-              :class="{active: activeRoute === item.path}"
-              :key="i"
-              @click="$router.push(item.path)">{{item.name}}</Button>
+      <Button
+        v-for="(item, i) in comsList"
+        :key="i"
+        class="com-btn"
+        :class="{ active: activeRoute === item.path }"
+        @click="$router.push(item.path)">
+        {{ item.name }}
+      </Button>
     </div>
     <div class="view">
       <p class="result-desc">示例结果如下：</p>
@@ -21,26 +24,26 @@ export default {
     return {
       comsList: [],
       activeRoute: ''
-    };
-  },
-  created() {
-    const { routes } = this.$router.options;
-    this.comsList = routes.map(r => {
-      const path = r.path;
-      const name = path.slice(1);
-      return { name, path };
-    });
+    }
   },
   watch: {
     $route: {
       deep: true,
       immediate: true,
       handler() {
-        this.activeRoute = this.$router.currentRoute.path;
+        this.activeRoute = this.$router.currentRoute.path
       }
     }
+  },
+  created() {
+    const { routes } = this.$router.options
+    this.comsList = routes.map(r => {
+      const path = r.path
+      const name = path.slice(1)
+      return { name, path }
+    })
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .coms {
