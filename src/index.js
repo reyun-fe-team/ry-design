@@ -13,6 +13,8 @@ import RadioGroup from './components/basics/radio-group'
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'
 import EditRowBid from './components/business/edit-row-bid'
+import { LayoutModuleConfig, LayoutModuleView } from './components/business/layout-module-config'
+
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -41,7 +43,9 @@ const components = [
   PageHeaderModule,
   RadioGroup,
   Modals,
-  EditRowBid
+  EditRowBid,
+  LayoutModuleConfig,
+  LayoutModuleView
 ]
 
 const install = function (Vue) {
@@ -66,5 +70,7 @@ export default {
   MultiRadioButton,
   PageHeaderModule,
   Modals,
-  EditRowBid
+  EditRowBid,
+  LayoutModuleConfig,
+  LayoutModuleView
 }
