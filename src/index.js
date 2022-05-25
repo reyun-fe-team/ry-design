@@ -9,6 +9,7 @@ import Breadcrumb from './components/basics/breadcrumb'
 import MultiRadioButton from './components/basics/multi-radio-button'
 import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
+import TableColumns from './components/basics/table-columns/index.js'
 // business
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'
@@ -41,7 +42,8 @@ const components = [
   PageHeaderModule,
   RadioGroup,
   Modals,
-  EditRowBid
+  EditRowBid,
+  TableColumns
 ]
 
 const install = function (Vue) {
@@ -66,5 +68,6 @@ export default {
   MultiRadioButton,
   PageHeaderModule,
   Modals,
-  EditRowBid
+  EditRowBid,
+  TableColumns
 }

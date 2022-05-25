@@ -1,0 +1,139 @@
+@table-columns: ~"@{css-prefix}table-columns";
+
+.@{table-columns} {
+    width: 630px;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 38px;
+        line-height: 38px;
+        border-radius: 5px 5px 0 0;
+        background: #f7faff;
+        border: 1px solid #e1e3e7;
+        padding-left: 11px;
+        padding-right: 6px;
+        font-size: 12px;
+        font-weight: 400;
+        color: #252936;
+
+        .ivu-input {
+            height: 28px;
+        }
+    }
+
+    .content {
+        position: relative;
+        display: flex;
+        height: 440px;
+        overflow-y: auto;
+
+        .nav-area-wrap {
+            width: 200px;
+            border-left: 1px solid #E3E5E7;
+            border-bottom: 1px solid #E3E5E7;
+            overflow-y: auto;
+
+            .nav-area-list {
+                margin-bottom: 20px;
+
+
+                &-label {
+                    height: 30px;
+                    line-height: 30px;
+                    color: rgba(122, 130, 151, 1);
+                    padding-left: 16px;
+                }
+
+                &-item {
+                    cursor: pointer;
+                    height: 30px;
+                    line-height: 30px;
+                    background: rgba(255, 255, 255, 1);
+                    color: rgba(19, 35, 68, 1);
+                    padding-left: 16px;
+                    position: relative;
+                }
+
+                &-item-checked {
+                    background: rgba(240, 246, 255, 1);
+                    color: rgba(29, 113, 232, 1);
+                }
+
+                &-item-checked:after {
+                    content: '';
+                    width: 3px;
+                    height: inherit;
+                    background: rgba(57, 137, 250, 1);
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                }
+            }
+        }
+
+        .columns-view {
+            width: 468px;
+            padding: 10px 20px;
+            border-right: 1px solid #E3E5E7;
+            border-left: 1px solid #E3E5E7;
+            border-bottom: 1px solid #E3E5E7;
+            overflow-y: auto;
+
+            .columns-view-list {
+                margin-bottom: 26px;
+
+                &-checked-all {
+                    padding-top: 10px;
+                    padding-bottom: 5px;
+                    border-bottom: 1px solid #E1E3E7;
+                    color: #132344;
+                    margin-bottom: 5px;
+                }
+
+                &-content {
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    &-item {
+                        width: 188px;
+                        display: flex;
+                        align-items: center;
+                        min-height: 30px;
+                        color: #132344;
+                        font-size: 12px;
+
+                        &-title {
+                            padding-right: 3px;
+                        }
+
+                        .ivu-checkbox-inner {
+                            width: 14px;
+                            height: 14px;
+                        }
+
+                        .ivu-checkbox {
+                            margin-right: 5px;
+                            display: flex;
+                            align-items: center;
+                        }
+                    }
+                }
+            }
+
+            // 没有检索到数据
+            .not-data {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+
+    .hide {
+        display: none !important;
+    }
+}
