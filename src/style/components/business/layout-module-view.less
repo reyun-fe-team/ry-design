@@ -1,0 +1,38 @@
+@layout-module-view: ~"@{css-prefix}layout-module-view";
+
+.@{layout-module-view} {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &-header {
+    display         : flex;
+    align-items     : center;
+    justify-content : space-between;
+    width           : 100%;
+    height          : 40px;
+    padding         : 0 15px;
+    font-size       : 14px;
+    font-weight     : 500;
+    color           : #151B39;
+    background-color: #F9F9FA;
+    border-bottom   : 1px dashed #E0E0E8;
+
+
+  }
+
+  &-footer {
+    width     : 100%;
+    height    : 40px;
+    border-top: 1px dashed #E0E0E8;
+  }
+
+  &-main {
+    width     : 100%;
+    overflow-y: auto;
+    padding   : 8px 15px;
+    flex: 1;
+  }
+}

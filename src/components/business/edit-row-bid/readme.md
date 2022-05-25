@@ -2,7 +2,7 @@
 
 | 参数                | 说明                                                         | 类型     | 可选值                                                       | 默认值   |
 | ------------------- | ------------------------------------------------------------ | -------- | ------------------------------------------------------------ | -------- |
-| type | 输入类型 | 输入类型 | text 输入文本、 number 输入数字、radio 单选选择、custom 自定义内容             | text |
+| type | 输入类型 | string | text 输入文本、 number 输入数字、radio 单选选择、custom 自定义内容             | text |
 | value | 需要编辑的数据(必填) | number\| string | -                                         | - |
 | iconType | 显示的按钮类型 Icon type | string\|slot | 显示的按钮类型 Icon type http://v1.iviewui.com/components/icon | md-create |
 | title | 显示标题 | string \|slot | - | - |
