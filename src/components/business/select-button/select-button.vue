@@ -9,27 +9,21 @@
       <Icon
         :custom="`iconfont ${customIcon}`"
         size="12"></Icon>
-      {{ text }}
+      {{ selectText }}
     </Button>
     <Button
       v-else-if="isLoading"
       loading
-      type="default">
+      type="default"
+      :class="loadingClasses">
       {{ prefixEditText }}
     </Button>
     <div
-      v-else
-      :class="viewClasses"
-      :loading="true"
+      v-else-if="isEdit"
+      :class="editClasses"
       @click="handleClick">
-      <!-- <Icon
-        v-if="loading"
-        class="ivu-load-loop"
-        type="ios-loading"></Icon> -->
       <span>{{ prefixEditText }}</span>
-      <span class="m-l-16">
-        {{ suffixEditText }}
-      </span>
+      <span>{{ suffixEditText }}</span>
     </div>
   </div>
 </template>
@@ -40,7 +34,7 @@ export default {
   name: prefixCls,
   inheritAttrs: false,
   props: {
-    text: {
+    selectText: {
       type: String,
       default: '请选择'
     },
@@ -67,10 +61,6 @@ export default {
     disabled: {
       type: Boolean,
       default: false
-    },
-    loading: {
-      type: Boolean,
-      default: true
     }
   },
   data() {
@@ -82,14 +72,24 @@ export default {
     isSelect() {
       return this.status === 'select'
     },
+    isEdit() {
+      return this.status === 'edit'
+    },
     isLoading() {
       return this.status === 'loading'
     },
     selectClasses() {
       return `${prefixCls}-select`
     },
-    viewClasses() {
-      return `${prefixCls}-view  ivu-btn`
+    editClasses() {
+      if (this.disabled) {
+        return `${prefixCls}-edit  ivu-btn disabled`
+      } else {
+        return `${prefixCls}-edit  ivu-btn`
+      }
+    },
+    loadingClasses() {
+      return `${prefixCls}-loading`
     }
   },
   methods: {

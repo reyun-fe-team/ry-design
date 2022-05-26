@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import _cloneDeep from 'lodash/cloneDeep'
 const { prefix } = require('../../../config.js')
 const prefixCls = prefix + 'multi-radio-button'
 export default {
@@ -75,7 +76,7 @@ export default {
       if (disabled) {
         return
       }
-      let valueArr = _.cloneDeep(this.value)
+      let valueArr = _cloneDeep(this.value)
       // 当前选中式多选还是单选
       let currentIsMulti =
         valueArr.length && this.buttonList.find(list => list.value === valueArr[0]).isMulti

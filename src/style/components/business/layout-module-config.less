@@ -1,0 +1,55 @@
+@layout-module-config: ~"@{css-prefix}layout-module-config";
+
+.@{layout-module-config} {
+  display        : flex;
+  justify-content: flex-start;
+  box-shadow     : 0px 4px 8px 0px rgba(21, 27, 57, 0.08);
+  border-radius  : 4px;
+  border         : 1px solid #E0E0E8;
+
+  &:hover {
+    box-shadow   : 0px 8px 16px 0px rgba(21, 27, 57, 0.55);
+    border-radius: 4px;
+  }
+
+  &-row {
+    height  : 100%;
+    overflow: hidden;
+
+  }
+
+  &-row-line {
+    position: relative;
+
+    &::after {
+      display     : block;
+      content     : '';
+      position    : absolute;
+      top         : 0;
+      right       : 0;
+      width       : 0;
+      height      : 100%;
+      border-right: 1px solid #E0E0E8;
+    }
+  }
+
+  &-col {
+    width   : 100%;
+    overflow: hidden;
+  }
+
+  &-col-line {
+    position: relative;
+
+    &::after {
+      display      : block;
+      content      : '';
+      position     : absolute;
+      left         : 0;
+      bottom       : 0;
+      height       : 0;
+      width        : 100%;
+      border-bottom: 1px solid #E0E0E8;
+    }
+  }
+}

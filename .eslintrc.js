@@ -1,7 +1,11 @@
 /* eslint-disable */
 module.exports = {
   root: true,
-  extends: ['plugin:vue/recommended', 'plugin:prettier-vue/recommended', 'eslint:recommended'],
+  extends: [
+    'plugin:vue/recommended',
+    'plugin:prettier-vue/recommended',
+    'eslint:recommended'
+  ],
   globals: {
     _: 'readonly',
     $: 'readonly',
@@ -28,30 +32,27 @@ module.exports = {
     // 使用单引号
     quotes: ['error', 'single'],
     // html 标签闭合
-    'vue/html-self-closing': [
-      'error',
-      {
-        html: {
-          void: 'never',
-          normal: 'never',
-          component: 'never'
-        },
-        svg: 'always',
-        math: 'always'
-      }
-    ],
+    'vue/html-self-closing': ['error', {
+      'html': {
+        'void': 'never',
+        'normal': 'never',
+        'component': 'never'
+      },
+      'svg': 'always',
+      'math': 'always'
+    }],
     // 单行html元素内容在新的一行
     'vue/singleline-html-element-content-newline': 0,
     // 多行html元素内容在新的一行
     'vue/multiline-html-element-content-newline': 0,
     // 控制 尾行 >
-    'vue/html-closing-bracket-newline': [
-      'error',
-      {
-        singleline: 'never',
-        multiline: 'never'
-      }
-    ]
+    "vue/html-closing-bracket-newline": ["error", {
+      "singleline": "never",
+      "multiline": "never"
+    }],
+    "vue/html-self-closing": 0,
+    // v-for scope 解构
+    "vue/no-template-shadow": 0
   },
   parserOptions: {
     parser: 'babel-eslint'

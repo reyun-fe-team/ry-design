@@ -2,29 +2,54 @@
 
 .@{select-button} {
     &-select {
-        font-size: @font-size-base;
+        width: 120px;
 
         span {
             display: flex;
             align-items: center;
+            .textLimit();
 
             :first-child {
-                margin-right: 6px;
+                margin-right: 10px;
             }
-        }
-
-        i {
-            font-size: @font-size-base;
         }
     }
 
-    &-view {
-        vertical-align: middle;
-        display: table-cell;
+    &-edit {
+        width: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         font-size: @font-size-base;
 
         :first-child {
-            margin-right: 16px;
+            flex-shrink: 1;
+            margin-right: 10px;
+            .textLimit();
         }
+
+        .disabled {
+            cursor: not-allowed;
+            color: #999;
+            background-color: #f7f7f7;
+            border-color: #dcdee2;
+        }
+    }
+
+    &-loading {
+        width: 280px;
+        display: flex;
+        align-items: center;
+        justify-content:center;
+        span {
+            flex-shrink: 1;
+            margin-right: 10px;
+            .textLimit();
+        }
+    }
+
+    .textLimit {
+        white-space: nowrap;
+        overflow: hidden;
     }
 }
