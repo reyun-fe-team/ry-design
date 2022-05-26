@@ -15,7 +15,8 @@ Vue.config.debug = true
 const router = new VueRouter({
   esModule: false,
   mode: 'history',
-  routes: [{
+  routes: [
+    {
       path: '/transfer',
       component: resolve => require(['./routers/transfer.vue'], resolve)
     },
@@ -66,6 +67,10 @@ const router = new VueRouter({
     {
       path: '/layout-module-config',
       component: resolve => require(['./routers/layout-module-config'], resolve)
+    },
+    {
+      path: '/draggable-card',
+      component: resolve => require(['./routers/draggable-card'], resolve)
     }
   ]
 })
