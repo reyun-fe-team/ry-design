@@ -2,11 +2,11 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-24 17:51:28
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-26 13:52:29
+ * @LastEditTime: 2022-05-26 18:01:37
  * @FilePath: /ry-design/src/components/business/layout-module-config/data.js
  * @Description: 组件layout-module-config的一些工具
  */
-import { isArrRepeat } from './assist'
+import { isArrRepeat, typeOf } from './assist'
 // 校验 prop slotList
 export const valideSlotList = list => {
   // 数组并且必须有值
@@ -26,7 +26,7 @@ export const valideSlotList = list => {
   let allData = []
   list.forEach(arr => (allData = allData.concat(arr)))
   const hasNotString = allData.some(val => {
-    return !val || typeof val !== 'string'
+    return !val || typeOf(val) !== 'string'
   })
   if (hasNotString) {
     return { pass: false, msg: '第二层的结构每一项必须是字符串且有值' }

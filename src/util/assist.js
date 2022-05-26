@@ -1,4 +1,4 @@
-function typeOf(obj) {
+export function typeOf(obj) {
   const toString = Object.prototype.toString
   const map = {
     '[object Boolean]': 'boolean',
@@ -16,7 +16,7 @@ function typeOf(obj) {
 }
 
 // deepCopy
-function deepCopy(data) {
+export function deepCopy(data) {
   const t = typeOf(data)
   let o
 
@@ -40,9 +40,7 @@ function deepCopy(data) {
   return o
 }
 
-export { deepCopy }
-
-function findComponentUpward(context, componentName, componentNames) {
+export function findComponentUpward(context, componentName, componentNames) {
   if (typeof componentName === 'string') {
     componentNames = [componentName]
   } else {
@@ -59,7 +57,6 @@ function findComponentUpward(context, componentName, componentNames) {
   }
   return parent
 }
-export { findComponentUpward }
 
 export function findComponentDownward(context, componentName) {
   const childrens = context.$children
@@ -104,8 +101,9 @@ export function findComponentsUpward(context, componentName) {
     return []
   }
 }
+
 // 数组是否有重复的值
-export const isArrRepeat = arr => {
+export function isArrRepeat(arr) {
   let hash = {}
   for (let i in arr) {
     if (hash[arr[i]]) {
@@ -115,8 +113,9 @@ export const isArrRepeat = arr => {
   }
   return false
 }
+
 // 唯一key v-for
-export const getKey = () => {
+export function getKey() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     let r = (Math.random() * 16) | 0
     let v = c === 'x' ? r : (r & 0x3) | 0x8

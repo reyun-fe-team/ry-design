@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:50:21
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-26 15:13:10
+ * @LastEditTime: 2022-05-26 18:26:33
  * @FilePath: /ry-design/src/components/basics/layout-module-config/layout-module-config.vue
  * @Description: 极速创建第一步模块布局组件
 -->
@@ -38,7 +38,7 @@ const prefixCls = prefix + 'layout-module-config'
 const margin = 1
 
 import { valideSlotList } from '../../../util/layout-module-config'
-import { getKey } from '../../../util/assist'
+import { getKey, typeOf } from '../../../util/assist'
 import Render from './../../base/render'
 
 export default {
@@ -47,7 +47,12 @@ export default {
     Render
   },
   props: {
-    // 是否使用自定义的每一列宽度
+    // 宽度的使用形式 等分 equalDivision 自定义比例 customScale
+    widthType: {
+      type: String,
+      default: 'equalDivision'
+    },
+    // 自定义时的定义的每一列的宽度集合
     cloWidthList: {
       type: Array,
       default: () => []
@@ -55,7 +60,7 @@ export default {
     // 每一项最小宽度
     itemMinWidth: {
       type: Number,
-      default: 288
+      default: 218
     },
     // 适应区域的宽度 设置为0，继承父级的宽度（不设置width属性）
     width: {
@@ -65,7 +70,7 @@ export default {
     // 适应区域的高度
     height: {
       type: Number,
-      default: 480
+      default: 477
     },
     // 插槽顺序配置，唯一id
     slotList: {
@@ -75,7 +80,7 @@ export default {
       validator: function (list) {
         const { pass, msg } = valideSlotList(list)
         if (!pass) {
-          console.error(`slotList：${msg}`)
+          throw new Error('无效的属性 slotList :' + msg)
         }
         return pass
       }
@@ -92,6 +97,42 @@ export default {
     }
   },
   computed: {
+    // 是否是有效的自定义宽度
+    isValidPassCloWidth() {
+      const { widthType, cloWidthList, slotList } = this
+      // 不是自定义比例
+      if (widthType !== 'customScale') {
+        // console.error('无效的属性 cloWidthList :没有使用 widthType 为 customScale')
+        return false
+      }
+      // 配置数据不对
+      if (!Array.isArray(slotList) || !slotList.length) {
+        console.error('无效的属性 cloWidthList : slotList 配置数据不对')
+        return false
+      }
+      // 不是一样的长度
+      if (slotList.length !== cloWidthList.length) {
+        console.error('无效的属性 cloWidthList : 与 slotList 不是一样的长度')
+        return false
+      }
+      // 存在不是数字的项
+      let nums = 0
+      for (let index = 0; index < slotList.length; index++) {
+        const ele = cloWidthList[index]
+        if (typeOf(ele) !== 'number') {
+          console.error('无效的属性 cloWidthList : 存在不是数字的项')
+          return false
+        } else {
+          nums += +ele
+        }
+      }
+      // 比例之和不等于100
+      if (nums !== 100) {
+        console.error('无效的属性 cloWidthList : 比例之和不等于100')
+        return false
+      }
+      return true
+    },
     // 最小宽度
     minWidth() {
       const counts = this.slotList.length
@@ -133,7 +174,7 @@ export default {
       for (const key in obj) {
         if (Object.hasOwnProperty.call(obj, key)) {
           const func = obj[key]
-          if (typeof func === 'function') {
+          if (typeOf(func) === 'function') {
             newObj[key] = func
           }
         }
@@ -156,11 +197,22 @@ export default {
     },
     // 每一行的样式
     getRowStyle(rowIndex) {
-      const { itemWidth, itemMinWidth, cloWidthList } = this
-      const inputWidth = cloWidthList[rowIndex]
-      let width = itemWidth
-      if (inputWidth) {
-        width = inputWidth + '%'
+      const { itemWidth, itemMinWidth, cloWidthList, widthType, isValidPassCloWidth } = this
+      let width = ''
+
+      // 自定义输入每一项的宽度
+      let customWidth = cloWidthList[rowIndex]
+      if (typeOf(customWidth) !== 'number' || customWidth <= 0) {
+        customWidth = ''
+      }
+
+      // 等分
+      if (widthType === 'equalDivision') {
+        width = itemWidth
+      }
+      // 使用自定义比例
+      if (widthType === 'customScale') {
+        width = customWidth && isValidPassCloWidth ? customWidth + '%' : ''
       }
       const obj = { width, minWidth: itemMinWidth + 'px' }
       return obj

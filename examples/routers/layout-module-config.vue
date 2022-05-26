@@ -2,24 +2,36 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:49:35
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-26 14:09:54
+ * @LastEditTime: 2022-05-26 18:23:07
  * @FilePath: /ry-design/examples/routers/layout-module-config.vue
  * @Description: layout-module-config 组件示例
 -->
 <template>
   <div>
-    <Button @click="toggleSort">交换组件位置</Button>
-    <br >
-    <br >
-    <Button @click="toggleWidth">改变容器宽度</Button>
-    <br >
-    <br >
+    <Button
+      style="margin: 20px"
+      @click="toggleSort">
+      交换组件位置
+    </Button>
+    <Button
+      style="margin: 20px"
+      @click="toggleWidth">
+      改变容器宽度
+    </Button>
+    <Button
+      style="margin: 20px"
+      @click="toggleType">
+      改变使用类型
+    </Button>
+
     <rd-layout-module-config
       :slot-list="slotList"
       :slot-renders="slotRenders"
-      :width="600"
+      :width="width"
       :item-min-width="200"
-      :height="477">
+      :height="477"
+      :width-type="widthType"
+      :clo-width-list="cloWidthList">
       <template #land>
         <rd-layout-module-view title="落地页">
           <div slot="header"><a>配置</a></div>
@@ -60,7 +72,9 @@ export default {
     return {
       slotList: [['land'], ['convert', 'event'], ['creative']],
       isToggle: false,
-      width: 400
+      width: 1000,
+      widthType: 'equalDivision',
+      cloWidthList: []
     }
   },
   computed: {
@@ -102,6 +116,15 @@ export default {
         this.width = 1000
       } else {
         this.width = 0
+      }
+    },
+    toggleType() {
+      if (this.widthType === 'equalDivision') {
+        this.widthType = 'customScale'
+        this.cloWidthList = [40, 20, 40]
+      } else {
+        this.widthType = 'equalDivision'
+        this.cloWidthList = []
       }
     }
   }
