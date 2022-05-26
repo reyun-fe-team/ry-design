@@ -2,41 +2,52 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:49:35
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-25 19:11:22
+ * @LastEditTime: 2022-05-26 14:09:54
  * @FilePath: /ry-design/examples/routers/layout-module-config.vue
  * @Description: layout-module-config 组件示例
 -->
 <template>
   <div>
     <Button @click="toggleSort">交换组件位置</Button>
-    <br />
-    <br />
+    <br >
+    <br >
     <Button @click="toggleWidth">改变容器宽度</Button>
-    <br />
-    <br />
-    <rd-layout-module-config :slotList="slotList"
-                             :slotRenders="slotRenders"
-                             :width="width"
-                             height="477">
+    <br >
+    <br >
+    <rd-layout-module-config
+      :slot-list="slotList"
+      :slot-renders="slotRenders"
+      :width="600"
+      :item-min-width="200"
+      :height="477">
       <template #land>
         <rd-layout-module-view title="落地页">
-          <div slot="header"><a>配置</a> </div>
-          <div slot="main"
-               style="background: #f90;">落地页面板内容</div>
+          <div slot="header"><a>配置</a></div>
+          <div
+            slot="main"
+            style="background: #f90">
+            落地页面板内容
+          </div>
         </rd-layout-module-view>
       </template>
       <template #convert>
         <rd-layout-module-view title="转化">
-          <div slot="header"><a>配置</a> </div>
-          <div slot="main"
-               style="background: #a88;">转化面板内容</div>
+          <div slot="header"><a>配置</a></div>
+          <div
+            slot="main"
+            style="background: #a88">
+            转化面板内容
+          </div>
         </rd-layout-module-view>
       </template>
       <template #event>
         <rd-layout-module-view title="事件资产">
-          <div slot="header"><a>配置</a> </div>
-          <div slot="main"
-               style="background: #f00;">事件资产面板内容</div>
+          <div slot="header"><a>配置</a></div>
+          <div
+            slot="main"
+            style="background: #f00">
+            事件资产面板内容
+          </div>
         </rd-layout-module-view>
       </template>
     </rd-layout-module-config>
@@ -49,7 +60,7 @@ export default {
     return {
       slotList: [['land'], ['convert', 'event'], ['creative']],
       isToggle: false,
-      width: 0
+      width: 400
     }
   },
   computed: {
