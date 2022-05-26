@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-25 14:53:12
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-25 15:43:30
+ * @LastEditTime: 2022-05-26 18:31:11
  * @FilePath: /ry-design/src/components/business/layout-module-config/module-view/index.vue
  * @Description: 单个模块的渲染组件
 -->
@@ -13,23 +13,27 @@
     <div :class="prefixCls + '-header'">
       <div class="title">{{ title }}</div>
       <template v-if="'header' in renderSlots">
-        <Render :render="renderSlots['header']"
-                key="header"></Render>
+        <Render
+          key="header"
+          :render="renderSlots['header']"></Render>
       </template>
     </div>
     <!-- 显示内容区域 -->
     <div :class="prefixCls + '-main'">
       <template v-if="'main' in renderSlots">
-        <Render :render="renderSlots['main']"
-                key="main"></Render>
+        <Render
+          key="main"
+          :render="renderSlots['main']"></Render>
       </template>
     </div>
     <!-- 尾部 -->
-    <div v-if="showFooter"
-         :class="prefixCls + '-footer'">
+    <div
+      v-if="showFooter"
+      :class="prefixCls + '-footer'">
       <template v-if="'footer' in renderSlots">
-        <Render :render="renderSlots['footer']"
-                key="footer"></Render>
+        <Render
+          key="footer"
+          :render="renderSlots['footer']"></Render>
       </template>
     </div>
   </div>
@@ -42,11 +46,6 @@ import Render from './../../base/render'
 
 export default {
   name: prefixCls,
-  data() {
-    return {
-      prefixCls
-    }
-  },
   components: {
     Render
   },
@@ -72,6 +71,11 @@ export default {
     // 中间内容渲染函数
     mainRender: {
       type: Function
+    }
+  },
+  data() {
+    return {
+      prefixCls
     }
   },
   computed: {

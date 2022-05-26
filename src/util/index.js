@@ -1,3 +1,3 @@
-let util = {};
+let util = {}
 
-export default util;
+export default util

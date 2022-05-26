@@ -2,24 +2,13 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-24 17:51:28
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-24 18:07:48
+ * @LastEditTime: 2022-05-26 18:01:37
  * @FilePath: /ry-design/src/components/business/layout-module-config/data.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @Description: 组件layout-module-config的一些工具
  */
-// 数组是否有重复的值
-export const isArrRepeat = arr => {
-  let hash = {}
-  for (let i in arr) {
-    if (hash[arr[i]]) {
-      return true
-    }
-    hash[arr[i]] = true
-  }
-  return false
-}
-
+import { isArrRepeat, typeOf } from './assist'
 // 校验 prop slotList
-export const valideSlotList = (list) => {
+export const valideSlotList = list => {
   // 数组并且必须有值
   if (!Array.isArray(list) || !list.length) {
     return { pass: false, msg: '数组并且必须有值' }
@@ -37,7 +26,7 @@ export const valideSlotList = (list) => {
   let allData = []
   list.forEach(arr => (allData = allData.concat(arr)))
   const hasNotString = allData.some(val => {
-    return !val || typeof val !== 'string'
+    return !val || typeOf(val) !== 'string'
   })
   if (hasNotString) {
     return { pass: false, msg: '第二层的结构每一项必须是字符串且有值' }
@@ -47,17 +36,7 @@ export const valideSlotList = (list) => {
   const repeat = isArrRepeat(allData)
   if (repeat) {
     return { pass: false, msg: '不能有重复的id' }
-
   }
 
   return { pass: true, msg: '' }
-}
-
-// 唯一key v-for
-export const getKey = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    let r = (Math.random() * 16) | 0;
-    let v = c === 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  })
 }
