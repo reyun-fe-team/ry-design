@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:49:35
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-26 18:23:07
+ * @LastEditTime: 2022-05-26 18:35:56
  * @FilePath: /ry-design/examples/routers/layout-module-config.vue
  * @Description: layout-module-config 组件示例
 -->
@@ -33,7 +33,7 @@
       :width-type="widthType"
       :clo-width-list="cloWidthList">
       <template #land>
-        <rd-layout-module-view title="落地页">
+        <rd-layout-module-view title="落地页内容名称太长了超出显示省略号">
           <div slot="header"><a>配置</a></div>
           <div
             slot="main"
@@ -81,7 +81,7 @@ export default {
     slotRenders() {
       return {
         creative: h => {
-          const header = h('div', { slot: 'header' }, [h('a', '配置')])
+          const header = h('div', { slot: 'header' }, [h('a', '清空')])
           const main = h('div', { slot: 'main', style: 'background: #ccc;' }, '创意面板内容')
           const footerStyle =
             'height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;'
