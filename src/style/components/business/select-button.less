@@ -7,7 +7,7 @@
         span {
             display: flex;
             align-items: center;
-            .textLimit();
+            .text-limit();
 
             :first-child {
                 margin-right: 10px;
@@ -25,14 +25,14 @@
         :first-child {
             flex-shrink: 1;
             margin-right: 10px;
-            .textLimit();
+            .text-limit();
         }
 
-        .disabled {
+        .disabled {  
             cursor: not-allowed;
-            color: #999;
-            background-color: #f7f7f7;
-            border-color: #dcdee2;
+            color: @btn-disable-color;
+            background-color: @btn-disable-background-color;
+            border-color: @border-color-base;
         }
     }
 
@@ -44,11 +44,11 @@
         span {
             flex-shrink: 1;
             margin-right: 10px;
-            .textLimit();
+            .text-limit();
         }
     }
 
-    .textLimit {
+    .text-limit {
         white-space: nowrap;
         overflow: hidden;
     }
