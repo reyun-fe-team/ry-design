@@ -9,12 +9,12 @@ import Breadcrumb from './components/basics/breadcrumb'
 import MultiRadioButton from './components/basics/multi-radio-button'
 import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
+import uploadParticulars from './components/basics/upload-particulars'
 // business
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'
 import EditRowBid from './components/business/edit-row-bid'
 import { LayoutModuleConfig, LayoutModuleView } from './components/business/layout-module-config'
-
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -45,7 +45,8 @@ const components = [
   Modals,
   EditRowBid,
   LayoutModuleConfig,
-  LayoutModuleView
+  LayoutModuleView,
+  uploadParticulars
 ]
 
 const install = function (Vue) {
@@ -72,5 +73,6 @@ export default {
   Modals,
   EditRowBid,
   LayoutModuleConfig,
-  LayoutModuleView
+  LayoutModuleView,
+  uploadParticulars
 }

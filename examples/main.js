@@ -66,6 +66,10 @@ const router = new VueRouter({
     {
       path: '/layout-module-config',
       component: resolve => require(['./routers/layout-module-config'], resolve)
+    },
+    {
+      path: '/upload-particulars',
+      component: resolve => require(['./routers/upload-particulars'], resolve)
     }
   ]
 })
