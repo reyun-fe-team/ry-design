@@ -65,8 +65,8 @@ const router = new VueRouter({
       component: resolve => require(['./routers/edit-row-bid'], resolve)
     },
     {
-      path: '/select-button',
-      component: resolve => require(['./routers/select-button'], resolve)
+      path: '/reverse-button',
+      component: resolve => require(['./routers/reverse-button'], resolve)
     },
     {
       path: '/layout-module-config',

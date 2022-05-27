@@ -13,7 +13,7 @@ import RadioGroup from './components/basics/radio-group'
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'
 import EditRowBid from './components/business/edit-row-bid'
-import SelectButton from './components/business/select-button'
+import ReverseButton from './components/business/reverse-button'
 import { LayoutModuleConfig, LayoutModuleView } from './components/business/layout-module-config'
 
 import ViewUI from 'view-design'
@@ -44,7 +44,7 @@ const components = [
   RadioGroup,
   Modals,
   EditRowBid,
-  SelectButton,
+  ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView
 ]
@@ -72,7 +72,7 @@ export default {
   PageHeaderModule,
   Modals,
   EditRowBid,
-  SelectButton,
+  ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView
 }

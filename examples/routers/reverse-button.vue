@@ -2,40 +2,40 @@
   <div class="display-flex">
     <div class="item">
       <span>{{ title }}</span>
-      <rd-select-button
+      <rd-reverse-button
         :select-text="text"
         :prefix-edit-text="prefixEditText"
         :suffix-edit-text="suffixEditText"
         :status="status"
-        @on-click="handleClick"></rd-select-button>
+        @on-click="handleClick"></rd-reverse-button>
     </div>
     <div
       class="item"
       style="margin-left: 16px">
       <span>编辑冻结状态</span>
-      <rd-select-button
+      <rd-reverse-button
         :select-text="text"
         :prefix-edit-text="prefixEditText"
         :suffix-edit-text="suffixEditText"
         :disabled="true"
-        status="edit"></rd-select-button>
+        status="edit"></rd-reverse-button>
     </div>
     <div
       class="item"
       style="margin-left: 16px">
       <span>加载状态</span>
-      <rd-select-button
+      <rd-reverse-button
         :select-text="text"
         :prefix-edit-text="prefixEditText"
         :suffix-edit-text="suffixEditText"
         status="loading"
-        @on-click="handleClick"></rd-select-button>
+        @on-click="handleClick"></rd-reverse-button>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: 'SelectButton',
+  name: 'ReverseButton',
   data() {
     return {
       title: '选择状态',
