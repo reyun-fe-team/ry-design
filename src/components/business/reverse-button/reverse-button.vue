@@ -29,7 +29,7 @@
 </template>
 <script>
 import { prefix } from '../../../config.js'
-const prefixCls = prefix + 'select-button'
+const prefixCls = prefix + 'reverse-button'
 export default {
   name: prefixCls,
   inheritAttrs: false,
