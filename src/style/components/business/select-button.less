@@ -1,0 +1,55 @@
+@select-button: ~"@{css-prefix}select-button";
+
+.@{select-button} {
+    &-select {
+        width: 120px;
+
+        span {
+            display: flex;
+            align-items: center;
+            .textLimit();
+
+            :first-child {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    &-edit {
+        width: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: @font-size-base;
+
+        :first-child {
+            flex-shrink: 1;
+            margin-right: 10px;
+            .textLimit();
+        }
+
+        .disabled {
+            cursor: not-allowed;
+            color: #999;
+            background-color: #f7f7f7;
+            border-color: #dcdee2;
+        }
+    }
+
+    &-loading {
+        width: 280px;
+        display: flex;
+        align-items: center;
+        justify-content:center;
+        span {
+            flex-shrink: 1;
+            margin-right: 10px;
+            .textLimit();
+        }
+    }
+
+    .textLimit {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+}
