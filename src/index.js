@@ -1,18 +1,21 @@
 import Vue from 'vue'
 // basics
 import Transfer from './components/basics/transfer'
-import MultiCascader from './components/basics/multi-cascader/index.js'
-import PrefixContainer from './components/basics/prefix-container/index.js'
-import SingleHeader from './components/basics/single-header/index.js'
-import PageHeader from './components/basics/page-header/index.js'
-import Breadcrumb from './components/basics/breadcrumb/index.js'
-import MultiRadioButton from './components/basics/multi-radio-button/index.js'
-import Modals from './components/basics/modals/index.js'
+import MultiCascader from './components/basics/multi-cascader'
+import PrefixContainer from './components/basics/prefix-container'
+import SingleHeader from './components/basics/single-header'
+import PageHeader from './components/basics/page-header'
+import Breadcrumb from './components/basics/breadcrumb'
+import MultiRadioButton from './components/basics/multi-radio-button'
+import Modals from './components/basics/modals'
+import RadioGroup from './components/basics/radio-group'
 import EmojiImageInput from './components/basics/emoji-image-input/index.js'
 // business
-import PageHeaderModule from './components/business/page-header-module/index.js'
-import AccountList from './components/business/account-list/index.js'
-import RadioGroup from './components/basics/radio-group/index.js'
+import PageHeaderModule from './components/business/page-header-module'
+import AccountList from './components/business/account-list'
+import EditRowBid from './components/business/edit-row-bid'
+import ReverseButton from './components/business/reverse-button'
+import { LayoutModuleConfig, LayoutModuleView } from './components/business/layout-module-config'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -41,7 +44,11 @@ const components = [
   PageHeaderModule,
   RadioGroup,
   Modals,
-  EmojiImageInput
+  EmojiImageInput,
+  EditRowBid,
+  ReverseButton,
+  LayoutModuleConfig,
+  LayoutModuleView
 ]
 
 const install = function (Vue) {
@@ -66,5 +73,9 @@ export default {
   MultiRadioButton,
   PageHeaderModule,
   Modals,
-  EmojiImageInput
+  EmojiImageInput,
+  EditRowBid,
+  ReverseButton,
+  LayoutModuleConfig,
+  LayoutModuleView
 }

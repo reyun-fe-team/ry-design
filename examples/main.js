@@ -63,6 +63,18 @@ const router = new VueRouter({
     {
       path: '/emoji-image-input',
       component: resolve => require(['./routers/emoji-image-input'], resolve)
+    },
+    {
+      path: '/edit-row-bid',
+      component: resolve => require(['./routers/edit-row-bid'], resolve)
+    },
+    {
+      path: '/reverse-button',
+      component: resolve => require(['./routers/reverse-button'], resolve)
+    },
+    {
+      path: '/layout-module-config',
+      component: resolve => require(['./routers/layout-module-config'], resolve)
     }
   ]
 })

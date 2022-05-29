@@ -5,46 +5,45 @@
         <Checkbox
           :value="checkedAll"
           :disabled="checkedAllDisabled"
-          @on-change="toggleSelectAll"
-        ></Checkbox>
+          @on-change="toggleSelectAll"></Checkbox>
         <span
           :class="prefixCls + '-header-title'"
-          @click="toggleSelectAll(!checkedAll)"
-          >{{ title }}</span
-        >
+          @click="toggleSelectAll(!checkedAll)">
+          {{ title }}
+        </span>
         <span :class="prefixCls + '-header-count'">{{ count }}</span>
       </header>
       <div :class="bodyClasses">
-        <div v-if="filterable" :class="prefixCls + '-body-search-wrapper'">
+        <div
+          v-if="filterable"
+          :class="prefixCls + '-body-search-wrapper'">
           <Search
             :query="query"
             :placeholder="filterPlaceholder"
             @on-query-clear="handleQueryClear"
-            @on-query-change="handleQueryChange"
-          ></Search>
+            @on-query-change="handleQueryChange"></Search>
         </div>
         <ul :class="prefixCls + '-content'">
           <li
             v-for="(item, index) in filterData"
             :key="index"
             :class="itemClasses(item)"
-            @click.prevent="select(item)"
-          >
+            @click.prevent="select(item)">
             <Checkbox
               :value="isCheck(item)"
-              :disabled="item.disabled"
-            ></Checkbox>
+              :disabled="item.disabled"></Checkbox>
             <span v-html="showLabel(item)"></span>
           </li>
           <li
             v-if="!filterData.length"
-            :class="prefixCls + '-content-not-found'"
-          >
+            :class="prefixCls + '-content-not-found'">
             {{ notFoundText }}
           </li>
         </ul>
       </div>
-      <div v-if="showFooter" :class="prefixCls + '-footer'">
+      <div
+        v-if="showFooter"
+        :class="prefixCls + '-footer'">
         <slot></slot>
       </div>
     </div>
@@ -54,16 +53,15 @@
         :prefix-cls="prefixCls"
         :operations="operations"
         :left-active="leftActive"
-        :right-active="rightActive"
-      ></Operation>
+        :right-active="rightActive"></Operation>
     </template>
   </main>
 </template>
 <script>
-const { prefix } = require('../../../config.js');
-let prefixCls = prefix + 'transfer-list';
-import Search from './search.vue';
-import Operation from './operation.vue';
+const { prefix } = require('../../../config.js')
+let prefixCls = prefix + 'transfer-list'
+import Search from './search.vue'
+import Operation from './operation.vue'
 export default {
   name: prefixCls,
   components: { Search, Operation },
@@ -71,13 +69,13 @@ export default {
     data: {
       type: Array,
       default: function () {
-        return [];
+        return []
       }
     },
     renderFormat: {
       type: Function,
       default(item) {
-        return item.label || item.key;
+        return item.label || item.key
       }
     },
     title: {
@@ -95,8 +93,8 @@ export default {
     filterMethod: {
       type: Function,
       default(data, query) {
-        const type = 'label' in data ? 'label' : 'key';
-        return data[type].indexOf(query) > -1;
+        const type = 'label' in data ? 'label' : 'key'
+        return data[type].indexOf(query) > -1
       }
     },
     bthOpened: {
@@ -110,7 +108,7 @@ export default {
     value: {
       type: Array,
       default: function () {
-        return [];
+        return []
       }
     },
     notFoundText: {
@@ -120,7 +118,7 @@ export default {
     operations: {
       type: Array,
       default() {
-        return [];
+        return []
       }
     }
   },
@@ -132,7 +130,7 @@ export default {
       showItems: this.data,
       rightActive: false,
       showFooter: true
-    };
+    }
   },
   computed: {
     classes() {
@@ -141,7 +139,7 @@ export default {
         {
           [`${this.prefixCls}-with-footer`]: this.showFooter
         }
-      ];
+      ]
     },
     bodyClasses() {
       return [
@@ -150,75 +148,65 @@ export default {
           [`${this.prefixCls}-body-with-search`]: this.filterable,
           [`${this.prefixCls}-body-with-footer`]: this.showFooter
         }
-      ];
+      ]
     },
     validKeysCount() {
-      return this.checkedKeys.length;
+      return this.checkedKeys.length
     },
     count() {
-      const validKeysCount = this.validKeysCount;
-      return (
-        (validKeysCount > 0 ? `${validKeysCount}/` : '') + `${this.data.length}`
-      );
+      const validKeysCount = this.validKeysCount
+      return (validKeysCount > 0 ? `${validKeysCount}/` : '') + `${this.data.length}`
     },
     checkedAll() {
       return (
-        this.filterData.filter(data => !data.disabled).length ===
-          this.validKeysCount && this.validKeysCount !== 0
-      );
+        this.filterData.filter(data => !data.disabled).length === this.validKeysCount &&
+        this.validKeysCount !== 0
+      )
     },
     checkedAllDisabled() {
-      return this.filterData.filter(data => !data.disabled).length <= 0;
+      return this.filterData.filter(data => !data.disabled).length <= 0
     },
     filterData() {
-      return this.showItems.filter(item => this.filterMethod(item, this.query));
+      return this.showItems.filter(item => this.filterMethod(item, this.query))
     }
   },
   watch: {
     value: function (newV) {
-      this.checkedKeys = newV;
+      this.checkedKeys = newV
     },
     data(newV) {
-      this.showItems = newV;
+      this.showItems = newV
     },
     checkedKeys: function (newV) {
-      this.onCheckedKeysChange(newV);
+      this.onCheckedKeysChange(newV)
     }
   },
   mounted() {
-    this.showFooter = this.$slots.default !== undefined;
+    this.showFooter = this.$slots.default !== undefined
   },
   methods: {
     onCheckedKeysChange(data) {
-      let leftActive = false;
-      let rightActive = false;
+      let leftActive = false
+      let rightActive = false
       if (data.length) {
-        leftActive = true;
-        rightActive = true;
+        leftActive = true
+        rightActive = true
         for (let i = 0; i < data.length; i++) {
-          let item = data[i];
+          let item = data[i]
           let noMoveData = this.data.filter(option => {
-            return option.key === item;
-          });
-          if (
-            noMoveData &&
-            noMoveData.length &&
-            noMoveData[0].noMove === 'left'
-          ) {
-            leftActive = false;
+            return option.key === item
+          })
+          if (noMoveData && noMoveData.length && noMoveData[0].noMove === 'left') {
+            leftActive = false
           }
-          if (
-            noMoveData &&
-            noMoveData.length &&
-            noMoveData[0].noMove === 'right'
-          ) {
-            rightActive = false;
+          if (noMoveData && noMoveData.length && noMoveData[0].noMove === 'right') {
+            rightActive = false
           }
         }
       }
-      this.rightActive = rightActive;
-      this.$emit('input', data);
-      this.$emit('to-left-disabled', leftActive);
+      this.rightActive = rightActive
+      this.$emit('input', data)
+      this.$emit('to-left-disabled', leftActive)
     },
     itemClasses(item) {
       return [
@@ -226,49 +214,43 @@ export default {
         {
           [`${this.prefixCls}-content-item-disabled`]: item.disabled
         }
-      ];
+      ]
     },
     showLabel(item) {
-      return this.renderFormat(item);
+      return this.renderFormat(item)
     },
     isCheck(item) {
-      return this.checkedKeys.some(key => key === item.key);
+      return this.checkedKeys.some(key => key === item.key)
     },
     select(item) {
       if (item.disabled) {
-        return;
+        return
       }
-      const index = this.checkedKeys.indexOf(item.key);
-      index > -1
-        ? this.checkedKeys.splice(index, 1)
-        : this.checkedKeys.push(item.key);
+      const index = this.checkedKeys.indexOf(item.key)
+      index > -1 ? this.checkedKeys.splice(index, 1) : this.checkedKeys.push(item.key)
     },
     updateFilteredData() {
-      this.showItems = this.data;
+      this.showItems = this.data
     },
     toggleSelectAll(status) {
       const keys = status
         ? this.filterData
-            .filter(
-              data => !data.disabled || this.checkedKeys.indexOf(data.key) > -1
-            )
+            .filter(data => !data.disabled || this.checkedKeys.indexOf(data.key) > -1)
             .map(data => data.key)
         : this.filterData
-            .filter(
-              data => data.disabled && this.checkedKeys.indexOf(data.key) > -1
-            )
-            .map(data => data.key);
-      this.checkedKeys = keys;
+            .filter(data => data.disabled && this.checkedKeys.indexOf(data.key) > -1)
+            .map(data => data.key)
+      this.checkedKeys = keys
     },
     handleQueryClear() {
-      this.query = '';
+      this.query = ''
     },
     handleQueryChange(val) {
-      this.query = val;
+      this.query = val
     },
     moveTo(type) {
-      this.$emit('move-to', type);
+      this.$emit('move-to', type)
     }
   }
-};
+}
 </script>

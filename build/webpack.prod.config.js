@@ -1,9 +1,9 @@
-const path = require('path');
-const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const Config = require('../src/config.js');
-const pkg = require('../package.json');
-process.env.NODE_ENV = 'production';
+const path = require('path')
+const webpack = require('webpack')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const Config = require('../src/config.js')
+const pkg = require('../package.json')
+process.env.NODE_ENV = 'production'
 module.exports = {
   entry: './src/index.js',
   output: {
@@ -22,11 +22,7 @@ module.exports = {
         options: {
           loaders: {
             less: ExtractTextPlugin.extract({
-              use: [
-                'css-loader?minimize',
-                'autoprefixer-loader',
-                'less-loader'
-              ],
+              use: ['css-loader?minimize', 'autoprefixer-loader', 'less-loader'],
               fallback: 'vue-style-loader'
             }),
             css: ExtractTextPlugin.extract({
@@ -59,7 +55,9 @@ module.exports = {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'file-loader',
         options: {
-          name: '[name].[ext]?[hash]'
+          name: '[name].[ext]?[hash]',
+          publicPath: 'fonts',
+          outputPath: 'styles/fonts'
         }
       },
       {
@@ -84,10 +82,10 @@ module.exports = {
     hints: false
   },
   devtool: '#eval-source-map'
-};
+}
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map';
+  module.exports.devtool = '#source-map'
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
@@ -105,5 +103,5 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.LoaderOptionsPlugin({
       minimize: true
     })
-  ]);
+  ])
 }

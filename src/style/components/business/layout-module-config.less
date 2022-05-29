@@ -1,0 +1,56 @@
+@layout-module-config: ~"@{css-prefix}layout-module-config";
+
+.@{layout-module-config} {
+  display        : flex;
+  justify-content: flex-start;
+  box-shadow     : 0px 4px 8px 0px rgba(21, 27, 57, 0.08);
+  border-radius  : 4px;
+  border         : 1px solid #E0E0E8;
+  overflow-x     : auto;
+
+  &:hover {
+    box-shadow   : 0px 8px 16px 0px rgba(21, 27, 57, 0.55);
+    border-radius: 4px;
+  }
+
+  &-row {
+    height: 100%;
+
+  }
+
+  &-row-line {
+    position    : relative;
+    margin-right: 1px;
+
+    &::after {
+      display     : block;
+      content     : '';
+      position    : absolute;
+      top         : 0;
+      right       : -1px;
+      width       : 0;
+      height      : 100%;
+      border-right: 1px solid #E0E0E8;
+    }
+  }
+
+  &-col {
+    width: 100%;
+  }
+
+  &-col-line {
+    position     : relative;
+    margin-bottom: 1px;
+
+    &::after {
+      display      : block;
+      content      : '';
+      position     : absolute;
+      left         : 0;
+      bottom       : -1px;
+      height       : 0;
+      width        : 100%;
+      border-bottom: 1px solid #E0E0E8;
+    }
+  }
+}
