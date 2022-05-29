@@ -1,0 +1,72 @@
+.rd-emoji-image-input-panel-wrap {
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  background-color: #ffffff;
+  width: 260px;
+  position: absolute;
+  z-index: 9999;
+  white-space: normal;
+}
+
+.rd-emoji-image-input-item-common {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.rd-emoji-image-input-content-input {
+  width: 128px;
+  height: 32px;
+  line-height: 26px;
+  padding: 3px 6px;
+  border: 1px solid #dcdee2;
+  border-radius: 4px;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+
+  img {
+    width: 24px;
+    height: 24px;
+    margin-left: 3px;
+  }
+
+  input[type='text'] {
+    width: 50px;
+    border: none;
+  }
+
+  input[type='text']:focus {
+    outline: 0px;
+  }
+
+  input::-webkit-input-placeholder {
+    font-size: 12px;
+    color: #c9ccd2;
+  }
+}
+
+.rd-emoji-image-input-num {
+  margin-left: 8px;
+  color: rgb(153, 153, 153);
+  display: inline-block;
+  line-height: 32px;
+}
+
+.rd-emoji-image-input-content-input:empty:before {
+  content: attr(placeholder);
+  font-size: 12px;
+  color: #c9ccd2;
+  line-height: 26px;
+}
+
+.rd-emoji-image-input-content-input:focus:before {
+  content: none;
+}
+
+/deep/ .rd-emoji-image-input-content {
+  display: flex;
+}
