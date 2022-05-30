@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-25 14:53:12
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-26 18:31:11
+ * @LastEditTime: 2022-05-30 14:35:00
  * @FilePath: /ry-design/src/components/business/layout-module-config/module-view/index.vue
  * @Description: 单个模块的渲染组件
 -->
@@ -12,28 +12,37 @@
     <!-- 头部 -->
     <div :class="prefixCls + '-header'">
       <div class="title">{{ title }}</div>
-      <template v-if="'header' in renderSlots">
-        <Render
-          key="header"
-          :render="renderSlots['header']"></Render>
+      <template v-if="renderSlots['header']">
+        <render
+          v-if="renderSlots['header'].t === 'render'"
+          :render="renderSlots['header'].h"></render>
+        <slot
+          v-if="renderSlots['header'].t === 'slot'"
+          name="header"></slot>
       </template>
     </div>
     <!-- 显示内容区域 -->
     <div :class="prefixCls + '-main'">
-      <template v-if="'main' in renderSlots">
-        <Render
-          key="main"
-          :render="renderSlots['main']"></Render>
+      <template v-if="renderSlots['main']">
+        <render
+          v-if="renderSlots['main'].t === 'render'"
+          :render="renderSlots['main'].h"></render>
+        <slot
+          v-if="renderSlots['main'].t === 'slot'"
+          name="main"></slot>
       </template>
     </div>
     <!-- 尾部 -->
     <div
       v-if="showFooter"
       :class="prefixCls + '-footer'">
-      <template v-if="'footer' in renderSlots">
-        <Render
-          key="footer"
-          :render="renderSlots['footer']"></Render>
+      <template v-if="renderSlots['footer']">
+        <render
+          v-if="renderSlots['footer'].t === 'render'"
+          :render="renderSlots['footer'].h"></render>
+        <slot
+          v-if="renderSlots['footer'].t === 'slot'"
+          name="footer"></slot>
       </template>
     </div>
   </div>
@@ -42,12 +51,13 @@
 const { prefix } = require('../../../config.js')
 const prefixCls = prefix + 'layout-module-view'
 
-import Render from './../../base/render'
+import { typeOf } from '../../../util/assist'
+import render from './../../base/render'
 
 export default {
   name: prefixCls,
   components: {
-    Render
+    render
   },
   props: {
     // 名称
@@ -86,18 +96,24 @@ export default {
       if (this.showFooter) {
         slots.push('footer')
       }
-      const { $scopedSlots } = this
       const obj = {}
       for (let index = 0; index < slots.length; index++) {
         const slotName = slots[index]
         // 是否有渲染函数
-        const renderFunc = this.$props[slotName + 'Render'] || ''
-        let func = $scopedSlots[slotName] || ''
-        if (renderFunc && typeof renderFunc === 'function') {
-          func = renderFunc
+        const renderFunc = this.$props[slotName + 'Render']
+        if (renderFunc && typeOf(renderFunc) === 'function') {
+          obj[slotName] = {
+            t: 'render',
+            h: renderFunc
+          }
         }
-        if (func && typeof func === 'function') {
-          obj[slotName] = func
+        // 插槽
+        const slotFunc = this.$scopedSlots[slotName]
+        if (slotFunc && typeOf(slotFunc) === 'function') {
+          obj[slotName] = {
+            t: 'slot',
+            h: slotFunc
+          }
         }
       }
       return obj

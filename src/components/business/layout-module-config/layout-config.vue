@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:50:21
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-26 18:26:33
+ * @LastEditTime: 2022-05-30 14:26:48
  * @FilePath: /ry-design/src/components/basics/layout-module-config/layout-module-config.vue
  * @Description: 极速创建第一步模块布局组件
 -->
@@ -20,8 +20,11 @@
         :key="getKey(col)"
         :class="[prefixCls + '-col', { [prefixCls + '-col-line']: colIndex !== row.length - 1 }]"
         :style="getColStyle(row.length)">
-        <template v-if="col in renderSlots">
-          <Render :render="renderSlots[col]"></Render>
+        <template v-if="renderSlots[col].t === 'render'">
+          <render :render="renderSlots[col].h"></render>
+        </template>
+        <template v-else-if="renderSlots[col].t === 'slot'">
+          <slot :name="col"></slot>
         </template>
         <div
           v-else
@@ -39,12 +42,12 @@ const margin = 1
 
 import { valideSlotList } from '../../../util/layout-module-config'
 import { getKey, typeOf } from '../../../util/assist'
-import Render from './../../base/render'
+import render from './../../base/render'
 
 export default {
   name: prefixCls,
   components: {
-    Render
+    render
   },
   props: {
     // 宽度的使用形式 等分 equalDivision 自定义比例 customScale
@@ -167,15 +170,26 @@ export default {
     },
     // 配置的可以渲染的插槽的熏染行数(插槽和渲染函数混合用，渲染函数覆盖插槽)
     renderSlots() {
-      const { slotRenders = {}, $scopedSlots } = this
-      const obj = Object.assign({}, $scopedSlots, slotRenders)
-      // 过滤出是函数的值
       let newObj = {}
-      for (const key in obj) {
-        if (Object.hasOwnProperty.call(obj, key)) {
-          const func = obj[key]
-          if (typeOf(func) === 'function') {
-            newObj[key] = func
+      for (let index = 0; index < this.slotList.length; index++) {
+        const arr = this.slotList[index]
+        for (let i = 0; i < arr.length; i++) {
+          const slotName = arr[i]
+          // 插槽
+          const slotFunc = this.$scopedSlots[slotName]
+          if (slotFunc && typeOf(slotFunc) === 'function') {
+            newObj[slotName] = {
+              t: 'slot',
+              h: slotFunc
+            }
+          }
+          // 渲染函数
+          const renderFunc = this.slotRenders[slotName]
+          if (renderFunc && typeOf(renderFunc) === 'function') {
+            newObj[slotName] = {
+              t: 'render',
+              h: renderFunc
+            }
           }
         }
       }
