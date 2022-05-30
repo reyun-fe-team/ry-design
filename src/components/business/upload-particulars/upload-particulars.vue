@@ -18,107 +18,90 @@
           <div :class="prefixCls + '-container'">
             <div :class="prefixCls + '-container-info'">
               <!--直接slot能替换 -->
-              <img
-                v-if="!isHasSolt('upDateImage')"
-                src="../../../images/upload-particulars/upload-particulars.png"
-                alt=""
-                :class="prefixCls + '-container-info-image'" />
-              <slot
-                v-else
-                name="upDateImage"></slot>
+              <slot name="upDateImage">
+                <img
+                  src="../../../images/upload-particulars/upload-particulars.png"
+                  alt=""
+                  :class="prefixCls + '-container-info-image'" />
+              </slot>
             </div>
-            <div :class="prefixCls + '-container-text'">{{ typeTtext }}</div>
+            <div :class="prefixCls + '-container-text'">{{ typeText }}</div>
           </div>
         </Upload>
-        <p
-          v-if="!isHasSolt('acceptText')"
-          class="m-t-8 color-gray">
-          仅支持{{ accept }}文件上传。
-        </p>
-        <p
-          v-else
-          class="m-t-8 color-gray">
-          <slot name="acceptText"></slot>
+        <p :class="[prefixCls + '-text-p', prefixCls + '-gray']">
+          <slot name="acceptText">仅支持{{ accept }}文件上传。</slot>
         </p>
       </div>
       <!-- 显示上传完成时的东西 -->
       <div v-show="isSubmitAdvance || reportAdvanceTo || isTautology">
         <div :class="prefixCls + '-upload-file'">
           <div :class="prefixCls + '-upload-file-icon-model'">
-            <span
-              v-if="!isHasSolt('iconfont')"
-              style="font-size: 32px"
-              class="icon iconfont icon-xingzhuang1"></span>
-            <slot
-              v-else
-              name="iconfont"></slot>
+            <slot name="iconFont">
+              <span
+                style="font-size: 32px"
+                class="icon iconfont icon-xingzhuang1"></span>
+            </slot>
           </div>
           <div :class="prefixCls + '-upload-file-content'">
             <div
-              class="float-l"
-              :class="[fileSize ? '' : 'active', prefixCls + '-upload-file-content-fileName']">
+              :class="[
+                fileSize ? '' : 'active',
+                prefixCls + '-upload-file-content-file-name',
+                prefixCls + '-float-l'
+              ]">
               <Tooltip
                 :delay="500"
                 :content="fileName ? fileName : `${accept}文件`">
                 <p
                   class="overflow-ellipsis line-clamp-two"
-                  :class="[prefixCls + '-upload-file-content-fileName-text']">
+                  :class="[prefixCls + '-upload-file-content-file-name-text']">
                   {{ fileName ? fileName : `${accept}文件` }}
                 </p>
               </Tooltip>
             </div>
             <Progress
               v-if="reportAdvanceTo"
-              class="float-r"
+              :class="prefixCls + '-float-r'"
               :percent="Number(percentage)"
               :stroke-width="6"></Progress>
             <div
               v-if="isSubmitAdvance || isTautology"
-              class="float-r"
-              :class="[prefixCls + '-upload-file-content-state']">
+              :class="[prefixCls + '-upload-file-content-state', prefixCls + '-float-r']">
               {{ upDateState }}
             </div>
             <div
               v-if="fileSize"
-              class="float-r"
-              :class="[prefixCls + '-upload-file-content-file-size']">
+              :class="[prefixCls + '-upload-file-content-file-size', prefixCls + '-float-r']">
               {{ fileSize }}
             </div>
           </div>
           <div :class="prefixCls + '-upload-file-operation'">
-            <!-- <Button v-if="isTautology"
-                    type="text"
-                    class="float-l"
-                    @click="tautology"> -->
             <span
               v-if="isTautology"
-              :class="prefixCls + '-upload-file-operation-span'"
-              class="float-l"
+              :class="[prefixCls + '-upload-file-operation-span', prefixCls + '-float-l']"
               @click="tautology">
               重试
             </span>
             <span
-              :class="prefixCls + '-upload-file-operation-span'"
-              class="m-l-16 float-r"
+              :class="[
+                prefixCls + '-upload-file-operation-span',
+                prefixCls + '-float-r',
+                prefixCls + '-delete-button'
+              ]"
               @click="clearFile">
               删除
             </span>
-            <!-- </Button> -->
-            <!-- <Button type="text"
-                    class="m-l-16 float-r"
-                    @click="clearFile">
-             <span>删除</span>
-            </Button> -->
           </div>
         </div>
         <p
-          class="margin-bilateral-10"
-          :class="[errorNumber === 0 ? 'color-black' : 'color-red']">
-          {{ successPrompt }}
+          :class="[
+            errorNumber === 0 ? prefixCls + '-black' : prefixCls + '-red',
+            prefixCls + '-hint-p'
+          ]">
+          {{ hintText }}
         </p>
         <div
           v-if="errorTable.length"
-          class="m-t-8"
           :class="prefixCls + '-error-tables'">
           <Table
             :columns="columnsHeader"
@@ -202,8 +185,8 @@ export default {
       type: Number,
       default: 0
     },
-    // 成功提示文字(String 非必填, 上传成功之后的提示)
-    successPrompt: {
+    // 上传文件后下方提示文字(String 非必填, 上传成功之后的提示)
+    hintText: {
       type: String,
       default: ''
     },
@@ -232,11 +215,10 @@ export default {
   },
   computed: {
     // 显示点击或者拖拽文字信息
-    typeTtext() {
+    typeText() {
       return this.type === 'drag' ? '点击或拖拽上传' : '点击上传'
     }
   },
-  mounted() {},
   methods: {
     // 上传之前调用
     beforeUploads(file) {
@@ -260,8 +242,8 @@ export default {
       }
       let { name } = file
       if (this.accept) {
-        let ischeckFile = this.checkFile(name)
-        if (!ischeckFile) {
+        let isCheckFile = this.checkFile(name)
+        if (!isCheckFile) {
           return false
         }
       }
@@ -276,24 +258,16 @@ export default {
       this.percentage = data.percentage
       this.onSuccess(data, file)
     },
-    // 获取插槽
-    isHasSolt(soltName = 'default') {
-      const { $scopedSlots } = this
-      const soltRef = $scopedSlots[soltName]
-      return typeof soltRef === 'function'
-    },
     // 上传进度大小
     handleProgress(data) {
       this.percentage = data.percentage
     },
-    // 重新上传
+    /**
+     * 重新上传触发，显示(需要重制, percentage: 上传进度 upDateState: 上传状态 totalNumber: 总条数 errorNumber: 失败条数 hintText: 成功提示文字)
+     */
     tautology() {
-      // 重新上传触发，显示(需要重制, percentage: 上传进度 upDateState: 上传状态 totalNumber: 总条数 errorNumber: 失败条数 successPrompt: 成功提示文字)
       this.$emit('tautology')
       this.clearFile()
-      // this.clearFileData()
-      // this.reportAdvanceTo = true
-      // this.clearData()
     },
     // 重置部分参数(重新上传重制部分参数)
     clearData() {
@@ -308,18 +282,6 @@ export default {
           this.$refs['up-data-file'].clearFiles()
         }, 30)
       }
-    },
-    // 是否预上传抛出(都是外部调用)
-    reportAdvanceToBack() {
-      return this.reportAdvanceTo
-    },
-    // 是否预提交了抛出(都是外部调用)
-    isSubmitAdvanceBack() {
-      return this.isSubmitAdvance
-    },
-    // 是否重试抛出(都是外部调用)
-    isTautologyBack() {
-      return this.isTautology
     },
     // 预提交变成true
     isSubmitAdvanceTrue() {
@@ -345,16 +307,16 @@ export default {
     reportAdvanceToFalse() {
       this.reportAdvanceTo = false
     },
-    // 可调用方法有四个验证、清除、上传失败、上传成功的方法
-    // 上传之前的验证方法
+    /**
+     * 可调用方法有四个验证、清除、上传失败、上传成功的方法
+     * 上传之前的验证方法
+     */
     validateData() {
-      let isSubmitAdvances = this.isSubmitAdvanceBack()
-      let isTautologys = this.isTautologyBack()
-      if (!isSubmitAdvances) {
+      if (!this.isSubmitAdvance) {
         this.$Message.error('选择要上传的文件!')
         return true
       }
-      if (isTautologys) {
+      if (this.isTautology) {
         this.$Message.error('请重新上传文件!')
         return true
       }
@@ -393,7 +355,9 @@ export default {
         return false
       }
     },
-    //  重制参数 (上传回调失败或者上传完成之后重制 errorTable: 错误列表 upDateState: 提示文字'失败')
+    /**
+     * 重制参数 (上传回调失败或者上传完成之后重制 errorTable: 错误列表 upDateState: 提示文字'失败')
+     */
     resetData() {
       this.reportAdvanceTo = false
       this.isSubmitAdvance = false

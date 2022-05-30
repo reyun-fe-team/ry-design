@@ -5,25 +5,49 @@
     &-container {
         width: 100%;
         height: 128px;
-        background: @text-color-white;
+        background: @white;
         border-radius: @border-radius-small;
         cursor: pointer;
         position: @position-relative;
         overflow: hidden;
         padding: @padding-md;
         &-text {
-            text-align: @text-center;
+            text-align: center;
             margin: 0;
             font-size: @text-size-sm;
         }
         &-info {
-            text-align: @text-center;
+            text-align: center;
             margin-top: 6px;
             height: 48px;
             &-image {
                 width: 60px;
             }
         }
+    }
+    &-text-p {
+        margin-top: 8px;
+    }
+    &-gray {
+        color: @text-color-gray;
+    }
+    &-red {
+        color: @error-color;
+    }
+    &-black {
+        color: @text-color;
+    }
+    &-hint-p {
+        margin: 0 10px;
+    }
+    &-float-l {
+        float: left;
+    }
+    &-float-r {
+        float: right;
+    }
+    &-delete-button {
+        margin-left: 16px;
     }
     &-upload-module {
       height: 128px;
@@ -35,7 +59,7 @@
     &-upload-file {
       margin: @margin-xs @margin-xs @margin-sm @margin-xs;
       border-radius: @border-radius-small;
-      border: @border-width-base @border-style-base @border-color-gray;
+      border: @border-width-base @border-style-base @border-color-gray-white;
       padding: 10px @padding-md 10px 10px;
       height: 100px;
       position: @position-relative;
@@ -43,8 +67,8 @@
           width: 80px;
           height: 80px;
           line-height: 80px;
-          text-align: @text-center;
-          background: @text-color-white-gray;
+          text-align: center;
+          background: @background-gray;
           position: @position-absolute;
           border-radius: @border-radius-small;
           left: 0;
@@ -58,7 +82,7 @@
           top: 10px;
           left: 90px;
           padding-left: @padding-sm;
-          &-fileName {
+          &-file-name {
               height: 80px;
               width: calc(~'100% - 200px');
               position: @position-relative;
@@ -81,7 +105,7 @@
                   line-height: 16px;
                   width: 100%;
                   word-break: break-all;
-                  color: @text-color-black;
+                  color: @text-color;
                   font-size: @font-size-small;
                   cursor: pointer;
               }
@@ -91,8 +115,8 @@
               height: 16px;
               line-height: 16px;
               margin: 32px 0;
-              text-align: @text-left;
-              color: @text-color-black;
+              text-align: left;
+              color: @text-color;
               font-size: @font-size-small;
           }
           .ivu-progress {
@@ -121,23 +145,26 @@
               height: 32px;
               cursor: pointer;
               padding: 0;
-              color: @text-color-bule;
+              color: @primary-color;
               margin: 25px 0;
           }
       }
     }
     &-error-tables {
-        margin: 0 10px;
+        margin: 8px 10px 0 10px;
         border: @border-width-base @border-style-base @border-color-gray-white;
         border-bottom: 0;
         .ivu-table-header {
-            height: 40px;
+            height: 48px;
             thead tr th {
-                height: 40px;
+                height: 48px;
                 &:first-child {
                     border-right: @border-width-base @border-style-base @border-color-gray-white;
                 }
             }
+        }
+        .ivu-table-row-hover td {
+            background: @table-hoer-color;
         }
         .ivu-table {
             td:first-child {

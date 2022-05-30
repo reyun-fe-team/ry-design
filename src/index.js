@@ -9,7 +9,7 @@ import Breadcrumb from './components/basics/breadcrumb'
 import MultiRadioButton from './components/basics/multi-radio-button'
 import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
-import uploadParticulars from './components/basics/upload-particulars'
+import uploadParticulars from './components/business/upload-particulars'
 // business
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'

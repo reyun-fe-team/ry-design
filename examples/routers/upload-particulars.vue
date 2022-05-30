@@ -1,7 +1,7 @@
 <template>
   <main class="upload-particulars">
     <div>
-      <span class="m-b-16">上传文件成功事例</span>
+      <span>上传文件成功事例</span>
       <rd-upload-particulars
         ref="upDataFiles"
         :action="action"
@@ -9,15 +9,15 @@
         :type="type"
         :up-date-state="upDateState"
         :error-number="errorNumber"
-        :success-prompt="successPrompt"
+        :hint-text="hintText"
         :error-table="errorTable"
         :columns-header="columnsHeader"
         :before-upload="beforeUpload"
         :on-success="handleSuccess"
         :on-error="handleError"
-        @tautology="clearDatas"
+        @tautology="clearData"
         @clearFile="clearFile"></rd-upload-particulars>
-      <span class="m-b-16">上传文件失败事例</span>
+      <span>上传文件失败事例</span>
       <rd-upload-particulars
         ref="upDataFilesError"
         :action="actionError"
@@ -25,13 +25,13 @@
         :type="typeError"
         :up-date-state="upDateStateError"
         :error-number="errorNumberError"
-        :success-prompt="successPromptError"
+        :hint-text="hintTextError"
         :error-table="errorTableError"
         :columns-header="columnsHeaderError"
         :before-upload="beforeUpload"
         :on-success="handleSuccessError"
         :on-error="handleErrorError"
-        @tautology="clearDatasError"
+        @tautology="clearDataError"
         @clearFile="clearFileError"></rd-upload-particulars>
     </div>
   </main>
@@ -43,8 +43,6 @@ export default {
     return {
       action: '', // 上传地址
       actionError: '', // 上传失败地址
-      upModalFormData: { file: '' },
-      upModalFormDataError: { file: '' },
       accept: '.xls',
       acceptError: '.xls',
       type: 'drag', // 上传方式
@@ -55,8 +53,8 @@ export default {
       errorNumberError: 0, // 失败条数 失败
       totalNumber: 0, // 总条数
       totalNumberError: 0, // 总条数 失败
-      successPrompt: '', // 成功提示文字
-      successPromptError: '', // 成功提示文字
+      hintText: '', // 成功提示文字
+      hintTextError: '', // 成功提示文字
       errorTable: [], // 错误的列表
       errorTableError: [], // 错误的列表 失败
       columnsHeader: [
@@ -87,13 +85,9 @@ export default {
   },
   methods: {
     // 上传文件 成功
-    beforeUpload(file) {
-      this.upModalFormData.file = file
-    },
+    beforeUpload() {},
     // 上传文件 失败
-    beforeUploadError(file) {
-      this.upModalFormDataError.file = file
-    },
+    beforeUploadError() {},
     // 上传完成操作 成功
     handleSuccess() {},
     // 上传完成操作 失败
@@ -108,35 +102,33 @@ export default {
     },
     // 重置上传及删除也用同样的方法 成功
     clearFile() {
-      this.upModalFormData.file = ''
-      this.clearDatas()
+      this.clearData()
     },
     // 重置上传及删除也用同样的方法 失败
     clearFileError() {
-      this.upModalFormData.file = ''
-      this.clearDatasError()
+      this.clearDataError()
     },
     // 重置部分参数 成功
-    clearDatas() {
+    clearData() {
       this.upDateState = ''
       this.totalNumber = 0
       this.errorNumber = 0
-      this.successPrompt = ''
+      this.hintText = ''
       this.errorTable = []
     },
     // 重置部分参数 失败
-    clearDatasError() {
+    clearDataError() {
       this.upDateStateError = ''
       this.totalNumberError = 0
       this.errorNumberError = 0
-      this.successPromptError = ''
+      this.hintTextError = ''
       this.errorTableError = []
     },
     // 重置参数
     resetData() {
       this.errorTable = []
       this.upDateState = '成功'
-      this.successPrompt = '上传成功'
+      this.hintText = '上传成功'
       this.$refs['upDataFiles'].succeedData()
     },
     // 重置参数
@@ -150,7 +142,7 @@ export default {
       this.totalNumberError = 1
       this.errorNumberError = 1
       this.upDateStateErrorS = '失败'
-      this.successPromptError = '上传失败'
+      this.hintTextError = '上传失败'
     }
   }
 }
