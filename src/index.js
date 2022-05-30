@@ -14,6 +14,7 @@ import uploadParticulars from './components/business/upload-particulars'
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'
 import EditRowBid from './components/business/edit-row-bid'
+import ReverseButton from './components/business/reverse-button'
 import { LayoutModuleConfig, LayoutModuleView } from './components/business/layout-module-config'
 
 import ViewUI from 'view-design'
@@ -44,6 +45,7 @@ const components = [
   RadioGroup,
   Modals,
   EditRowBid,
+  ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,
   uploadParticulars
@@ -72,6 +74,7 @@ export default {
   PageHeaderModule,
   Modals,
   EditRowBid,
+  ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,
   uploadParticulars

@@ -15,7 +15,8 @@ Vue.config.debug = true
 const router = new VueRouter({
   esModule: false,
   mode: 'history',
-  routes: [{
+  routes: [
+    {
       path: '/transfer',
       component: resolve => require(['./routers/transfer.vue'], resolve)
     },
@@ -62,6 +63,10 @@ const router = new VueRouter({
     {
       path: '/edit-row-bid',
       component: resolve => require(['./routers/edit-row-bid'], resolve)
+    },
+    {
+      path: '/reverse-button',
+      component: resolve => require(['./routers/reverse-button'], resolve)
     },
     {
       path: '/layout-module-config',
