@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:50:21
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-30 14:26:48
+ * @LastEditTime: 2022-05-30 14:39:39
  * @FilePath: /ry-design/src/components/basics/layout-module-config/layout-module-config.vue
  * @Description: 极速创建第一步模块布局组件
 -->
@@ -91,7 +91,7 @@ export default {
     // 根据配置的id，获取到的render函数列表
     slotRenders: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     }
   },
   data() {
