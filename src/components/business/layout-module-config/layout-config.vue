@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:50:21
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-30 14:39:39
+ * @LastEditTime: 2022-06-01 22:26:25
  * @FilePath: /ry-design/src/components/basics/layout-module-config/layout-module-config.vue
  * @Description: 极速创建第一步模块布局组件
 -->
@@ -12,19 +12,16 @@
     :style="wrapStyle">
     <div
       v-for="(row, rowIndex) in slotList"
-      :key="getKey(row)"
+      :key="rowIndex"
       :class="[prefixCls + '-row', { [prefixCls + '-row-line']: rowIndex !== slotList.length - 1 }]"
       :style="getRowStyle(rowIndex)">
       <div
         v-for="(col, colIndex) in row"
-        :key="getKey(col)"
+        :key="colIndex"
         :class="[prefixCls + '-col', { [prefixCls + '-col-line']: colIndex !== row.length - 1 }]"
         :style="getColStyle(row.length)">
-        <template v-if="renderSlots[col].t === 'render'">
-          <render :render="renderSlots[col].h"></render>
-        </template>
-        <template v-else-if="renderSlots[col].t === 'slot'">
-          <slot :name="col"></slot>
+        <template v-if="hasRender(col)">
+          <Render :render="renderSlots[col]"></Render>
         </template>
         <div
           v-else
@@ -41,13 +38,13 @@ const prefixCls = prefix + 'layout-module-config'
 const margin = 1
 
 import { valideSlotList } from '../../../util/layout-module-config'
-import { getKey, typeOf } from '../../../util/assist'
-import render from './../../base/render'
+import { typeOf } from '../../../util/assist'
+import Render from './../../base/render'
 
 export default {
   name: prefixCls,
   components: {
-    render
+    Render
   },
   props: {
     // 宽度的使用形式 等分 equalDivision 自定义比例 customScale
@@ -83,7 +80,7 @@ export default {
       validator: function (list) {
         const { pass, msg } = valideSlotList(list)
         if (!pass) {
-          throw new Error('无效的属性 slotList :' + msg)
+          console.error('无效的属性 slotList :' + msg)
         }
         return pass
       }
@@ -171,25 +168,13 @@ export default {
     // 配置的可以渲染的插槽的熏染行数(插槽和渲染函数混合用，渲染函数覆盖插槽)
     renderSlots() {
       let newObj = {}
-      for (let index = 0; index < this.slotList.length; index++) {
-        const arr = this.slotList[index]
-        for (let i = 0; i < arr.length; i++) {
-          const slotName = arr[i]
-          // 插槽
+      for (let ri = 0; ri < this.slotList.length; ri++) {
+        const row = this.slotList[ri]
+        for (let ci = 0; ci < row.length; ci++) {
+          const slotName = row[ci]
           const slotFunc = this.$scopedSlots[slotName]
           if (slotFunc && typeOf(slotFunc) === 'function') {
-            newObj[slotName] = {
-              t: 'slot',
-              h: slotFunc
-            }
-          }
-          // 渲染函数
-          const renderFunc = this.slotRenders[slotName]
-          if (renderFunc && typeOf(renderFunc) === 'function') {
-            newObj[slotName] = {
-              t: 'render',
-              h: renderFunc
-            }
+            newObj[slotName] = slotFunc
           }
         }
       }
@@ -197,8 +182,14 @@ export default {
     }
   },
   methods: {
-    // 获取key值
-    getKey,
+    // 有没有对应的渲染行数
+    hasRender(slotName) {
+      const h = this.renderSlots[slotName]
+      if (h && typeOf(h) === 'function') {
+        return true
+      }
+      return false
+    },
     // 获取行的样式
     getColStyle(closNum) {
       const { height } = this

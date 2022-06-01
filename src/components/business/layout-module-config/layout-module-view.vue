@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-25 14:53:12
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-30 14:35:00
+ * @LastEditTime: 2022-06-01 22:24:12
  * @FilePath: /ry-design/src/components/business/layout-module-config/module-view/index.vue
  * @Description: 单个模块的渲染组件
 -->
@@ -12,37 +12,22 @@
     <!-- 头部 -->
     <div :class="prefixCls + '-header'">
       <div class="title">{{ title }}</div>
-      <template v-if="renderSlots['header']">
-        <render
-          v-if="renderSlots['header'].t === 'render'"
-          :render="renderSlots['header'].h"></render>
-        <slot
-          v-if="renderSlots['header'].t === 'slot'"
-          name="header"></slot>
+      <template v-if="hasRender('header')">
+        <Render :render="renderSlots['header']"></Render>
       </template>
     </div>
     <!-- 显示内容区域 -->
     <div :class="prefixCls + '-main'">
-      <template v-if="renderSlots['main']">
-        <render
-          v-if="renderSlots['main'].t === 'render'"
-          :render="renderSlots['main'].h"></render>
-        <slot
-          v-if="renderSlots['main'].t === 'slot'"
-          name="main"></slot>
+      <template v-if="hasRender('main')">
+        <Render :render="renderSlots['main']"></Render>
       </template>
     </div>
     <!-- 尾部 -->
     <div
       v-if="showFooter"
       :class="prefixCls + '-footer'">
-      <template v-if="renderSlots['footer']">
-        <render
-          v-if="renderSlots['footer'].t === 'render'"
-          :render="renderSlots['footer'].h"></render>
-        <slot
-          v-if="renderSlots['footer'].t === 'slot'"
-          name="footer"></slot>
+      <template v-if="hasRender('footer')">
+        <Render :render="renderSlots['footer']"></Render>
       </template>
     </div>
   </div>
@@ -52,12 +37,12 @@ const { prefix } = require('../../../config.js')
 const prefixCls = prefix + 'layout-module-view'
 
 import { typeOf } from '../../../util/assist'
-import render from './../../base/render'
+import Render from './../../base/render'
 
 export default {
   name: prefixCls,
   components: {
-    render
+    Render
   },
   props: {
     // 名称
@@ -100,23 +85,26 @@ export default {
       for (let index = 0; index < slots.length; index++) {
         const slotName = slots[index]
         // 是否有渲染函数
-        const renderFunc = this.$props[slotName + 'Render']
+        const renderFunc = this.$props[slotName + 'Render'] || ''
+        let func = this.$scopedSlots[slotName] || ''
         if (renderFunc && typeOf(renderFunc) === 'function') {
-          obj[slotName] = {
-            t: 'render',
-            h: renderFunc
-          }
+          func = renderFunc
         }
-        // 插槽
-        const slotFunc = this.$scopedSlots[slotName]
-        if (slotFunc && typeOf(slotFunc) === 'function') {
-          obj[slotName] = {
-            t: 'slot',
-            h: slotFunc
-          }
+        if (func && typeOf(func) === 'function') {
+          obj[slotName] = func
         }
       }
       return obj
+    }
+  },
+  methods: {
+    // 有没有对应的渲染行数
+    hasRender(slotName) {
+      const h = this.renderSlots[slotName]
+      if (h && typeOf(h) === 'function') {
+        return true
+      }
+      return false
     }
   }
 }
