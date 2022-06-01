@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:50:21
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-01 22:26:25
+ * @LastEditTime: 2022-06-01 23:09:36
  * @FilePath: /ry-design/src/components/basics/layout-module-config/layout-module-config.vue
  * @Description: 极速创建第一步模块布局组件
 -->
@@ -11,9 +11,12 @@
     :class="[prefixCls]"
     :style="wrapStyle">
     <div
-      v-for="(row, rowIndex) in slotList"
+      v-for="(row, rowIndex) in newSlotList"
       :key="rowIndex"
-      :class="[prefixCls + '-row', { [prefixCls + '-row-line']: rowIndex !== slotList.length - 1 }]"
+      :class="[
+        prefixCls + '-row',
+        { [prefixCls + '-row-line']: rowIndex !== newSlotList.length - 1 }
+      ]"
       :style="getRowStyle(rowIndex)">
       <div
         v-for="(col, colIndex) in row"
@@ -38,6 +41,7 @@ const prefixCls = prefix + 'layout-module-config'
 const margin = 1
 
 import { valideSlotList } from '../../../util/layout-module-config'
+import { cloneDeep, isEqual, isEmpty } from 'lodash'
 import { typeOf } from '../../../util/assist'
 import Render from './../../base/render'
 
@@ -93,31 +97,32 @@ export default {
   },
   data() {
     return {
-      prefixCls
+      prefixCls,
+      newSlotList: []
     }
   },
   computed: {
     // 是否是有效的自定义宽度
     isValidPassCloWidth() {
-      const { widthType, cloWidthList, slotList } = this
+      const { widthType, cloWidthList, newSlotList } = this
       // 不是自定义比例
       if (widthType !== 'customScale') {
         // console.error('无效的属性 cloWidthList :没有使用 widthType 为 customScale')
         return false
       }
       // 配置数据不对
-      if (!Array.isArray(slotList) || !slotList.length) {
+      if (!Array.isArray(newSlotList) || !newSlotList.length) {
         console.error('无效的属性 cloWidthList : slotList 配置数据不对')
         return false
       }
       // 不是一样的长度
-      if (slotList.length !== cloWidthList.length) {
+      if (newSlotList.length !== cloWidthList.length) {
         console.error('无效的属性 cloWidthList : 与 slotList 不是一样的长度')
         return false
       }
       // 存在不是数字的项
       let nums = 0
-      for (let index = 0; index < slotList.length; index++) {
+      for (let index = 0; index < newSlotList.length; index++) {
         const ele = cloWidthList[index]
         if (typeOf(ele) !== 'number') {
           console.error('无效的属性 cloWidthList : 存在不是数字的项')
@@ -135,14 +140,14 @@ export default {
     },
     // 最小宽度
     minWidth() {
-      const counts = this.slotList.length
+      const counts = this.newSlotList.length
       return counts * +this.itemMinWidth
     },
     // 每一项的宽度
     itemWidth() {
-      const { minWidth, width, slotList } = this
+      const { minWidth, width, newSlotList } = this
       // 一共几个列数
-      const counts = slotList.length
+      const counts = newSlotList.length
       // 需要增加的 margin-right:1px 的个数
       const marginRights = (counts - 1) * margin
       let iw = ''
@@ -168,8 +173,8 @@ export default {
     // 配置的可以渲染的插槽的熏染行数(插槽和渲染函数混合用，渲染函数覆盖插槽)
     renderSlots() {
       let newObj = {}
-      for (let ri = 0; ri < this.slotList.length; ri++) {
-        const row = this.slotList[ri]
+      for (let ri = 0; ri < this.newSlotList.length; ri++) {
+        const row = this.newSlotList[ri]
         for (let ci = 0; ci < row.length; ci++) {
           const slotName = row[ci]
           const slotFunc = this.$scopedSlots[slotName]
@@ -179,6 +184,19 @@ export default {
         }
       }
       return newObj
+    }
+  },
+  watch: {
+    // 监测变化复制，隔离外部
+    slotList: {
+      deep: true,
+      immediate: true,
+      handler(newVal, oldVal) {
+        if (isEmpty(newVal) || !Array.isArray(newVal) || isEqual(newVal, oldVal)) {
+          return
+        }
+        this.newSlotList = cloneDeep(newVal)
+      }
     }
   },
   methods: {

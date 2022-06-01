@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-25 14:53:12
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-01 22:24:12
+ * @LastEditTime: 2022-06-01 23:11:38
  * @FilePath: /ry-design/src/components/business/layout-module-config/module-view/index.vue
  * @Description: 单个模块的渲染组件
 -->
@@ -56,14 +56,17 @@ export default {
       default: false
     },
     // 头部渲染函数
+    // eslint-disable-next-line vue/require-default-prop
     headerRender: {
       type: Function
     },
     // 尾部渲染函数
+    // eslint-disable-next-line vue/require-default-prop
     footerRender: {
       type: Function
     },
     // 中间内容渲染函数
+    // eslint-disable-next-line vue/require-default-prop
     mainRender: {
       type: Function
     }
