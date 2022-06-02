@@ -2,12 +2,12 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:49:35
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-26 18:35:56
+ * @LastEditTime: 2022-05-27 12:07:26
  * @FilePath: /ry-design/examples/routers/layout-module-config.vue
  * @Description: layout-module-config 组件示例
 -->
 <template>
-  <div>
+  <div style="margin: 20px">
     <Button
       style="margin: 20px"
       @click="toggleSort">

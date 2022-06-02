@@ -10,6 +10,7 @@
 | slotList     | 配置的组件 Id 列表，必填项，控制顺序和位置                  | Array  | -                                         | -      |
 | slotRenders  | 根据配置的 id，获取到的 render 函数列表                     | Object | -                                         | {}     |
 
+
 **组件 layout-module-view 的属性**
 
 | 参数         | 说明                 | 类型            |
