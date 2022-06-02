@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-25 14:53:12
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-26 18:31:11
+ * @LastEditTime: 2022-06-01 23:11:38
  * @FilePath: /ry-design/src/components/business/layout-module-config/module-view/index.vue
  * @Description: 单个模块的渲染组件
 -->
@@ -12,28 +12,22 @@
     <!-- 头部 -->
     <div :class="prefixCls + '-header'">
       <div class="title">{{ title }}</div>
-      <template v-if="'header' in renderSlots">
-        <Render
-          key="header"
-          :render="renderSlots['header']"></Render>
+      <template v-if="hasRender('header')">
+        <Render :render="renderSlots['header']"></Render>
       </template>
     </div>
     <!-- 显示内容区域 -->
     <div :class="prefixCls + '-main'">
-      <template v-if="'main' in renderSlots">
-        <Render
-          key="main"
-          :render="renderSlots['main']"></Render>
+      <template v-if="hasRender('main')">
+        <Render :render="renderSlots['main']"></Render>
       </template>
     </div>
     <!-- 尾部 -->
     <div
       v-if="showFooter"
       :class="prefixCls + '-footer'">
-      <template v-if="'footer' in renderSlots">
-        <Render
-          key="footer"
-          :render="renderSlots['footer']"></Render>
+      <template v-if="hasRender('footer')">
+        <Render :render="renderSlots['footer']"></Render>
       </template>
     </div>
   </div>
@@ -42,6 +36,7 @@
 const { prefix } = require('../../../config.js')
 const prefixCls = prefix + 'layout-module-view'
 
+import { typeOf } from '../../../util/assist'
 import Render from './../../base/render'
 
 export default {
@@ -61,14 +56,17 @@ export default {
       default: false
     },
     // 头部渲染函数
+    // eslint-disable-next-line vue/require-default-prop
     headerRender: {
       type: Function
     },
     // 尾部渲染函数
+    // eslint-disable-next-line vue/require-default-prop
     footerRender: {
       type: Function
     },
     // 中间内容渲染函数
+    // eslint-disable-next-line vue/require-default-prop
     mainRender: {
       type: Function
     }
@@ -86,21 +84,30 @@ export default {
       if (this.showFooter) {
         slots.push('footer')
       }
-      const { $scopedSlots } = this
       const obj = {}
       for (let index = 0; index < slots.length; index++) {
         const slotName = slots[index]
         // 是否有渲染函数
         const renderFunc = this.$props[slotName + 'Render'] || ''
-        let func = $scopedSlots[slotName] || ''
-        if (renderFunc && typeof renderFunc === 'function') {
+        let func = this.$scopedSlots[slotName] || ''
+        if (renderFunc && typeOf(renderFunc) === 'function') {
           func = renderFunc
         }
-        if (func && typeof func === 'function') {
+        if (func && typeOf(func) === 'function') {
           obj[slotName] = func
         }
       }
       return obj
+    }
+  },
+  methods: {
+    // 有没有对应的渲染行数
+    hasRender(slotName) {
+      const h = this.renderSlots[slotName]
+      if (h && typeOf(h) === 'function') {
+        return true
+      }
+      return false
     }
   }
 }
