@@ -78,18 +78,46 @@
           <div :class="prefixCls + '-upload-file-operation'">
             <span
               v-if="isTautology"
-              :class="[prefixCls + '-upload-file-operation-span', prefixCls + '-float-l']"
-              @click="tautology">
-              重试
+              class="display-flex"
+              :class="[prefixCls + '-upload-file-operation-span', prefixCls + '-float-l']">
+              <span @click="tautology">
+                {{ tautologyText }}
+              </span>
+              <slot name="tautologyTooltip">
+                <Tooltip
+                  v-if="isTautologyTooltip"
+                  placement="top"
+                  max-width="500"
+                  :transfer="true"
+                  :content="tautologyTooltipContent">
+                  <Icon
+                    type="ios-help-circle-outline"
+                    size="14"></Icon>
+                </Tooltip>
+              </slot>
             </span>
             <span
+              class="display-flex"
               :class="[
                 prefixCls + '-upload-file-operation-span',
                 prefixCls + '-float-r',
                 prefixCls + '-delete-button'
-              ]"
-              @click="clearFile">
-              删除
+              ]">
+              <span @click="clearFile">
+                {{ clearFileText }}
+              </span>
+              <slot name="clearFileTooltip">
+                <Tooltip
+                  v-if="isClearFileTooltip"
+                  placement="top"
+                  max-width="500"
+                  :transfer="true"
+                  :content="clearFileTooltipContent">
+                  <Icon
+                    type="ios-help-circle-outline"
+                    size="14"></Icon>
+                </Tooltip>
+              </slot>
             </span>
           </div>
         </div>
@@ -98,7 +126,7 @@
             errorNumber === 0 ? prefixCls + '-black' : prefixCls + '-red',
             prefixCls + '-hint-p'
           ]">
-          {{ hintText }}
+          <slot name="hintText">{{ hintText }}</slot>
         </p>
         <div
           v-if="errorTable.length"
@@ -200,6 +228,36 @@ export default {
     errorTable: {
       type: Array,
       default: () => []
+    },
+    // 重试文字 (String 非必穿，有就传没有就算了,默认为“重试”）
+    tautologyText: {
+      type: String,
+      default: '重试'
+    },
+    // 删除文字 (String 非必穿，有就传没有就算了,默认为“删除”）
+    clearFileText: {
+      type: String,
+      default: '删除'
+    },
+    // 重试后面问号的提示文字 （String 非必穿，默认为无）
+    tautologyTooltipContent: {
+      type: String,
+      default: ''
+    },
+    // 是否显示重试后面的问号是否显示（String 非必穿，默认为false）
+    isTautologyTooltip: {
+      type: Boolean,
+      default: false
+    },
+    // 是否显示删除后面的问号是否显示（String 非必穿，默认为false）
+    isClearFileTooltip: {
+      type: Boolean,
+      default: false
+    },
+    // 删除后面问号的提示文字 （String 非必穿，默认为无）
+    clearFileTooltipContent: {
+      type: String,
+      default: ''
     }
   },
   data() {

@@ -25,14 +25,21 @@
         :type="typeError"
         :up-date-state="upDateStateError"
         :error-number="errorNumberError"
-        :hint-text="hintTextError"
+        :is-tautology-tooltip="isTautologyTooltip"
+        :tautology-tooltip-content="tautologyTooltipContent"
+        :tautology-text="tautologyText"
         :error-table="errorTableError"
         :columns-header="columnsHeaderError"
         :before-upload="beforeUpload"
         :on-success="handleSuccessError"
         :on-error="handleErrorError"
         @tautology="clearDataError"
-        @clearFile="clearFileError"></rd-upload-particulars>
+        @clearFile="clearFileError">
+        <span slot="hintText">
+          {{ hintTextError }}
+          <i style="color: blue">下载失败数据</i>
+        </span>
+      </rd-upload-particulars>
     </div>
   </main>
 </template>
@@ -57,6 +64,9 @@ export default {
       hintTextError: '', // 成功提示文字
       errorTable: [], // 错误的列表
       errorTableError: [], // 错误的列表 失败
+      isTautologyTooltip: true, // 重试后面的问号是否显示 失败
+      tautologyTooltipContent: '这是一段提示文字', // 重试后面问号的文字提示内容 失败
+      tautologyText: '重新上传', // 重试按钮文字改变 失败
       columnsHeader: [
         // 错误列表表头
         {

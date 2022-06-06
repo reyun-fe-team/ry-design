@@ -84,7 +84,7 @@
           padding-left: @padding-sm;
           &-file-name {
               height: 80px;
-              width: calc(~'100% - 200px');
+              width: calc(~'100% - 250px');
               position: relative;
               &.active {
                   width: calc(~'100% - 134px');
@@ -134,7 +134,7 @@
           }
       }
       &-operation {
-          width: 70px;
+          min-width: 70px;
           height: 80px;
           line-height: 80px;
           position: absolute;
@@ -147,6 +147,9 @@
               padding: 0;
               color: @primary-color;
               margin: 25px 0;
+          }
+          &-span:first-child {
+              margin-right: 20px;
           }
       }
     }
