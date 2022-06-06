@@ -11,6 +11,12 @@
 | onRemove         | 文件移除钩子      | Function         | -          | {}                  |
 | onSuccess         | 文件上传成功的钩子                         | Function                | -         | {}                   |
 | onError         | 文件上传失败的钩子                        | Function                | -          | {}                  | upDateState         | 上传文件状态文字提示                        | String                | -          | ''                  | errorNumber         | 失败总条数同时控制提示文字是否变红               | Number                | -          |    0               | hintText         | 上传文件后下方提示文字                        | String                | -          | ''                  | columnsHeader         | 错误显示列表头部（必穿）                       | Array                | -          | []                  | errorTable         | 显示错误信息列表                        | Array                | -          | []                  |
+| tautologyText | 重试文字  (v0.0.2版本新增）                      | String                | -          | ''                  |
+| clearFileText | 删除文字 (v0.0.2版本新增）                       | String                | -          | ''                  |
+| tautologyTooltipContent | 重试后面问号的提示文字 (v0.0.2版本新增）                       | String                | -          | ''                  |
+| clearFileTooltipContent | 删除后面问号的提示文字(v0.0.2版本新增）                        | String                | -          | ''                  |
+| isTautologyTooltip | 重试后面的问号提示是否显示 (v0.0.2版本新增）                       | Boolean                | false/true         | false                  |
+| isClearFileTooltip | 删除后面的问号提示是否显示(v0.0.2版本新增）                   | Boolean                | false/true          | false                 |
 
 **UploadParticulars events**
 
@@ -36,3 +42,7 @@
 | upDateImage | 上传图片可替换，上传图片默认为小云朵的图片 | 
 | acceptText | 支持文件上传文字可替换，目前为“仅支持xxxx文件上传。” | 
 | iconFont | 上传完成过后icon显示的图标默认为excal | 
+| clearFileTooltip | 删除按钮后面放提示文字或其他 （v0.0.2版本新增） | 
+| tautologyTooltip | 重试按钮后面放提示文字或其他 （v0.0.2版本新增）| 
+| hintText | 第二步错误文字可替换，如使用可不穿hintText参数 （v0.0.2版本新增）| 
+
