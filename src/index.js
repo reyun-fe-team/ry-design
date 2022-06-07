@@ -9,7 +9,7 @@ import Breadcrumb from './components/basics/breadcrumb'
 import MultiRadioButton from './components/basics/multi-radio-button'
 import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
-import uploadParticulars from './components/business/upload-particulars'
+import batchUploadXls from './components/business/batch-upload-xls'
 // business
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'
@@ -48,7 +48,7 @@ const components = [
   ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,
-  uploadParticulars
+  batchUploadXls
 ]
 
 const install = function (Vue) {
@@ -77,5 +77,5 @@ export default {
   ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,
-  uploadParticulars
+  batchUploadXls
 }

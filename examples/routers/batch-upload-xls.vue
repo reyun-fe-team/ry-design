@@ -1,8 +1,8 @@
 <template>
-  <main class="upload-particulars">
+  <main class="batch-upload-xls">
     <div>
       <span>上传文件成功事例</span>
-      <rd-upload-particulars
+      <rd-batch-upload-xls
         ref="upDataFiles"
         :action="action"
         :accept="accept"
@@ -16,9 +16,9 @@
         :on-success="handleSuccess"
         :on-error="handleError"
         @tautology="clearData"
-        @clearFile="clearFile"></rd-upload-particulars>
+        @clearFile="clearFile"></rd-batch-upload-xls>
       <span>上传文件失败事例</span>
-      <rd-upload-particulars
+      <rd-batch-upload-xls
         ref="upDataFilesError"
         :action="actionError"
         :accept="acceptError"
@@ -39,7 +39,7 @@
           {{ hintTextError }}
           <i style="color: blue">下载失败数据</i>
         </span>
-      </rd-upload-particulars>
+      </rd-batch-upload-xls>
     </div>
   </main>
 </template>
