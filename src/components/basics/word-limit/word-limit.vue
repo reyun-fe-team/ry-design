@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main :class="prefixCls">
     <slot
       v-if="isInputSlot"
       name="input">
@@ -13,9 +13,7 @@
         :border="inputBorder"
         @on-change="onChange"></Input>
     </slot>
-    <span
-      :class="[prefixCls]"
-      style="display: inline-block">
+    <span style="display: inline-block">
       <span :class="lengthRule ? 'error' : ''">
         {{ len }}
       </span>
@@ -83,7 +81,7 @@ export default {
   data() {
     return {
       prefixCls,
-      inputValue: ''
+      inputValue: this.value
     }
   },
   computed: {
@@ -108,11 +106,9 @@ export default {
           this.inputValue = val
           this.onChange()
         }
-      },
-      immediate: true
+      }
     }
   },
-  created() {},
   methods: {
     onChange() {
       this.$emit('input', this.inputValue)
