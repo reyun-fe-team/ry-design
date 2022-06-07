@@ -20,7 +20,7 @@
               <!--直接slot能替换 -->
               <slot name="upDateImage">
                 <img
-                  src="../../../images/upload-particulars/upload-particulars.png"
+                  src="../../../images/batch-upload-xls/batch-upload-xls.png"
                   alt=""
                   :class="prefixCls + '-container-info-image'" />
               </slot>
@@ -141,7 +141,7 @@
 </template>
 <script>
 const { prefix } = require('../../../config.js')
-const prefixCls = `${prefix}upload-particulars`
+const prefixCls = `${prefix}batch-upload-xls`
 export default {
   name: prefixCls,
   props: {
