@@ -75,6 +75,10 @@ const router = new VueRouter({
     {
       path: '/upload-particulars',
       component: resolve => require(['./routers/upload-particulars'], resolve)
+    },
+    {
+      path: '/word-limit',
+      component: resolve => require(['./routers/word-limit'], resolve)
     }
   ]
 })
