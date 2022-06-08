@@ -15,16 +15,14 @@
         <rd-word-limit
           v-model="formData.value2"
           :max-len="maxLen"
-          :is-differ-word="false"
-          @on-validate="onValidate2"></rd-word-limit>
+          :is-differ-word="false"></rd-word-limit>
       </FormItem>
       <FormItem
         label="区分中英文,最大输入数量为英文字符"
         prop="value3">
         <rd-word-limit
           v-model="formData.value3"
-          :max-len="maxLen"
-          @on-validate="onValidate3"></rd-word-limit>
+          :max-len="maxLen"></rd-word-limit>
       </FormItem>
       <FormItem
         label="区分中英文,最大输入数量为汉字"
@@ -32,8 +30,7 @@
         <rd-word-limit
           v-model="formData.value4"
           :max-len="maxLen"
-          count-type="cn"
-          @on-validate="onValidate4"></rd-word-limit>
+          count-type="cn"></rd-word-limit>
       </FormItem>
       <FormItem
         label="不显示input边框"
@@ -41,8 +38,7 @@
         <rd-word-limit
           v-model="formData.value5"
           :max-len="maxLen"
-          :input-border="false"
-          @on-validate="onValidate5"></rd-word-limit>
+          :input-border="false"></rd-word-limit>
       </FormItem>
       <FormItem
         label="disabled"
@@ -56,6 +52,7 @@
   </main>
 </template>
 <script>
+import { count } from '@src/util/assist.js'
 const maxLen = 10
 export default {
   data() {
@@ -67,10 +64,6 @@ export default {
         value5: '',
         value6: '不可用'
       },
-      rules2: null,
-      rules3: null,
-      rules4: null,
-      rules5: null,
       maxLen,
       ruleValidate: {
         value2: [
@@ -78,7 +71,9 @@ export default {
             message: `长度不能超过${maxLen}个字符，请正确输入`,
             validator: (rule, value, cb) => {
               this.$nextTick(() => {
-                if (this.rules2) {
+                const len = count({ value, type: 'en', isDifferWord: false })
+                const flag = len > maxLen
+                if (flag) {
                   cb(new Error())
                 } else {
                   cb()
@@ -92,7 +87,9 @@ export default {
             message: `长度不能超过${maxLen}个字符，请正确输入`,
             validator: (rule, value, cb) => {
               this.$nextTick(() => {
-                if (this.rules3) {
+                const len = count({ value, type: 'en', isDifferWord: true })
+                const flag = len > maxLen
+                if (flag) {
                   cb(new Error())
                 } else {
                   cb()
@@ -106,7 +103,9 @@ export default {
             message: `长度不能超过${maxLen}个汉字，请正确输入`,
             validator: (rule, value, cb) => {
               this.$nextTick(() => {
-                if (this.rules4) {
+                const len = count({ value, type: 'cn', isDifferWord: true })
+                const flag = len > maxLen
+                if (flag) {
                   cb(new Error())
                 } else {
                   cb()
@@ -120,7 +119,9 @@ export default {
             message: `长度不能超过${maxLen}个字符，请正确输入`,
             validator: (rule, value, cb) => {
               this.$nextTick(() => {
-                if (this.rules5) {
+                const len = count({ value, type: 'en', isDifferWord: true })
+                const flag = len > maxLen
+                if (flag) {
                   cb(new Error())
                 } else {
                   cb()
@@ -130,20 +131,6 @@ export default {
           }
         ]
       }
-    }
-  },
-  methods: {
-    onValidate2(bool) {
-      this.rules2 = bool
-    },
-    onValidate3(bool) {
-      this.rules3 = bool
-    },
-    onValidate4(bool) {
-      this.rules4 = bool
-    },
-    onValidate5(bool) {
-      this.rules5 = bool
     }
   }
 }
