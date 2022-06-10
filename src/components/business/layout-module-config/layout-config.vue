@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:50:21
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-01 23:09:36
+ * @LastEditTime: 2022-06-10 19:23:40
  * @FilePath: /ry-design/src/components/basics/layout-module-config/layout-module-config.vue
  * @Description: 极速创建第一步模块布局组件
 -->
@@ -12,7 +12,7 @@
     :style="wrapStyle">
     <div
       v-for="(row, rowIndex) in newSlotList"
-      :key="rowIndex"
+      :key="row.join()"
       :class="[
         prefixCls + '-row',
         { [prefixCls + '-row-line']: rowIndex !== newSlotList.length - 1 }
@@ -20,7 +20,7 @@
       :style="getRowStyle(rowIndex)">
       <div
         v-for="(col, colIndex) in row"
-        :key="colIndex"
+        :key="col"
         :class="[prefixCls + '-col', { [prefixCls + '-col-line']: colIndex !== row.length - 1 }]"
         :style="getColStyle(row.length)">
         <template v-if="hasRender(col)">
