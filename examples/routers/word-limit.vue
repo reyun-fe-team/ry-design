@@ -71,7 +71,7 @@ export default {
             message: `长度不能超过${maxLen}个字符，请正确输入`,
             validator: (rule, value, cb) => {
               this.$nextTick(() => {
-                const len = count({ value, type: 'en', isDifferWord: false })
+                const len = count({ value: this.formData.value2, type: 'en', isDifferWord: false })
                 const flag = len > maxLen
                 if (flag) {
                   cb(new Error())
@@ -87,7 +87,7 @@ export default {
             message: `长度不能超过${maxLen}个字符，请正确输入`,
             validator: (rule, value, cb) => {
               this.$nextTick(() => {
-                const len = count({ value, type: 'en', isDifferWord: true })
+                const len = count({ value: this.formData.value3, type: 'en', isDifferWord: true })
                 const flag = len > maxLen
                 if (flag) {
                   cb(new Error())
@@ -103,7 +103,7 @@ export default {
             message: `长度不能超过${maxLen}个汉字，请正确输入`,
             validator: (rule, value, cb) => {
               this.$nextTick(() => {
-                const len = count({ value, type: 'cn', isDifferWord: true })
+                const len = count({ value: this.formData.value4, type: 'cn', isDifferWord: true })
                 const flag = len > maxLen
                 if (flag) {
                   cb(new Error())
@@ -119,7 +119,7 @@ export default {
             message: `长度不能超过${maxLen}个字符，请正确输入`,
             validator: (rule, value, cb) => {
               this.$nextTick(() => {
-                const len = count({ value, type: 'en', isDifferWord: true })
+                const len = count({ value: this.formData.value5, type: 'en', isDifferWord: true })
                 const flag = len > maxLen
                 if (flag) {
                   cb(new Error())
