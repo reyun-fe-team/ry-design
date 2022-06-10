@@ -103,7 +103,9 @@
                 prefixCls + '-float-r',
                 prefixCls + '-delete-button'
               ]">
-              <span @click="clearFile">
+              <span
+                v-if="isClearFile"
+                @click="clearFile">
                 {{ clearFileText }}
               </span>
               <slot name="clearFileTooltip">
@@ -258,6 +260,11 @@ export default {
     clearFileTooltipContent: {
       type: String,
       default: ''
+    },
+    // 是否显示删除按钮
+    isClearFile: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
