@@ -73,12 +73,12 @@ const router = new VueRouter({
       component: resolve => require(['./routers/layout-module-config'], resolve)
     },
     {
-      path: '/upload-particulars',
-      component: resolve => require(['./routers/upload-particulars'], resolve)
-    },
-    {
       path: '/word-limit',
       component: resolve => require(['./routers/word-limit'], resolve)
+    },
+    {
+      path: '/batch-upload-xls',
+      component: resolve => require(['./routers/batch-upload-xls'], resolve)
     }
   ]
 })
