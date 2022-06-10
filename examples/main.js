@@ -79,6 +79,10 @@ const router = new VueRouter({
     {
       path: '/batch-upload-xls',
       component: resolve => require(['./routers/batch-upload-xls'], resolve)
+    },
+    {
+      path: '/ellipsis',
+      component: resolve => require(['./routers/ellipsis'], resolve)
     }
   ]
 })
