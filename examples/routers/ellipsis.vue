@@ -22,6 +22,26 @@
         :lines="2"
         tooltip />
     </div>
+    <h2>示例4-slot 前缀 自定义省略 后缀</h2>
+    <div class="content">
+      <rd-ellipsis
+        :text="text"
+        :length="40"
+        tooltip>
+        <span slot="prefix">
+          前缀-
+          <Icon type="md-bulb" />
+        </span>
+        <span
+          slot="more"
+          style="color: red">
+          ...更多
+        </span>
+        <Icon
+          slot="suffix"
+          type="md-copy" />
+      </rd-ellipsis>
+    </div>
   </div>
 </template>
 
@@ -44,7 +64,7 @@ export default {
 .content {
   width: 300px;
   padding: 10px;
-  margin: 50px;
+  margin: 20px 0;
   background-color: #7bbfea;
 }
 </style>

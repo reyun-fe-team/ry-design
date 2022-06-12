@@ -1,8 +1,5 @@
 <template>
   <div class="rd-ellipsis">
-    <slot
-      name="prefix"
-      class="rd-ellipsis-prefix"></slot>
     <template v-if="computedReady">
       <Tooltip
         v-if="tooltip"
@@ -11,6 +8,9 @@
         :max-width="maxWidth"
         :placement="placement"
         :transfer="transfer">
+        <slot
+          name="prefix"
+          class="rd-ellipsis-prefix"></slot>
         <span
           ref="text"
           class="rd-ellipsis-text">
@@ -27,6 +27,9 @@
           class="rd-ellipsis-suffix"></slot>
       </Tooltip>
       <template v-else>
+        <slot
+          name="prefix"
+          class="rd-ellipsis-prefix"></slot>
         <span
           ref="text"
           class="rd-ellipsis-text">
@@ -46,6 +49,9 @@
     <div
       v-else
       class="rd-ellipsis-hidden">
+      <slot
+        name="prefix"
+        class="rd-ellipsis-prefix"></slot>
       <span
         ref="text"
         class="rd-ellipsis-text">
