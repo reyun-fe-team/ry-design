@@ -6,9 +6,9 @@
         ref="upDataFiles"
         :action="action"
         :accept="accept"
+        :format="format"
+        :is-succeed-type="isSucceedType"
         :type="type"
-        :up-date-state="upDateState"
-        :error-number="errorNumber"
         :hint-text="hintText"
         :error-table="errorTable"
         :columns-header="columnsHeader"
@@ -18,13 +18,14 @@
         @tautology="clearData"
         @clearFile="clearFile"></rd-batch-upload-xls>
       <span>上传文件失败事例</span>
+      {{ isSucceedType }}
       <rd-batch-upload-xls
         ref="upDataFilesError"
         :action="actionError"
         :accept="acceptError"
+        :format="formatError"
+        :is-succeed-type="isSucceedTypeError"
         :type="typeError"
-        :up-date-state="upDateStateError"
-        :error-number="errorNumberError"
         :is-tautology-tooltip="isTautologyTooltip"
         :tautology-tooltip-content="tautologyTooltipContent"
         :tautology-text="tautologyText"
@@ -33,6 +34,7 @@
         :before-upload="beforeUpload"
         :on-success="handleSuccessError"
         :on-error="handleErrorError"
+        :is-clear-file="false"
         @tautology="clearDataError"
         @clearFile="clearFileError">
         <span slot="hintText">
@@ -52,14 +54,12 @@ export default {
       actionError: '', // 上传失败地址
       accept: '.xls',
       acceptError: '.xls',
+      isSucceedType: 'none', // 成功状态状态驱动事件
+      isSucceedTypeError: 'none', // 失败状态状态驱动事件
+      format: ['xls'], // 支持文件类型
+      formatError: ['xls'], // 支持文件类型
       type: 'drag', // 上传方式
       typeError: 'drag', // 上传方式 失败
-      upDateState: '', // 上传状态
-      upDateStateError: '', // 上传状态 失败
-      errorNumber: 0, // 失败条数
-      errorNumberError: 0, // 失败条数 失败
-      totalNumber: 0, // 总条数
-      totalNumberError: 0, // 总条数 失败
       hintText: '', // 成功提示文字
       hintTextError: '', // 成功提示文字
       errorTable: [], // 错误的列表
@@ -120,26 +120,21 @@ export default {
     },
     // 重置部分参数 成功
     clearData() {
-      this.upDateState = ''
-      this.totalNumber = 0
-      this.errorNumber = 0
+      this.isSucceedType = 'none'
       this.hintText = ''
       this.errorTable = []
     },
     // 重置部分参数 失败
     clearDataError() {
-      this.upDateStateError = ''
-      this.totalNumberError = 0
-      this.errorNumberError = 0
+      this.isSucceedTypeError = 'none'
       this.hintTextError = ''
       this.errorTableError = []
     },
     // 重置参数
     resetData() {
+      this.isSucceedType = 'succeed'
       this.errorTable = []
-      this.upDateState = '成功'
       this.hintText = '上传成功'
-      this.$refs['upDataFiles'].succeedData()
     },
     // 重置参数
     resetDataError() {
@@ -149,9 +144,7 @@ export default {
           content: '错误条数1，2，3'
         }
       ]
-      this.totalNumberError = 1
-      this.errorNumberError = 1
-      this.upDateStateErrorS = '失败'
+      this.isSucceedTypeError = 'portionSucceed'
       this.hintTextError = '上传失败'
     }
   }
