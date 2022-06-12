@@ -6,7 +6,7 @@
 | headers              | 设置上传请求的头部 | Object                | -          | {}                |
 | uploadData       | 上传附带的额外参数 | Object                 | -          | {}                    |
 | accept     | 上传的文件类型       | String               | - | ''                 |
-| type | 上传方式  | String         | select（点击）/drag（拖拽）       | select                     |
+| type | 上传方式  | String         | select（点击）/drag（拖拽）       | drag                     |
 | beforeUpload         | 上传文件之前的钩子，验证拖拽格式很有用                        | Function                | -          | {} |
 | onRemove         | 文件移除钩子      | Function         | -          | {}                  |
 | onSuccess         | 文件上传成功的钩子                         | Function                | -         | {}                   |
