@@ -151,7 +151,7 @@ export default {
   name: prefixCls,
   props: {
     // 成功状态(String 必填) none 第一步 succeed 全部成功 error 失败 portionSucceed 部分成功
-    isSucceedType: {
+    value: {
       type: String,
       default: 'none',
       required: true
@@ -281,6 +281,7 @@ export default {
   data() {
     return {
       prefixCls,
+      isSucceedType: 'none',
       isSubmitAdvance: false, // 是否预提交了
       reportAdvanceTo: false, // 是否预上传中
       isTautology: false, // 是否重试
@@ -303,8 +304,12 @@ export default {
     }
   },
   watch: {
-    isSucceedType: {
-      handler(newValue) {
+    value: {
+      immediate: true,
+      handler(newValue, oldValue) {
+        if (newValue === oldValue) {
+          return
+        }
         switch (newValue) {
           case 'none':
             this.clearFile()
@@ -323,6 +328,7 @@ export default {
           default:
             this.clearFile()
         }
+        this.isSucceedType = newValue
       }
     }
   },

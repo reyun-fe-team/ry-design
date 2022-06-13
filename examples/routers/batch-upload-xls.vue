@@ -4,10 +4,10 @@
       <span>上传文件成功事例</span>
       <rd-batch-upload-xls
         ref="upDataFiles"
+        v-model="isSucceedType"
         :action="action"
         :accept="accept"
         :format="format"
-        :is-succeed-type="isSucceedType"
         :type="type"
         :hint-text="hintText"
         :error-table="errorTable"
@@ -18,13 +18,12 @@
         @tautology="clearData"
         @clearFile="clearFile"></rd-batch-upload-xls>
       <span>上传文件失败事例</span>
-      {{ isSucceedType }}
       <rd-batch-upload-xls
         ref="upDataFilesError"
+        v-model="isSucceedTypeError"
         :action="actionError"
         :accept="acceptError"
         :format="formatError"
-        :is-succeed-type="isSucceedTypeError"
         :type="typeError"
         :is-tautology-tooltip="isTautologyTooltip"
         :tautology-tooltip-content="tautologyTooltipContent"
@@ -34,7 +33,7 @@
         :before-upload="beforeUpload"
         :on-success="handleSuccessError"
         :on-error="handleErrorError"
-        :is-clear-file="false"
+        :is-clear-file="true"
         @tautology="clearDataError"
         @clearFile="clearFileError">
         <span slot="hintText">
@@ -116,6 +115,7 @@ export default {
     },
     // 重置上传及删除也用同样的方法 失败
     clearFileError() {
+      // this.isSucceedType = 'none'
       this.clearDataError()
     },
     // 重置部分参数 成功

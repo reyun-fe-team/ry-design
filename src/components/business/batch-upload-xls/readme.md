@@ -19,7 +19,7 @@ hintText         | 上传文件后下方提示文字                        | St
 | isTautologyTooltip | 重试后面的问号提示是否显示                       | Boolean                | false/true         | false                  |
 | isClearFileTooltip | 删除后面的问号提示是否显示                   | Boolean                | false/true          | false                 |
 | isClearFile | 是否显示删除按钮                   | Boolean                | false/true          | true                 |
-| isSucceedType | 成功状态                   | String                | none（第一步）/succeed（全部成功）/error（失败）/portionSucceed（部分成功）         | true                 |
+| v-model | 成功状态                   | String                | none（第一步）/succeed（全部成功）/error（失败）/portionSucceed（部分成功）         | true                 |
 | format | 支持文件类型                   | String                | 和iview上传一样支持数组验证         | true                 |
 
 **UploadParticulars events**
