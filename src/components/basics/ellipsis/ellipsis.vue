@@ -1,5 +1,5 @@
 <template>
-  <div :class="classes()">
+  <div :class="prefixCls">
     <template v-if="computedReady">
       <Tooltip
         v-if="tooltip"
@@ -11,13 +11,13 @@
         <slot name="prefix"></slot>
         <span
           ref="text"
-          :class="classes('-text')">
+          :class="[prefixCls + '-text']">
           {{ text }}
         </span>
         <span
           v-show="oversize"
           ref="more"
-          :class="classes('-more')">
+          :class="[prefixCls + '-more']">
           <slot name="more">...</slot>
         </span>
         <slot name="suffix"></slot>
@@ -26,13 +26,13 @@
         <slot name="prefix"></slot>
         <span
           ref="text"
-          :class="classes('-text')">
+          :class="[prefixCls + '-text']">
           {{ text }}
         </span>
         <span
           v-show="oversize"
           ref="more"
-          :class="classes('-more')">
+          :class="[prefixCls + '-more']">
           <slot name="more">...</slot>
         </span>
         <slot name="suffix"></slot>
@@ -40,17 +40,17 @@
     </template>
     <div
       v-else
-      :class="classes('-hidden')">
+      :class="[prefixCls + '-hidden']">
       <slot name="prefix"></slot>
       <span
         ref="text"
-        :class="classes('-text')">
+        :class="[prefixCls + '-text']">
         {{ text }}
       </span>
       <span
         v-show="oversize"
         ref="more"
-        :class="classes('-more')">
+        :class="[prefixCls + '-more']">
         <slot name="more">...</slot>
       </span>
       <slot name="suffix"></slot>
@@ -162,16 +162,10 @@ export default {
   },
   data() {
     return {
+      prefixCls,
       oversize: false,
       computedReady: false, // 先隐形计算，计算好后，再根据配置显示
       computedText: '' // 计算后的 text 内容
-    }
-  },
-  computed: {
-    classes() {
-      return (p = '') => {
-        return [prefixCls + p]
-      }
     }
   },
   watch: {
