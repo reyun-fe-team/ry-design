@@ -1,4 +1,4 @@
-import deleteModals from './upload-particulars.vue'
+import deleteModals from './delete-modals.vue'
 
 deleteModals.install = function (Vue) {
   Vue.component(deleteModals.name, deleteModals)

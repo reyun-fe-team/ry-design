@@ -1,7 +1,8 @@
 <template>
   <Modal
     v-model="hookValue"
-    :class-name="[prefixCls]"
+    :class="prefixCls"
+    :class-name="prefixCls + '-center-modal'"
     :closable="false"
     :mask-closable="maskClosble"
     :width="width"
@@ -30,12 +31,11 @@
 </template>
 
 <script>
-const { prefix } = require('../../../config.js')
-const prefixCls = prefix + 'layout-module-config'
+import { prefix } from '@src/config.js'
+const prefixCls = `${prefix}delete-modals`
 // 组件
 export default {
   name: prefixCls,
-  components: {},
   props: {
     width: {
       type: [Number, String],
@@ -66,9 +66,10 @@ export default {
   },
   data() {
     return {
+      prefixCls,
       hookValue: this.value,
       iconData: {
-        warning: require('@/src/images/delete-modals/warn.png')
+        warning: require('@src/images/delete-modals/warn.png')
       }
     }
   },
@@ -80,7 +81,6 @@ export default {
       }
     }
   },
-  created() {},
   methods: {
     handleOk() {
       this.$emit('on-ok')

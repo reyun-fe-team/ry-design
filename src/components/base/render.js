@@ -13,6 +13,6 @@ export default {
     render: Function
   },
   render: (h, ctx) => {
-    return ctx.props.render(h);
+    return ctx.props.render(h)
   }
-};
+}
