@@ -1,5 +1,5 @@
 <template>
-  <div class="rd-ellipsis">
+  <div :class="classes()">
     <template v-if="computedReady">
       <Tooltip
         v-if="tooltip"
@@ -8,64 +8,52 @@
         :max-width="maxWidth"
         :placement="placement"
         :transfer="transfer">
-        <slot
-          name="prefix"
-          class="rd-ellipsis-prefix"></slot>
+        <slot name="prefix"></slot>
         <span
           ref="text"
-          class="rd-ellipsis-text">
+          :class="classes('-text')">
           {{ text }}
         </span>
         <span
           v-show="oversize"
           ref="more"
-          class="rd-ellipsis-more">
+          :class="classes('-more')">
           <slot name="more">...</slot>
         </span>
-        <slot
-          name="suffix"
-          class="rd-ellipsis-suffix"></slot>
+        <slot name="suffix"></slot>
       </Tooltip>
       <template v-else>
-        <slot
-          name="prefix"
-          class="rd-ellipsis-prefix"></slot>
+        <slot name="prefix"></slot>
         <span
           ref="text"
-          class="rd-ellipsis-text">
+          :class="classes('-text')">
           {{ text }}
         </span>
         <span
           v-show="oversize"
           ref="more"
-          class="rd-ellipsis-more">
+          :class="classes('-more')">
           <slot name="more">...</slot>
         </span>
-        <slot
-          name="suffix"
-          class="rd-ellipsis-suffix"></slot>
+        <slot name="suffix"></slot>
       </template>
     </template>
     <div
       v-else
-      class="rd-ellipsis-hidden">
-      <slot
-        name="prefix"
-        class="rd-ellipsis-prefix"></slot>
+      :class="classes('-hidden')">
+      <slot name="prefix"></slot>
       <span
         ref="text"
-        class="rd-ellipsis-text">
+        :class="classes('-text')">
         {{ text }}
       </span>
       <span
         v-show="oversize"
         ref="more"
-        class="rd-ellipsis-more">
+        :class="classes('-more')">
         <slot name="more">...</slot>
       </span>
-      <slot
-        name="suffix"
-        class="rd-ellipsis-suffix"></slot>
+      <slot name="suffix"></slot>
     </div>
   </div>
 </template>
@@ -172,12 +160,18 @@ export default {
       default: 'bottom'
     }
   },
-  emits: ['on-show', 'on-hide'],
   data() {
     return {
       oversize: false,
       computedReady: false, // 先隐形计算，计算好后，再根据配置显示
       computedText: '' // 计算后的 text 内容
+    }
+  },
+  computed: {
+    classes() {
+      return (p = '') => {
+        return [prefixCls + p]
+      }
     }
   },
   watch: {
