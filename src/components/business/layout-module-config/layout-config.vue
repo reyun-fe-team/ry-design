@@ -177,9 +177,15 @@ export default {
         const row = this.newSlotList[ri]
         for (let ci = 0; ci < row.length; ci++) {
           const slotName = row[ci]
+          // 插槽转成渲染函数
           const slotFunc = this.$scopedSlots[slotName]
           if (slotFunc && typeOf(slotFunc) === 'function') {
             newObj[slotName] = slotFunc
+          }
+          // 传入的渲染函数覆盖插槽
+          const renderFunc = this.slotRenders[slotName]
+          if (renderFunc && typeOf(renderFunc) === 'function') {
+            newObj[slotName] = renderFunc
           }
         }
       }
