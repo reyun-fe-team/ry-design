@@ -122,3 +122,37 @@ export function getKey() {
     return v.toString(16)
   })
 }
+
+export function count({ value, type, isDifferWord }) {
+  let len = 0
+  // 输入内容不区分中英文，直接返回value的长度
+  if (!isDifferWord) {
+    len = value.length
+    return len
+  }
+  // 区分中英文
+  // type === 'en', 返回当前输入的字节数 （按英文展示输入数量）
+  // type === 'cn', 如果字节数为奇数，则字节数加1（按中文展示输入数量）
+  value &&
+    value.split('').forEach(item => {
+      const charCode = item.charCodeAt()
+      if (charCode >= 0 && charCode <= 128) {
+        len++
+      } else {
+        len += 2
+      }
+    })
+  // 按英文展示输入数量
+  if (type === 'en') {
+    return len
+  }
+  // 按中文展示输入数量时
+  if (type === 'cn') {
+    // 如果字节数为奇数，则字节数加1
+    if (len % 2 > 0) {
+      len++
+    }
+    len = len / 2
+  }
+  return len
+}
