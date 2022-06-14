@@ -10,8 +10,9 @@ import MultiRadioButton from './components/basics/multi-radio-button'
 import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
 import wordLimit from './components/basics/word-limit'
-import batchUploadXls from './components/business/batch-upload-xls'
+import Ellipsis from './components/basics/ellipsis'
 // business
+import batchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'
 import EditRowBid from './components/business/edit-row-bid'
@@ -50,7 +51,8 @@ const components = [
   LayoutModuleConfig,
   LayoutModuleView,
   wordLimit,
-  batchUploadXls
+  batchUploadXls,
+  Ellipsis
 ]
 
 const install = function (Vue) {
@@ -80,5 +82,6 @@ export default {
   LayoutModuleConfig,
   LayoutModuleView,
   wordLimit,
-  batchUploadXls
+  batchUploadXls,
+  Ellipsis
 }
