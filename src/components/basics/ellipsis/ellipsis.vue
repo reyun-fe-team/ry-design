@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-import { oneOf, getStyle } from '../../../util/index.js'
+import { oneOf, getStyle } from '@src/util/assist.js'
 
 const getStrFullLength = (str = '') =>
   str.split('').reduce((pre, cur) => {
@@ -84,11 +84,10 @@ const cutStrByFullLength = (str = '', maxLength) => {
     return pre
   }, '')
 }
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'ellipsis'
 export default {
   name: prefixCls,
-  // components: { Tooltip },
   props: {
     text: {
       type: String
