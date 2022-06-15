@@ -11,6 +11,7 @@ import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
 import wordLimit from './components/basics/word-limit'
 import Ellipsis from './components/basics/ellipsis'
+
 // business
 import batchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
@@ -18,6 +19,7 @@ import AccountList from './components/business/account-list'
 import EditRowBid from './components/business/edit-row-bid'
 import ReverseButton from './components/business/reverse-button'
 import { LayoutModuleConfig, LayoutModuleView } from './components/business/layout-module-config'
+import TextItemShow from './components/business/text-item-show'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -52,7 +54,8 @@ const components = [
   LayoutModuleView,
   wordLimit,
   batchUploadXls,
-  Ellipsis
+  Ellipsis,
+  TextItemShow
 ]
 
 const install = function (Vue) {
@@ -83,5 +86,6 @@ export default {
   LayoutModuleView,
   wordLimit,
   batchUploadXls,
-  Ellipsis
+  Ellipsis,
+  TextItemShow
 }

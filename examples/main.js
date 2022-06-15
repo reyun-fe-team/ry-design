@@ -83,6 +83,10 @@ const router = new VueRouter({
     {
       path: '/ellipsis',
       component: resolve => require(['./routers/ellipsis'], resolve)
+    },
+    {
+      path: '/text-item-show',
+      component: resolve => require(['./routers/text-item-show'], resolve)
     }
   ]
 })
