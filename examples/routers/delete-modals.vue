@@ -50,6 +50,24 @@ export default {
       hasClose: false
     }
   },
+  mounted() {
+    this.$Modal.confirm({
+      render: h => {
+        return h('Input', {
+          props: {
+            value: this.value,
+            autofocus: true,
+            placeholder: 'Please enter your name...'
+          },
+          on: {
+            input: val => {
+              this.value = val
+            }
+          }
+        })
+      }
+    })
+  },
   methods: {
     openClick() {
       this.isDeleteModals = true
