@@ -9,10 +9,12 @@ import Breadcrumb from './components/basics/breadcrumb'
 import MultiRadioButton from './components/basics/multi-radio-button'
 import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
-import wordLimit from './components/basics/word-limit'
+import WordLimit from './components/basics/word-limit'
 import Ellipsis from './components/basics/ellipsis'
+import TextEmojInput from './components/basics/text-emoj-input'
+
 // business
-import batchUploadXls from './components/business/batch-upload-xls'
+import BatchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'
 import EditRowBid from './components/business/edit-row-bid'
@@ -50,9 +52,10 @@ const components = [
   ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,
-  wordLimit,
-  batchUploadXls,
-  Ellipsis
+  WordLimit,
+  BatchUploadXls,
+  Ellipsis,
+  TextEmojInput
 ]
 
 const install = function (Vue) {
@@ -81,7 +84,8 @@ export default {
   ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,
-  wordLimit,
-  batchUploadXls,
-  Ellipsis
+  WordLimit,
+  BatchUploadXls,
+  Ellipsis,
+  TextEmojInput
 }

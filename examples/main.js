@@ -83,6 +83,10 @@ const router = new VueRouter({
     {
       path: '/ellipsis',
       component: resolve => require(['./routers/ellipsis'], resolve)
+    },
+    {
+      path: '/text-emoj-input',
+      component: resolve => require(['./routers/text-emoj-input'], resolve)
     }
   ]
 })
