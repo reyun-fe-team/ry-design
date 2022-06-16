@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:27:55
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-15 19:33:50
+ * @LastEditTime: 2022-06-16 14:48:38
  * @FilePath: /ry-design/src/components/basics/text-emoj-input/text-emoj-input.vue
  * @Description: 文本表情输入
 -->
@@ -42,7 +42,8 @@
         @keyup="keyupFn"
         @keydown="keydownFn"
         @mouseup="mouseupFn"
-        @input="inputFn"></div>
+        @input="inputFn"
+        @paste="handlerPaste"></div>
       <!-- limit 字数 -->
       <div class="menu-bottom">{{ totalStrLength }}/400</div>
     </div>
@@ -50,6 +51,9 @@
 </template>
 
 <script>
+import { getPlainText } from './../../../util/text-emoj-input'
+import { cloneDeep } from 'lodash'
+
 const { prefix } = require('../../../config.js')
 const prefixCls = prefix + 'text-emoj-input'
 
@@ -57,7 +61,6 @@ export default {
   name: prefixCls,
   data() {
     return {
-      qqfaceArr: [],
       showFace: false,
       emojiArr: [
         { icon: 'https://fc1tn.baidu.com/it/u=374192452,302848637&fm=202&mola=new&crop=v1' }
@@ -95,11 +98,22 @@ export default {
       let stringText = this.box.innerText //  拿到输入框中字符长度
       //  匹配出输入框中的图片表情包个数
       let emojiArr = stringHtml.match(reg) || []
-      console.log(emojiArr)
       //  输入框注入的字符等于表情包个数 加上字符串长度
       console.log(stringText.length + emojiArr.length)
       this.totalStrLength = stringText.length + emojiArr.length
       return stringText.length + emojiArr.length
+    },
+    handlerPaste(event, index) {
+      let oldVal = event.target.value
+      let items = event.clipboardData.items
+      for (let i = 0; i < items.length; i++) {
+        let item = items[i]
+        if (item.kind === 'string' && item.type.match('text/plain')) {
+          item.getAsString(str => {
+            console.log('str: ', str)
+          })
+        }
+      }
     },
     keydownFn(e) {
       // 因为先执行keydownup事件 当到达长度后重新计算字符数 避免到达字符限制输入框无法输入
