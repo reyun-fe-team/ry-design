@@ -385,8 +385,7 @@ export default {
     // 上传进度大小
     handleProgress(event) {
       event.target.onprogress = event => {
-        let uploadPercent = parseFloat(((event.loaded / event.total) * 100).toFixed(2))
-        this.percentage = uploadPercent
+        this.percentage = parseFloat(((event.loaded / event.total) * 100).toFixed(2))
       }
     },
     /**
