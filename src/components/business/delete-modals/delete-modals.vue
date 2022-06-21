@@ -14,9 +14,7 @@
         v-if="hasClose"
         :class="prefixCls + '-modal-content-close'"
         @click="handleClose">
-        <Icon
-          type="md-close"
-          size="16"></Icon>
+        <img :src="require('@src/images/delete-modals/close.svg')" />
       </div>
       <div :class="prefixCls + '-modal-content-icon'">
         <slot name="delete-modal-img">
@@ -69,7 +67,7 @@ export default {
       prefixCls,
       hookValue: this.value,
       iconData: {
-        warning: require('@src/images/delete-modals/warn.png')
+        warning: require('@src/images/delete-modals/warn-img.png')
       }
     }
   },
