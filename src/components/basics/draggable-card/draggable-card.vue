@@ -17,7 +17,7 @@
         :style="{ height: `${height}px` }">
         <li
           v-for="(item, index) in list"
-          :key="item.title"
+          :key="item.key"
           :draggable="!item.disabled"
           class="draggable-li"
           :class="{ 'draggable-li-disabled': item.disabled }"
@@ -32,7 +32,11 @@
               v-if="!item.disabled"
               type="md-reorder"></Icon>
           </span>
-          <span class="title">{{ item.title }}</span>
+          <span
+            class="title"
+            :title="item.label">
+            {{ item.label }}
+          </span>
           <span v-if="!item.disabled">
             <Icon
               v-if="setMoveUpward(index)"
@@ -44,7 +48,7 @@
               class="remove-icon"
               type="md-close-circle"
               color="rgba(158,186,223,1)"
-              @click="onRemove(index)"></Icon>
+              @click="onRemove(index, item)"></Icon>
           </span>
         </li>
       </transition-group>
@@ -63,6 +67,7 @@
 const { prefix } = require('../../../config.js')
 const prefixCls = prefix + 'draggable-card'
 import _findLastIndex from 'lodash/findIndex'
+import _cloneDeep from 'lodash/cloneDeep'
 
 export default {
   name: prefixCls,
@@ -74,18 +79,41 @@ export default {
     isClear: {
       type: Boolean,
       default: true
+    },
+    data: {
+      type: Array,
+      default: () => []
+    },
+    dataConfig: {
+      type: Object,
+      default: () => {
+        return {
+          label: 'label',
+          key: 'key'
+        }
+      }
+    },
+    isUpdate: {
+      type: Boolean,
+      default: true
+    },
+    disabledOnTop: {
+      type: Boolean,
+      default: false
+    },
+    beforeRemove: {
+      type: Function,
+      default: () => true
+    },
+    clearAllFunc: {
+      type: Function,
+      default: res => res.disabled
     }
   },
   data() {
     return {
-      list: [
-        { title: '列表1', disabled: false },
-        { title: '列表2', disabled: false },
-        { title: '列表3', disabled: false },
-        { title: '列表4' },
-        { title: '列表5' },
-        { title: '列表6' }
-      ],
+      list: [],
+      timer: null,
       dragIndex: '',
       enterIndex: ''
     }
@@ -96,11 +124,21 @@ export default {
     },
     headerTxt() {
       return `已选${this.list.length}列`
+    },
+    ids() {
+      return this.list.map(item => item[this.dataConfig.key])
     }
   },
   watch: {
-    list: {
+    data: {
       deep: true,
+      immediate: true,
+      handler(now) {
+        this.list = this.initdata(now)
+        this.emitData()
+      }
+    },
+    ids: {
       handler() {
         this.emitData()
       }
@@ -135,23 +173,48 @@ export default {
       this.list.splice(lastIndex, 0, copyData)
     },
     // 删除
-    onRemove(index) {
-      this.list.splice(index, 1)
+    async onRemove(index, item) {
+      if (await this.beforeRemove([item])) {
+        this.list.splice(index, 1)
+      }
     },
+    // 清空
+    async onClear() {
+      if (await this.beforeRemove(this.list)) {
+        this.list = this.list.filter(item => this.clearAllFunc(item))
+      }
+    },
+
+    // html
     // 控制置顶icon是否显示
     setMoveUpward(index) {
       let idx = index !== 0 ? index - 1 : index
       // 不是第一个 & 上一个不是禁用的
       return index !== 0 && !this.list[idx].disabled
     },
-    // 清空
-    onClear() {
-      this.list = this.list.filter(item => item.disabled)
-    },
 
     // 实例调用
+    initdata(data) {
+      let arr = data.map(item => {
+        return {
+          ...item,
+          label: item[this.dataConfig.label],
+          key: item[this.dataConfig.key]
+        }
+      })
+      if (this.disabledOnTop) {
+        arr = [].concat(
+          arr.filter(item => item.disabled),
+          arr.filter(item => !item.disabled)
+        )
+      }
+      return this.isUpdate ? arr : _cloneDeep(arr)
+    },
     emitData() {
-      this.$emit('on-change', this.list)
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        this.$emit('on-change', this.list)
+      }, 500)
     }
   }
 }
