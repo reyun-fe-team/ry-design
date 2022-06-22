@@ -1,0 +1,55 @@
+@reverse-button: ~"@{css-prefix}reverse-button";
+
+.@{reverse-button} {
+    &-select {
+        width: 120px;
+
+        span {
+            display: flex;
+            align-items: center;
+            .text-limit();
+
+            :first-child {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    &-edit {
+        width: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: @font-size-base;
+
+        :first-child {
+            flex-shrink: 1;
+            margin-right: 10px;
+            .text-limit();
+        }
+
+        .disabled {  
+            cursor: not-allowed;
+            color: @btn-disable-color;
+            background-color: @btn-disable-background-color;
+            border-color: @border-color-base;
+        }
+    }
+
+    &-loading {
+        width: 280px;
+        display: flex;
+        align-items: center;
+        justify-content:center;
+        span {
+            flex-shrink: 1;
+            margin-right: 10px;
+            .text-limit();
+        }
+    }
+
+    .text-limit {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+}

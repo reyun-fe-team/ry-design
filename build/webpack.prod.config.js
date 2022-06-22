@@ -69,7 +69,8 @@ module.exports = {
   plugins: [new ExtractTextPlugin('styles/[name].css')],
   resolve: {
     alias: {
-      vue$: 'vue/dist/vue.esm.js'
+      vue$: 'vue/dist/vue.esm.js',
+      '@src': path.join(__dirname, '../src')
     },
     extensions: ['*', '.js', '.vue', '.json']
   },

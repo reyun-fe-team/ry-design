@@ -29,11 +29,11 @@
           <span :class="prefixCls + '-draggable-li-move-icon'">
             <img
               v-if="item.disabled"
-              src="./asset/unlock.png"
+              src="../../../images/draggable-card/unlock.png"
               :class="prefixCls + '-draggable-li-icon-unlock'" />
             <img
               v-if="!item.disabled"
-              src="./asset/reorder.png"
+              src="../../../images/draggable-card/reorder.png"
               :class="prefixCls + '-draggable-li-icon-reorder'" />
           </span>
           <span
@@ -44,12 +44,11 @@
           <span v-if="!item.disabled">
             <img
               v-if="setMoveUpward(index)"
-              
-              src="./asset/top.png"
+              src="../../../images/draggable-card/top.png"
               :class="prefixCls + '-draggable-li-top-icon'"
               @click="setMoveTop(index)" />
             <img
-              src="./asset/close.png"
+              src="../../../images/draggable-card/close.png"
               :class="prefixCls + '-draggable-li-icon-remove'"
               @click="onRemove(index, item)" />
           </span>
@@ -67,7 +66,7 @@
 </template>
 
 <script>
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'draggable-card'
 import _findLastIndex from 'lodash/findIndex'
 import _cloneDeep from 'lodash/cloneDeep'

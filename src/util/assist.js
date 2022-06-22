@@ -1,5 +1,5 @@
-function typeOf(obj) {
-  const toString = Object.prototype.toString;
+export function typeOf(obj) {
+  const toString = Object.prototype.toString
   const map = {
     '[object Boolean]': 'boolean',
     '[object Number]': 'number',
@@ -11,96 +11,190 @@ function typeOf(obj) {
     '[object Undefined]': 'undefined',
     '[object Null]': 'null',
     '[object Object]': 'object'
-  };
-  return map[toString.call(obj)];
+  }
+  return map[toString.call(obj)]
 }
 
 // deepCopy
-function deepCopy(data) {
-  const t = typeOf(data);
-  let o;
+export function deepCopy(data) {
+  const t = typeOf(data)
+  let o
 
   if (t === 'array') {
-    o = [];
+    o = []
   } else if (t === 'object') {
-    o = {};
+    o = {}
   } else {
-    return data;
+    return data
   }
 
   if (t === 'array') {
     for (let i = 0; i < data.length; i++) {
-      o.push(deepCopy(data[i]));
+      o.push(deepCopy(data[i]))
     }
   } else if (t === 'object') {
     for (let i in data) {
-      o[i] = deepCopy(data[i]);
+      o[i] = deepCopy(data[i])
     }
   }
-  return o;
+  return o
 }
 
-export { deepCopy };
-
-function findComponentUpward(context, componentName, componentNames) {
+export function findComponentUpward(context, componentName, componentNames) {
   if (typeof componentName === 'string') {
-    componentNames = [componentName];
+    componentNames = [componentName]
   } else {
-    componentNames = componentName;
+    componentNames = componentName
   }
 
-  let parent = context.$parent;
-  let name = parent.$options.name;
+  let parent = context.$parent
+  let name = parent.$options.name
   while (parent && (!name || componentNames.indexOf(name) < 0)) {
-    parent = parent.$parent;
+    parent = parent.$parent
     if (parent) {
-      name = parent.$options.name;
+      name = parent.$options.name
     }
   }
-  return parent;
+  return parent
 }
-export { findComponentUpward };
 
 export function findComponentDownward(context, componentName) {
-  const childrens = context.$children;
-  let children = null;
+  const childrens = context.$children
+  let children = null
 
   if (childrens.length) {
     for (const child of childrens) {
-      const name = child.$options.name;
+      const name = child.$options.name
       if (name === componentName) {
-        children = child;
-        break;
+        children = child
+        break
       } else {
-        children = findComponentDownward(child, componentName);
+        children = findComponentDownward(child, componentName)
         if (children) {
-          break;
+          break
         }
       }
     }
   }
-  return children;
+  return children
 }
 
 export function findComponentsDownward(context, componentName) {
   return context.$children.reduce((components, child) => {
     if (child.$options.name === componentName) {
-      components.push(child);
+      components.push(child)
     }
-    const foundChilds = findComponentsDownward(child, componentName);
-    return components.concat(foundChilds);
-  }, []);
+    const foundChilds = findComponentsDownward(child, componentName)
+    return components.concat(foundChilds)
+  }, [])
 }
 
 export function findComponentsUpward(context, componentName) {
-  let parents = [];
-  const parent = context.$parent;
+  let parents = []
+  const parent = context.$parent
   if (parent) {
     if (parent.$options.name === componentName) {
-      parents.push(parent);
+      parents.push(parent)
     }
-    return parents.concat(findComponentsUpward(parent, componentName));
+    return parents.concat(findComponentsUpward(parent, componentName))
   } else {
-    return [];
+    return []
+  }
+}
+
+// 数组是否有重复的值
+export function isArrRepeat(arr) {
+  let hash = {}
+  for (let i in arr) {
+    if (hash[arr[i]]) {
+      return true
+    }
+    hash[arr[i]] = true
+  }
+  return false
+}
+
+// 唯一key v-for
+export function getKey() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    let r = (Math.random() * 16) | 0
+    let v = c === 'x' ? r : (r & 0x3) | 0x8
+    return v.toString(16)
+  })
+}
+
+export function count({ value, type, isDifferWord }) {
+  let len = 0
+  // 输入内容不区分中英文，直接返回value的长度
+  if (!isDifferWord) {
+    len = value.length
+    return len
+  }
+  // 区分中英文
+  // type === 'en', 返回当前输入的字节数 （按英文展示输入数量）
+  // type === 'cn', 如果字节数为奇数，则字节数加1（按中文展示输入数量）
+  value &&
+    value.split('').forEach(item => {
+      const charCode = item.charCodeAt()
+      if (charCode >= 0 && charCode <= 128) {
+        len++
+      } else {
+        len += 2
+      }
+    })
+  // 按英文展示输入数量
+  if (type === 'en') {
+    return len
+  }
+  // 按中文展示输入数量时
+  if (type === 'cn') {
+    // 如果字节数为奇数，则字节数加1
+    if (len % 2 > 0) {
+      len++
+    }
+    len = len / 2
+  }
+  return len
+}
+
+const isClient = typeof window !== 'undefined'
+
+const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g
+const MOZ_HACK_REGEXP = /^moz([A-Z])/
+
+function camelCase(name) {
+  return name
+    .replace(SPECIAL_CHARS_REGEXP, function (_, separator, letter, offset) {
+      return offset ? letter.toUpperCase() : letter
+    })
+    .replace(MOZ_HACK_REGEXP, 'Moz$1')
+}
+
+// 判断参数是否是其中之一
+export function oneOf(value, validList) {
+  for (let i = 0; i < validList.length; i++) {
+    if (value === validList[i]) {
+      return true
+    }
+  }
+  return false
+}
+// getStyle
+export function getStyle(element, styleName) {
+  if (!isClient) {
+    return
+  }
+  if (!element || !styleName) {
+    return null
+  }
+  styleName = camelCase(styleName)
+  if (styleName === 'float') {
+    styleName = 'cssFloat'
+  }
+  try {
+    const computed = document.defaultView.getComputedStyle(element, '')
+    return element.style[styleName] || computed ? computed[styleName] : null
+  } catch (e) {
+    return element.style[styleName]
   }
 }
