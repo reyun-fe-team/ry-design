@@ -1,10 +1,10 @@
 <template>
-  <main>
+  <div>
     <rd-multi-radio-button
       v-model="value"
       :button-list="buttonList"
       :disabled="handleDisabled"></rd-multi-radio-button>
-  </main>
+  </div>
 </template>
 <script>
 export default {

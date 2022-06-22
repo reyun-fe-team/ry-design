@@ -25,12 +25,14 @@
           @dragover="dragover($event)"
           @dragstart="dragstart(item, index)">
           <span class="move-icon">
-            <Icon
+            <img
               v-if="item.disabled"
-              type="ios-unlock"></Icon>
-            <Icon
+              src="./asset/unlock.png"
+              class="icon-unlock" />
+            <img
               v-if="!item.disabled"
-              type="md-reorder"></Icon>
+              src="./asset/reorder.png"
+              class="icon-reorder" />
           </span>
           <span
             class="title"
@@ -44,11 +46,10 @@
               type="md-download"
               style="transform: rotate(180deg)"
               @click="setMoveTop(index)"></Icon>
-            <Icon
-              class="remove-icon"
-              type="md-close-circle"
-              color="rgba(158,186,223,1)"
-              @click="onRemove(index, item)"></Icon>
+            <img
+              src="./asset/close.png"
+              class="icon-remove"
+              @click="onRemove(index, item)" />
           </span>
         </li>
       </transition-group>

@@ -1,11 +1,11 @@
 <template>
-  <main>
+  <div>
     <rd-radio-group
       v-model="value"
       :default-list="list"
       :is-disabled-item-fun="isDisabledItemFun"
       @on-change="onChange"></rd-radio-group>
-  </main>
+  </div>
 </template>
 
 <script>

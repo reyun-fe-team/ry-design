@@ -1,11 +1,12 @@
 ### 参数说明
-height Number 400 内容的高
-isClear Boolean true 清空按钮
+
 data Array [] 原数据
     label: 标题
     key: 唯一ID
     disabled: 禁用
 dataConfig Object { lable: 'label', key: 'key' } 配置原数据键值
+height Number 400 内容的高
+isClear Boolean true 清空按钮
 isUpdate Boolean true 是否修改原数据
 disabledOnTop Boolean false 禁用项置顶
 beforeRemove Function () => true 删除(清空)之前,接受一个promise

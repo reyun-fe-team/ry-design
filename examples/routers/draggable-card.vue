@@ -1,5 +1,5 @@
 <template>
-  <main class="draggable-card-class">
+  <div class="draggable-card-class">
     <div class="show-data">
       <div class="before">
         <p>之前</p>
@@ -16,7 +16,7 @@
       :before-remove="beforeRemove"
       :clear-all-func="() => false"
       @on-change="onChange"></rd-draggable-card>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -35,9 +35,12 @@ export default {
     }
   },
   methods: {
-    beforeRemove(items) {
-      console.log(items)
+    beforeRemove() {
       return true
+      // return new Promise((resolve, reject) => {
+      //   resolve(false)
+      //   reject(new Error('俄'))
+      // })
     },
     onChange(data) {
       this.nowData = data

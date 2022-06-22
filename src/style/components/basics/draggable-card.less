@@ -1,18 +1,16 @@
 @draggable-card: ~"@{css-prefix}draggable-card";
 
 .@{draggable-card} {
-    width: 300px;
-
+    width: 232px;
     .header {
-        height: 38px;
+        height: 40px;
         line-height: 38px;
-        border-radius: 5px 5px 0 0;
-        background-color: #f7faff;
-        border: 1px solid #e1e3e7;
+        background-color: #f9f9f9;
+        border: 1px solid #DCDEE2;
         padding: 0 10px;
         font-size: 12px;
-        font-weight: 400;
-        color: #252936;
+        font-weight: 600;
+        color: #151B39;
         display: flex;
         justify-content: space-between;
 
@@ -23,11 +21,11 @@
     }
 
     .draggable-ui {
-        list-style: none;
-        padding: 10px;
+        padding: 10px 16px 10px 10px;
         border: 1px solid #e3e5e7;
         overflow-y: auto;
         border-top: 0;
+        list-style: none;
 
         .drag-move {
             transition: transform .3s;
@@ -38,11 +36,10 @@
             height: 32px;
             margin-bottom: 8px;
             padding: 0 10px;
-            background-color: #eaf3ff;
-            border: 1px solid #e3e5e7;
+            background-color: #f3f3f4;
             border-radius: 3px;
             font-size: 12px;
-            color: #4b5276;
+            color: #151B39;
             display: flex;
             align-items: center;
 
@@ -57,14 +54,21 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
-
-            i {
-                color: #aeb3c4;
-                font-size: 16px;
+            .icon-unlock {
+                width: 10px;
+                height: 12px;
             }
-
-            .remove-icon,
+            .icon-reorder {
+                width: 12px;
+                height: 9px;
+            }
+            .icon-remove {
+                width: 8px;
+                height: 8px;
+            }
+            .icon-remove,
             .top-icon {
+                font-size: 8px;
                 margin-left: 5px;
                 cursor: pointer;
             }
