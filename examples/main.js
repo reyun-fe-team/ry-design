@@ -73,6 +73,10 @@ const router = new VueRouter({
       component: resolve => require(['./routers/layout-module-config'], resolve)
     },
     {
+      path: '/draggable-card',
+      component: resolve => require(['./routers/draggable-card'], resolve)
+    },
+    {
       path: '/word-limit',
       component: resolve => require(['./routers/word-limit'], resolve)
     },

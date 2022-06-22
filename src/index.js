@@ -9,6 +9,8 @@ import Breadcrumb from './components/basics/breadcrumb'
 import MultiRadioButton from './components/basics/multi-radio-button'
 import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
+import DraggableCard from './components/basics/draggable-card'
+
 import wordLimit from './components/basics/word-limit'
 import Ellipsis from './components/basics/ellipsis'
 // business
@@ -50,6 +52,7 @@ const components = [
   ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,
+  DraggableCard,
   wordLimit,
   batchUploadXls,
   Ellipsis
@@ -83,5 +86,6 @@ export default {
   LayoutModuleView,
   wordLimit,
   batchUploadXls,
-  Ellipsis
+  Ellipsis,
+  DraggableCard
 }
