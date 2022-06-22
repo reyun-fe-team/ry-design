@@ -1,14 +1,15 @@
 @delete-modals: ~"@{css-prefix}delete-modals";
 .@{delete-modals} {
+    width: 100%;
     &-modal-content {
       position  : relative;
       text-align: center;
-    
-    
+      width: 100%;
+      padding: 8px 8px 0 8px;
       &-close {
         position: absolute;
-        top     : -8px;
-        right   : -8px;
+        top     : 0px;
+        right   : 0px;
         cursor  : pointer;
         img {
           width: 12px;
@@ -36,31 +37,26 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        .ivu-modal{
-            top: 0;
-        }
-        .ivu-modal-body {
-          padding: 24px;
-        }
-        .ivu-modal-footer {
-          padding: 0 24px 24px;
-          font-size: 0;
-          text-align: center;
-          border-top: 0;
-          .ivu-btn {
-            width: 104px;
-            font-size: 12px;
-            border-radius: 3px;
-            height: 32px;
-          }
-          .ivu-btn-text {
-            border-color: #DCDEE2;
-            color: #151B39;
-          }
-          .ivu-btn-primary {
-            background: #3A88FA;
-          }
-        }
     }
 }
-  
+
+// .ivu-modal-footer,
+// .ivu-modal-confirm-footer {
+//   padding: 0 8px 8px;
+//   font-size: 0;
+//   text-align: center;
+//   border-top: 0;
+//   .ivu-btn {
+//     width: 104px;
+//     height: 32px;
+//     font-size: 12px;
+//     border-radius: 3px;
+//   }
+//   .ivu-btn-text {
+//     color: #151b39;
+//     border-color: #dcdee2;
+//   }
+//   .ivu-btn-primary {
+//     background: #3a88fa;
+//   }
+// }

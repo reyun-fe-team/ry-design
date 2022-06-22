@@ -79,10 +79,6 @@ const router = new VueRouter({
     {
       path: '/batch-upload-xls',
       component: resolve => require(['./routers/batch-upload-xls'], resolve)
-    },
-    {
-      path: '/delete-modals',
-      component: resolve => require(['./routers/delete-modals'], resolve)
     }
   ]
 })
