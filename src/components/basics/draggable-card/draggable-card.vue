@@ -1,10 +1,10 @@
 <template>
   <div :class="classes">
-    <div class="header">
+    <div :class="prefixCls + '-header'">
       <span>{{ headerTxt }}</span>
       <span
         v-if="isClear && list.length"
-        class="clear-class"
+        :class="prefixCls + '-clear-class'"
         @click="onClear">
         清空
       </span>
@@ -12,43 +12,45 @@
     <template v-if="list.length">
       <transition-group
         name="drag"
-        class="draggable-ui"
         tag="ul"
+        :class="prefixCls + '-draggable-ui'"
         :style="{ height: `${height}px` }">
         <li
           v-for="(item, index) in list"
           :key="item.key"
           :draggable="!item.disabled"
-          class="draggable-li"
-          :class="{ 'draggable-li-disabled': item.disabled }"
+          :class="[
+            prefixCls + '-draggable-li',
+            { [prefixCls + '-draggable-li-disabled']: item.disabled }
+          ]"
           @dragenter="dragenter($event, item, index)"
-          @dragover="dragover($event)"
+          @dragover="dragover"
           @dragstart="dragstart(item, index)">
-          <span class="move-icon">
+          <span :class="prefixCls + '-draggable-li-move-icon'">
             <img
               v-if="item.disabled"
               src="./asset/unlock.png"
-              class="icon-unlock" />
+              :class="prefixCls + '-draggable-li-icon-unlock'" />
             <img
               v-if="!item.disabled"
               src="./asset/reorder.png"
-              class="icon-reorder" />
+              :class="prefixCls + '-draggable-li-icon-reorder'" />
           </span>
           <span
-            class="title"
+            :class="prefixCls + '-draggable-li-title'"
             :title="item.label">
             {{ item.label }}
           </span>
           <span v-if="!item.disabled">
-            <Icon
+            <img
               v-if="setMoveUpward(index)"
-              class="top-icon"
-              type="md-download"
-              style="transform: rotate(180deg)"
-              @click="setMoveTop(index)"></Icon>
+              
+              src="./asset/top.png"
+              :class="prefixCls + '-draggable-li-top-icon'"
+              @click="setMoveTop(index)" />
             <img
               src="./asset/close.png"
-              class="icon-remove"
+              :class="prefixCls + '-draggable-li-icon-remove'"
               @click="onRemove(index, item)" />
           </span>
         </li>
@@ -56,7 +58,7 @@
     </template>
     <template v-else>
       <div
-        class="notData"
+        :class="prefixCls + '-notData'"
         :style="{ height: `${height}px` }">
         暂无选项
       </div>
@@ -113,6 +115,7 @@ export default {
   },
   data() {
     return {
+      prefixCls,
       list: [],
       timer: null,
       dragIndex: '',
