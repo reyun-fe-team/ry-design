@@ -9,6 +9,7 @@ import Breadcrumb from './components/basics/breadcrumb'
 import MultiRadioButton from './components/basics/multi-radio-button'
 import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
+import TableColumns from './components/basics/table-columns/index.js'
 import DraggableCard from './components/basics/draggable-card'
 
 import wordLimit from './components/basics/word-limit'
@@ -49,6 +50,7 @@ const components = [
   RadioGroup,
   Modals,
   EditRowBid,
+  TableColumns,
   ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,
@@ -81,6 +83,7 @@ export default {
   PageHeaderModule,
   Modals,
   EditRowBid,
+  TableColumns,
   ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,

@@ -7,4 +7,5 @@
       "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "vueStyle.formatOnSave": true,
+  }
 }
