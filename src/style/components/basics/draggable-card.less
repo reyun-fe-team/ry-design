@@ -1,0 +1,91 @@
+@draggable-card: ~"@{css-prefix}draggable-card";
+
+.@{draggable-card} {
+    width: 232px;
+    &-header {
+        height: 40px;
+        line-height: 38px;
+        background-color: #f9f9f9;
+        border: 1px solid #DCDEE2;
+        padding: 0 10px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #151B39;
+        display: flex;
+        justify-content: space-between;
+
+        .clear-class {
+            color: #1D71E8;
+            cursor: pointer;
+        }
+    }
+
+    &-draggable-ui {
+        padding: 10px 16px 10px 10px;
+        border: 1px solid #e3e5e7;
+        overflow-y: auto;
+        border-top: 0;
+        list-style: none;
+    }
+
+
+    &-draggable-li {
+        transition: transform .3s;
+        cursor: move;
+        height: 32px;
+        margin-bottom: 8px;
+        padding: 0 10px;
+        background-color: #f3f3f4;
+        border-radius: 3px;
+        font-size: 12px;
+        color: #151B39;
+        display: flex;
+        align-items: center;    
+        &-disabled {
+            cursor: default;
+        }
+    
+        &-title {
+            flex: 1;
+            padding-left: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        &-icon-unlock {
+            width: 10px;
+            height: 12px;
+        }
+        &-icon-reorder {
+            width: 12px;
+            height: 9px;
+        }
+        &-icon-remove {
+            width: 8px;
+            height: 8px;
+            margin-left: 12px;
+        }
+        
+        &-top-icon {
+            width: 10px;
+            height: 11px;
+            margin-bottom: -2px;
+        }
+        
+        &-icon-remove,
+        &-top-icon {
+            cursor: pointer;
+        }    
+    }
+
+    
+    &-notData {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border: 1px solid #e3e5e7;
+        overflow-y: auto;
+        border-top: 0;
+    }
+}

@@ -1,5 +1,5 @@
 <template>
-  <main :class="classes">
+  <div :class="classes">
     <div
       v-if="isShowTitle"
       :class="prefixCls + '-title'">
@@ -24,7 +24,7 @@
         </Button>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>

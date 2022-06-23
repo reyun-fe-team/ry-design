@@ -52,7 +52,7 @@ module.exports = {
         })
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(svg|eot|ttf)$/,
         loader: 'file-loader',
         options: {
           name: '[name].[ext]?[hash]',
@@ -62,14 +62,15 @@ module.exports = {
       },
       {
         test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-        loader: 'url-loader'
+        loader: 'url-loader',
       }
     ]
   },
   plugins: [new ExtractTextPlugin('styles/[name].css')],
   resolve: {
     alias: {
-      vue$: 'vue/dist/vue.esm.js'
+      vue$: 'vue/dist/vue.esm.js',
+      '@src': path.join(__dirname, '../src')
     },
     extensions: ['*', '.js', '.vue', '.json']
   },

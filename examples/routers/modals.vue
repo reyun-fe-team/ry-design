@@ -1,5 +1,5 @@
 <template>
-  <main style="padding: 20px">
+  <div style="padding: 20px">
     <Button @click="onClick1">带副标题的弹框</Button>
     <Button @click="onClick2">普通弹框</Button>
     <div v-if="modalVisible1">
@@ -98,7 +98,7 @@
         </div>
       </rd-modals>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -170,8 +170,8 @@ export default {
 <style lang="less">
 .center-modal {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   .ivu-modal {
     top: 0;
   }
@@ -184,15 +184,17 @@ export default {
 
   /* 滚动槽 */
   & ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, .08);
     border-radius: 0;
-    background: rgba(0, 0, 0, 0.08);
+
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, .25);
   }
 
   & ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, .08);
     border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
-    background: rgba(0, 0, 0, 0.08);
+
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, .25);
   }
 }
 </style>

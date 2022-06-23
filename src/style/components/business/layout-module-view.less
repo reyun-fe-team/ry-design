@@ -1,0 +1,51 @@
+@layout-module-view: ~"@{css-prefix}layout-module-view";
+
+.@{layout-module-view} {
+  width         : 100%;
+  height        : 100%;
+  overflow      : hidden;
+  display       : flex;
+  flex-direction: column;
+
+  &-header {
+    display         : flex;
+    align-items     : center;
+    justify-content : space-between;
+    width           : 100%;
+    height          : 40px;
+    background-color: #F9F9FA;
+    border-bottom   : 1px dashed #E0E0E8;
+    padding         : 0 16px;
+
+
+    .title {
+      min-width    : 84px;
+      max-width    : 60%;
+      height       : 100%;
+      line-height  : 40px;
+      flex         : 1;
+      //溢出隐藏
+      overflow     : hidden;
+      //禁止换行
+      white-space  : nowrap;
+      //...
+      text-overflow: ellipsis;
+      font-size    : 14px;
+      font-weight  : 500;
+      color        : #151B39;
+    }
+
+  }
+
+  &-footer {
+    width     : 100%;
+    height    : 40px;
+    border-top: 1px dashed #E0E0E8;
+  }
+
+  &-main {
+    width     : 100%;
+    overflow-y: auto;
+    flex      : 1;
+  }
+}

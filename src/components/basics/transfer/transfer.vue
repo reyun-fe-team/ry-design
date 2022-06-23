@@ -1,5 +1,5 @@
 <template>
-  <main :class="classes">
+  <div :class="classes">
     <List
       v-for="(item, index) in current"
       :key="index"
@@ -18,7 +18,7 @@
       :parent-right-key="getParentKey(index, 'right')"
       @move-to="moveTo($event, index)"
       @to-left-disabled="onLeftButtonDisabled($event, index)"></List>
-  </main>
+  </div>
 </template>
 <script>
 import List from './list.vue'
