@@ -4,7 +4,7 @@
       <span>{{ headerTxt }}</span>
       <span
         v-if="isClear && list.length"
-        :class="prefixCls + '-clear-class'"
+        :class="prefixCls + '-header-clear-class'"
         @click="onClear">
         清空
       </span>
