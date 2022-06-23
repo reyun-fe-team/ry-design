@@ -1,11 +1,13 @@
 <template>
-  <div :class="[prefixCls, prefixCls + '-center-modal']">
+  <div :class="[prefixCls]">
     <div :class="prefixCls + '-modal-content'">
       <div
         v-if="deleteHasClose"
         :class="prefixCls + '-modal-content-close'"
         @click="handleClose">
-        <img :src="require('@src/images/delete-modals/close.svg')" />
+        <span
+          style="font-size: 12px"
+          class="icon iconfont icon-delete1"></span>
       </div>
       <div :class="prefixCls + '-modal-content-icon'">
         <slot name="delete-modal-img">
@@ -48,21 +50,8 @@ export default {
     }
   },
   methods: {
-    // handleOk() {
-    //   this.$emit('on-ok')
-    // },
-    // handleCancel() {
-    //   this.$emit('on-cancel')
-    // },
-    // handleVisibleChange(visible) {
-    //   if (!visible) {
-    //     this.$emit('input', visible)
-    //   }
-    //   this.$emit('on-visible-change')
-    // },
     handleClose() {
-      this.$emit('deleteInput', false)
-      // this.$Modal.remove()
+      this.$emit('deleteInput')
     }
   }
 }

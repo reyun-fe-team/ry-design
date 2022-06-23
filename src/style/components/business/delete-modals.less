@@ -1,6 +1,9 @@
 @delete-modals: ~"@{css-prefix}delete-modals";
 .@{delete-modals} {
     width: 100%;
+    display: flex;
+        align-items: center;
+        justify-content: center;
     &-modal-content {
       position  : relative;
       text-align: center;
@@ -33,30 +36,5 @@
         line-height: 24px;
       }
     }
-    &-center-modal{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
 }
 
-// .ivu-modal-footer,
-// .ivu-modal-confirm-footer {
-//   padding: 0 8px 8px;
-//   font-size: 0;
-//   text-align: center;
-//   border-top: 0;
-//   .ivu-btn {
-//     width: 104px;
-//     height: 32px;
-//     font-size: 12px;
-//     border-radius: 3px;
-//   }
-//   .ivu-btn-text {
-//     color: #151b39;
-//     border-color: #dcdee2;
-//   }
-//   .ivu-btn-primary {
-//     background: #3a88fa;
-//   }
-// }

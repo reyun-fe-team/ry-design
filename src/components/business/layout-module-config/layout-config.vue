@@ -37,7 +37,7 @@
 </template>
 <script>
 const { prefix } = require('../../../config.js')
-const prefixCls = prefix + 'delete-modals'
+const prefixCls = prefix + 'layout-module-config'
 const margin = 1
 
 import { valideSlotList } from '../../../util/layout-module-config'
