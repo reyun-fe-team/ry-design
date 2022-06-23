@@ -1,8 +1,8 @@
 <template>
-  <main>
+  <div>
     我是input组件
     <ry-input></ry-input>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -10,10 +10,10 @@ export default {
   components: {},
   props: {},
   data() {
-    return {};
+    return {}
   },
   computed: {},
   mounted() {},
   methods: {}
-};
+}
 </script>

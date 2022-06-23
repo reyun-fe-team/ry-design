@@ -1,5 +1,5 @@
 <template>
-  <main style="padding: 20px">
+  <div style="padding: 20px">
     <Button @click="onClick1">带副标题的弹框</Button>
     <Button @click="onClick2">普通弹框</Button>
     <Button @click="onClickDelete1">删除弹框普通</Button>
@@ -119,7 +119,7 @@
         </div>
       </rd-modals>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>

@@ -65,6 +65,10 @@ const router = new VueRouter({
       component: resolve => require(['./routers/edit-row-bid'], resolve)
     },
     {
+      path: '/table-columns',
+      component: resolve => require(['./routers/table-columns'], resolve)
+    },
+    {
       path: '/reverse-button',
       component: resolve => require(['./routers/reverse-button'], resolve)
     },
@@ -73,12 +77,20 @@ const router = new VueRouter({
       component: resolve => require(['./routers/layout-module-config'], resolve)
     },
     {
+      path: '/draggable-card',
+      component: resolve => require(['./routers/draggable-card'], resolve)
+    },
+    {
       path: '/word-limit',
       component: resolve => require(['./routers/word-limit'], resolve)
     },
     {
       path: '/batch-upload-xls',
       component: resolve => require(['./routers/batch-upload-xls'], resolve)
+    },
+    {
+      path: '/ellipsis',
+      component: resolve => require(['./routers/ellipsis'], resolve)
     }
   ]
 })

@@ -9,9 +9,13 @@ import Breadcrumb from './components/basics/breadcrumb'
 import MultiRadioButton from './components/basics/multi-radio-button'
 import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
+import TableColumns from './components/basics/table-columns/index.js'
+import DraggableCard from './components/basics/draggable-card'
+
 import wordLimit from './components/basics/word-limit'
-import batchUploadXls from './components/business/batch-upload-xls'
+import Ellipsis from './components/basics/ellipsis'
 // business
+import batchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'
 import EditRowBid from './components/business/edit-row-bid'
@@ -47,12 +51,15 @@ const components = [
   RadioGroup,
   Modals,
   EditRowBid,
+  TableColumns,
   ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,
+  DraggableCard,
   wordLimit,
   batchUploadXls,
-  deleteModals
+  deleteModals,
+  Ellipsis
 ]
 
 const install = function (Vue) {
@@ -78,10 +85,13 @@ export default {
   PageHeaderModule,
   Modals,
   EditRowBid,
+  TableColumns,
   ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,
   wordLimit,
   batchUploadXls,
-  deleteModals
+  deleteModals,
+  Ellipsis,
+  DraggableCard
 }
