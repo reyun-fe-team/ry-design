@@ -1,4 +1,5 @@
 ```
+data | array | 数据源 | []
 data[item] = {
     {
         title: '广告组名称', // 标题
@@ -24,7 +25,10 @@ data[item] = {
     }
 }
 
-value | array | 已选数据
-data | array | 回显数据
+value | array | 已选数据 ｜ []
 editCallBack | Function | 编辑方法接受一个promise
+
+
+on-change    只获取key
+on-sort-data 排序详情数据
 ```

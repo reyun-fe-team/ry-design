@@ -68,8 +68,9 @@ export default {
       }
       this.loading = true
       this.editCallBack(this.locData)
-        .then(() => {
+        .then(res => {
           this.cancel()
+          this.$emit('success', res)
         })
         .catch(() => {
           this.loading = false

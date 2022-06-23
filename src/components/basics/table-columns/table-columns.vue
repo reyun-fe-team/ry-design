@@ -1,6 +1,6 @@
 <template>
   <main :class="classes">
-    <div class="header">
+    <div :class="prefixCls + '-header'">
       <span>可添加的指标</span>
       <Input
         v-model="keyword"
@@ -12,22 +12,24 @@
         @on-change="keywordChange"
         @on-clear="keywordClear"></Input>
     </div>
-    <div class="content">
+    <div :class="prefixCls + '-content'">
       <Spin
         v-if="loading"
         fix></Spin>
-      <ul class="nav-area-wrap">
+      <ul
+        class="mini-scroll-y"
+        :class="prefixCls + '-nav-area-wrap'">
         <li
           v-for="item1 in data"
           :key="item1.key"
-          class="nav-area-list">
-          <div class="nav-area-list-label">{{ item1.title }}</div>
+          :class="prefixCls + '-nav-area-list'">
+          <div :class="prefixCls + '-nav-area-list-label'">{{ item1.title }}</div>
           <div
             v-for="item2 in item1.children"
             :key="item2.key"
             :class="[
-              'nav-area-list-item',
-              { 'nav-area-list-item-checked': currentNav === item2.key }
+              [prefixCls + '-nav-area-list-item'],
+              { [prefixCls + '-nav-area-list-item-checked']: currentNav === item2.key }
             ]"
             :title="item2.title"
             @click="handleNavJump(item2.key)">
@@ -35,7 +37,9 @@
           </div>
         </li>
       </ul>
-      <div class="columns-view">
+      <div
+        class="mini-scroll-y"
+        :class="prefixCls + '-view'">
         <template v-if="hasSearchResult">
           <div
             v-for="item1 in data"
@@ -44,22 +48,22 @@
               v-for="item2 in item1.children"
               :id="item2.key"
               :key="item2.key"
-              :class="['columns-view-list', { hide: item2.hide }]">
-              <div class="columns-view-list-checked-all">
+              :class="[[prefixCls + '-view-list'], { [prefixCls + 'hide']: item2.hide }]">
+              <div :class="prefixCls + '-view-list-checked-all'">
                 <Checkbox
                   v-model="item2.check"
                   @click.prevent.native="handleCheckAll(item2)">
                   {{ item2.title }}
                 </Checkbox>
               </div>
-              <div class="columns-view-list-content">
+              <div :class="prefixCls + '-view-list-content'">
                 <Checkbox
                   v-for="item3 in item2.children"
                   :key="item3.key"
                   v-model="item3.check"
                   :disabled="item3.disabled"
                   :class="[
-                    'columns-view-list-content-item',
+                    [prefixCls + '-view-list-content-item'],
                     { hide: item3.hide, 'modify-title': modifyList.includes(item3.key) }
                   ]"
                   @on-change="handleCheck(item2, item3)">
@@ -70,18 +74,28 @@
                       theme="light"
                       placement="top"
                       :content="item3.prefix.content">
-                      <Icon :type="item3.prefix.icon"></Icon>
+                      <!-- ali-icon 暂时不能上传，先使用图片 -->
+                      <!-- <Icon  v-if="item.disabled" :type="item3.prefix.icon"></Icon> -->
+                      <img
+                        v-if="item.disabled"
+                        src="../../../images/draggable-card/unlock.png"
+                        :class="prefixCls + '-icon-unlock'" />
                     </Tooltip>
-                    <Icon
+                    <img
                       v-else
-                      :type="item3.prefix.icon"></Icon>
+                      src="../../../images/draggable-card/unlock.png"
+                      :class="prefixCls + '-icon-unlock'" />
+                    <!-- ali-icon 暂时不能上传，先使用图片 -->
+                    <!-- <Icon v-else :type="item3.prefix.icon"></Icon> -->
                   </template>
                   <!-- 名称 -->
                   <Tooltip
                     theme="light"
                     placement="top"
                     :content="item3.title">
-                    <span class="columns-view-list-content-item-title">{{ item3.title }}</span>
+                    <span :class="prefixCls + '-view-list-content-item-title'">
+                      {{ item3.title }}
+                    </span>
                   </Tooltip>
                   <!-- 后缀 -->
                   <template v-if="item3.suffix">
@@ -100,7 +114,8 @@
                   <template v-if="item3.edit">
                     <edit-title
                       :item-data="item3"
-                      :edit-call-back="editCallBack"></edit-title>
+                      :edit-call-back="editCallBack"
+                      @success="item3.title = $event"></edit-title>
                   </template>
                 </Checkbox>
               </div>
@@ -109,7 +124,7 @@
         </template>
         <div
           v-else
-          class="not-data">
+          :class="prefixCls + '-not-data'">
           没有检索到数据
         </div>
       </div>
@@ -118,9 +133,8 @@
 </template>
 
 <script>
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'table-columns'
-import mock from './mock'
 import editTitle from './components/edit-title.vue'
 let dataflat = []
 export default {
@@ -131,7 +145,11 @@ export default {
   props: {
     value: {
       type: Array,
-      default: () => ['media']
+      default: () => []
+    },
+    data: {
+      type: Array,
+      default: () => []
     },
     editCallBack: {
       type: Function
@@ -146,7 +164,6 @@ export default {
       keyword: '',
       currentNav: '',
       modifyList: [],
-      data: mock.data,
       sortsList: [],
       timer: null
     }
@@ -162,15 +179,7 @@ export default {
       return !dataflat.every(e => e.hide)
     }
   },
-  watch: {
-    value() {}
-    // data: {
-    //   deep: true,
-    //   handler(now) {
-    //     this.getSortList(now)
-    //   }
-    // }
-  },
+  watch: {},
   created() {
     this.init()
   },
@@ -254,8 +263,8 @@ export default {
       )
       let value = checkList.map(item => item.key)
       this.$emit('input', value)
-      this.$emit('on-change', result)
-      console.log(value)
+      this.$emit('on-change', value)
+      this.$emit('on-sort-data', result)
     },
     // 设置选中状态
     setItemCheck() {
