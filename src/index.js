@@ -21,6 +21,7 @@ import AccountList from './components/business/account-list'
 import EditRowBid from './components/business/edit-row-bid'
 import ReverseButton from './components/business/reverse-button'
 import { LayoutModuleConfig, LayoutModuleView } from './components/business/layout-module-config'
+import deleteModals from './components/business/delete-modals'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -57,6 +58,7 @@ const components = [
   DraggableCard,
   wordLimit,
   batchUploadXls,
+  deleteModals,
   Ellipsis
 ]
 
@@ -89,6 +91,7 @@ export default {
   LayoutModuleView,
   wordLimit,
   batchUploadXls,
+  deleteModals,
   Ellipsis,
   DraggableCard
 }

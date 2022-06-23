@@ -2,6 +2,8 @@
   <div style="padding: 20px">
     <Button @click="onClick1">带副标题的弹框</Button>
     <Button @click="onClick2">普通弹框</Button>
+    <Button @click="onClickDelete1">删除弹框普通</Button>
+    <Button @click="onClickDelete2">删除弹框slot可替换</Button>
     <div v-if="modalVisible1">
       <rd-modals
         v-model="modalVisible1"
@@ -98,6 +100,25 @@
         </div>
       </rd-modals>
     </div>
+    <div v-if="deleteVisible">
+      <rd-modals
+        v-model="deleteVisible"
+        :width="400"
+        class-name="center-modal mini-scroll-y"
+        @on-cancel="deleteHandleCancel"
+        @on-ok="deleteHandleCancel">
+        <div slot="content">
+          <rd-delete-modals :delete-has-close="deleteHasClose">
+            <span slot="delete-modal-content">这是一段利用slot插入内容的事例</span>
+            <span slot="delete-modal-img">
+              <img
+                :src="require('@src/images/batch-upload-xls/batch-upload-xls.png')"
+                alt="" />
+            </span>
+          </rd-delete-modals>
+        </div>
+      </rd-modals>
+    </div>
   </div>
 </template>
 
@@ -107,6 +128,8 @@ export default {
     return {
       modalVisible1: false,
       modalVisible2: false,
+      deleteVisible: false,
+      deleteHasClose: false,
       headerObj: {
         title: '带副标题的弹框',
         subTitle: '个广告计划',
@@ -147,7 +170,8 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      deleteContent: '这是一条正常警告'
     }
   },
   methods: {
@@ -162,6 +186,36 @@ export default {
     },
     handleCancel2() {
       this.modalVisible2 = false
+    },
+    deleteHandleCancel() {
+      this.deleteVisible = false
+    },
+    onClickDelete1() {
+      this.$Modal.confirm({
+        render: h => {
+          return h('rd-delete-modals', {
+            props: {
+              deleteContent: this.deleteContent
+            },
+            okText: '确定',
+            cancelText: '取消',
+            onOk: () => {
+              this.$Modal.remove()
+            },
+            onCancel: () => {
+              this.$Modal.remove()
+            },
+            on: {
+              deleteInput: () => {
+                this.$Modal.remove()
+              }
+            }
+          })
+        }
+      })
+    },
+    onClickDelete2() {
+      this.deleteVisible = true
     }
   }
 }
