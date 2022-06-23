@@ -1,6 +1,6 @@
 <!-- 修改指标名称 -->
 <template>
-  <div class="edit-title-content">
+  <div>
     <Poptip
       v-model="show"
       transfer>

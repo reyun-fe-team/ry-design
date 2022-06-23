@@ -20,20 +20,20 @@
         class="mini-scroll-y"
         :class="prefixCls + '-nav-area-wrap'">
         <li
-          v-for="item1 in data"
-          :key="item1.key"
+          v-for="indicatType in data"
+          :key="indicatType.key"
           :class="prefixCls + '-nav-area-list'">
-          <div :class="prefixCls + '-nav-area-list-label'">{{ item1.title }}</div>
+          <div :class="prefixCls + '-nav-area-list-label'">{{ indicatType.title }}</div>
           <div
-            v-for="item2 in item1.children"
-            :key="item2.key"
+            v-for="indicatClassify in indicatType.children"
+            :key="indicatClassify.key"
             :class="[
               [prefixCls + '-nav-area-list-item'],
-              { [prefixCls + '-nav-area-list-item-checked']: currentNav === item2.key }
+              { [prefixCls + '-nav-area-list-item-checked']: currentNav === indicatClassify.key }
             ]"
-            :title="item2.title"
-            @click="handleNavJump(item2.key)">
-            {{ item2.title }}
+            :title="indicatClassify.title"
+            @click="handleNavJump(indicatClassify.key)">
+            {{ indicatClassify.title }}
           </div>
         </li>
       </ul>
@@ -42,40 +42,40 @@
         :class="prefixCls + '-view'">
         <template v-if="hasSearchResult">
           <div
-            v-for="item1 in data"
-            :key="item1.key">
+            v-for="indicatType in data"
+            :key="indicatType.key">
             <div
-              v-for="item2 in item1.children"
-              :id="item2.key"
-              :key="item2.key"
-              :class="[[prefixCls + '-view-list'], { [prefixCls + 'hide']: item2.hide }]">
+              v-for="indicatClassify in indicatType.children"
+              :id="indicatClassify.key"
+              :key="indicatClassify.key"
+              :class="[[prefixCls + '-view-list'], { [prefixCls + 'hide']: indicatClassify.hide }]">
               <div :class="prefixCls + '-view-list-checked-all'">
                 <Checkbox
-                  v-model="item2.check"
-                  @click.prevent.native="handleCheckAll(item2)">
-                  {{ item2.title }}
+                  v-model="indicatClassify.check"
+                  @click.prevent.native="handleCheckAll(indicatClassify)">
+                  {{ indicatClassify.title }}
                 </Checkbox>
               </div>
               <div :class="prefixCls + '-view-list-content'">
                 <Checkbox
-                  v-for="item3 in item2.children"
-                  :key="item3.key"
-                  v-model="item3.check"
-                  :disabled="item3.disabled"
+                  v-for="item in indicatClassify.children"
+                  :key="item.key"
+                  v-model="item.check"
+                  :disabled="item.disabled"
                   :class="[
                     [prefixCls + '-view-list-content-item'],
-                    { hide: item3.hide, 'modify-title': modifyList.includes(item3.key) }
+                    { hide: item.hide, 'modify-title': modifyList.includes(item.key) }
                   ]"
-                  @on-change="handleCheck(item2, item3)">
+                  @on-change="handleCheck(indicatClassify, item)">
                   <!-- 前缀 -->
-                  <template v-if="item3.prefix">
+                  <template v-if="item.prefix">
                     <Tooltip
-                      v-if="item3.prefix.content"
+                      v-if="item.prefix.content"
                       theme="light"
                       placement="top"
-                      :content="item3.prefix.content">
+                      :content="item.prefix.content">
                       <!-- ali-icon 暂时不能上传，先使用图片 -->
-                      <!-- <Icon  v-if="item.disabled" :type="item3.prefix.icon"></Icon> -->
+                      <!-- <Icon  v-if="item.disabled" :type="item.prefix.icon"></Icon> -->
                       <img
                         v-if="item.disabled"
                         src="../../../images/draggable-card/unlock.png"
@@ -86,36 +86,36 @@
                       src="../../../images/draggable-card/unlock.png"
                       :class="prefixCls + '-icon-unlock'" />
                     <!-- ali-icon 暂时不能上传，先使用图片 -->
-                    <!-- <Icon v-else :type="item3.prefix.icon"></Icon> -->
+                    <!-- <Icon v-else :type="item.prefix.icon"></Icon> -->
                   </template>
                   <!-- 名称 -->
                   <Tooltip
                     theme="light"
                     placement="top"
-                    :content="item3.title">
+                    :content="item.title">
                     <span :class="prefixCls + '-view-list-content-item-title'">
-                      {{ item3.title }}
+                      {{ item.title }}
                     </span>
                   </Tooltip>
                   <!-- 后缀 -->
-                  <template v-if="item3.suffix">
+                  <template v-if="item.suffix">
                     <Tooltip
-                      v-if="item3.suffix.content"
+                      v-if="item.suffix.content"
                       theme="light"
                       placement="top"
-                      :content="item3.suffix.content">
-                      <Icon :type="item3.suffix.icon"></Icon>
+                      :content="item.suffix.content">
+                      <Icon :type="item.suffix.icon"></Icon>
                     </Tooltip>
                     <Icon
                       v-else
-                      :type="item3.suffix.icon"></Icon>
+                      :type="item.suffix.icon"></Icon>
                   </template>
                   <!-- 编辑 -->
-                  <template v-if="item3.edit">
+                  <template v-if="item.edit">
                     <edit-title
-                      :item-data="item3"
+                      :item-data="item"
                       :edit-call-back="editCallBack"
-                      @success="item3.title = $event"></edit-title>
+                      @success="item.title = $event"></edit-title>
                   </template>
                 </Checkbox>
               </div>
@@ -179,11 +179,9 @@ export default {
       return !dataflat.every(e => e.hide)
     }
   },
-  watch: {},
   created() {
     this.init()
   },
-  mounted() {},
   methods: {
     init() {
       dataflat = this.flatArray(this.data)
