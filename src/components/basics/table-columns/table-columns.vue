@@ -255,7 +255,7 @@ export default {
         }
       })
       // 讲带锁的数据排在最前面
-      let result = Array.concat(
+      let result = [].concat(
         checkList.filter(item => item.unlock),
         checkList.filter(item => !item.unlock)
       )
