@@ -2,9 +2,12 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:50:21
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-10 19:23:40
+ * @LastEditTime: 2022-06-24 12:56:48
  * @FilePath: /ry-design/src/components/basics/layout-module-config/layout-module-config.vue
  * @Description: 极速创建第一步模块布局组件
+ * @Tips 提示
+      @Option 1、保证列唯一性 使用 col 作为key
+      @Option 2、slot 数据更新 需要通过 $slot 返会VNode实例，提供给RenderFunction
 -->
 <template>
   <div
@@ -12,7 +15,7 @@
     :style="wrapStyle">
     <div
       v-for="(row, rowIndex) in newSlotList"
-      :key="row.join()"
+      :key="rowIndex"
       :class="[
         prefixCls + '-row',
         { [prefixCls + '-row-line']: rowIndex !== newSlotList.length - 1 }
@@ -23,11 +26,18 @@
         :key="col"
         :class="[prefixCls + '-col', { [prefixCls + '-col-line']: colIndex !== row.length - 1 }]"
         :style="getColStyle(row.length)">
-        <template v-if="hasRender(col)">
-          <Render :render="renderSlots[col]"></Render>
+        <template v-if="getRender(col).type !== 'empty'">
+          <!-- slot -->
+          <template v-if="getRender(col).type === 'slot'">
+            <Render :render="() => getRender(col).slotVNode"></Render>
+          </template>
+          <!-- function -->
+          <template v-if="getRender(col).type === 'function'">
+            <Render :render="getRender(col).render"></Render>
+          </template>
         </template>
         <div
-          v-else
+          v-if="getRender(col).type === 'empty'"
           :class="prefixCls + '-empty-item'">
           组件没有传入
         </div>
@@ -178,14 +188,21 @@ export default {
         for (let ci = 0; ci < row.length; ci++) {
           const slotName = row[ci]
           // 插槽转成渲染函数
-          const slotFunc = this.$scopedSlots[slotName]
-          if (slotFunc && typeOf(slotFunc) === 'function') {
-            newObj[slotName] = slotFunc
+          const slots = this.$slots[slotName]
+          const slotVNode = slots[0]
+          if (!isEmpty(slotVNode)) {
+            newObj[slotName] = {
+              type: 'slot',
+              slotVNode
+            }
           }
           // 传入的渲染函数覆盖插槽
           const renderFunc = this.slotRenders[slotName]
           if (renderFunc && typeOf(renderFunc) === 'function') {
-            newObj[slotName] = renderFunc
+            newObj[slotName] = {
+              type: 'function',
+              render: renderFunc
+            }
           }
         }
       }
@@ -206,13 +223,26 @@ export default {
     }
   },
   methods: {
-    // 有没有对应的渲染行数
-    hasRender(slotName) {
-      const h = this.renderSlots[slotName]
-      if (h && typeOf(h) === 'function') {
-        return true
+    // 获取render
+    getRender(slotName) {
+      // render function
+      const renderFunc = this.slotRenders[slotName]
+      if (typeOf(renderFunc) === 'function') {
+        return {
+          type: 'function',
+          render: renderFunc
+        }
       }
-      return false
+      // slot
+      const slots = this.$slots[slotName]
+      const slotVNode = slots[0]
+      if (!isEmpty(slotVNode)) {
+        return {
+          type: 'slot',
+          slotVNode
+        }
+      }
+      return { type: 'empty' }
     },
     // 获取行的样式
     getColStyle(closNum) {
