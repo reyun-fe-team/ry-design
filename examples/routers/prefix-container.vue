@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <div>
     <rd-prefix-container>
       <span slot="prepend">投放账户</span>
       <Select
@@ -9,27 +9,28 @@
         multiple
         style="width: 400px"
         :max-tag-count="2"
-        placeholder="请搜索或选择媒体账号"
-      >
+        placeholder="请搜索或选择媒体账号">
         <OptionGroup
           v-for="item in accountList"
           :key="item.label"
-          :label="item.label"
-        >
+          :label="item.label">
           <Option
             v-for="(el, index) in item.children"
             :key="index"
             :disabled="item.disabled"
-            :value="el.accountId"
-            >{{ el.name }}</Option
-          >
+            :value="el.accountId">
+            {{ el.name }}
+          </Option>
         </OptionGroup>
       </Select>
       <span slot="append">后缀</span>
     </rd-prefix-container>
 
     <rd-prefix-container style="margin-top: 16px">
-      <Select slot="prepend" v-model="select1" style="width: 80px">
+      <Select
+        slot="prepend"
+        v-model="select1"
+        style="width: 80px">
         <Option value="http">http://</Option>
         <Option value="https">https://</Option>
       </Select>
@@ -37,13 +38,17 @@
         v-model="value1"
         :max="10"
         :min="1"
-        class="prefix-container-basic-number"
-      ></InputNumber>
-      <Button slot="append" icon="ios-search"></Button>
+        class="prefix-container-basic-number"></InputNumber>
+      <Button
+        slot="append"
+        icon="ios-search"></Button>
     </rd-prefix-container>
 
     <rd-prefix-container style="margin-top: 16px">
-      <Select slot="prepend" v-model="select1" style="width: 80px">
+      <Select
+        slot="prepend"
+        v-model="select1"
+        style="width: 80px">
         <Option value="http">http://</Option>
         <Option value="https">https://</Option>
       </Select>
@@ -51,25 +56,32 @@
         v-model="value1"
         :max="10"
         :min="1"
-        class="prefix-container-basic-number"
-      ></InputNumber>
-      <Select slot="append" v-model="select1" style="width: 80px">
+        class="prefix-container-basic-number"></InputNumber>
+      <Select
+        slot="append"
+        v-model="select1"
+        style="width: 80px">
         <Option value="http">http://</Option>
         <Option value="https">https://</Option>
       </Select>
     </rd-prefix-container>
 
     <rd-prefix-container style="margin-top: 16px">
-      <Button slot="prepend" icon="ios-search"></Button>
+      <Button
+        slot="prepend"
+        icon="ios-search"></Button>
       <InputNumber
         v-model="value1"
         :max="10"
         :min="1"
-        class="prefix-container-basic-number"
-      ></InputNumber>
-      <Button slot="append" icon="ios-search">test</Button>
+        class="prefix-container-basic-number"></InputNumber>
+      <Button
+        slot="append"
+        icon="ios-search">
+        test
+      </Button>
     </rd-prefix-container>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -109,13 +121,13 @@ export default {
           ]
         }
       ]
-    };
+    }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .select {
-  /deep/.ivu-select-selection {
+   /deep/ .ivu-select-selection {
     border-radius: 0;
   }
 }

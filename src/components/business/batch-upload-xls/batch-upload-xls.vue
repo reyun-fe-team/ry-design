@@ -53,7 +53,12 @@
               ]">
               <Tooltip
                 :delay="500"
-                :content="fileName ? fileName : `${accept}文件`">
+                max-width="500">
+                <p
+                  slot="content"
+                  style="white-space: normal">
+                  {{ fileName ? fileName : `${accept}文件` }}
+                </p>
                 <p
                   class="overflow-ellipsis line-clamp-two"
                   :class="[prefixCls + '-upload-file-content-file-name-text']">
@@ -378,8 +383,10 @@ export default {
       this.onSuccess(data, file)
     },
     // 上传进度大小
-    handleProgress(data) {
-      this.percentage = data.percentage
+    handleProgress(event) {
+      event.target.onprogress = event => {
+        this.percentage = parseFloat(((event.loaded / event.total) * 100).toFixed(2))
+      }
     },
     /**
      * 重新上传触发，显示(需要重制, percentage: 上传进度 hintText: 成功提示文字)
