@@ -32,13 +32,14 @@
     </Table>
     <p
       v-if="errorInfo.errorTip"
-      :class="[prefixCls + '-font-danger', prefixCls + '-m-t-5']">
+      :class="prefixCls + '-error-tip'">
       * {{ errorInfo.errorTip }}
     </p>
   </main>
 </template>
 
 <script>
+import _cloneDeep from 'lodash/cloneDeep'
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'table-multi-inputs'
 export default {
@@ -66,20 +67,11 @@ export default {
   data() {
     return {
       prefixCls,
-      data: [],
+      data: _cloneDeep(this.tableList),
       errorInfo: {
         errorTip: '',
         errorRow: null
       }
-    }
-  },
-  watch: {
-    tableList: {
-      handler(val) {
-        this.data = _.cloneDeep(val)
-      },
-      deep: true,
-      immediate: true
     }
   },
   methods: {
@@ -87,26 +79,18 @@ export default {
       // 表格一行有几个input框
       const inputColumn = this.columns.filter(item => item.type === 'input')
       // 当前光标处于 一行中第几个input
-      let inputColIndex = 0
-      try {
-        inputColumn.forEach((item, inputColumnIndex) => {
-          if (item.key === column.key) {
-            throw new Error(inputColumnIndex)
-          }
-        })
-      } catch (e) {
-        inputColIndex = Number(e.message)
-      }
+      let inputColIndex = inputColumn.findIndex(item => item.key === column.key) || 0
+      const inputColumnLength = inputColumn.length
       // 光标聚焦到最后一个，如果当前表格数量 >= 最大表格数，则return
-      if (inputColIndex + 1 >= inputColumn.length && this.data.length >= this.max) {
+      if (inputColIndex + 1 >= inputColumnLength  && this.data.length >= this.max) {
         return
       }
       // 下一个要聚焦的input，在所有input的数量中属于第几个
-      const nextLen = index * inputColumn.length + (inputColIndex + 1)
+      const nextLen = index * inputColumnLength + (inputColIndex + 1)
       // 所有input的数量
       const allInputLen = document.getElementsByClassName(`${this.prefixCls}-input-item`).length
       // 光标聚焦到最后一个，如果当前表格数量 < 最大表格数, 并且下一个要聚焦的input <= 所有input的数量（即只有光标处于最后的input框且可以继续增加的时候才会push）  则给表格的data，push一条新数据
-      if (inputColIndex + 1 >= inputColumn.length && allInputLen <= nextLen) {
+      if (inputColIndex + 1 >= inputColumnLength && allInputLen <= nextLen) {
         this.data.push(this.addNewData)
       }
       // 光标移到下一个input
