@@ -91,6 +91,10 @@ const router = new VueRouter({
     {
       path: '/ellipsis',
       component: resolve => require(['./routers/ellipsis'], resolve)
+    },
+    {
+      path: '/table-multi-inputs',
+      component: resolve => require(['./routers/table-multi-inputs'], resolve)
     }
   ]
 })

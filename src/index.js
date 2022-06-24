@@ -14,6 +14,7 @@ import DraggableCard from './components/basics/draggable-card'
 
 import wordLimit from './components/basics/word-limit'
 import Ellipsis from './components/basics/ellipsis'
+import TableMultiInputs from './components/basics/table-multi-inputs'
 // business
 import batchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
@@ -59,7 +60,8 @@ const components = [
   wordLimit,
   batchUploadXls,
   deleteModals,
-  Ellipsis
+  Ellipsis,
+  TableMultiInputs
 ]
 
 const install = function (Vue) {
@@ -93,5 +95,6 @@ export default {
   batchUploadXls,
   deleteModals,
   Ellipsis,
-  DraggableCard
+  DraggableCard,
+  TableMultiInputs
 }

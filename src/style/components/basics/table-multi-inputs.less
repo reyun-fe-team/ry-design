@@ -1,0 +1,94 @@
+@table-multi-inputs: ~'@{css-prefix}table-multi-inputs';
+
+.@{table-multi-inputs} {
+    &-table {
+
+        // 表格第一列不展示头部
+        thead tr th:first-child .ivu-table-cell {
+            display: none;
+        }
+
+        // 表格最后一列不展示头部
+        thead tr th:last-child .ivu-table-cell {
+            display: none;
+        }
+
+        // 表格第一列padding=0
+        tbody tr td:first-child .ivu-table-cell {
+            padding: 0;
+        }
+
+        tbody tr td:first-child {
+            background-color: #F9F9F9;
+        }
+
+        tbody tr:hover td:first-child {
+            background-color: #f1f3f5;
+        }
+
+        // 表格高为40px
+        .ivu-table td,
+        .ivu-table th {
+            height      : 40px;
+            border-right: none;
+        }
+
+        .ivu-table td {
+            border-bottom: none;
+        }
+
+        .ivu-table th {
+            background-color: #F9F9F9;
+        }
+
+        .ivu-table-header thead tr th {
+            padding: 0;
+        }
+
+        .ivu-table-cell {
+            white-space: nowrap;
+        }
+
+        tr.ivu-table-row-hover td {
+            background-color: #f1f3f5;
+        }
+
+        .ivu-input {
+            padding-left: 0;
+        }
+
+        .ivu-input:focus {
+            outline   : none;
+            box-shadow: none;
+        }
+
+        .ivu-table-row:hover {
+            input {
+                background-color: #f1f3f5;
+            }
+        }
+
+        .ivu-table .table-error-row td {
+            background-color: #FDE9E9;
+        }
+
+        .ivu-table .table-error-row td input {
+            background-color: #FDE9E9;
+        }
+    }
+
+    &-del-btn {
+        cursor   : pointer;
+        font-size: 14px;
+        width    : 20px;
+        height   : 20px;
+    }
+
+    &-font-danger {
+        color: @error-color;
+    }
+
+    &-m-t-5 {
+        margin-top: 5px;
+    }
+}
