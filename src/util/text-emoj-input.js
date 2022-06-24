@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-16 13:40:18
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-16 13:44:28
+ * @LastEditTime: 2022-06-24 14:19:58
  * @FilePath: /ry-design/src/util/text-emoj-input.js
  * @Description: text-emoj-input 组件用到的工具方法
  */
@@ -26,17 +26,18 @@ export const getPlainText = (richCont = '') => {
     value = value.replace(/↵/g, '')
     // 去掉回车换行
     value = value.replace(/[\r\n]/g, '')
-    // 去掉空格
+    // 去掉 &nbsp 空格
     value = value.replace(/&nbsp;/g, '')
+
+    // 其他字符
+    value = value.replace(/(\n)/g, '')
+    value = value.replace(/(\t)/g, '')
+    value = value.replace(/(\r)/g, '')
+    value = value.replace(/<\/?[^>]*>/g, '')
+    value = value.replace(/\s*/g, '')
+
     // 转义符换成普通字符
     value = convertIdeogramToNormalCharacter(value)
-
-    // value = value.replace(/(\n)/g, '')
-    // value = value.replace(/(\t)/g, '')
-    // value = value.replace(/(\r)/g, '')
-    // value = value.replace(/<\/?[^>]*>/g, '')
-    // value = value.replace(/\s*/g, '')
-    // value = convertIdeogramToNormalCharacter(value)
 
     return value
   }
