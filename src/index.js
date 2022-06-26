@@ -61,7 +61,8 @@ const components = [
   WordLimit,
   BatchUploadXls,
   DeleteModals,
-  Ellipsis
+  Ellipsis,
+  TextItemShow
 ]
 
 const install = function (Vue) {
