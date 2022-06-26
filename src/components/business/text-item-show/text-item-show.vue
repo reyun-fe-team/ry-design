@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:43:38
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-24 19:18:26
+ * @LastEditTime: 2022-06-26 17:10:18
  * @FilePath: /ry-design/src/components/business/text-item-show/text-item-show.vue
  * @Description: 极速创建基础信息，单项显示控件
 -->
@@ -11,8 +11,16 @@
     <!-- basic -->
     <div
       v-if="type === 'basic'"
-      :class="[prefixCls + '-basic', { 'two-lines': twoLineDisplay }]">
-      <div :class="[prefixCls + '-basic-text', { 'two-line-text': twoLineDisplay }, 'show-text']">
+      :class="[
+        prefixCls + '-basic',
+        { 'two-lines': twoLineDisplay, 'single-line': !twoLineDisplay }
+      ]">
+      <div
+        :class="[
+          prefixCls + '-basic-text',
+          { 'two-line-text': twoLineDisplay, 'single-line-text': !twoLineDisplay },
+          'show-text'
+        ]">
         {{ data.text }}
       </div>
       <!-- btnGroup -->
