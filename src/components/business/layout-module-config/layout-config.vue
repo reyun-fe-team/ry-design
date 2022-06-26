@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:50:21
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-24 12:56:48
+ * @LastEditTime: 2022-06-24 19:34:45
  * @FilePath: /ry-design/src/components/basics/layout-module-config/layout-module-config.vue
  * @Description: 极速创建第一步模块布局组件
  * @Tips 提示
@@ -51,7 +51,9 @@ const prefixCls = prefix + 'layout-module-config'
 const margin = 1
 
 import { valideSlotList } from '../../../util/layout-module-config'
-import { cloneDeep, isEqual, isEmpty } from 'lodash'
+import _cloneDeep from 'lodash/cloneDeep'
+import _isEqual from 'lodash/isEqual'
+import _isEmpty from 'lodash/isEmpty'
 import { typeOf } from '../../../util/assist'
 import Render from './../../base/render'
 
@@ -190,7 +192,7 @@ export default {
           // 插槽转成渲染函数
           const slots = this.$slots[slotName]
           const slotVNode = slots[0]
-          if (!isEmpty(slotVNode)) {
+          if (!_isEmpty(slotVNode)) {
             newObj[slotName] = {
               type: 'slot',
               slotVNode
@@ -215,10 +217,10 @@ export default {
       deep: true,
       immediate: true,
       handler(newVal, oldVal) {
-        if (isEmpty(newVal) || !Array.isArray(newVal) || isEqual(newVal, oldVal)) {
+        if (_isEmpty(newVal) || !Array.isArray(newVal) || _isEqual(newVal, oldVal)) {
           return
         }
-        this.newSlotList = cloneDeep(newVal)
+        this.newSlotList = _cloneDeep(newVal)
       }
     }
   },
@@ -236,7 +238,7 @@ export default {
       // slot
       const slots = this.$slots[slotName]
       const slotVNode = slots[0]
-      if (!isEmpty(slotVNode)) {
+      if (!_isEmpty(slotVNode)) {
         return {
           type: 'slot',
           slotVNode
