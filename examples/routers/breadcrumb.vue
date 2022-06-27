@@ -1,8 +1,7 @@
 <template>
-  <main style="padding: 20px">
-    <rd-breadcrumb :data="breadcrumbItems">
-    </rd-breadcrumb>
-  </main>
+  <div style="padding: 20px">
+    <rd-breadcrumb :data="breadcrumbItems"></rd-breadcrumb>
+  </div>
 </template>
 <script>
 export default {
@@ -21,7 +20,7 @@ export default {
           name: '三级页面'
         }
       ]
-    };
+    }
   }
-};
+}
 </script>

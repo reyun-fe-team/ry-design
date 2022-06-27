@@ -76,7 +76,7 @@
           left: 10px;
       }
       &-content {
-          width: calc(~'100% - 178px');
+          width: calc(~'100% - 228px');
           height: 80px;
           position: absolute;
           top: 10px;
@@ -134,7 +134,7 @@
           }
       }
       &-operation {
-          min-width: 70px;
+          min-width: 40px;
           height: 80px;
           line-height: 80px;
           position: absolute;
@@ -148,8 +148,8 @@
               color: @primary-color;
               margin: 25px 0;
           }
-          &-span:first-child {
-              margin-right: 20px;
+          &-span:last-child {
+              margin-left: 20px;
           }
       }
     }
@@ -175,4 +175,8 @@
             }
         }
     }
+}
+
+.ivu-table-wrapper, /deep/.ivu-table-wrapper {
+    border: 0;
 }
