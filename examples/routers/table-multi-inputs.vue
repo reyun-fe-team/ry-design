@@ -2,17 +2,17 @@
   <main>
     <rd-table-multi-inputs
       :columns="columns"
-      :table-list="tableList"
+      :data="data"
       :add-new-data="addNewData"
       :max="10"
-      @updateData="updateData"></rd-table-multi-inputs>
+      @on-change="updateData"></rd-table-multi-inputs>
   </main>
 </template>
 <script>
 export default {
   data() {
     return {
-      tableList: [
+      data: [
         {
           accountName: '账户名',
           actionTrackName: '',
