@@ -6,6 +6,7 @@
       <rd-ellipsis
         :text="text"
         :length="40"
+        theme="light"
         tooltip />
     </div>
     <h2>示例2-按照高度省略 100px 高</h2>

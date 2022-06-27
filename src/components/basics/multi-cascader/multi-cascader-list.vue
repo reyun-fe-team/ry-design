@@ -1,8 +1,8 @@
 <!--
  * @Author: yangyufneg
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-04-11 15:19:25
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-24 19:34:00
+ * @LastEditors: 杨玉峰 yangyufeng@reyun.com
  * @Description: 下拉多选联动-list面板
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader-list.vue
 -->
@@ -69,7 +69,8 @@
 </template>
 
 <script>
-import { isEmpty, find } from 'lodash'
+import _isEmpty from 'lodash/isEmpty'
+import _find from 'lodash/find'
 
 const { prefix } = require('../../../config.js')
 const prefixCls = prefix + 'multi-cascader-list'
@@ -129,14 +130,14 @@ export default {
 
       // 层级一样
       // 当前的id是选中的最后一层的id
-      const fidData = find(this.list, val => val.id === lastId && this.level === val.level)
+      const fidData = _find(this.list, val => val.id === lastId && this.level === val.level)
 
       // 找不到最后一个（这一列不是最后一列或层级不一样，不显示暂无数据）
-      if (isEmpty(fidData)) {
+      if (_isEmpty(fidData)) {
         return false
       }
       // 没有下一级的
-      if (isEmpty(fidData.childNodes)) {
+      if (_isEmpty(fidData.childNodes)) {
         return true
       }
       return false

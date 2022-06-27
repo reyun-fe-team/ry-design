@@ -95,6 +95,10 @@ const router = new VueRouter({
     {
       path: '/table-multi-inputs',
       component: resolve => require(['./routers/table-multi-inputs'], resolve)
+    },
+    {
+      path: '/text-item-show',
+      component: resolve => require(['./routers/text-item-show'], resolve)
     }
   ]
 })
