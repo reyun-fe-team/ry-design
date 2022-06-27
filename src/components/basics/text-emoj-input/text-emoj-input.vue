@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:27:55
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-24 17:20:31
+ * @LastEditTime: 2022-06-27 17:18:15
  * @FilePath: /ry-design/src/components/basics/text-emoj-input/text-emoj-input.vue
  * @Description: 文本表情输入
 -->
@@ -76,7 +76,7 @@ export default {
     // 是否单行显示
     isSingleLine: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data() {
@@ -143,8 +143,7 @@ export default {
       if (this.transformHtml2Text) {
         oiginalText = this.transformHtml2Text(stringHtml)
       }
-      console.log('回填value: ', oiginalText)
-      this.$emit('input', oiginalText)
+      // this.$emit('input', oiginalText)
       this.$emit('on-change', {
         currentData,
         keyInputEvent: e,
@@ -204,6 +203,19 @@ export default {
     // 失焦事件
     handlerBlur(e) {
       this.$emit('on-blur', e)
+      const stringHtml = e.target.innerHTML
+      // 使用默认的获取纯文本的方法
+      let oiginalText = getPlainText(stringHtml)
+      if (this.transformHtml2Text) {
+        oiginalText = this.transformHtml2Text(stringHtml)
+      }
+      console.log('回填value: ', oiginalText)
+      this.$emit('input', oiginalText)
+    },
+    // 替换editer内容
+    replaceContent(html) {
+      this.richEditRef.innerHTML = ''
+      this.insertHtmlMark(html)
     },
     // 插入html标记
     insertHtmlMark(html) {
@@ -233,7 +245,7 @@ export default {
       if (document.selection) {
         this.currentRange.pasteHTML(html)
       } else {
-        document.execCommand('insertHtml', false, html)
+        document.execCommand('insertHTML', false, html)
         this.currentRange && this.currentRange.collapse(false)
       }
       this.saveSelection()

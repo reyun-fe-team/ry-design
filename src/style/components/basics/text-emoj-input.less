@@ -7,11 +7,19 @@
   font-size       : 0;
   padding         : 2px 10px 2px 10px;
   vertical-align  : middle;
+
   &-single-line {
-    overflow   : hidden;
-    height     : 35px !important;
-    white-space: nowrap;
+    overflow: hidden;
+    height  : 35px !important;
+
+    .@{text-emoj-input}-rich {
+      white-space   : nowrap;
+      overflow      : hidden;
+      vertical-align: middle;
+    }
+
   }
+
   &-rich {
     font-size       : 12px;
     background-color: transparent;
