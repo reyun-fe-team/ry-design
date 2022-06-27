@@ -5,7 +5,7 @@
       border
       :max-height="400"
       :columns="columns"
-      :data="data"
+      :data="tableData"
       :row-class-name="rowClassName">
       <template
         v-for="item in columns"
@@ -23,7 +23,7 @@
           @on-enter="enter(row, index, column)"
           @on-change="changeValue(row, index)" />
         <Icon
-          v-if="data.length > 1 && item.slot === 'del'"
+          v-if="tableData.length > 1 && item.slot === 'del'"
           :key="item.key + 'icon'"
           :class="prefixCls + '-del-btn'"
           type="md-close"
@@ -49,7 +49,7 @@ export default {
       type: Array,
       default: () => []
     },
-    tableList: {
+    data: {
       type: Array,
       default: () => []
     },
@@ -67,7 +67,7 @@ export default {
   data() {
     return {
       prefixCls,
-      data: _cloneDeep(this.tableList),
+      tableData: _cloneDeep(this.data),
       errorInfo: {
         errorTip: '',
         errorRow: null
@@ -82,7 +82,7 @@ export default {
       let inputColIndex = inputColumn.findIndex(item => item.key === column.key) || 0
       const inputColumnLength = inputColumn.length
       // 光标聚焦到最后一个，如果当前表格数量 >= 最大表格数，则return
-      if (inputColIndex + 1 >= inputColumnLength  && this.data.length >= this.max) {
+      if (inputColIndex + 1 >= inputColumnLength && this.tableData.length >= this.max) {
         return
       }
       // 下一个要聚焦的input，在所有input的数量中属于第几个
@@ -91,7 +91,7 @@ export default {
       const allInputLen = document.getElementsByClassName(`${this.prefixCls}-input-item`).length
       // 光标聚焦到最后一个，如果当前表格数量 < 最大表格数, 并且下一个要聚焦的input <= 所有input的数量（即只有光标处于最后的input框且可以继续增加的时候才会push）  则给表格的data，push一条新数据
       if (inputColIndex + 1 >= inputColumnLength && allInputLen <= nextLen) {
-        this.data.push(this.addNewData)
+        this.tableData.push(this.addNewData)
       }
       // 光标移到下一个input
       this.$nextTick(() => {
@@ -105,7 +105,7 @@ export default {
     changeValue(row, index) {
       clearTimeout(this.timer)
       this.timer = setTimeout(async () => {
-        this.data[index] = row
+        this.tableData[index] = row
         // 对this.columns含有校验方法（validate）的数据进行校验
         const validateKey = []
         this.columns.forEach(item => {
@@ -116,28 +116,28 @@ export default {
         this.errorInfo.errorTip = ''
         this.errorInfo.errorRow = null
         // 循环this.data里面的数据，校验不正确的立即终止循环，并且返回第一个校验不正确的提示信息
-        for (let i = 0; i < this.data.length; i++) {
-          const keys = Object.keys(this.data[i])
+        for (let i = 0; i < this.tableData.length; i++) {
+          const keys = Object.keys(this.tableData[i])
           for (let j = 0; j < keys.length; j++) {
             if (validateKey.includes(keys[j])) {
               const validateObj = this.columns.find(ele => ele.key === keys[j])
               try {
-                await validateObj.validate(this.data[i][keys[j]])
+                await validateObj.validate(this.tableData[i][keys[j]])
               } catch (error) {
                 this.errorInfo.errorTip = error.message
                 this.errorInfo.errorRow = i
-                this.$emit('updateData', this.data, this.errorInfo.errorTip)
+                this.$emit('on-change', this.tableData, this.errorInfo.errorTip)
                 return
               }
             }
           }
         }
-        this.$emit('updateData', this.data, this.errorInfo.errorTip)
+        this.$emit('on-change', this.tableData, this.errorInfo.errorTip)
       }, 500)
     },
     del(index) {
-      this.data.splice(index, 1)
-      this.$emit('updateData', this.data)
+      this.tableData.splice(index, 1)
+      this.$emit('on-change', this.tableData)
     },
     rowClassName(row, index) {
       if (index === this.errorInfo.errorRow) {
