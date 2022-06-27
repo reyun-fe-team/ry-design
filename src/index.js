@@ -11,10 +11,10 @@ import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
 import TableColumns from './components/basics/table-columns/index.js'
 import DraggableCard from './components/basics/draggable-card'
-
 import WordLimit from './components/basics/word-limit'
 import Ellipsis from './components/basics/ellipsis'
 import TableMultiInputs from './components/basics/table-multi-inputs'
+import TextEmojInput from './components/basics/text-emoj-input'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -59,12 +59,13 @@ const components = [
   LayoutModuleConfig,
   LayoutModuleView,
   DraggableCard,
+  DeleteModals,
+  TableMultiInputs,
+  TextItemShow,
   WordLimit,
   BatchUploadXls,
-  DeleteModals,
   Ellipsis,
-  TableMultiInputs,
-  TextItemShow
+  TextEmojInput
 ]
 
 const install = function (Vue) {
@@ -100,5 +101,6 @@ export default {
   DraggableCard,
   TableMultiInputs,
   TextItemShow,
-  DeleteModals
+  DeleteModals,
+  TextEmojInput
 }
