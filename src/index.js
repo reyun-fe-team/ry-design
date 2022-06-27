@@ -59,9 +59,9 @@ const components = [
   LayoutModuleConfig,
   LayoutModuleView,
   DraggableCard,
-  wordLimit,
-  batchUploadXls,
-  deleteModals,
+  WordLimit,
+  BatchUploadXls,
+  DeleteModals,
   Ellipsis,
   TableMultiInputs,
   TextItemShow
