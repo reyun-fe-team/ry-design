@@ -2,19 +2,19 @@
   <div :class="classes">
     <div
       v-if="prepend"
-      :class="[prefixCls + '-group-prepend']">
+      :class="prefixCls + '-group-prepend'">
       <slot name="prepend"></slot>
     </div>
     <slot></slot>
     <div
       v-if="append"
-      :class="[prefixCls + '-group-append']">
+      :class="prefixCls + '-group-append'">
       <slot name="append"></slot>
     </div>
   </div>
 </template>
 <script>
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'prefix-container'
 export default {
   name: prefixCls,

@@ -27,7 +27,7 @@
 import { getPlainText } from './../../../util/text-emoj-input'
 import { typeOf } from './../../../util/assist'
 
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'text-emoj-input'
 
 export default {
