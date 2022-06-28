@@ -30,9 +30,11 @@ https://www.npmjs.com/package/ry-design
 ## 编译 发布
 
 1.运行 npm run build 可打包, 编译后的文件在 dist 目录，dist 需要提交到 gitlab 
+
 2.发布 npm :
-    a. package.json 中 version 版本 +1
-    b. 运行 npm login npm publish
+
+	1. package.json 中 version 版本 +1
+	2. 运行 npm login npm publish
 
 ## 文件目录
 
@@ -74,7 +76,7 @@ https://www.npmjs.com/package/ry-design
     1. 组件命名 rd-'组件' ,可参考transfe组件, 'rd-transfer'
     2. 组件最外层 class命名 ：rd-'组件'
     3. class命名：前缀+拼接，所有class都是由prefixCls开头
-       例：:class="prefixCls + '-content'"            prefixCls 代表 'rd-'
+      例：:class="prefixCls + '-content'"            prefixCls 代表 'rd-'
 
 **组件命名**
 
