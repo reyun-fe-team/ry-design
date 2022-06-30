@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-07 18:51:54
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-15 18:05:07
+ * @LastEditTime: 2022-06-30 15:59:58
  * @FilePath: /ry-design/src/components/basics/edit-row-bid/edit-bid.vue
  * @Description: 编辑出价|名称|自定义内容
 -->
@@ -18,7 +18,9 @@
       </slot>
     </span>
     <!-- 悬浮的显示内容 -->
-    <template v-if="showPoptip">
+    <div
+      v-if="showPoptip"
+      :class="[prefixCls + '-poptip-rel']">
       <Poptip
         v-model="poptipModelValue"
         :placement="placement"
@@ -137,7 +139,7 @@
           </div>
         </template>
       </Poptip>
-    </template>
+    </div>
   </div>
 </template>
 <script>
@@ -359,6 +361,8 @@ export default {
         return
       }
       this.renderPoptipBefore()
+      // 点击后重新赋值
+      this.formData = { value: this.value }
       this.showPoptip = true
       this.poptipModelValue = false
       setTimeout(() => {
