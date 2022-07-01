@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const Config = require('../src/config.js')
 const pkg = require('../package.json')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 process.env.NODE_ENV = 'production'
 module.exports = {
   entry: './src/index.js',
@@ -66,7 +67,10 @@ module.exports = {
       }
     ]
   },
-  plugins: [new ExtractTextPlugin('styles/[name].css')],
+  plugins: [ 
+    new CleanWebpackPlugin(),
+    new ExtractTextPlugin('styles/[name].css')
+  ],
   resolve: {
     alias: {
       vue$: 'vue/dist/vue.esm.js',
