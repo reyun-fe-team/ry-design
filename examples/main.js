@@ -99,6 +99,10 @@ const router = new VueRouter({
     {
       path: '/text-item-show',
       component: resolve => require(['./routers/text-item-show'], resolve)
+    },
+    {
+      path: '/text-emoj-input',
+      component: resolve => require(['./routers/text-emoj-input'], resolve)
     }
   ]
 })
