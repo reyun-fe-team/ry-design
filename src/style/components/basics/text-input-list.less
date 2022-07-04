@@ -1,35 +1,71 @@
 @text-input-list: ~"@{css-prefix}text-input-list";
 
 .@{text-input-list} {
-  display: flex;
-  flex-direction: row;
   overflow-y: auto;
-  width: 100%;
-  height: 352px;
+  height: 100%;
   margin-bottom: 5px;
   border: 1px solid #dadfe3;
 
   &-left-list {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #edf1f5;
     width: 40px;
-
-    li {
-      height: 39px;
-      line-height: 39px;
-      text-align: center;
-      background-color: #edf1f5;
-    }
   }
 
   &-right-list {
-    width: calc(~'100% - 88px')
+    width: 100%;
+    display: flex;
+    padding: 5px 5px;
+
+    .btn-wrap {
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+
+      .ivu-poptip {
+        margin: 5px 10px 0 0;
+      }
+
+      img {
+        width: 20px;
+        height: auto;
+      }
+    }
+  }
+
+  &-poptip {
+    .ivu-poptip-body {
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #cccccc;
+      border-radius: 3px;
+      background-color: #ffffff;
+      width: 262px;
+      position: absolute;
+      z-index: 99;
+      white-space: normal;
+    }
+  }
+
+  &-item-common {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .rd-text-emoj-input {
+    background: #fff;
+    flex: 1;
+  }
+
+  .middle-style-li-active {
+    background-color: #edf1f5;
   }
 }
 
-.middle-style-li-active {
-  background-color: #edf1f5;
+.@{text-input-list} {
 
-  input {
-    background-color: #edf1f5;
-  }
 }

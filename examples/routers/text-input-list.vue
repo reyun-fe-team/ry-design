@@ -1,9 +1,18 @@
 <template>
   <div style="margin: 20px">
-    <rd-text-input-list :last-max="200" />
+    {{ list }}
+    <rd-text-input-list
+      v-model="list"
+      :last-max="10" />
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      list: []
+    }
+  }
+}
 </script>

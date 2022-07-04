@@ -11,7 +11,6 @@
     <div
       ref="rich-edit"
       :class="prefixCls + '-rich'"
-      :value="value"
       :contenteditable="contenteditable"
       @focus="handlerFocus"
       @blur="handlerBlur"
@@ -20,6 +19,21 @@
       @mouseup="handlerMouseup"
       @input="handlerInput"
       @paste="handlerPaste"></div>
+    <div
+      v-show="!ln"
+      :class="prefixCls + '-placeholder'">
+      {{ placeholder }}
+    </div>
+    <div
+      v-show="isEdit"
+      :class="prefixCls + '-ln-wrap'">
+      <div :class="prefixCls + '-ln-wrap-l'">{{ ln }}/{{ maxLn }}</div>
+      <div :class="prefixCls + '-ln-wrap-r'">
+        <Icon
+          type="md-close"
+          @click="del"></Icon>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -77,7 +91,10 @@ export default {
     isSingleLine: {
       type: Boolean,
       default: false
-    }
+    },
+    isEdit: Boolean,
+    placeholder: String,
+    maxLn: Number
   },
   data() {
     return {
@@ -91,25 +108,48 @@ export default {
       // 是否支持文本范围
       supportRange: '',
       // eslint-disable-next-line vue/no-reserved-keys
-      rangeParentElement: null
+      rangeParentElement: null,
+
+      ln: 0
     }
   },
   watch: {
     value(newVal, oldVal) {
-      if (newVal === oldVal) {
-        return
-      }
-      this.echoValue2Ttml()
-    }
+      // if (newVal === oldVal) {
+      //   return
+      // }
+      this.$nextTick(() => {
+        this.echoValue2Ttml()
+      })
+    },
+    isEdit: 'formatValue'
   },
   mounted() {
     this.supportRange = typeOf(document.createRange) === 'function'
     this.richEditRef = this.$refs['rich-edit']
     this.$nextTick(() => {
-      this.echoValue2Ttml()
+      this.value && this.echoValue2Ttml()
     })
   },
   methods: {
+    del() {},
+    formatValue() {
+      if (!this.value || !this.isEdit) {
+        return
+      }
+
+      const copyDom = document.createElement('div')
+      copyDom.innerHTML = this.value
+      const imgs = copyDom.getElementsByTagName('img')
+      const enterFlag = [...imgs].find(img => img.getAttribute('data-type') === 'enter')
+      if (enterFlag) {
+        const tmp = document.createElement('div')
+        tmp.appendChild(enterFlag)
+        const tmpStr = tmp.innerHTML
+
+        this.replaceContent(this.value.replaceAll(tmpStr, `${tmpStr}<br>&nbsp;`))
+      }
+    },
     // 回显value
     echoValue2Ttml() {
       this.richEditRef.innerHTML = ''
@@ -126,18 +166,19 @@ export default {
     },
     // 输入事件（使用操作都会触发）
     handlerInput(e) {
-      e.stopPropagation()
       /**
        * @property {event} keyInputEvent 输入事件
        * @property {string} stringHtml 输入框的html 内容
        * @property {function} disableInputFn 禁用输入。一些场景去禁用。
        */
+      // console.log('e', e);
       // 本次输入的值
       const currentData = e.data
       const stringHtml = e.target.innerHTML
       // const reg = /<img[^>]*>/gi
       // const v = stringHtml.match(reg)
       const disableInputFn = () => e.preventDefault()
+      e.stopPropagation()
       // 使用默认的获取纯文本的方法
       let oiginalText = getPlainText(stringHtml)
       if (this.transformHtml2Text) {
@@ -151,6 +192,8 @@ export default {
         oiginalText,
         disableInputFn
       })
+
+      this.calcInputLength()
     },
     // 粘贴(禁止粘贴文件和图片)
     handlerPaste(e) {
@@ -198,19 +241,28 @@ export default {
     },
     // 聚焦事件
     handlerFocus(e) {
+      if (this.isEdit) {
+        return
+      }
       this.$emit('on-foucs', e)
     },
     // 失焦事件
     handlerBlur(e) {
-      this.$emit('on-blur', e)
-      const stringHtml = e.target.innerHTML
-      // 使用默认的获取纯文本的方法
-      let oiginalText = getPlainText(stringHtml)
-      if (this.transformHtml2Text) {
-        oiginalText = this.transformHtml2Text(stringHtml)
+      if (this.isEdit) {
+        return
       }
-      console.log('回填value: ', oiginalText)
-      this.$emit('input', oiginalText)
+      this.$emit('on-blur', e)
+      // const stringHtml = e.target.innerHTML
+      // // 使用默认的获取纯文本的方法
+      // let oiginalText = getPlainText(stringHtml)
+      // if (this.transformHtml2Text) {
+      //   oiginalText = this.transformHtml2Text(stringHtml)
+      // }
+      // oiginalText = oiginalText.replaceAll('<br>&nbsp;', '')
+      // console.log('回填value: ', oiginalText)
+      // this.$nextTick(() => {
+      //   this.$emit('input', oiginalText)
+      // })
     },
     // 替换editer内容
     replaceContent(html) {
@@ -218,7 +270,7 @@ export default {
       this.insertHtmlMark(html)
     },
     // 插入html标记
-    insertHtmlMark(html) {
+    insertHtmlMark(html, isEnter) {
       if (!this.canUseHtml) {
         return
       }
@@ -249,6 +301,7 @@ export default {
         this.currentRange && this.currentRange.collapse(false)
       }
       this.saveSelection()
+      isEnter && this.insertHtmlMark('<br/>&nbsp;', false)
     },
     //  插入纯文本
     insertText(string) {
@@ -334,8 +387,41 @@ export default {
         range.collapse(false)
         range.select()
       }
-    }
+    },
     // ------------光标相关-----------
+    calcInputLength() {
+      if (!this.richEditRef) {
+        this.ln = 0
+        return
+      }
+      let copyDom = document.createElement('div')
+      copyDom.innerHTML = this.richEditRef.innerHTML.replaceAll('&nbsp;', '')
+      const textLn = copyDom.innerText.replace(/[\r\n]/g, '').replace('&nbsp;', '').length
+      const imgs = copyDom.getElementsByTagName('img')
+      const emojLn = [...imgs].reduce(
+        (pre, cur) => (cur.getAttribute('data-type') === 'emoj' ? pre + 1 : pre),
+        0
+      )
+      this.ln = textLn + emojLn
+      copyDom = null
+    },
+    focus() {
+      this.richEditRef.focus()
+    },
+    blur() {
+      this.richEditRef.blur()
+    },
+    getValue() {
+      const stringHtml = this.richEditRef.innerHTML
+      // 使用默认的获取纯文本的方法
+      let oiginalText = getPlainText(stringHtml)
+      if (this.transformHtml2Text) {
+        oiginalText = this.transformHtml2Text(stringHtml)
+      }
+      oiginalText = oiginalText.replaceAll('<br>&nbsp;', '')
+
+      return oiginalText
+    }
   }
 }
 </script>
