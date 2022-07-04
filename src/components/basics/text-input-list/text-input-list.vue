@@ -345,7 +345,8 @@ export default {
         this.$nextTick(() => {
           this.$refs[`emojInput-${index}`][0].blur()
           setTimeout(() => {
-            this.$refs[`emojInput-${index + 1}`][0].$el.click()
+            this.$refs[`emojInput-${index + 1}`][0] &&
+              this.$refs[`emojInput-${index + 1}`][0].$el.click()
           }, 0)
         })
       }
