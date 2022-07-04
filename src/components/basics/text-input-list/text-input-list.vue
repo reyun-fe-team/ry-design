@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div :class="prefixCls">
+    <div
+      v-click-outside="onClickEditorOutSide"
+      :class="prefixCls">
       <!-- 行号 -->
       <div
-        v-for="(_, index) in lastMax"
+        v-for="(_, index) in maxLine"
         :key="index"
         style="display: flex">
         <div :class="prefixCls + '-left-list'">
@@ -11,7 +13,7 @@
         </div>
 
         <div
-          v-click-outside="() => handleValue(index)"
+          v-click-outside="() => onClickEditorLineOutSide(index)"
           :class="prefixCls + '-right-list'">
           <rd-text-emoj-input
             :ref="`emojInput-${index}`"
@@ -20,15 +22,18 @@
             :class="{ 'middle-style-li-active': middle.activeClass === index }"
             :transform-html2-text="transformHtml2Text"
             :transform-text2-html="transformText2Html"
-            :max-ln="200"
+            :calc-text-fn="calcTextFn"
             placeholder="请输入或粘贴创意标题，每行一标题，敲击回车换行"
             @on-keydown="handlerKeydown($event, index)"
-            @input="val => handleInput(val, index)"
-            @click.native="onClickInput(index)" />
+            @on-blur="(e, value) => handlerBlur(e, value, index)"
+            @input="val => handleEmitInput(val, index)"
+            @click.native="onClickEditorLine(index)" />
           <div
             v-if="middle.activeClass === index"
             class="btn-wrap">
             <Poptip
+              v-if="useEmoj"
+              v-model="showEmojPan"
               transfer
               :transfer-class-name="prefixCls + '-poptip'"
               placement="bottom-end">
@@ -46,8 +51,9 @@
             </Poptip>
 
             <img
+              v-if="useEnter"
               src="../../../images/text-input-list/add-line-feed.png"
-              @click="enter" />
+              @click="enter(index)" />
           </div>
         </div>
       </div>
@@ -97,10 +103,25 @@ export default {
       type: Array,
       default: () => []
     },
-
-    lastMax: {
+    // 最大行数
+    maxLine: {
       type: Number,
-      default: 1
+      default: 10
+    },
+    // 最大换行数
+    maxEnter: {
+      type: Number,
+      default: 3
+    },
+    // 可以使用表情
+    useEmoj: {
+      type: Boolean,
+      default: true
+    },
+    // 可以使用换行
+    useEnter: {
+      type: Boolean,
+      default: true
     },
     emojiList: {
       type: Array,
@@ -319,7 +340,8 @@ export default {
             value: ''
           }
         ]
-      }
+      },
+      showEmojPan: false
     }
   },
   computed: {
@@ -337,19 +359,29 @@ export default {
       if (keyDownEvent.keyCode === 13) {
         disableInputFn()
 
+        const curIndex = index + 1
+
+        if (curIndex >= this.maxLine) {
+          return
+        }
+        // 回车换行 & 记录数据变化
         const value = this.curEmojInput.getValue()
-        this.handleInput(value, index)
+        this.handleEmitInput(value, index)
 
-        this.middle.activeClass = index + 1
-
+        this.middle.activeClass = curIndex
         this.$nextTick(() => {
-          this.$refs[`emojInput-${index}`][0].blur()
+          this.$refs[`emojInput-${index + 1}`][0].blur()
           setTimeout(() => {
-            this.$refs[`emojInput-${index + 1}`][0] &&
-              this.$refs[`emojInput-${index + 1}`][0].$el.click()
+            this.$refs[`emojInput-${curIndex}`][0].focus()
           }, 0)
         })
       }
+    },
+    handlerBlur(e, value, index) {
+      if (value === undefined) {
+        return
+      }
+      this.handleEmitInput(value, index)
     },
     transformHtml2Text(html) {
       return html
@@ -362,35 +394,74 @@ export default {
       return str
     },
     enter() {
-      let html = this.getFaceHtml(this.middle.addLineFeedIcon, 'enter')
-      this.curEmojInput.insertHtmlMark(html, true)
+      if (this.curEmojInput.getEnters() >= this.maxEnter) {
+        this.$Message.error(`最多能插入${this.maxEnter}换行`)
+        return
+      }
+      let html = `${this.getFaceHtml(this.middle.addLineFeedIcon, 'enter')}<br>&nbsp;`
+      this.curEmojInput.insertHtmlMark(html)
     },
     insertFace(val) {
       this.faceIcon = val.url
       let html = this.getFaceHtml(this.faceIcon, 'emoj')
       this.curEmojInput.insertHtmlMark(html)
     },
-    handleInput(value, index) {
-      console.log(1)
+    // 向外抛出 input 事件，改变绑定数据
+    handleEmitInput(value, index) {
+      if (this.value[index] === value) {
+        return
+      }
       const copyValue = JSON.parse(JSON.stringify(this.value))
       copyValue[index] = value || ''
       this.$emit('input', copyValue)
     },
-    onClickInput(index) {
+    // 点击编辑行
+    onClickEditorLine(index) {
+      if (this.middle.activeClass === index) {
+        return
+      }
       const el = this.$refs[`emojInput-${index}`][0]
-
       this.middle.activeClass = index
       this.$nextTick(() => {
         el.focus()
       })
     },
-    handleValue(index) {
+    // 点击编辑行区域外
+    onClickEditorLineOutSide(index) {
       if (index !== this.middle.preActiveClass) {
         return
       }
+
       const el = this.$refs[`emojInput-${index}`][0]
       const value = el.getValue()
-      this.handleInput(value, index)
+      console.log(value)
+      this.handleEmitInput(value, index)
+    },
+    // 点击整体编辑区域外
+    onClickEditorOutSide() {
+      if (this.showEmojPan) {
+        return
+      }
+
+      const index = this.middle.activeClass
+      const el = this.$refs[`emojInput-${index}`][0]
+      const value = el.getValue()
+      this.handleEmitInput(value, index)
+
+      this.$nextTick(() => {
+        this.middle.activeClass = null
+      })
+    },
+    // 文本计算方法
+    calcTextFn(text) {
+      // 中英文长度计算
+
+      // 正常计算
+      // reutnr text.length
+
+      // 中文占两个字符
+      const copyText = text.replaceAll(/[^\x00-\xff]/g, '**')
+      return copyText.length
     }
   }
 }

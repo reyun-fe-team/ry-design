@@ -7,11 +7,11 @@
  * @Description: 文本表情输入
 -->
 <template>
-  <div :class="[prefixCls, { [prefixCls + '-single-line']: isSingleLine }]">
+  <div :class="[prefixCls, { [prefixCls + '-single-line']: isSingleLine }, isError && 'is-error']">
     <div
       ref="rich-edit"
       :class="prefixCls + '-rich'"
-      :contenteditable="contenteditable"
+      :contenteditable="isEdit && contenteditable"
       @focus="handlerFocus"
       @blur="handlerBlur"
       @keyup="handlerKeyup"
@@ -20,18 +20,18 @@
       @input="handlerInput"
       @paste="handlerPaste"></div>
     <div
-      v-show="!ln"
+      v-show="!ln && !value"
       :class="prefixCls + '-placeholder'">
       {{ placeholder }}
     </div>
     <div
       v-show="isEdit"
       :class="prefixCls + '-ln-wrap'">
-      <div :class="prefixCls + '-ln-wrap-l'">{{ ln }}/{{ maxLn }}</div>
+      <div :class="prefixCls + '-ln-wrap-l'">{{ ln }}/{{ maxLength }}</div>
       <div :class="prefixCls + '-ln-wrap-r'">
         <Icon
           type="md-close"
-          @click="del"></Icon>
+          @click="onClear"></Icon>
       </div>
     </div>
   </div>
@@ -92,9 +92,25 @@ export default {
       type: Boolean,
       default: false
     },
-    isEdit: Boolean,
-    placeholder: String,
-    maxLn: Number
+    isEdit: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: String
+    },
+    minLength: {
+      type: Number,
+      default: 6
+    },
+    maxLength: {
+      type: Number,
+      default: 30
+    },
+    calcTextFn: {
+      require: true,
+      type: Function
+    }
   },
   data() {
     return {
@@ -110,18 +126,13 @@ export default {
       // eslint-disable-next-line vue/no-reserved-keys
       rangeParentElement: null,
 
-      ln: 0
+      ln: 0,
+      //
+      isError: false
     }
   },
   watch: {
-    value(newVal, oldVal) {
-      // if (newVal === oldVal) {
-      //   return
-      // }
-      this.$nextTick(() => {
-        this.echoValue2Ttml()
-      })
-    },
+    value: 'formatValue',
     isEdit: 'formatValue'
   },
   mounted() {
@@ -132,23 +143,32 @@ export default {
     })
   },
   methods: {
-    del() {},
     formatValue() {
-      if (!this.value || !this.isEdit) {
-        return
-      }
+      this.$nextTick(() => {
+        if (!this.value && !this.isEdit) {
+          return
+        }
 
-      const copyDom = document.createElement('div')
-      copyDom.innerHTML = this.value
-      const imgs = copyDom.getElementsByTagName('img')
-      const enterFlag = [...imgs].find(img => img.getAttribute('data-type') === 'enter')
-      if (enterFlag) {
-        const tmp = document.createElement('div')
-        tmp.appendChild(enterFlag)
-        const tmpStr = tmp.innerHTML
+        if (!this.isEdit) {
+          this.$emit('on-blur', null, this.getValue())
 
-        this.replaceContent(this.value.replaceAll(tmpStr, `${tmpStr}<br>&nbsp;`))
-      }
+          this.$nextTick(() => {
+            this.echoValue2Ttml()
+          })
+          return
+        }
+        const copyDom = document.createElement('div')
+        copyDom.innerHTML = this.value
+        const imgs = copyDom.getElementsByTagName('img')
+        const enterFlag = [...imgs].find(img => img.getAttribute('data-type') === 'enter')
+        if (enterFlag) {
+          const tmp = document.createElement('div')
+          tmp.appendChild(enterFlag)
+          const tmpStr = tmp.innerHTML
+
+          this.replaceContent(this.value.replaceAll(tmpStr, `${tmpStr}<br>&nbsp;`))
+        }
+      })
     },
     // 回显value
     echoValue2Ttml() {
@@ -160,8 +180,9 @@ export default {
         if (this.transformText2Html) {
           html = this.transformText2Html(this.value)
         }
-        console.log('回显value: ', html)
-        this.insertHtmlMark(html)
+        // console.log('回显value: ', html)
+        // this.insertHtmlMark(html)
+        this.richEditRef.innerHTML = html
       }
     },
     // 输入事件（使用操作都会触发）
@@ -301,7 +322,7 @@ export default {
         this.currentRange && this.currentRange.collapse(false)
       }
       this.saveSelection()
-      isEnter && this.insertHtmlMark('<br/>&nbsp;', false)
+      // isEnter && this.insertHtmlMark('<br/>&nbsp;', false)
     },
     //  插入纯文本
     insertText(string) {
@@ -396,7 +417,14 @@ export default {
       }
       let copyDom = document.createElement('div')
       copyDom.innerHTML = this.richEditRef.innerHTML.replaceAll('&nbsp;', '')
-      const textLn = copyDom.innerText.replace(/[\r\n]/g, '').replace('&nbsp;', '').length
+      // 计算文本长度
+      let textLn = 0
+      const textStr = copyDom.innerText.replace(/[\r\n]/g, '').replace('&nbsp;', '')
+      if (this.calcTextFn) {
+        textLn = this.calcTextFn(textStr)
+      } else {
+        textLn = textStr.length
+      }
       const imgs = copyDom.getElementsByTagName('img')
       const emojLn = [...imgs].reduce(
         (pre, cur) => (cur.getAttribute('data-type') === 'emoj' ? pre + 1 : pre),
@@ -404,13 +432,29 @@ export default {
       )
       this.ln = textLn + emojLn
       copyDom = null
+
+      // 校验长度
+      let isError = (this.isError = false)
+      if (this.ln > this.maxLength || this.ln < this.minLength) {
+        this.isError = isError = true
+      }
     },
+    // 自定义聚焦
     focus() {
       this.richEditRef.focus()
+      // 移动光标到最后位置
+      const range = document.createRange()
+      range.selectNodeContents(this.richEditRef)
+      range.collapse(false)
+      const sel = window.getSelection()
+      sel.removeAllRanges()
+      sel.addRange(range)
     },
+    // 自定义失焦
     blur() {
       this.richEditRef.blur()
     },
+    // 获取输入值
     getValue() {
       const stringHtml = this.richEditRef.innerHTML
       // 使用默认的获取纯文本的方法
@@ -419,8 +463,20 @@ export default {
         oiginalText = this.transformHtml2Text(stringHtml)
       }
       oiginalText = oiginalText.replaceAll('<br>&nbsp;', '')
-
       return oiginalText
+    },
+    // 获取已插入换行符个数
+    getEnters() {
+      const brs = this.richEditRef.innerHTML.match(/<br>/g)
+      return brs ? brs.length : 0
+    },
+    //清除
+    onClear() {
+      this.richEditRef.innerHTML = ''
+      this.$nextTick(() => {
+        this.calcInputLength()
+        this.focus()
+      })
     }
   }
 }
