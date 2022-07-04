@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:34:14
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-27 17:24:23
+ * @LastEditTime: 2022-07-04 13:52:41
  * @FilePath: /ry-design/examples/routers/text-emoj-input.vue
  * @Description: 文本-表情输入组件-示例
 -->
@@ -24,14 +24,10 @@
 export default {
   data() {
     return {
-      value: `我是表情文字[苦]，现在很苦⇨
-      表情文字[苦]，现在很苦⇨
-      表情文字[苦]，现在很苦⇨
-      `,
-      faceIcon:
-        'https://t8.baidu.com/it/u=2183276516,2712334297&fm=218&app=137&size=f242,150&n=0&f=JPEG&fmt=auto?s=79A635724D815A470ECA58740200F073&sec=1656435600&t=dac685add7d05c99c8eda9e4f97dac97',
+      value: '我是表情文字[酷]，现在很酷⇨表情文字[酷]，现在很酷⇨表情文字[酷]，现在很酷⇨',
+      faceIcon: 'https://js2.a.yximgs.com/bs2/emotion/app_1574675492000_5xz4zmu9vi5c26a.png',
       enterIcon:
-        'https://img1.baidu.com/it/u=829518426,736216214&fm=253&app=138&size=w931&n=0&f=PNG&fmt=auto?sec=1656435600&t=34bdab2bb54dbf32282647f195560aba'
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAEFCu8CAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAHKADAAQAAAABAAAAHAAAAABkvfSiAAADe0lEQVRIDd1WTUhUURS+Z/50dMJaZKEVVBq1amFBq4SiFrWoqHScH8RgxlwUSLqsBqxNBAYVlgMyOPN0XARBormJQqLAgmgjNeIi0CQKLadRZ+bN7dw3c17je+OM5kZ6oOfc737fPXfuOe+8y1i+p97lbTcIQr3Tw9NEfl2xf4E0rP/vaGw+qkcJAXLsTs8z8ovNlRcDAd8ijXVWRDUJVBce2PxAyK+uqlMKQJnFeE/RNwqAM/g0IHW3CT/nQ2GUM9AywGzcLbD0Abk8EbvT+5lIPCFPCt/kcjUfTPBUFcdotFxZKViIyJqarmzNVqoT/+qoh8A5B7vLm8q3EDAYDkvdp/Jxcs7hOXbR79EdD0Ydrnd6P+ZSGk3GEOFKLsUAyfOYDxtuWeRporW11To7W6bUXILP1CST8ij+wYHqyiLBV4VmYLUJzt4LEDjwzs7OBeFnntdodbujScX6fD5Tg/vysWXghhioeWxwehuxfC5od8UBogaAvv7gY/UVEhxViGl4iSdaqxVmj02suEyS7v/Kxgr6WK9fKPkFyVqCEDrcHrvA8+dGq8SxzJlbJ3S720oLbwemlwkdl1r2xFM/ozmCKBD1L6uppF0AyqlinZ7EOh0hUUW5rUT4olaXLNM2HmO38cS9AGw0HPIrDVCpVQQGRW3TM/0tGkv7uIFE2gOAG+FQdwdx/ubR6ZlB7TYxMSAV6HLIUU81LPm3M4AxWnHNtsHtvbZm0X8pUJNBv0707YXE0gymWz1vmluNxc77HTPVsX9vxQNsQrourQtIi4rAi0aDLmhRMqHTxJm8KSWnjjAOx1HvztrsyPkzJ07X1dXJtK5OTBPrsU6n57AM8FYJDGyu1LJlV0/PHWz2WWW6ngBarST5x/BFOqvgnG2OxefuEkf9ahCgteJjMD7x9Sp21Q/9wUcvtPMrjq38DfudmeVsJ/FWDJgpnqHxyNQhQcYvdQTNPhIWsqkYu6VyDLyffF1AR2NLTUqWh2LxxXIircWKLogFJGH+dmR0N8NBf5DWUItG3HOSjI8h0UyT67Gig1oMlnO9vQ9/ZK+jBhRguh2zJ+LqkE1K+7AAwN/pcUQ4RDmwKQOHV0Vm62AgcG8uJw/BZQGJJD4ecjw5gpe6KsLwhY7gVWrVOSSd1upebEHo6+maxAtutcVQZsPyfq6IgGffdbTrbNzxHxfUNnVHIFh5AAAAAElFTkSuQmCC'
     }
   },
   methods: {
@@ -41,7 +37,7 @@ export default {
       const face = this.getFaceHtml(this.faceIcon)
       let enter = this.getFaceHtml(this.enterIcon)
       enter += '<br>'
-      const text1 = '[苦]'
+      const text1 = '[酷]'
       const text2 = '⇨'
       html = html.replaceAll(face, text1)
       html = html.replaceAll(enter, text2)
@@ -51,7 +47,7 @@ export default {
       const face = this.getFaceHtml(this.faceIcon)
       let enter = this.getFaceHtml(this.enterIcon)
       enter += '<br>'
-      const text1 = '[苦]'
+      const text1 = '[酷]'
       const text2 = '⇨'
       text = text.replaceAll(text1, face)
       text = text.replaceAll(text2, enter)
@@ -74,3 +70,8 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+/deep/ .rd-text-emoj-input-rich {
+  font-size: 20px;
+}
+</style>
