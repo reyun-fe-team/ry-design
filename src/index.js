@@ -9,15 +9,22 @@ import Breadcrumb from './components/basics/breadcrumb'
 import MultiRadioButton from './components/basics/multi-radio-button'
 import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
-import wordLimit from './components/basics/word-limit'
+import TableColumns from './components/basics/table-columns/index.js'
+import DraggableCard from './components/basics/draggable-card'
+import WordLimit from './components/basics/word-limit'
 import Ellipsis from './components/basics/ellipsis'
+import TableMultiInputs from './components/basics/table-multi-inputs'
+import TextEmojInput from './components/basics/text-emoj-input'
+
 // business
-import batchUploadXls from './components/business/batch-upload-xls'
+import BatchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
 import AccountList from './components/business/account-list'
 import EditRowBid from './components/business/edit-row-bid'
 import ReverseButton from './components/business/reverse-button'
 import { LayoutModuleConfig, LayoutModuleView } from './components/business/layout-module-config'
+import TextItemShow from './components/business/text-item-show'
+import DeleteModals from './components/business/delete-modals'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -51,12 +58,18 @@ const components = [
   RadioGroup,
   Modals,
   EditRowBid,
+  TableColumns,
   ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,
-  wordLimit,
-  batchUploadXls,
-  Ellipsis
+  DraggableCard,
+  DeleteModals,
+  TableMultiInputs,
+  TextItemShow,
+  WordLimit,
+  BatchUploadXls,
+  Ellipsis,
+  TextEmojInput
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -89,10 +102,16 @@ export default {
   PageHeaderModule,
   Modals,
   EditRowBid,
+  TableColumns,
   ReverseButton,
   LayoutModuleConfig,
   LayoutModuleView,
-  wordLimit,
-  batchUploadXls,
-  Ellipsis
+  WordLimit,
+  BatchUploadXls,
+  Ellipsis,
+  DraggableCard,
+  TableMultiInputs,
+  TextItemShow,
+  DeleteModals,
+  TextEmojInput
 }

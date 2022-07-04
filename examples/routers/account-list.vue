@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <div>
     <rd-account-list
       id="adsMediaAccountId"
       :data-list="dataList"
@@ -11,7 +11,7 @@
       @on-change="getActiveAccount">
       我是右边的插槽盒子
     </rd-account-list>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -41,8 +41,7 @@ export default {
     }
   },
   computed: {},
-  mounted() {
-  },
+  mounted() {},
   methods: {
     getActiveAccount(val) {
       console.log(val)

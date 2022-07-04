@@ -1,5 +1,5 @@
 <template>
-  <main style="padding: 20px">
+  <div style="padding: 20px">
     <rd-single-header
       @on-reset="handleReset"
       @on-query="handleQuery">
@@ -42,7 +42,7 @@
         </Form>
       </div>
     </rd-single-header>
-  </main>
+  </div>
 </template>
 <script>
 export default {

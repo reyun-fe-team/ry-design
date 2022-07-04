@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const Config = require('../src/config.js')
 const pkg = require('../package.json')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 process.env.NODE_ENV = 'production'
 module.exports = {
   entry: './src/index.js',
@@ -52,7 +53,7 @@ module.exports = {
         })
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(svg|eot|ttf)$/,
         loader: 'file-loader',
         options: {
           name: '[name].[ext]?[hash]',
@@ -62,11 +63,14 @@ module.exports = {
       },
       {
         test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-        loader: 'url-loader'
+        loader: 'url-loader',
       }
     ]
   },
-  plugins: [new ExtractTextPlugin('styles/[name].css')],
+  plugins: [ 
+    new CleanWebpackPlugin(),
+    new ExtractTextPlugin('styles/[name].css')
+  ],
   resolve: {
     alias: {
       vue$: 'vue/dist/vue.esm.js',

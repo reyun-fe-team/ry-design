@@ -9,11 +9,13 @@
           :headers="headers"
           :data="uploadData"
           :accept="accept"
+          :format="format"
           :type="type"
           :before-upload="beforeUploads"
           :on-progress="handleProgress"
           :on-success="handleSuccess"
           :on-error="handleError"
+          :on-format-error="onFormatError"
           :on-remove="onRemove">
           <div :class="prefixCls + '-container'">
             <div :class="prefixCls + '-container-info'">
@@ -51,7 +53,12 @@
               ]">
               <Tooltip
                 :delay="500"
-                :content="fileName ? fileName : `${accept}文件`">
+                max-width="500">
+                <p
+                  slot="content"
+                  style="white-space: normal">
+                  {{ fileName ? fileName : `${accept}文件` }}
+                </p>
                 <p
                   class="overflow-ellipsis line-clamp-two"
                   :class="[prefixCls + '-upload-file-content-file-name-text']">
@@ -67,7 +74,7 @@
             <div
               v-if="isSubmitAdvance || isTautology"
               :class="[prefixCls + '-upload-file-content-state', prefixCls + '-float-r']">
-              {{ upDateState }}
+              {{ upDateState[isSucceedType] }}
             </div>
             <div
               v-if="fileSize"
@@ -97,15 +104,14 @@
               </slot>
             </span>
             <span
+              v-if="isClearFile"
               class="display-flex"
               :class="[
                 prefixCls + '-upload-file-operation-span',
                 prefixCls + '-float-r',
                 prefixCls + '-delete-button'
               ]">
-              <span
-                v-if="isClearFile"
-                @click="clearFile">
+              <span @click="clearFile">
                 {{ clearFileText }}
               </span>
               <slot name="clearFileTooltip">
@@ -125,13 +131,15 @@
         </div>
         <p
           :class="[
-            errorNumber === 0 ? prefixCls + '-black' : prefixCls + '-red',
+            !['portionSucceed', 'error'].includes(isSucceedType)
+              ? prefixCls + '-black'
+              : prefixCls + '-red',
             prefixCls + '-hint-p'
           ]">
           <slot name="hintText">{{ hintText }}</slot>
         </p>
         <div
-          v-if="errorTable.length"
+          v-if="['portionSucceed', 'error'].includes(isSucceedType)"
           :class="prefixCls + '-error-tables'">
           <Table
             :columns="columnsHeader"
@@ -142,11 +150,17 @@
   </main>
 </template>
 <script>
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = `${prefix}batch-upload-xls`
 export default {
   name: prefixCls,
   props: {
+    // 成功状态(String 必填) none 第一步 succeed 全部成功 error 失败 portionSucceed 部分成功
+    value: {
+      type: String,
+      default: 'none',
+      required: true
+    },
     // 上传地址(String 必填),完整上传地址 必穿
     action: {
       type: String,
@@ -175,7 +189,12 @@ export default {
     // 上传方式(String 非必填默认点击)
     type: {
       type: String,
-      default: 'select'
+      default: 'drag'
+    },
+    // 支持文件类型
+    format: {
+      type: Array,
+      default: () => []
     },
     // 上传文件之前的钩子(Function 非必填)验证拖拽格式很有用
     beforeUpload: {
@@ -205,15 +224,12 @@ export default {
         return {}
       }
     },
-    // 上传文件状态文字提示（String 非必填）
-    upDateState: {
-      type: String,
-      default: ''
-    },
-    // 失败总条数(Number 非必填)
-    errorNumber: {
-      type: Number,
-      default: 0
+    // 上传文件验证失败的钩子
+    onFormatError: {
+      type: Function,
+      default() {
+        return {}
+      }
     },
     // 上传文件后下方提示文字(String 非必填, 上传成功之后的提示)
     hintText: {
@@ -270,18 +286,55 @@ export default {
   data() {
     return {
       prefixCls,
+      isSucceedType: 'none',
       isSubmitAdvance: false, // 是否预提交了
       reportAdvanceTo: false, // 是否预上传中
       isTautology: false, // 是否重试
       fileName: '', // 上传文件名称
       fileSize: '', // 上传文件大小
-      percentage: 0 // 上传进度
+      percentage: 0, // 上传进度
+      upDateState: {
+        // 上传文字提示
+        none: '',
+        succeed: '成功',
+        portionSucceed: '部分成功',
+        error: '失败'
+      }
     }
   },
   computed: {
     // 显示点击或者拖拽文字信息
     typeText() {
       return this.type === 'drag' ? '点击或拖拽上传' : '点击上传'
+    }
+  },
+  watch: {
+    value: {
+      immediate: true,
+      handler(newValue, oldValue) {
+        if (newValue === oldValue) {
+          return
+        }
+        switch (newValue) {
+          case 'none':
+            this.clearFile()
+            break
+          case 'succeed':
+            this.succeedData()
+            break
+          case 'portionSucceed':
+            this.resetData()
+            this.isTableData()
+            break
+          case 'error':
+            this.resetData()
+            this.isTableData()
+            break
+          default:
+            this.clearFile()
+        }
+        this.isSucceedType = newValue
+      }
     }
   },
   methods: {
@@ -318,17 +371,25 @@ export default {
       this.reportAdvanceTo = true
       return true
     },
+    // 上传错误提示需传输table及对应参数
+    isTableData() {
+      if (!this.columnsHeader.length) {
+        console.error('请传输错误表头')
+      }
+    },
     // 上传成功回调
     handleSuccess(data, file) {
       this.percentage = data.percentage
       this.onSuccess(data, file)
     },
     // 上传进度大小
-    handleProgress(data) {
-      this.percentage = data.percentage
+    handleProgress(event) {
+      event.target.onprogress = event => {
+        this.percentage = parseFloat(((event.loaded / event.total) * 100).toFixed(2))
+      }
     },
     /**
-     * 重新上传触发，显示(需要重制, percentage: 上传进度 upDateState: 上传状态 totalNumber: 总条数 errorNumber: 失败条数 hintText: 成功提示文字)
+     * 重新上传触发，显示(需要重制, percentage: 上传进度 hintText: 成功提示文字)
      */
     tautology() {
       this.$emit('tautology')
@@ -399,29 +460,14 @@ export default {
 
     // 验证文件格式
     checkFile(val) {
-      var array = [this.accept]
       if (!val) {
         this.$Message.error('选择要上传的文件!')
         return false
-      } else {
-        var fileContentType = val.match(/^(.*)(\.)(.{1,8})$/)[3]
-        let fileContentTypes = '.' + fileContentType
-        let isExists = false
-        for (let i in array) {
-          if (fileContentTypes.toLowerCase() === array[i].toLowerCase()) {
-            isExists = true
-            return true
-          }
-        }
-        if (isExists === false) {
-          this.$Message.error('选择文件的格式不符合要求。')
-          return false
-        }
-        return false
       }
+      return true
     },
     /**
-     * 重制参数 (上传回调失败或者上传完成之后重制 errorTable: 错误列表 upDateState: 提示文字'失败')
+     * 重制参数 (上传回调失败或者上传完成之后重制 errorTable: 错误列表)
      */
     resetData() {
       this.reportAdvanceTo = false
@@ -436,7 +482,6 @@ export default {
     },
     // 上传错误回调
     handleError(data, file) {
-      this.resetData()
       this.onError(data, file)
     }
   }

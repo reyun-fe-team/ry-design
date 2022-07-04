@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'layout-module-view'
 
 import { typeOf } from '../../../util/assist'

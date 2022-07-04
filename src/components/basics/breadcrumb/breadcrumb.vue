@@ -9,18 +9,21 @@
 <template>
   <div :class="classes">
     <Breadcrumb :separator="separator">
-      <BreadcrumbItem v-for="(item, index) in breadcrumbItems"
-                      :key="index"
-                      :to="item.to"
-                      :replace="item.replace"
-                      :target="item.target"
-                      :append="item.append">{{item.name}}</BreadcrumbItem>
+      <BreadcrumbItem
+        v-for="(item, index) in breadcrumbItems"
+        :key="index"
+        :to="item.to"
+        :replace="item.replace"
+        :target="item.target"
+        :append="item.append">
+        {{ item.name }}
+      </BreadcrumbItem>
     </Breadcrumb>
   </div>
 </template>
 <script>
-const { prefix } = require('../../../config.js');
-const prefixCls = prefix + 'breadcrumb';
+import { prefix } from '@src/config.js'
+const prefixCls = prefix + 'breadcrumb'
 export default {
   name: prefixCls,
   props: {
@@ -33,33 +36,33 @@ export default {
       required: true,
       type: Array,
       default: () => {
-        return [];
+        return []
       }
     }
   },
   computed: {
     // 类名class集合
     classes() {
-      const classList = [`${prefixCls}`];
-      return classList;
+      const classList = [`${prefixCls}`]
+      return classList
     },
     breadcrumbItems() {
-      const { data } = this;
-      const arr = [];
-      const keys = ['to', 'replace', 'target', 'append', 'name'];
+      const { data } = this
+      const arr = []
+      const keys = ['to', 'replace', 'target', 'append', 'name']
       for (let index = 0; index < data.length; index++) {
-        const ele = data[index];
-        const obj = {};
+        const ele = data[index]
+        const obj = {}
         for (let i = 0; i < keys.length; i++) {
-          const k = keys[i];
+          const k = keys[i]
           if (ele[k] !== undefined) {
-            obj[k] = ele[k];
+            obj[k] = ele[k]
           }
         }
-        arr.push(obj);
+        arr.push(obj)
       }
-      return arr;
+      return arr
     }
   }
-};
+}
 </script>
