@@ -33,7 +33,6 @@ import './style/index.less'
 
 // directives
 import lineClamp from './directives/line-clamp'
-import resize from './directives/resize'
 
 Vue.use(ViewUI)
 const consoleLogVersion = () => {
@@ -72,8 +71,7 @@ const components = [
   TextEmojInput
 ]
 const directives = {
-  'line-clamp': lineClamp,
-  resize
+  'line-clamp': lineClamp
 }
 
 const install = function (Vue) {
