@@ -239,8 +239,11 @@ export default {
   methods: {
     init() {
       if (!this.disabled && !this.enableCss) {
-        this.computeText()
-        this.limitShow()
+        let _this = this
+        setTimeout(function () {
+          _this.computeText()
+          _this.limitShow()
+        })
       }
     },
     computeText() {
