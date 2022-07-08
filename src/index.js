@@ -31,6 +31,9 @@ import Package from '../package.json'
 import 'view-design/dist/styles/iview.css'
 import './style/index.less'
 
+// directives
+import lineClamp from './directives/line-clamp'
+
 Vue.use(ViewUI)
 const consoleLogVersion = () => {
   window.console.log(
@@ -67,10 +70,16 @@ const components = [
   Ellipsis,
   TextEmojInput
 ]
+const directives = {
+  'line-clamp': lineClamp
+}
 
 const install = function (Vue) {
   components.forEach(component => {
     Vue.component(component.name, component)
+  })
+  Object.keys(directives).forEach(key => {
+    Vue.directive(key, directives[key])
   })
 }
 
