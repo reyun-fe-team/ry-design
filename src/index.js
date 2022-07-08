@@ -25,6 +25,7 @@ import ReverseButton from './components/business/reverse-button'
 import { LayoutModuleConfig, LayoutModuleView } from './components/business/layout-module-config'
 import TextItemShow from './components/business/text-item-show'
 import DeleteModals from './components/business/delete-modals'
+import AccountGroupList from './components/business/account-group-list'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -65,7 +66,8 @@ const components = [
   WordLimit,
   BatchUploadXls,
   Ellipsis,
-  TextEmojInput
+  TextEmojInput,
+  AccountGroupList
 ]
 
 const install = function (Vue) {
@@ -102,5 +104,6 @@ export default {
   TableMultiInputs,
   TextItemShow,
   DeleteModals,
-  TextEmojInput
+  TextEmojInput,
+  AccountGroupList
 }

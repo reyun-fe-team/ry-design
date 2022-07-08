@@ -12,8 +12,6 @@
           :key="item[nameValue]"
           style="width: 100%">
           <Tooltip
-            style="padding-top: 4px"
-            class="tooltip-overflow"
             max-width="200"
             transfer
             :delay="1000"
@@ -59,7 +57,7 @@
 
 <script>
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'account-group'
+const prefixCls = prefix + 'account-group-list'
 export default {
   name: prefixCls,
   props: {

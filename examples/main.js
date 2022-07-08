@@ -103,6 +103,10 @@ const router = new VueRouter({
     {
       path: '/text-emoj-input',
       component: resolve => require(['./routers/text-emoj-input'], resolve)
+    },
+    {
+      path: '/account-group-list',
+      component: resolve => require(['./routers/account-group-list'], resolve)
     }
   ]
 })
