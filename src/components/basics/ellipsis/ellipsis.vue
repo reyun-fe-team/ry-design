@@ -239,10 +239,9 @@ export default {
   methods: {
     init() {
       if (!this.disabled && !this.enableCss) {
-        let _this = this
-        setTimeout(function () {
-          _this.computeText()
-          _this.limitShow()
+        setTimeout(() => {
+          this.computeText()
+          this.limitShow()
         })
       }
     },
