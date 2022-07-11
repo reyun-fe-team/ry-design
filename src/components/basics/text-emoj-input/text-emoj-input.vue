@@ -20,14 +20,14 @@
       @input="handlerInput"
       @paste="handlerPaste"></div>
     <div
-      v-show="!ln && !value"
+      v-show="!totalln && !value"
       :class="prefixCls + '-placeholder'">
       {{ placeholder }}
     </div>
     <div
       v-show="isEdit"
       :class="prefixCls + '-ln-wrap'">
-      <div :class="prefixCls + '-ln-wrap-l'">{{ ln }}/{{ maxLength }}</div>
+      <div :class="prefixCls + '-ln-wrap-l'">{{ totalln }}/{{ maxLength }}</div>
       <div :class="prefixCls + '-ln-wrap-r'">
         <Icon
           type="md-close"
@@ -92,21 +92,26 @@ export default {
       type: Boolean,
       default: false
     },
+    // 光标所在的编辑行
     isEdit: {
       type: Boolean,
       default: false
     },
     placeholder: {
-      type: String
+      type: String,
+      default: '请输入或粘贴创意标题，每行一标题，敲击回车换行'
     },
+    // 文本字符最小长度
     minLength: {
       type: Number,
       default: 6
     },
+    // 文本字符最大长度
     maxLength: {
       type: Number,
       default: 30
     },
+    // 文本计算方法
     calcTextFn: {
       require: true,
       type: Function
@@ -125,8 +130,8 @@ export default {
       supportRange: '',
       // eslint-disable-next-line vue/no-reserved-keys
       rangeParentElement: null,
-
-      ln: 0,
+      // 已输入的字符长度
+      totalln: 0,
       //
       isError: false
     }
@@ -412,7 +417,7 @@ export default {
     // ------------光标相关-----------
     calcInputLength() {
       if (!this.richEditRef) {
-        this.ln = 0
+        this.totalln = 0
         return
       }
       let copyDom = document.createElement('div')
@@ -430,12 +435,12 @@ export default {
         (pre, cur) => (cur.getAttribute('data-type') === 'emoj' ? pre + 1 : pre),
         0
       )
-      this.ln = textLn + emojLn
+      this.totalln = textLn + emojLn
       copyDom = null
 
       // 校验长度
       let isError = (this.isError = false)
-      if (this.ln > this.maxLength || this.ln < this.minLength) {
+      if (this.totalln > this.maxLength || this.totalln < this.minLength) {
         this.isError = isError = true
       }
     },

@@ -23,7 +23,6 @@
             :transform-html2-text="transformHtml2Text"
             :transform-text2-html="transformText2Html"
             :calc-text-fn="calcTextFn"
-            placeholder="请输入或粘贴创意标题，每行一标题，敲击回车换行"
             @on-keydown="handlerKeydown($event, index)"
             @on-blur="(e, value) => handlerBlur(e, value, index)"
             @input="val => handleEmitInput(val, index)"
