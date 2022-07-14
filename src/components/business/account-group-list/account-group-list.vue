@@ -3,20 +3,20 @@
     <div
       :class="prefixCls + '-body'"
       :style="`width: ${width};height: ${height};`">
-      <div class="left-box">
-        <div class="title">
+      <div :class="prefixCls + '-body-left-box'">
+        <div :class="prefixCls + '-body-left-box-title'">
           {{ title }}
         </div>
         <div
           v-for="item in dataList"
           :key="item[nameValue]"
-          style="width: 100%">
+          :class="prefixCls + '-body-left-box-content'">
           <Tooltip
             max-width="200"
             transfer
             :delay="1000"
             theme="light">
-            <div class="account-title">账户：{{ item[name] }}</div>
+            <div :class="prefixCls + '-body-left-box-content-title'">账户：{{ item[name] }}</div>
             <div slot="content">
               <p>账户：{{ item[name] }}</p>
             </div>
@@ -25,23 +25,27 @@
             <li
               v-for="el in item.children"
               :key="el[childNameValue]"
-              :class="{ 'list-item': true, 'list-item-active': el[childNameValue] === active }"
+              :class="itemClasses(el)"
               @click="choose(el)">
               <Tooltip
+                class="wid100"
                 style="padding-top: 4px"
-                class="tooltip-overflow"
                 max-width="200"
                 transfer
                 :delay="1000"
                 theme="light">
-                <div class="name sign">{{ el[childName] }}</div>
+                <div
+                  :class="prefixCls + '-body-left-box-content-item-name'"
+                  class="sign">
+                  {{ el[childName] }}
+                </div>
                 <div slot="content">
                   <p>{{ el[childName] }}</p>
                 </div>
               </Tooltip>
               <span
                 v-if="el[nameNum]"
-                :class="el[childNameValue] === active ? 'num num-active' : 'num'">
+                :class="prefixCls + '-body-left-box-content-item-num'">
                 {{ el[nameNum] }}
               </span>
             </li>
@@ -110,6 +114,13 @@ export default {
     this.active = dataList[0].children[0][childNameValue]
   },
   methods: {
+    itemClasses(item) {
+      let { prefixCls, childNameValue, active } = this
+      return [
+        `${prefixCls}-body-left-box-content-item`,
+        { [`${prefixCls}-body-left-box-content-item-active`]: item[childNameValue] === active }
+      ]
+    },
     choose(item) {
       const { childNameValue, nameValue } = this
       // 当前已经选中的 不在返回

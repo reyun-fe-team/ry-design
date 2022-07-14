@@ -1,6 +1,6 @@
 <template>
   <div>
-    <rd-account-list
+    <rd-account-group-list
       id="adsMediaAccountId"
       :data-list="dataList"
       :icon-size="18"
@@ -10,7 +10,7 @@
       width="800px"
       @on-change="getActiveAccount">
       我是右边的插槽盒子
-    </rd-account-list>
+    </rd-account-group-list>
   </div>
 </template>
 
@@ -20,22 +20,37 @@ export default {
     return {
       dataList: [
         {
-          name: 'test1',
-          adsMediaAccountId: '123',
-          id: 1,
-          num: 1
+          accountName: '账户1',
+          adsMediaAccountId: '1234',
+          children: [
+            {
+              num: 1,
+              unitName: '广告组1',
+              unitId: 'ggz123'
+            }
+          ]
         },
         {
-          name: 'test2',
-          adsMediaAccountId: '123',
-          id: 2,
-          iconIview: 'ios-checkmark-circle-outline'
+          accountName: 'User_1576228589840(4732053)',
+          adsMediaAccountId: '5566',
+          children: [
+            {
+              num: 1,
+              unitName: '多账号统一配置定向包{账户别名}提升应用安装071111:57:1602_N1',
+              unitId: 'ggz321'
+            }
+          ]
         },
         {
-          name: 'test3',
-          adsMediaAccountId: '123',
-          id: 3,
-          num: '不限'
+          accountName: '账户3',
+          adsMediaAccountId: '7788',
+          children: [
+            {
+              num: 1,
+              unitName: '广告组3',
+              unitId: 'ggz099'
+            }
+          ]
         }
       ]
     }

@@ -1,0 +1,125 @@
+@account-group-list: ~"@{css-prefix}account-group-list";
+@item-group-active: ~"@{css-prefix}account-group-list-body-left-box-content-item";
+@left-box-width: 184px;
+
+.@{account-group-list} {
+  &-body {
+    border: 1px solid @border-color-base;
+    display: flex;
+    flex-wrap: nowrap;
+
+    &-left-box {
+      width: @left-box-width;
+      border-right: 1px solid @border-color-base;
+
+      &-title {
+        background: #F9F9F9;
+        border-bottom: 1px solid @border-color-base;
+        height: 32px;
+        line-height: 32px;
+        padding: 0 10px;
+        color: #151B39;
+        font-weight: bold;
+      }
+
+      &-content {
+        width: 100%;
+
+        ul {
+          list-style-type: none;
+        }
+
+        &-title {
+          max-width: @left-box-width;
+          height: 32px;
+          padding-left: 10px;
+          padding-right: 14px;
+          line-height: 32px;
+          color: @text-color-gray;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        &::-webkit-scrollbar {
+          -webkit-appearance: none;
+          width: 7px;
+        }
+
+        &-item {
+          height: 32px;
+          width: 100%;
+          padding: 8px 10px;
+          cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: nowrap;
+          flex-wrap: nowrap;
+
+          .wid100 {
+            width: 100%;
+          }
+
+          &-name {
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            font-size: 12px;
+            color: #151b39;
+            word-break: break-all;
+          }
+
+          &-num {
+            display: inline-block;
+            background-color: #3A88FA;
+            color: #fff;
+            height: 16px;
+            line-height: 16px;
+            border-radius: 3px;
+            padding: 0 4px;
+            text-align: center;
+            margin-left: 9px;
+            opacity: 0.6;
+            white-space: nowrap;
+          }
+
+          &-icon {
+            opacity: 0.6;
+          }
+        }
+
+        &-item-active {
+          background: #F1F3F5 !important;
+
+          .@{item-group-active}-icon {
+            opacity: 1 !important;
+          }
+
+          .@{item-group-active}-num {
+            opacity: 1 !important;
+          }
+
+          .@{item-group-active}-icon {
+            opacity: 1 !important;
+          }
+        }
+      }
+
+      ::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+    }
+
+    &-right-box {
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+    }
+  }
+}
