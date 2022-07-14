@@ -3,7 +3,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './app.vue'
 import ryDesign from '../src/index'
-// import "./styles/index.less";
 
 Vue.use(VueRouter)
 Vue.use(ryDesign)

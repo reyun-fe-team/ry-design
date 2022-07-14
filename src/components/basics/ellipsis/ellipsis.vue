@@ -1,28 +1,33 @@
 <template>
   <div :class="prefixCls">
-    <template v-if="computedReady">
+    <template v-if="enableCss">
       <Tooltip
         v-if="tooltip"
         :content="text"
         :theme="theme"
         :max-width="maxWidth"
         :placement="placement"
-        :transfer="transfer">
-        <slot name="prefix"></slot>
-        <span
-          ref="text"
-          :class="[prefixCls + '-text']">
-          {{ text }}
-        </span>
-        <span
-          v-show="oversize"
-          ref="more"
-          :class="[prefixCls + '-more']">
-          <slot name="more">...</slot>
-        </span>
-        <slot name="suffix"></slot>
+        :transfer="transfer"
+        :delay="delay">
+        <div v-line-clamp="lines">
+          <slot name="prefix"></slot>
+          <span
+            ref="text"
+            :class="[prefixCls + '-text']">
+            {{ text }}
+          </span>
+          <span
+            v-show="oversize"
+            ref="more"
+            :class="[prefixCls + '-more']">
+            <slot name="more">...</slot>
+          </span>
+          <slot name="suffix"></slot>
+        </div>
       </Tooltip>
-      <template v-else>
+      <div
+        v-else
+        v-line-clamp="lines">
         <slot name="prefix"></slot>
         <span
           ref="text"
@@ -36,25 +41,66 @@
           <slot name="more">...</slot>
         </span>
         <slot name="suffix"></slot>
-      </template>
+      </div>
     </template>
-    <div
-      v-else
-      :class="[prefixCls + '-hidden']">
-      <slot name="prefix"></slot>
-      <span
-        ref="text"
-        :class="[prefixCls + '-text']">
-        {{ text }}
-      </span>
-      <span
-        v-show="oversize"
-        ref="more"
-        :class="[prefixCls + '-more']">
-        <slot name="more">...</slot>
-      </span>
-      <slot name="suffix"></slot>
-    </div>
+    <template v-else>
+      <template v-if="computedReady">
+        <Tooltip
+          v-if="tooltip"
+          :content="text"
+          :theme="theme"
+          :max-width="maxWidth"
+          :placement="placement"
+          :transfer="transfer"
+          :delay="delay">
+          <slot name="prefix"></slot>
+          <span
+            ref="text"
+            :class="[prefixCls + '-text']">
+            {{ text }}
+          </span>
+          <span
+            v-show="oversize"
+            ref="more"
+            :class="[prefixCls + '-more']">
+            <slot name="more">...</slot>
+          </span>
+          <slot name="suffix"></slot>
+        </Tooltip>
+        <template v-else>
+          <slot name="prefix"></slot>
+          <span
+            ref="text"
+            :class="[prefixCls + '-text']">
+            {{ text }}
+          </span>
+          <span
+            v-show="oversize"
+            ref="more"
+            :class="[prefixCls + '-more']">
+            <slot name="more">...</slot>
+          </span>
+          <slot name="suffix"></slot>
+        </template>
+      </template>
+      <div
+        v-else
+        :class="[prefixCls + '-hidden']">
+        <slot name="prefix"></slot>
+        <span
+          ref="text"
+          :class="[prefixCls + '-text']">
+          {{ text }}
+        </span>
+        <span
+          v-show="oversize"
+          ref="more"
+          :class="[prefixCls + '-more']">
+          <slot name="more">...</slot>
+        </span>
+        <slot name="suffix"></slot>
+      </div>
+    </template>
   </div>
 </template>
 <script>
@@ -89,6 +135,11 @@ const prefixCls = prefix + 'ellipsis'
 export default {
   name: prefixCls,
   props: {
+    // css方式，开启后仅支持lines属性，仅支持webkit内核浏览器
+    enableCss: {
+      type: Boolean,
+      default: false
+    },
     text: {
       type: String
     },
@@ -133,7 +184,7 @@ export default {
       validator(value) {
         return oneOf(value, ['dark', 'light'])
       },
-      default: 'dark'
+      default: 'light'
     },
     maxWidth: {
       type: [String, Number],
@@ -157,6 +208,10 @@ export default {
         ])
       },
       default: 'bottom'
+    },
+    delay: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -183,9 +238,11 @@ export default {
   },
   methods: {
     init() {
-      if (!this.disabled) {
-        this.computeText()
-        this.limitShow()
+      if (!this.disabled && !this.enableCss) {
+        setTimeout(() => {
+          this.computeText()
+          this.limitShow()
+        })
       }
     },
     computeText() {
