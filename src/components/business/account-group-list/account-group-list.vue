@@ -8,13 +8,13 @@
           {{ title }}
         </div>
         <div
-          v-for="item in dataList"
+          v-for="item in list"
           :key="item[nameValue]"
           :class="prefixCls + '-body-left-box-content'">
           <Tooltip
-            max-width="200"
+            :max-width="maxWidth"
             transfer
-            :delay="1000"
+            :delay="delay"
             theme="light">
             <div :class="prefixCls + '-body-left-box-content-title'">账户：{{ item[name] }}</div>
             <div slot="content">
@@ -26,13 +26,11 @@
               v-for="el in item.children"
               :key="el[childNameValue]"
               :class="itemClasses(el)"
-              @click="choose(el)">
+              @click="choose(el, false)">
               <Tooltip
-                class="wid100"
-                style="padding-top: 4px"
                 max-width="200"
                 transfer
-                :delay="1000"
+                :delay="delay"
                 theme="light">
                 <div
                   :class="prefixCls + '-body-left-box-content-item-name'"
@@ -101,6 +99,14 @@ export default {
     childNameValue: {
       type: String,
       default: 'unitId'
+    },
+    maxWidth: {
+      type: [Number, String],
+      default: 200
+    },
+    delay: {
+      type: Number,
+      default: 1000
     }
   },
   data() {
@@ -109,9 +115,22 @@ export default {
       active: ''
     }
   },
+  computed: {
+    list() {
+      return this.dataList.map(p => {
+        let children = p.children.map(c => {
+          return {
+            ...c,
+            [this.nameValue]: p[this.nameValue]
+          }
+        })
+        return { ...p, children }
+      })
+    }
+  },
   created() {
-    let { dataList, childNameValue } = this
-    this.active = dataList[0].children[0][childNameValue]
+    let { list, childNameValue } = this
+    this.active = list[0].children[0][childNameValue]
   },
   methods: {
     itemClasses(item) {
@@ -129,7 +148,7 @@ export default {
       }
       const active = item[childNameValue]
       this.active = active
-      this.$emit('getActive', active, item[nameValue])
+      this.$emit('on-change', active, item[nameValue])
     }
   }
 }
