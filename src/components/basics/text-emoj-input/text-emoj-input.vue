@@ -7,7 +7,12 @@
  * @Description: 文本表情输入
 -->
 <template>
-  <div :class="[prefixCls, { [prefixCls + '-single-line']: isSingleLine }, isError && 'is-error']">
+  <div
+    :class="[
+      prefixCls,
+      { [prefixCls + '-single-line']: isSingleLine },
+      isError && prefixCls + '-is-error'
+    ]">
     <div
       ref="rich-edit"
       :class="prefixCls + '-rich'"
@@ -197,7 +202,6 @@ export default {
        * @property {string} stringHtml 输入框的html 内容
        * @property {function} disableInputFn 禁用输入。一些场景去禁用。
        */
-      // console.log('e', e);
       // 本次输入的值
       const currentData = e.data
       const stringHtml = e.target.innerHTML
@@ -414,7 +418,7 @@ export default {
         range.select()
       }
     },
-    // ------------光标相关-----------
+    // 计算输入框的输入长度
     calcInputLength() {
       if (!this.richEditRef) {
         this.totalln = 0
@@ -437,7 +441,6 @@ export default {
       )
       this.totalln = textLn + emojLn
       copyDom = null
-
       // 校验长度
       let isError = (this.isError = false)
       if (this.totalln > this.maxLength || this.totalln < this.minLength) {

@@ -77,6 +77,7 @@ export default {
       bind(el, binding) {
         function clickHandler(e) {
           // 这里判断点击的元素是否是本身，是本身，则返回
+          // console.log('e', el, e)
           if (el.contains(e.target)) {
             return false
           }
@@ -389,7 +390,7 @@ export default {
       return text
     },
     getFaceHtml(icon, type) {
-      const str = `<img src="${icon}" draggable="false" width="20" height="20" data-type="${type}">`
+      const str = `<img style="pointer-events: none; " src="${icon}" draggable="false" width="16" height="16" data-type="${type}">`
       return str
     },
     enter() {
@@ -416,6 +417,13 @@ export default {
     },
     // 点击编辑行
     onClickEditorLine(index) {
+      if (!this.$refs[`emojInput-${index}`][0].richEditRef.innerHTML) {
+        const el = this.$refs[`emojInput-${index}`][0]
+        this.middle.activeClass = index
+        this.$nextTick(() => {
+          el.focus()
+        })
+      }
       if (this.middle.activeClass === index) {
         return
       }
@@ -433,7 +441,7 @@ export default {
 
       const el = this.$refs[`emojInput-${index}`][0]
       const value = el.getValue()
-      console.log(value)
+      // console.log(value)
       this.handleEmitInput(value, index)
     },
     // 点击整体编辑区域外
