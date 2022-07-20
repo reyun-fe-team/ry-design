@@ -42,7 +42,7 @@
 
 <script>
 import _isEqual from 'lodash/isEqual'
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'radio-group'
 export default {
   name: prefixCls,

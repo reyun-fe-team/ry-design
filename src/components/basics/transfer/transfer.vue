@@ -23,7 +23,7 @@
 <script>
 import List from './list.vue'
 import { deepCopy } from '../../../util/assist'
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 let prefixCls = prefix + 'transfer'
 export default {
   name: prefixCls,

@@ -2,29 +2,33 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-07 18:51:54
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-15 18:05:07
+ * @LastEditTime: 2022-06-30 15:59:58
  * @FilePath: /ry-design/src/components/basics/edit-row-bid/edit-bid.vue
  * @Description: 编辑出价|名称|自定义内容
 -->
 <template>
   <div :class="[prefixCls]">
     <!-- 显示的按钮内容 -->
-    <span :class="[prefixCls + '-icon', {disabled: poptipDisabled}]"
-          @click="renderPoptip">
+    <span
+      :class="[prefixCls + '-icon', { disabled: poptipDisabled }]"
+      @click="renderPoptip">
       <!-- 按钮类型 -->
       <slot name="iconType">
         <Icon :type="iconType"></Icon>
       </slot>
     </span>
     <!-- 悬浮的显示内容 -->
-    <template v-if="showPoptip">
-      <Poptip v-model="poptipModelValue"
-              :placement="placement"
-              :disabled="poptipDisabled"
-              transfer
-              :popper-class="prefixCls + '-popper'"
-              @on-popper-show="show "
-              @on-popper-hide="hide">
+    <div
+      v-if="showPoptip"
+      :class="[prefixCls + '-poptip-rel']">
+      <Poptip
+        v-model="poptipModelValue"
+        :placement="placement"
+        :disabled="poptipDisabled"
+        transfer
+        :popper-class="prefixCls + '-popper'"
+        @on-popper-show="show"
+        @on-popper-hide="hide">
         <template #content>
           <div :class="prefixCls + '-poptip'">
             <!-- 显示名称 -->
@@ -37,61 +41,72 @@
             <!-- 显示内容 -->
             <div :class="prefixCls + '-poptip-wrap'">
               <!-- 输入文本 -->
-              <div v-if="type === 'text'"
-                   :class="prefixCls + '-poptip-wrap-' + type"
-                   :style="{width: poptipWidth + 'px'}">
-                <Form ref="Form"
-                      :model="formData"
-                      :rules="formRules">
+              <div
+                v-if="type === 'text'"
+                :class="prefixCls + '-poptip-wrap-' + type"
+                :style="{ width: poptipWidth + 'px' }">
+                <Form
+                  ref="Form"
+                  :model="formData"
+                  :rules="formRules">
                   <FormItem prop="value">
                     <div class="form-item">
-                      <Input v-model="formData.value"
-                             :class="{'show-max-count' : showTextLimit}"></Input>
-                      <span v-if="showTextLimit"
-                            class="text-limit">
-                        <b :class="{ error: limitMaxText  }">{{ currentTextCount }}</b>
+                      <Input
+                        v-model="formData.value"
+                        :class="{ 'show-max-count': showTextLimit }"></Input>
+                      <span
+                        v-if="showTextLimit"
+                        class="text-limit">
+                        <b :class="{ error: limitMaxText }">{{ currentTextCount }}</b>
                         <b>/</b>
                         <b>{{ maxTextNum }}</b>
                       </span>
                     </div>
-
                   </FormItem>
                 </Form>
               </div>
 
               <!-- 输入数字 -->
-              <div v-if="type === 'number'"
-                   :class="prefixCls + '-poptip-wrap-' + type"
-                   :style="{width: poptipWidth + 'px'}">
-                <Form ref="Form"
-                      :model="formData"
-                      :rules="formRules">
+              <div
+                v-if="type === 'number'"
+                :class="prefixCls + '-poptip-wrap-' + type"
+                :style="{ width: poptipWidth + 'px' }">
+                <Form
+                  ref="Form"
+                  :model="formData"
+                  :rules="formRules">
                   <FormItem prop="value">
                     <div class="form-item">
-                      <InputNumber v-model="formData.value"
-                                   v-bind="inputNumberProps"></InputNumber>
+                      <InputNumber
+                        v-model="formData.value"
+                        v-bind="inputNumberProps"></InputNumber>
                     </div>
                   </FormItem>
                 </Form>
               </div>
 
               <!-- 单选选择 -->
-              <div v-if="type === 'radio'"
-                   :class="prefixCls + '-poptip-wrap-' + type"
-                   :style="{width: poptipWidth + 'px'}">
-                <Form ref="Form"
-                      :model="formData"
-                      :rules="formRules">
+              <div
+                v-if="type === 'radio'"
+                :class="prefixCls + '-poptip-wrap-' + type"
+                :style="{ width: poptipWidth + 'px' }">
+                <Form
+                  ref="Form"
+                  :model="formData"
+                  :rules="formRules">
                   <FormItem prop="value">
-                    <RadioGroup v-model="formData.value"
-                                type="button">
-                      <Radio v-for="option in newRadioList"
-                             :key="option.value"
-                             :label="option.value"
-                             :disabled="option.disabled">
-                        <render v-if="typeof option.name === 'function'"
-                                :render="option.name"></render>
-                        <span v-else>{{option.name}} </span>
+                    <RadioGroup
+                      v-model="formData.value"
+                      type="button">
+                      <Radio
+                        v-for="option in newRadioList"
+                        :key="option.value"
+                        :label="option.value"
+                        :disabled="option.disabled">
+                        <render
+                          v-if="typeof option.name === 'function'"
+                          :render="option.name"></render>
+                        <span v-else>{{ option.name }}</span>
                       </Radio>
                     </RadioGroup>
                   </FormItem>
@@ -99,32 +114,37 @@
               </div>
 
               <!-- 自定义内容 -->
-              <div v-if="type === 'custom'"
-                   :class="prefixCls + '-poptip-wrap-' + type"
-                   :style="{width: poptipWidth + 'px'}">
+              <div
+                v-if="type === 'custom'"
+                :class="prefixCls + '-poptip-wrap-' + type"
+                :style="{ width: poptipWidth + 'px' }">
                 <slot name="custom"></slot>
               </div>
             </div>
 
             <!-- 显示尾部按钮组区域 -->
-            <div v-if="showFooter"
-                 :class="prefixCls + '-poptip-footer'">
+            <div
+              v-if="showFooter"
+              :class="prefixCls + '-poptip-footer'">
               <slot name="footer">
                 <Button @click="cancel">取消</Button>
-                <Button type="primary"
-                        :loading="confrimLoading"
-                        @click="confrim">确定</Button>
+                <Button
+                  type="primary"
+                  :loading="confrimLoading"
+                  @click="confrim">
+                  确定
+                </Button>
               </slot>
             </div>
           </div>
         </template>
       </Poptip>
-    </template>
+    </div>
   </div>
 </template>
 <script>
-import Render from './../../base/render';
-const { prefix } = require('../../../config.js')
+import Render from './../../base/render'
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'edit-row-bid'
 export default {
   name: prefixCls,
@@ -341,6 +361,8 @@ export default {
         return
       }
       this.renderPoptipBefore()
+      // 点击后重新赋值
+      this.formData = { value: this.value }
       this.showPoptip = true
       this.poptipModelValue = false
       setTimeout(() => {

@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 let prefixCls = prefix + 'transfer-list-operation'
 export default {
   name: prefixCls,

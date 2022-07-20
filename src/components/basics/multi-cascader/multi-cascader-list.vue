@@ -72,7 +72,7 @@
 import _isEmpty from 'lodash/isEmpty'
 import _find from 'lodash/find'
 
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'multi-cascader-list'
 
 export default {

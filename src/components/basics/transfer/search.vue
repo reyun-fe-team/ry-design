@@ -5,13 +5,12 @@
       size="small"
       :icon="icon"
       :placeholder="placeholder"
-      @on-click="handleClick"
-    ></Input>
+      @on-click="handleClick"></Input>
   </div>
 </template>
 <script>
-const { prefix } = require('../../../config.js');
-let prefixCls = prefix + 'transfer-list-search';
+import { prefix } from '@src/config.js'
+let prefixCls = prefix + 'transfer-list-search'
 export default {
   name: prefixCls,
   props: {
@@ -22,29 +21,29 @@ export default {
     return {
       prefixCls: prefixCls,
       currentQuery: this.query
-    };
+    }
   },
   computed: {
     icon() {
-      return this.query === '' ? 'ios-search' : 'ios-close-circle';
+      return this.query === '' ? 'ios-search' : 'ios-close-circle'
     }
   },
   watch: {
     query(val) {
-      this.currentQuery = val;
+      this.currentQuery = val
     },
     currentQuery(val) {
-      this.$emit('on-query-change', val);
+      this.$emit('on-query-change', val)
     }
   },
   methods: {
     handleClick() {
       if (this.currentQuery === '') {
-        return;
+        return
       }
-      this.currentQuery = '';
-      this.$emit('on-query-clear');
+      this.currentQuery = ''
+      this.$emit('on-query-clear')
     }
   }
-};
+}
 </script>

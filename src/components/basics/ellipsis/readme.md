@@ -4,6 +4,7 @@
 
 | 属性 | 说明 | 类型 | 默认值 |
 |:-------|:---------|:--------|:--------|
+| `enableCss` |启用CSS方式实现文本省略，启用后仅支持设置`lines`属性，仅支持webkit内核浏览器,不支持设置slot `more/suffix`|Boolean|false| 
 | `text` |文本|String|-| 
 |`height`|	限制的高度|Number|-| 
 |`lines`|限制行数，将换算为 height。如果设置了 height，则直接使用 height 计算|Number|-| 

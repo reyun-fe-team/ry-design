@@ -54,7 +54,7 @@
 </template>
 <script>
 // import Render from './../../base/render';
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'page-header-module'
 export default {
   name: prefixCls,

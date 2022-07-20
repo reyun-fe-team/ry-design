@@ -11,9 +11,10 @@ import Modals from './components/basics/modals'
 import RadioGroup from './components/basics/radio-group'
 import TableColumns from './components/basics/table-columns/index.js'
 import DraggableCard from './components/basics/draggable-card'
-
 import WordLimit from './components/basics/word-limit'
 import Ellipsis from './components/basics/ellipsis'
+import TableMultiInputs from './components/basics/table-multi-inputs'
+import TextEmojInput from './components/basics/text-emoj-input'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -29,6 +30,9 @@ import ViewUI from 'view-design'
 import Package from '../package.json'
 import 'view-design/dist/styles/iview.css'
 import './style/index.less'
+
+// directives
+import lineClamp from './directives/line-clamp'
 
 Vue.use(ViewUI)
 const consoleLogVersion = () => {
@@ -58,16 +62,24 @@ const components = [
   LayoutModuleConfig,
   LayoutModuleView,
   DraggableCard,
+  DeleteModals,
+  TableMultiInputs,
+  TextItemShow,
   WordLimit,
   BatchUploadXls,
-  DeleteModals,
   Ellipsis,
-  TextItemShow
+  TextEmojInput
 ]
+const directives = {
+  'line-clamp': lineClamp
+}
 
 const install = function (Vue) {
   components.forEach(component => {
     Vue.component(component.name, component)
+  })
+  Object.keys(directives).forEach(key => {
+    Vue.directive(key, directives[key])
   })
 }
 
@@ -95,7 +107,9 @@ export default {
   WordLimit,
   BatchUploadXls,
   Ellipsis,
+  DraggableCard,
+  TableMultiInputs,
   TextItemShow,
   DeleteModals,
-  DraggableCard
+  TextEmojInput
 }
