@@ -1,18 +1,5 @@
-<!--
- * @Author: 杨玉峰 yangyufeng@reyun.com
- * @Date: 2022-06-15 19:27:55
- * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-27 17:18:15
- * @FilePath: /ry-design/src/components/basics/text-emoj-input/text-emoj-input.vue
- * @Description: 文本表情输入
--->
 <template>
-  <div
-    :class="[
-      prefixCls,
-      { [prefixCls + '-single-line']: isSingleLine },
-      isError && prefixCls + '-is-error'
-    ]">
+  <div :class="[prefixCls, { [prefixCls + '-single-line']: isSingleLine }]">
     <div
       ref="rich-edit"
       :class="prefixCls + '-rich'"
@@ -120,6 +107,11 @@ export default {
     calcTextFn: {
       require: true,
       type: Function
+    },
+    // 验证方法
+    validFn: {
+      require: true,
+      type: Function
     }
   },
   data() {
@@ -136,9 +128,7 @@ export default {
       // eslint-disable-next-line vue/no-reserved-keys
       rangeParentElement: null,
       // 已输入的字符长度
-      totalln: 0,
-      //
-      isError: false
+      totalln: 0
     }
   },
   watch: {
@@ -222,8 +212,10 @@ export default {
         oiginalText,
         disableInputFn
       })
-
+      // 计算长度
       this.calcInputLength()
+      // 错误校验
+      this.valid()
     },
     // 粘贴(禁止粘贴文件和图片)
     handlerPaste(e) {
@@ -441,11 +433,14 @@ export default {
       )
       this.totalln = textLn + emojLn
       copyDom = null
-      // 校验长度
-      let isError = (this.isError = false)
-      if (this.totalln > this.maxLength || this.totalln < this.minLength) {
-        this.isError = isError = true
+    },
+    // 校验
+    valid() {
+      let error = false
+      if (this.validFn) {
+        error = this.validFn(this.totalln, this.richEditRef)
       }
+      this.$emit('error', error)
     },
     // 自定义聚焦
     focus() {
@@ -470,11 +465,14 @@ export default {
       if (this.transformHtml2Text) {
         oiginalText = this.transformHtml2Text(stringHtml)
       }
-      oiginalText = oiginalText.replaceAll('<br>&nbsp;', '')
+      oiginalText = oiginalText.replaceAll('<br>&nbsp;', '').replaceAll('<br>', '')
       return oiginalText
     },
     // 获取已插入换行符个数
     getEnters() {
+      if (!this.richEditRef) {
+        return 0
+      }
       const brs = this.richEditRef.innerHTML.match(/<br>/g)
       return brs ? brs.length : 0
     },
@@ -483,6 +481,7 @@ export default {
       this.richEditRef.innerHTML = ''
       this.$nextTick(() => {
         this.calcInputLength()
+        this.error = false
         this.focus()
       })
     }

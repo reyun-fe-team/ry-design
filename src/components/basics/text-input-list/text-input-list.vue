@@ -8,8 +8,10 @@
         v-for="(_, index) in maxLine"
         :key="index"
         style="display: flex">
-        <div :class="prefixCls + '-left-list'">
-          <span>{{ index + 1 }}</span>
+        <div :class="[prefixCls + '-left-list', errors.includes(index) && prefixCls + '-is-error']">
+          <span :class="[errors.includes(index) && prefixCls + '-error-left']">
+            {{ index + 1 }}
+          </span>
         </div>
 
         <div
@@ -19,17 +21,24 @@
             :ref="`emojInput-${index}`"
             :value="value[index] || ''"
             :is-edit="middle.activeClass === index"
-            :class="{ 'middle-style-li-active': middle.activeClass === index }"
+            :class="[
+              { 'middle-style-li-active': middle.activeClass === index },
+              errors.includes(index) && prefixCls + '-is-error'
+            ]"
             :transform-html2-text="transformHtml2Text"
             :transform-text2-html="transformText2Html"
             :calc-text-fn="calcTextFn"
+            :valid-fn="validFn"
+            :max-length="maxLength"
+            :min-length="minLength"
             @on-keydown="handlerKeydown($event, index)"
             @on-blur="(e, value) => handlerBlur(e, value, index)"
             @input="val => handleEmitInput(val, index)"
-            @click.native="onClickEditorLine(index)" />
+            @click.native="onClickEditorLine(index)"
+            @error="status => onError(status, index)" />
           <div
-            v-if="middle.activeClass === index"
-            class="btn-wrap">
+            v-if="(useEmoj || useEnter) && middle.activeClass === index"
+            :class="prefixCls + '-btn-wrap'">
             <Poptip
               v-if="useEmoj"
               v-model="showEmojPan"
@@ -77,7 +86,6 @@ export default {
       bind(el, binding) {
         function clickHandler(e) {
           // 这里判断点击的元素是否是本身，是本身，则返回
-          // console.log('e', el, e)
           if (el.contains(e.target)) {
             return false
           }
@@ -102,6 +110,16 @@ export default {
     value: {
       type: Array,
       default: () => []
+    },
+    // 文本字符最小长度
+    minLength: {
+      type: Number,
+      default: 6
+    },
+    // 文本字符最大长度
+    maxLength: {
+      type: Number,
+      default: 30
     },
     // 最大行数
     maxLine: {
@@ -341,7 +359,9 @@ export default {
           }
         ]
       },
-      showEmojPan: false
+      showEmojPan: false,
+      isError: false,
+      errors: []
     }
   },
   computed: {
@@ -394,6 +414,11 @@ export default {
       return str
     },
     enter() {
+      // 如果输入框内不存在内容，不允许点击换行符
+      if (!this.curEmojInput.getValue()) {
+        this.$Message.error('请先输入文本内容')
+        return
+      }
       if (this.curEmojInput.getEnters() >= this.maxEnter) {
         this.$Message.error(`最多能插入${this.maxEnter}换行`)
         return
@@ -441,7 +466,6 @@ export default {
 
       const el = this.$refs[`emojInput-${index}`][0]
       const value = el.getValue()
-      // console.log(value)
       this.handleEmitInput(value, index)
     },
     // 点击整体编辑区域外
@@ -469,6 +493,23 @@ export default {
       // 中文占两个字符
       const copyText = text.replaceAll(/[^\x00-\xff]/g, '**')
       return copyText.length
+    },
+    validFn(ln) {
+      if (ln && (ln > this.maxLength || ln < this.minLength)) {
+        return true
+      }
+
+      return false
+    },
+    onError(status, index) {
+      const k = this.errors.indexOf(index)
+      if (k > -1) {
+        if (!status) {
+          this.errors.splice(k, 1)
+        }
+        return
+      }
+      status && this.errors.push(index)
     }
   }
 }
