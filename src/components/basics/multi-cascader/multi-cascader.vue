@@ -106,7 +106,7 @@
 </template>
 
 <script>
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'multi-cascader'
 import TreeStore from './lib/Tree.js'
 import multiCascaderList from './multi-cascader-list.vue'

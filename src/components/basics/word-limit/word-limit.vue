@@ -113,6 +113,9 @@ export default {
     onChange() {
       this.$emit('input', this.inputValue)
       this.$emit('on-change', this.inputValue)
+    },
+    countFn(params) {
+      return count(params)
     }
   }
 }

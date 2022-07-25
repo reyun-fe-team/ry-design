@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const Config = require('../src/config.js')
 const pkg = require('../package.json')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 process.env.NODE_ENV = 'production'
 module.exports = {
   entry: './src/index.js',
@@ -47,7 +48,21 @@ module.exports = {
       {
         test: /\.less/,
         use: ExtractTextPlugin.extract({
-          use: ['css-loader?minimize', 'autoprefixer-loader', 'less-loader'],
+          use: [
+            'css-loader?minimize',
+            'less-loader',
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: () => [
+                  require('autoprefixer')({
+                    // browsers 指定 autoprefixer 所需要兼容的浏览器版本
+                    overrideBrowserslist: ['last 2 version', 'ie > 8']
+                  })
+                ]
+              }
+            }
+          ],
           fallback: 'style-loader'
         })
       },
@@ -62,11 +77,11 @@ module.exports = {
       },
       {
         test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-        loader: 'url-loader',
+        loader: 'url-loader'
       }
     ]
   },
-  plugins: [new ExtractTextPlugin('styles/[name].css')],
+  plugins: [new CleanWebpackPlugin(), new ExtractTextPlugin('styles/[name].css')],
   resolve: {
     alias: {
       vue$: 'vue/dist/vue.esm.js',

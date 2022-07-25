@@ -3,7 +3,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './app.vue'
 import ryDesign from '../src/index'
-// import "./styles/index.less";
 
 Vue.use(VueRouter)
 Vue.use(ryDesign)
@@ -91,6 +90,22 @@ const router = new VueRouter({
     {
       path: '/ellipsis',
       component: resolve => require(['./routers/ellipsis'], resolve)
+    },
+    {
+      path: '/table-multi-inputs',
+      component: resolve => require(['./routers/table-multi-inputs'], resolve)
+    },
+    {
+      path: '/text-item-show',
+      component: resolve => require(['./routers/text-item-show'], resolve)
+    },
+    {
+      path: '/text-emoj-input',
+      component: resolve => require(['./routers/text-emoj-input'], resolve)
+    },
+    {
+      path: '/common-table',
+      component: resolve => require(['./routers/common-table/index'], resolve)
     }
   ]
 })

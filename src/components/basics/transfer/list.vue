@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 let prefixCls = prefix + 'transfer-list'
 import Search from './search.vue'
 import Operation from './operation.vue'
