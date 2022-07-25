@@ -171,7 +171,7 @@ export default {
           ]
         }
       ],
-      deleteContent: '这是一条正常警告'
+      deleteContent: '<div style="text-align: left;">这是一条正常警告</div>'
     }
   },
   methods: {
@@ -195,7 +195,10 @@ export default {
         render: h => {
           return h('rd-delete-modals', {
             props: {
-              deleteContent: this.deleteContent
+              deleteContent: this.deleteContent,
+              styles: {
+                color: 'red'
+              }
             },
             okText: '确定',
             cancelText: '取消',
