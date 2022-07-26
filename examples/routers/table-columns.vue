@@ -56,7 +56,7 @@ export default {
                 {
                   key: 'aaa2',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '广告组ID',
                   edit: true, // 编辑
                   minWidth: 120,
@@ -65,14 +65,14 @@ export default {
                 {
                   key: 'aaa3',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '广告组状态',
                   minWidth: 120
                 },
                 {
                   key: 'aaa4',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '媒体',
                   minWidth: 150,
                   sortable: 'custom'
@@ -80,7 +80,7 @@ export default {
                 {
                   key: 'aaa5',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '媒体账号',
                   minWidth: 250,
                   sortable: 'custom'
@@ -88,7 +88,7 @@ export default {
                 {
                   key: 'aaa6',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '应用',
                   checked: true,
                   disable: true,
@@ -101,19 +101,19 @@ export default {
         {
           key: 'b',
           hide: false,
-          check: true,
+          check: false,
           title: '效果指标',
           children: [
             {
               key: 'b1',
               hide: false,
-              check: true,
+              check: false,
               title: '展示数据',
               children: [
                 {
                   key: 'b1-1',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '消耗',
                   minWidth: 120,
                   sortable: 'custom'
@@ -121,7 +121,7 @@ export default {
                 {
                   key: 'b1-2',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '展示数',
                   minWidth: 100,
                   sortable: 'custom'
@@ -129,7 +129,7 @@ export default {
                 {
                   key: 'b1-3',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '千次展示均价',
                   minWidth: 130,
                   sortable: 'custom'
@@ -137,7 +137,7 @@ export default {
                 {
                   key: 'b1-4',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '点击数',
                   minWidth: 100,
                   sortable: 'custom'
@@ -145,7 +145,7 @@ export default {
                 {
                   key: 'b1-5',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '点击率',
                   minWidth: 100,
                   sortable: 'custom'
@@ -153,7 +153,7 @@ export default {
                 {
                   key: 'b1-6',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '点击均价',
                   minWidth: 120,
                   sortable: 'custom'
@@ -163,13 +163,13 @@ export default {
             {
               key: 'b2',
               hide: false,
-              check: true,
+              check: false,
               title: '转化数据',
               children: [
                 {
                   key: 'b2-1',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '转化数',
                   minWidth: 100,
                   sortable: 'custom'
@@ -177,7 +177,7 @@ export default {
                 {
                   key: 'b2-2',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '转化率',
                   minWidth: 100,
                   sortable: 'custom'
@@ -185,7 +185,7 @@ export default {
                 {
                   key: 'b2-3',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '转化成本',
                   minWidth: 120,
                   sortable: 'custom'
@@ -193,21 +193,21 @@ export default {
                 {
                   key: 'b2-4',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '深度转化数',
                   minWidth: 120
                 },
                 {
                   key: 'b2-5',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '深度转化成本',
                   minWidth: 120
                 },
                 {
                   key: 'b2-6',
                   hide: false,
-                  check: true,
+                  check: false,
                   title: '深度转化数率',
                   minWidth: 120
                 }

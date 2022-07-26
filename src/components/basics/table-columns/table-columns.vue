@@ -48,11 +48,15 @@
               v-for="indicatClassify in indicatType.children"
               :id="indicatClassify.key"
               :key="indicatClassify.key"
-              :class="[[prefixCls + '-view-list'], { [prefixCls + 'hide']: indicatClassify.hide }]">
+              :class="[
+                [prefixCls + '-view-list'],
+                { [prefixCls + '-hide']: indicatClassify.hide }
+              ]">
               <div :class="prefixCls + '-view-list-checked-all'">
                 <Checkbox
+                  :key="indicatClassify.key"
                   v-model="indicatClassify.check"
-                  @click.prevent.native="handleCheckAll(indicatClassify)">
+                  @on-change="handleCheckAll($event, indicatClassify)">
                   {{ indicatClassify.title }}
                 </Checkbox>
               </div>
@@ -62,36 +66,32 @@
                   :key="item.key"
                   v-model="item.check"
                   :disabled="item.disabled"
-                  :class="[
-                    [prefixCls + '-view-list-content-item'],
-                    { hide: item.hide, 'modify-title': modifyList.includes(item.key) }
-                  ]"
-                  @on-change="handleCheck(indicatClassify, item)">
+                  :class="[[prefixCls + '-view-list-content-item'], { hide: item.hide }]"
+                  @on-change="handleCheck(item)">
                   <!-- 前缀 -->
                   <template v-if="item.prefix">
                     <Tooltip
                       v-if="item.prefix.content"
                       theme="light"
                       placement="top"
+                      :max-width="200"
                       :content="item.prefix.content">
                       <!-- ali-icon 暂时不能上传，先使用图片 -->
-                      <!-- <Icon  v-if="item.disabled" :type="item.prefix.icon"></Icon> -->
-                      <img
+                      <ry-icon
                         v-if="item.disabled"
-                        src="../../../images/draggable-card/unlock.png"
-                        :class="prefixCls + '-icon-unlock'" />
+                        :type="item.prefix.icon"
+                        size="10"></ry-icon>
                     </Tooltip>
-                    <img
+                    <ry-icon
                       v-else
-                      src="../../../images/draggable-card/unlock.png"
-                      :class="prefixCls + '-icon-unlock'" />
-                    <!-- ali-icon 暂时不能上传，先使用图片 -->
-                    <!-- <Icon v-else :type="item.prefix.icon"></Icon> -->
+                      :type="item.prefix.icon"
+                      size="10"></ry-icon>
                   </template>
                   <!-- 名称 -->
                   <Tooltip
                     theme="light"
                     placement="top"
+                    :max-width="200"
                     :content="item.title">
                     <span :class="prefixCls + '-view-list-content-item-title'">
                       {{ item.title }}
@@ -103,19 +103,23 @@
                       v-if="item.suffix.content"
                       theme="light"
                       placement="top"
+                      :max-width="200"
                       :content="item.suffix.content">
-                      <Icon :type="item.suffix.icon"></Icon>
+                      <ry-icon
+                        :type="item.suffix.icon"
+                        size="10"></ry-icon>
                     </Tooltip>
-                    <Icon
+                    <ry-icon
                       v-else
-                      :type="item.suffix.icon"></Icon>
+                      :type="item.suffix.icon"
+                      size="10"></ry-icon>
                   </template>
                   <!-- 编辑 -->
                   <template v-if="item.edit">
                     <edit-title
                       :item-data="item"
                       :edit-call-back="editCallBack"
-                      @success="item.title = $event"></edit-title>
+                      @success="onEditTitleSuccess($event, item)"></edit-title>
                   </template>
                 </Checkbox>
               </div>
@@ -136,11 +140,14 @@
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'table-columns'
 import editTitle from './components/edit-title.vue'
+import ryIcon from '../icon/icon.vue'
+
 let dataflat = []
 export default {
   name: prefixCls,
   components: {
-    editTitle
+    editTitle,
+    ryIcon
   },
   props: {
     value: {
@@ -163,8 +170,7 @@ export default {
       // 关键字
       keyword: '',
       currentNav: '',
-      modifyList: [],
-      sortsList: [],
+      hookValue: [],
       timer: null
     }
   },
@@ -176,7 +182,13 @@ export default {
     },
     // 包含搜索数据
     hasSearchResult() {
-      return !dataflat.every(e => e.hide)
+      return !this.flatArray(this.data).every(e => e.hide)
+    }
+  },
+  watch: {
+    value(n) {
+      this.hookValue = n
+      this.setItemCheck()
     }
   },
   created() {
@@ -185,11 +197,11 @@ export default {
   methods: {
     init() {
       dataflat = this.flatArray(this.data)
-      this.hookMap(this.data, item => {
-        item.check = false
-      })
+      this.hookValue = this.value
       this.setItemCheck()
+      this.emitData()
     },
+    // #用户交互
     keywordChange() {
       clearTimeout(this.timer)
       this.timer = setTimeout(() => {
@@ -217,31 +229,42 @@ export default {
       }
     },
     // 点击全选
-    handleCheckAll(list) {
-      list.check = !list.check
+    handleCheckAll(check, list) {
+      list.check = check
+      let keys = []
       list.children.forEach(item => {
         if (!item.disabled) {
-          this.$set(item, 'check', list.check)
+          this.$set(item, 'check', check)
+          keys.push(item.key)
         }
       })
+      // 先过滤掉本次选中的key
+      let value = this.hookValue.filter(e => !keys.includes(e))
+      // 将本次选中的key追加到value种
+      if (check) {
+        value = value.concat(keys)
+      }
+      this.hookValue = value
       this.emitData()
     },
-    handleCheck(parent) {
-      let checkAll = parent.children.every(({ check }) => check)
-      parent.check = checkAll
+    // 单选
+    handleCheck(item) {
+      let index = this.hookValue.findIndex(e => item.key === e)
+      if (index === -1) {
+        this.hookValue.push(item.key)
+      } else {
+        this.hookValue.splice(index, 1)
+      }
       this.emitData()
-      /**
-       * 注：
-       * 如果全选有三个状态(未选、已选、全选)
-       * let result =  可以修改成filter
-       * result.length > 1 已选
-       * result.length <= 0 未选
-       * result.length === parent.children 全选
-       * */
     },
-    // 程序调用
+    // #监听
+    onEditTitleSuccess(e, item) {
+      this.$set(item, 'title', e)
+      this.emitData()
+    },
+    // #实例方法
     emitData() {
-      let checkList = this.flatArray(this.data).filter(item => item.check)
+      let checkList = this.getColumnsList()
       checkList = JSON.parse(JSON.stringify(checkList))
       // 处理tkio字段(添加额外参数)
       checkList.forEach(item => {
@@ -254,29 +277,48 @@ export default {
           item.title = `${item.title}（总次数）`
         }
       })
-      // 讲带锁的数据排在最前面
+      // 将带锁的数据排在最前面(如果数据保证正确，那么则不需要两次filter)
       let result = [].concat(
         checkList.filter(item => item.unlock),
         checkList.filter(item => !item.unlock)
       )
-      let value = checkList.map(item => item.key)
+      let value = result.map(e => e.key)
       this.$emit('input', value)
       this.$emit('on-change', value)
-      this.$emit('on-sort-data', result)
+      this.$emit('on-change-data', {
+        value,
+        list: result
+      })
     },
     // 设置选中状态
     setItemCheck() {
       this.hookMap(this.data, item => {
-        // v-model || 带锁的
-        item.check = this.value.includes(item.key) || item.unlock
+        item['check'] = item.unlock || this.hookValue.includes(item.key)
+        if (item.children && item.children.length) {
+          item['check'] = item.children.every(({ check }) => check)
+          /**
+           * 注：
+           * 父级需要三个状态(未选、已选、全选)的话
+           * let result =  parent.children.filter(e => e.check)
+           * result.length > 1 已选
+           * result.length <= 0 未选
+           * result.length === parent.children 全选
+           * */
+        }
       })
-      this.emitData()
     },
-    // 发生编辑后数据
-    onEdit(data) {
-      this.$emit('on-edit', data)
+    // 根据value 获取指标item
+    getColumnsList() {
+      let arr = []
+      this.hookValue.forEach(e => {
+        let item = dataflat.find(f => f.key === e)
+        if (item) {
+          arr.push(item)
+        }
+      })
+      return arr
     },
-    // utils
+    // #utils
     // 拉平数据
     flatArray(list) {
       let _list = list.map(item => {
@@ -288,7 +330,7 @@ export default {
       })
       return _list.flat()
     },
-    // 递归
+    // 递归到底
     hookMap(list, callback) {
       return list.map(item => {
         if (item.children && item.children.length) {
