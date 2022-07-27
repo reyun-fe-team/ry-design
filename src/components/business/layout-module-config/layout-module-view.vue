@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-25 14:53:12
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-01 23:11:38
+ * @LastEditTime: 2022-07-18 13:35:53
  * @FilePath: /ry-design/src/components/business/layout-module-config/module-view/index.vue
  * @Description: 单个模块的渲染组件
 -->
@@ -17,7 +17,7 @@
       </template>
     </div>
     <!-- 显示内容区域 -->
-    <div :class="prefixCls + '-main'">
+    <div :class="[prefixCls + '-main', 'rd-mini-scroll-y']">
       <template v-if="hasRender('main')">
         <Render :render="renderSlots['main']"></Render>
       </template>

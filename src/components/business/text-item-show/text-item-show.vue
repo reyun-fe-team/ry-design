@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:43:38
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-26 17:10:18
+ * @LastEditTime: 2022-07-20 18:01:10
  * @FilePath: /ry-design/src/components/business/text-item-show/text-item-show.vue
  * @Description: 极速创建基础信息，单项显示控件
 -->
@@ -21,7 +21,16 @@
           { 'two-line-text': twoLineDisplay, 'single-line-text': !twoLineDisplay },
           'show-text'
         ]">
-        {{ data.text }}
+        <Tooltip
+          v-if="tooltip"
+          theme="light"
+          max-width="300"
+          transfer
+          :transfer-class-name="prefixCls + '-tooltip'"
+          :content="tooltip">
+          {{ data.text }}
+        </Tooltip>
+        <template v-else>{{ data.text }}</template>
       </div>
       <!-- btnGroup -->
       <div :class="[prefixCls + '-btns']">
@@ -112,6 +121,10 @@ export default {
     data: {
       type: Object,
       default: () => ({})
+    },
+    tooltip: {
+      type: String,
+      default: ''
     }
     // 按钮组 slot
     // btnGroup

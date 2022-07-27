@@ -104,6 +104,10 @@ const router = new VueRouter({
       component: resolve => require(['./routers/text-emoj-input'], resolve)
     },
     {
+      path: '/common-table',
+      component: resolve => require(['./routers/common-table/index'], resolve)
+    },
+    {
       path: '/account-group-list',
       component: resolve => require(['./routers/account-group-list'], resolve)
     }

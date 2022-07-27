@@ -24,8 +24,8 @@ export default {
   data() {
     return {
       list: [
-        { key: '1', label: '列表1', disabled: false },
-        { key: '2', label: '列表2', disabled: true },
+        { key: '1', label: '列表1', disabled: true },
+        { key: '2', label: '列表2', disabled: false },
         { key: '3', label: '列表3', disabled: false },
         { key: '4', label: '列表4' },
         { key: '5', label: '列表5' },
