@@ -410,7 +410,7 @@ export default {
       return text
     },
     getFaceHtml(icon, type) {
-      const str = `<img style="pointer-events: none; " src="${icon}" draggable="false" width="16" height="16" data-type="${type}">`
+      const str = `<img style="pointer-events: none; margin-left: 4px; " src="${icon}" draggable="false" width="16" height="16" data-type="${type}">`
       return str
     },
     enter() {
@@ -502,14 +502,16 @@ export default {
       return false
     },
     onError(status, index) {
-      const k = this.errors.indexOf(index)
-      if (k > -1) {
-        if (!status) {
-          this.errors.splice(k, 1)
+      setTimeout(() => {
+        const k = this.errors.indexOf(index)
+        if (k > -1) {
+          if (!status) {
+            this.errors.splice(k, 1)
+          }
+          return
         }
-        return
-      }
-      status && this.errors.push(index)
+        status && this.errors.push(index)
+      }, 600)
     }
   }
 }
