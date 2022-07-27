@@ -45,29 +45,21 @@ export default {
      * @returns {boolean} true 可以插入 false 不能插入
      */
     // eslint-disable-next-line vue/require-default-prop
-    validHtmlMarkFn: {
-      type: Function
-    },
+    validHtmlMarkFn: Function,
     /**
      * @description 将html标记 转换为 通用文本内容
      * @param {string} value html标记内容
      * @returns {string} 通用文本内容
      */
     // eslint-disable-next-line vue/require-default-prop
-    transformHtml2Text: {
-      require: true,
-      type: Function
-    },
+    transformHtml2Text: Function,
     /**
      * @description 将通用文本内容  转换为 html标记
      * @param {string} value 通用文本内容
      * @returns {string} html标记内容
      */
     // eslint-disable-next-line vue/require-default-prop
-    transformText2Html: {
-      require: true,
-      type: Function
-    },
+    transformText2Html: Function,
     // 传入的默认文本（通用文本内容）
     value: {
       require: true,
@@ -104,15 +96,9 @@ export default {
       default: 30
     },
     // 文本计算方法
-    calcTextFn: {
-      require: true,
-      type: Function
-    },
+    calcTextFn: Function,
     // 验证方法
-    validFn: {
-      require: true,
-      type: Function
-    }
+    validFn: Function
   },
   data() {
     return {
@@ -180,7 +166,6 @@ export default {
         if (this.transformText2Html) {
           html = this.transformText2Html(this.value)
         }
-        // console.log('回显value: ', html)
         // this.insertHtmlMark(html)
         this.richEditRef.innerHTML = html
       }
@@ -200,10 +185,9 @@ export default {
       const disableInputFn = () => e.preventDefault()
       e.stopPropagation()
       // 使用默认的获取纯文本的方法
-      let oiginalText = getPlainText(stringHtml)
-      if (this.transformHtml2Text) {
-        oiginalText = this.transformHtml2Text(stringHtml)
-      }
+      const oiginalText = this.transformHtml2Text
+        ? this.transformHtml2Text(stringHtml)
+        : getPlainText(stringHtml)
       // this.$emit('input', oiginalText)
       this.$emit('on-change', {
         currentData,
@@ -292,23 +276,24 @@ export default {
       this.insertHtmlMark(html)
     },
     // 插入html标记
-    insertHtmlMark(html, isEnter) {
+    insertHtmlMark(html) {
       if (!this.canUseHtml) {
         return
       }
       let pass = true
       if (this.validHtmlMarkFn) {
         pass = this.validHtmlMarkFn(html)
-      } else {
-        // 默认只能加图片
-        // const reg = /<img[^>]*>/gi
-        // const images = html.match(reg)
-        // if (isEmpty(images)) {
-        //   return
-        // }
-        // 只能加一个图片
-        // html = images[0]
       }
+      //  else {
+      //   默认只能加图片
+      //   const reg = /<img[^>]*>/gi
+      //   const images = html.match(reg)
+      //   if (isEmpty(images)) {
+      //     return
+      //   }
+      //   只能加一个图片
+      //   html = images[0]
+      // }
       // 不通过
       if (!pass) {
         return
