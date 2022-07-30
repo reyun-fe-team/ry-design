@@ -12,30 +12,34 @@
     <div :class="[prefixCls + '-head-left']">
       <!-- 单个标题 -->
       <template v-if="!isTabs">
-        <span v-if="isPropSingleTitle || isHasSolt('singleTitle')"
-              :class="[prefixCls + '-single-title']">
+        <span
+          v-if="isPropSingleTitle || isHasSolt('singleTitle')"
+          :class="[prefixCls + '-single-title']">
           <slot name="singleTitle">
-            <span :class="[prefixCls + '-text']">{{singleTitle}}</span>
+            <span :class="[prefixCls + '-text']">{{ singleTitle }}</span>
           </slot>
         </span>
         <!-- 副标题 -->
-        <span v-if="isPropSubTitle || isHasSolt('subTitle')"
-              :class="[prefixCls + '-subtitle']">
+        <span
+          v-if="isPropSubTitle || isHasSolt('subTitle')"
+          :class="[prefixCls + '-subtitle']">
           <slot name="subTitle">
-            <span :class="[prefixCls + '-subtitle-text']">{{subTitle}}</span>
+            <span :class="[prefixCls + '-subtitle-text']">{{ subTitle }}</span>
           </slot>
         </span>
       </template>
       <!-- 显示tabs -->
       <template v-if="isTabs">
         <div :class="[prefixCls + '-module-tabs']">
-          <Tabs :value="newActiveValue"
-                :animated="false"
-                @on-click="handleTabClick">
-            <TabPane v-for="item in tabsList"
-                     :key="item.name"
-                     :label="item.label"
-                     :name="item.name" />
+          <Tabs
+            :value="newActiveValue"
+            :animated="false"
+            @on-click="handleTabClick">
+            <TabPane
+              v-for="item in tabsList"
+              :key="item.name"
+              :label="item.label"
+              :name="item.name" />
           </Tabs>
         </div>
       </template>
@@ -50,8 +54,8 @@
 </template>
 <script>
 // import Render from './../../base/render';
-const { prefix } = require('../../../config.js');
-const prefixCls = prefix + 'page-header-module';
+import { prefix } from '@src/config.js'
+const prefixCls = prefix + 'page-header-module'
 export default {
   name: prefixCls,
   // components: { Render },
@@ -96,72 +100,82 @@ export default {
       newActiveValue: this.isTabs ? this.activeValue : null,
       // 是不是路由
       newIsRoute: false
-    };
+    }
   },
-  created() {
-    if (this.isRoute) {
-      if (!this.isTabs) {
-        throw '使用路由关联[isRoute === true],必须开启“Tabs”功能,[isTabs === true]';
+  computed: {
+    // 类名class集合
+    classes() {
+      const classList = [`${prefixCls}`]
+      return classList
+    },
+    // 单个标题
+    isPropSingleTitle() {
+      const { singleTitle, isTabs } = this
+      if (isTabs) {
+        return false
       }
-      this.newIsRoute = true;
-      this.$nextTick(() => {
-        this.tabInit();
-      });
+      if (singleTitle) {
+        return true
+      }
+      return false
+    },
+    // 副标题
+    isPropSubTitle() {
+      const { subTitle, isTabs } = this
+      if (isTabs) {
+        return false
+      }
+      if (subTitle) {
+        return true
+      }
+      return false
     }
   },
   watch: {
     $route: function (route) {
       // 不是匹配的路由
       if (this.activeValue !== route.name) {
-        this.tabInit();
+        this.tabInit()
       }
     }
   },
-  computed: {
-    // 类名class集合
-    classes() {
-      const classList = [`${prefixCls}`];
-      return classList;
-    },
-    // 单个标题
-    isPropSingleTitle() {
-      const { singleTitle, isTabs } = this;
-      if (isTabs) return false;
-      if (singleTitle) return true;
-      return false;
-    },
-    // 副标题
-    isPropSubTitle() {
-      const { subTitle, isTabs } = this;
-      if (isTabs) return false;
-      if (subTitle) return true;
-      return false;
+  created() {
+    if (this.isRoute) {
+      if (!this.isTabs) {
+        throw '使用路由关联[isRoute === true],必须开启“Tabs”功能,[isTabs === true]'
+      }
+      this.newIsRoute = true
+      this.$nextTick(() => {
+        this.tabInit()
+      })
     }
   },
   methods: {
     // 路由关联初始化
     tabInit() {
       if (this.newIsRoute) {
-        let { name = '' } = this.$route;
-        this.newActiveValue = name;
+        let { name = '' } = this.$route
+        this.newActiveValue = name
       }
     },
     // 获取插槽
     isHasSolt(soltName = 'default') {
-      const { $scopedSlots } = this;
-      const soltRef = $scopedSlots[soltName];
-      return typeof soltRef === 'function';
+      const { $scopedSlots } = this
+      const soltRef = $scopedSlots[soltName]
+      return typeof soltRef === 'function'
     },
     // 点击
     handleTabClick(e) {
-      if (!this.isTabs) return;
-      this.$emit('on-tab-click', e);
+      if (!this.isTabs) {
+        return
+      }
+      this.$emit('on-tab-click', e)
       if (this.newIsRoute) {
-        this.newActiveValue = e;
-        console.log('点击跳转路由 -> ' + e);
-        this.$router.push({ name: e });
+        this.newActiveValue = e
+        console.log('点击跳转路由 -> ' + e)
+        this.$router.push({ name: e })
       }
     }
   }
-};
+}
 </script>

@@ -1,0 +1,76 @@
+.table {
+  .operation-btn {
+    margin-right: 16px;
+    color: #3a88fa;
+    cursor: pointer;
+  }
+
+  .operation-btn-more {
+    color: #3a88fa;
+    cursor: pointer;
+  }
+
+  .icon-desc {
+    margin-left: 6px;
+  }
+
+  .inline-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .inline-row-right {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .edit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .icon-more {
+    margin-left: 6px;
+    color: #575b65;
+  }
+
+  .ivu-table-row-hover .icon-more {
+    color: #3989fa;
+  }
+
+   /deep/ .rd-edit-row-bid {
+    display: flex;
+  }
+
+   /deep/ .rd-edit-row-bid-icon {
+    top: 0;
+    right: 0;
+    display: none;
+  }
+
+   /deep/ .ivu-table-row-hover {
+    .rd-edit-row-bid-icon {
+      display: block;
+      color: #3a88fa;
+    }
+  }
+
+   /deep/ .rd-line-clamp {
+    -webkit-box-orient: vertical;
+  }
+}
+
+.page {
+  position: relative;
+  margin: 16px;
+  font-size: 12px;
+  text-align: right;
+
+  .ivu-page-total {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}

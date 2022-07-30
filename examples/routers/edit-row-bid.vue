@@ -7,68 +7,70 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <main class="edit-row-bid">
+  <div class="edit-row-bid">
     <div>
       <span>输入文本</span>
-      <rd-edit-row-bid :value="value"
-                       showTextLimit
-                       :maxTextNum="10"
-                       :calcTextNumFunc="calcTextNumFunc"
-                       title="输入文本"
-                       :rules="rules"
-                       :confirmFunc="confirmText"></rd-edit-row-bid>
+      <rd-edit-row-bid
+        :value="value"
+        show-text-limit
+        :max-text-num="10"
+        :calc-text-num-func="calcTextNumFunc"
+        title="输入文本"
+        :rules="rules"
+        :confirm-func="confirmText"></rd-edit-row-bid>
     </div>
-    <br>
+    <br />
     <div>
       <span>输入数字</span>
-      <rd-edit-row-bid type="number"
-                       :precision="2"
-                       :numberMin="5"
-                       :numberMax="90"
-                       :numberStep="1"
-                       :value="num"
-                       title="输入数字"
-                       :rules="rulesNum"
-                       :confirmFunc="confirmNum"></rd-edit-row-bid>
+      <rd-edit-row-bid
+        type="number"
+        :precision="2"
+        :number-min="5"
+        :number-max="90"
+        :number-step="1"
+        :value="num"
+        title="输入数字"
+        :rules="rulesNum"
+        :confirm-func="confirmNum"></rd-edit-row-bid>
     </div>
-    <br>
+    <br />
     <div>
       <span>单选</span>
-      <rd-edit-row-bid type="radio"
-                       iconType="md-build"
-                       :poptipDisabled="false"
-                       :poptipWidth="500"
-                       :poptipShowFunc="poptipShowFunc"
-                       :poptipHideFunc="poptipHideFunc"
-                       :beforeShowFunc="beforeShowFunc"
-                       :radioList="radioList"
-                       :value="radio"
-                       title="单选"
-                       :rules="rulesRadio"
-                       :confirmFunc="confirmRadio"></rd-edit-row-bid>
+      <rd-edit-row-bid
+        type="radio"
+        icon-type="md-build"
+        :poptip-disabled="false"
+        :poptip-width="500"
+        :poptip-show-func="poptipShowFunc"
+        :poptip-hide-func="poptipHideFunc"
+        :before-show-func="beforeShowFunc"
+        :radio-list="radioList"
+        :value="radio"
+        title="单选"
+        :rules="rulesRadio"
+        :confirm-func="confirmRadio"></rd-edit-row-bid>
     </div>
-    <br>
+    <br />
     <div>
       <span>自定义</span>
-      <rd-edit-row-bid type="custom"
-                       :showFooter="false"
-                       placement="right"
-                       title="自定义">
+      <rd-edit-row-bid
+        type="custom"
+        :show-footer="false"
+        placement="right"
+        title="自定义">
         <template #iconType>
           <a>+</a>
         </template>
-        <template #title>
-          自定义插槽标题
-        </template>
+        <template #title>自定义插槽标题</template>
         <template #custom>
           <span>自定义内容</span>
-          <input type="text"
-                 v-model="customText">
+          <input
+            v-model="customText"
+            type="text" />
         </template>
       </rd-edit-row-bid>
     </div>
-
-  </main>
+  </div>
 </template>
 
 <script>

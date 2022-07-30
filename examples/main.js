@@ -3,7 +3,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './app.vue'
 import ryDesign from '../src/index'
-// import "./styles/index.less";
 
 Vue.use(VueRouter)
 Vue.use(ryDesign)
@@ -65,12 +64,48 @@ const router = new VueRouter({
       component: resolve => require(['./routers/edit-row-bid'], resolve)
     },
     {
+      path: '/table-columns',
+      component: resolve => require(['./routers/table-columns'], resolve)
+    },
+    {
       path: '/reverse-button',
       component: resolve => require(['./routers/reverse-button'], resolve)
     },
     {
       path: '/layout-module-config',
       component: resolve => require(['./routers/layout-module-config'], resolve)
+    },
+    {
+      path: '/draggable-card',
+      component: resolve => require(['./routers/draggable-card'], resolve)
+    },
+    {
+      path: '/word-limit',
+      component: resolve => require(['./routers/word-limit'], resolve)
+    },
+    {
+      path: '/batch-upload-xls',
+      component: resolve => require(['./routers/batch-upload-xls'], resolve)
+    },
+    {
+      path: '/ellipsis',
+      component: resolve => require(['./routers/ellipsis'], resolve)
+    },
+    {
+      path: '/table-multi-inputs',
+      component: resolve => require(['./routers/table-multi-inputs'], resolve)
+    },
+    {
+      path: '/text-item-show',
+      component: resolve => require(['./routers/text-item-show'], resolve)
+    },
+    {
+      path: '/text-emoj-input',
+      component: resolve => require(['./routers/text-emoj-input'], resolve)
+    },
+    {
+      path: '/common-table',
+      component: resolve => require(['./routers/common-table/index'], resolve)
     }
   ]
 })

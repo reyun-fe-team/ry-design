@@ -1,5 +1,5 @@
 <template>
-  <main :class="[prefixCls]">
+  <div :class="[prefixCls]">
     <RadioGroup
       v-model="newValue"
       :type="type"
@@ -23,12 +23,11 @@
             <template v-if="isArray(e.tooltip)">
               <p
                 v-for="(item, index) in e.tooltip"
-                :key="index">
-                {{ item }}
-              </p>
+                :key="index"
+                v-text="item"></p>
             </template>
             <template v-if="isString(e.tooltip)">
-              <p>{{ e.tooltip }}</p>
+              <p v-text="e.tooltip"></p>
             </template>
           </div>
           <Icon
@@ -38,12 +37,12 @@
         </Tooltip>
       </Radio>
     </RadioGroup>
-  </main>
+  </div>
 </template>
 
 <script>
 import _isEqual from 'lodash/isEqual'
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'radio-group'
 export default {
   name: prefixCls,

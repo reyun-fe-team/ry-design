@@ -122,3 +122,153 @@ export function getKey() {
     return v.toString(16)
   })
 }
+
+export function count({ value, type, isDifferWord }) {
+  let len = 0
+  // 输入内容不区分中英文，直接返回value的长度
+  if (!isDifferWord) {
+    len = value.length
+    return len
+  }
+  // 区分中英文
+  // type === 'en', 返回当前输入的字节数 （按英文展示输入数量）
+  // type === 'cn', 如果字节数为奇数，则字节数加1（按中文展示输入数量）
+  value &&
+    value.split('').forEach(item => {
+      const charCode = item.charCodeAt()
+      if (charCode >= 0 && charCode <= 128) {
+        len++
+      } else {
+        len += 2
+      }
+    })
+  // 按英文展示输入数量
+  if (type === 'en') {
+    return len
+  }
+  // 按中文展示输入数量时
+  if (type === 'cn') {
+    // 如果字节数为奇数，则字节数加1
+    if (len % 2 > 0) {
+      len++
+    }
+    len = len / 2
+  }
+  return len
+}
+
+const isClient = typeof window !== 'undefined'
+
+const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g
+const MOZ_HACK_REGEXP = /^moz([A-Z])/
+
+function camelCase(name) {
+  return name
+    .replace(SPECIAL_CHARS_REGEXP, function (_, separator, letter, offset) {
+      return offset ? letter.toUpperCase() : letter
+    })
+    .replace(MOZ_HACK_REGEXP, 'Moz$1')
+}
+
+// 判断参数是否是其中之一
+export function oneOf(value, validList) {
+  for (let i = 0; i < validList.length; i++) {
+    if (value === validList[i]) {
+      return true
+    }
+  }
+  return false
+}
+// getStyle
+export function getStyle(element, styleName) {
+  if (!isClient) {
+    return
+  }
+  if (!element || !styleName) {
+    return null
+  }
+  styleName = camelCase(styleName)
+  if (styleName === 'float') {
+    styleName = 'cssFloat'
+  }
+  try {
+    const computed = document.defaultView.getComputedStyle(element, '')
+    return element.style[styleName] || computed ? computed[styleName] : null
+  } catch (e) {
+    return element.style[styleName]
+  }
+}
+
+/* istanbul ignore next */
+const trim = function (string) {
+  return (string || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '')
+}
+
+/* istanbul ignore next */
+export function hasClass(el, cls) {
+  if (!el || !cls) {
+    return false
+  }
+  if (cls.indexOf(' ') !== -1) {
+    throw new Error('className should not contain space.')
+  }
+  if (el.classList) {
+    return el.classList.contains(cls)
+  } else {
+    return (' ' + el.className + ' ').indexOf(' ' + cls + ' ') > -1
+  }
+}
+
+/* istanbul ignore next */
+export function addClass(el, cls) {
+  if (!el) {
+    return
+  }
+  let curClass = el.className
+  const classes = (cls || '').split(' ')
+
+  for (let i = 0, j = classes.length; i < j; i++) {
+    const clsName = classes[i]
+    if (!clsName) {
+      continue
+    }
+
+    if (el.classList) {
+      el.classList.add(clsName)
+    } else {
+      if (!hasClass(el, clsName)) {
+        curClass += ' ' + clsName
+      }
+    }
+  }
+  if (!el.classList) {
+    el.className = curClass
+  }
+}
+
+/* istanbul ignore next */
+export function removeClass(el, cls) {
+  if (!el || !cls) {
+    return
+  }
+  const classes = cls.split(' ')
+  let curClass = ' ' + el.className + ' '
+
+  for (let i = 0, j = classes.length; i < j; i++) {
+    const clsName = classes[i]
+    if (!clsName) {
+      continue
+    }
+
+    if (el.classList) {
+      el.classList.remove(clsName)
+    } else {
+      if (hasClass(el, clsName)) {
+        curClass = curClass.replace(' ' + clsName + ' ', ' ')
+      }
+    }
+  }
+  if (!el.classList) {
+    el.className = trim(curClass)
+  }
+}
