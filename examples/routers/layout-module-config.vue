@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:49:35
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-05-27 12:07:26
+ * @LastEditTime: 2022-07-18 13:57:28
  * @FilePath: /ry-design/examples/routers/layout-module-config.vue
  * @Description: layout-module-config 组件示例
 -->
@@ -33,11 +33,12 @@
       :width-type="widthType"
       :clo-width-list="cloWidthList">
       <template #land>
-        <rd-layout-module-view title="落地页内容名称太长了超出显示省略号">
+        <rd-layout-module-view
+          title="落地页内容名称太长了超出显示省略号落地页内容名称太长了超出显示省略号">
           <div slot="header"><a>配置</a></div>
           <div
             slot="main"
-            style="background: #f90">
+            style="background: #f90; height: 500px">
             落地页面板内容
           </div>
         </rd-layout-module-view>
@@ -47,7 +48,7 @@
           <div slot="header"><a>配置</a></div>
           <div
             slot="main"
-            style="background: #a88">
+            style="background: #a88; height: 500px">
             转化面板内容
           </div>
         </rd-layout-module-view>
@@ -57,7 +58,7 @@
           <div slot="header"><a>配置</a></div>
           <div
             slot="main"
-            style="background: #f00">
+            style="background: #f00; height: 500px">
             事件资产面板内容
           </div>
         </rd-layout-module-view>
@@ -82,7 +83,11 @@ export default {
       return {
         creative: h => {
           const header = h('div', { slot: 'header' }, [h('a', '清空')])
-          const main = h('div', { slot: 'main', style: 'background: #ccc;' }, '创意面板内容')
+          const main = h(
+            'div',
+            { slot: 'main', style: 'background: #ccc; height: 500px' },
+            '创意面板内容'
+          )
           const footerStyle =
             'height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;'
           const footer = h(

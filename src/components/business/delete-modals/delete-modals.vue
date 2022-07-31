@@ -14,8 +14,13 @@
           <img :src="iconData[deleteIconName]" />
         </slot>
       </div>
-      <div :class="prefixCls + '-modal-content-content'">
-        <slot name="delete-modal-content">{{ deleteContent }}</slot>
+      <div
+        :class="prefixCls + '-modal-content-content'"
+        :style="styles"
+        v-html="deleteContent">
+        <slot name="delete-modal-content">
+          {{ deleteContent }}
+        </slot>
       </div>
     </div>
   </div>
@@ -39,6 +44,10 @@ export default {
     deleteHasClose: {
       type: Boolean,
       default: true
+    },
+    styles: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {

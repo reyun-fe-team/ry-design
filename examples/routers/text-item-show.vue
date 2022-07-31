@@ -2,13 +2,14 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:53:40
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-24 19:16:41
+ * @LastEditTime: 2022-07-20 17:59:10
  * @FilePath: /ry-design/examples/routers/text-item-show.vue
  * @Description: 极速创建基础信息，单项显示控件 示例
 -->
 <template>
   <div style="margin: 20px">
     <rd-text-item-show
+      :tooltip="basic.text"
       two-line-display
       :data="basic">
       <template #btnGroup>

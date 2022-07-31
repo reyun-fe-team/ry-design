@@ -27,14 +27,14 @@
           @dragover="dragover"
           @dragstart="dragstart(item, index)">
           <span :class="prefixCls + '-draggable-li-move-icon'">
-            <img
+            <ry-icon
               v-if="item.disabled"
-              src="../../../images/draggable-card/unlock.png"
-              :class="prefixCls + '-draggable-li-icon-unlock'" />
-            <img
+              type="ry-icon-suo"
+              size="14"></ry-icon>
+            <ry-icon
               v-if="!item.disabled"
-              src="../../../images/draggable-card/reorder.png"
-              :class="prefixCls + '-draggable-li-icon-reorder'" />
+              type="ry-icon-tuodong"
+              size="14"></ry-icon>
           </span>
           <span
             :class="prefixCls + '-draggable-li-title'"
@@ -42,15 +42,17 @@
             {{ item.label }}
           </span>
           <span v-if="!item.disabled">
-            <img
+            <ry-icon
               v-if="setMoveUpward(index)"
-              src="../../../images/draggable-card/top.png"
-              :class="prefixCls + '-draggable-li-top-icon'"
-              @click="setMoveTop(index)" />
-            <img
-              src="../../../images/draggable-card/close.png"
-              :class="prefixCls + '-draggable-li-icon-remove'"
-              @click="onRemove(index, item)" />
+              :class="prefixCls + '-draggable-li-icon-cursor'"
+              type="ry-icon-zhiding"
+              size="14"
+              @click.native="setMoveTop(index)"></ry-icon>
+            <ry-icon
+              :class="prefixCls + '-draggable-li-icon-cursor'"
+              type="ry-icon-shanchu"
+              size="15"
+              @click.native="onRemove(index, item)"></ry-icon>
           </span>
         </li>
       </transition-group>
@@ -70,9 +72,14 @@ import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'draggable-card'
 import _findLastIndex from 'lodash/findIndex'
 import _cloneDeep from 'lodash/cloneDeep'
+import _isEqual from 'lodash/isEqual'
+import ryIcon from '../icon/icon.vue'
 
 export default {
   name: prefixCls,
+  components: {
+    ryIcon
+  },
   props: {
     height: {
       type: Number,
@@ -138,12 +145,13 @@ export default {
       immediate: true,
       handler(now) {
         this.list = this.initdata(now)
-        this.emitData()
       }
     },
     ids: {
-      handler() {
-        this.emitData()
+      handler(n, o) {
+        if (!_isEqual(n, o)) {
+          this.emitData()
+        }
       }
     }
   },
