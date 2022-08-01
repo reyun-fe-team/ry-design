@@ -141,6 +141,7 @@ import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'table-columns'
 import editTitle from './components/edit-title.vue'
 import ryIcon from '../icon/icon.vue'
+import _isEqual from 'lodash/isEqual'
 
 let dataflat = []
 export default {
@@ -186,9 +187,12 @@ export default {
     }
   },
   watch: {
-    value(n) {
-      this.hookValue = n
-      this.setItemCheck()
+    value(n, o) {
+      if (!_isEqual(n, o)) {
+        this.hookValue = n
+        this.setItemCheck()
+        this.emitData()
+      }
     }
   },
   created() {
