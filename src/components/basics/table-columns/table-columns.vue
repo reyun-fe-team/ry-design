@@ -234,20 +234,24 @@ export default {
     },
     // 点击全选
     handleCheckAll(check, list) {
-      list.check = check
       let keys = []
+      list.check = check
       list.children.forEach(item => {
         if (!item.disabled) {
           this.$set(item, 'check', check)
           keys.push(item.key)
         }
       })
-      // 先过滤掉本次选中的key
-      let value = this.hookValue.filter(e => !keys.includes(e))
-      // 将本次选中的key追加到value种
+      let value = this.hookValue
       if (check) {
-        value = value.concat(keys)
+        // 全选：先过滤已选中包含本次的key(保留没有出现的key)
+        keys = keys.filter(e => !this.hookValue.includes(e))
+      } else {
+        // 反选：过滤掉本次选中的所有key(删除本次)
+        value = this.hookValue.filter(e => !keys.includes(e))
+        keys = []
       }
+      value = value.concat(keys)
       this.hookValue = value
       this.emitData()
     },
