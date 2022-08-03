@@ -6,7 +6,7 @@
     <div
       v-for="index in maxLine"
       :key="index"
-      style="display: flex">
+      :class="prefixCls + '-line'">
       <div :class="[prefixCls + '-left-list', isHaveError(index) ? prefixCls + '-is-error' : '']">
         <span :class="[isHaveError(index) ? prefixCls + '-error-left' : '']">
           {{ index }}
