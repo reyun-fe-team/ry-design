@@ -106,6 +106,10 @@ const router = new VueRouter({
     {
       path: '/common-table',
       component: resolve => require(['./routers/common-table/index'], resolve)
+    },
+    {
+      path: '/text-input-list',
+      component: resolve => require(['./routers/text-input-list'], resolve)
     }
   ]
 })
