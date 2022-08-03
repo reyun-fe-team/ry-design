@@ -1,0 +1,38 @@
+// 滚动条样式
+// .scrollbar (@width: 9px, @height: 9px) {
+//   &::-webkit-scrollbar-track-piece {
+//     background-color: transparent;
+//   }
+//   &::-webkit-scrollbar {
+//     width: @width;
+//     height: @height;
+//   }
+//   &::-webkit-scrollbar-thumb {
+//     min-height: 28px;
+//     background-color: @scrollbar-bg;
+//     background-clip: padding-box;
+//     border-radius: 4px;
+//   }
+//   &::-webkit-scrollbar-thumb:hover {
+//     background-color: @scrollbar-hover-bg;
+//   }
+// }
+
+.scrollbar-base {
+  &::-webkit-scrollbar-track-piece {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  &::-webkit-scrollbar-thumb {
+    min-height: 28px;
+    background-color: @scrollbar-bg;
+    background-clip: padding-box;
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: @scrollbar-hover-bg;
+  }
+}
