@@ -34,6 +34,7 @@ import './style/index.less'
 
 // directives
 import lineClamp from './directives/line-clamp'
+import clickOutside from './directives/click-out-side'
 
 Vue.use(ViewUI)
 const consoleLogVersion = () => {
@@ -73,7 +74,8 @@ const components = [
   TextInputList
 ]
 const directives = {
-  'line-clamp': lineClamp
+  'line-clamp': lineClamp,
+  'click-outside': clickOutside
 }
 
 const install = function (Vue) {
