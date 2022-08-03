@@ -7,7 +7,12 @@
       v-for="index in maxLine"
       :key="index"
       :class="prefixCls + '-line'">
-      <div :class="[prefixCls + '-left-list', isHaveError(index) ? prefixCls + '-is-error' : '']">
+      <div
+        :class="[
+          prefixCls + '-left-list',
+          { 'middle-style-li-active': middle.activeClass === index },
+          isHaveError(index) ? prefixCls + '-is-error' : ''
+        ]">
         <span :class="[isHaveError(index) ? prefixCls + '-error-left' : '']">
           {{ index }}
         </span>
