@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <div>
     {{ selectedKeys }}
     <hr />
     {{ selectedData }}
@@ -8,9 +8,8 @@
       :data="data"
       filterable
       @on-keys-change="selectedKeys = $event"
-      @on-data-change="selectedData = $event"
-    ></rd-transfer>
-  </main>
+      @on-data-change="selectedData = $event"></rd-transfer>
+  </div>
 </template>
 
 <script>
@@ -166,10 +165,10 @@ export default {
         //     // }
         //  }
       ]
-    };
+    }
   },
   computed: {},
   mounted() {},
   methods: {}
-};
+}
 </script>

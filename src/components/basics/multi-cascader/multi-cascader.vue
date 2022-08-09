@@ -106,13 +106,15 @@
 </template>
 
 <script>
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'multi-cascader'
 import TreeStore from './lib/Tree.js'
 import multiCascaderList from './multi-cascader-list.vue'
 import _cloneDeep from 'lodash/cloneDeep'
 import _find from 'lodash/find'
 import _findIndex from 'lodash/findIndex'
+import _debounce from 'lodash/debounce'
+
 export default {
   name: prefixCls,
   components: {
@@ -354,8 +356,7 @@ export default {
       }
     },
     selectedNodes() {
-      const selected = this.selectedNodes.map(o => o[this.valueKey])
-      this.$emit('change', selected)
+      this.selectedNodesWatch()
     },
     // 传入数据变化更新store选中数据
     value: {
@@ -391,6 +392,11 @@ export default {
     this.init()
   },
   methods: {
+    // watch selectedNodes handler
+    selectedNodesWatch: _debounce(function () {
+      const selected = this.selectedNodes.map(o => o[this.valueKey])
+      this.$emit('change', selected)
+    }, 250),
     handleMouseenter() {
       if (this.clearable && this.value.length > 0) {
         this.showClear = true

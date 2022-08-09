@@ -1,0 +1,138 @@
+@table-columns: ~"@{css-prefix}table-columns";
+
+.@{table-columns} {
+    width: 630px;
+
+    &-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 40px;
+        line-height: 40px;
+        background-color: #f9f9f9;
+        border: 1px solid #DCDEE2;
+        padding-left: 11px;
+        padding-right: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #151B39;
+
+        .ivu-input {
+            height: 28px;
+        }
+    }
+
+    &-content {
+        position: relative;
+        display: flex;
+        height: 440px;
+        overflow-y: auto;
+    }
+    &-nav-area-wrap {
+        width: 200px;
+        border-left: 1px solid #E3E5E7;
+        border-bottom: 1px solid #E3E5E7;
+        overflow-y: auto;
+    }
+    &-nav-area-list {
+        margin-bottom: 20px;
+        &-label,&-item {
+            height: 32px;
+            line-height: 32px;
+            padding-left: 13px;
+
+        }
+        &-label {
+            color: #999999;
+        }
+
+        &-item {
+            cursor: pointer;
+            color:#151B39;
+            position: relative;
+        }
+
+        &-item-checked {
+            background: rgba(240, 246, 255, 1);
+            color: rgba(29, 113, 232, 1);
+        }
+
+        &-item-checked:after {
+            content: '';
+            width: 3px;
+            height: inherit;
+            background: rgba(57, 137, 250, 1);
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+
+    &-view {
+        width: 472px;
+        padding: 24px;
+        border-right: 1px solid #DCDEE2;
+        border-left: 1px solid #DCDEE2;
+        border-bottom: 1px solid #DCDEE2;
+        overflow-y: auto;
+
+        &-list {
+            margin-bottom: 30px;
+            .ivu-checkbox {
+                margin-right: 4px;
+                border-radius: 3px;
+            }
+
+            &-checked-all {
+                border-bottom: 1px solid #DCDEE2;
+                color: #151B39;
+                padding-bottom: 6px;
+               
+            }
+
+            &-content {
+                display: flex;
+                flex-wrap: wrap;
+
+                &-item {
+                    width: 188px;
+                    display: flex;
+                    align-items: center;
+                    min-height: 32px;
+                    color: #151B39;
+                    font-size: 12px;
+
+                    &-title {
+                        padding-right: 3px;
+                    }
+
+                    .ivu-checkbox-inner {
+                        width: 14px;
+                        height: 14px;
+                    }
+
+                    .ivu-checkbox {
+                        margin-right: 5px;
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+            }
+        }
+
+      
+    }
+      // 没有检索到数据
+      &-not-data {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #c5c8ce;
+    }
+
+    &-hide {
+        display: none !important;
+    }
+}

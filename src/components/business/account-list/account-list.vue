@@ -1,5 +1,5 @@
 <template>
-  <main :class="[prefixCls]">
+  <div :class="[prefixCls]">
     <div
       :class="prefixCls + '-body'"
       :style="`width: ${width};height: ${height};`">
@@ -25,10 +25,9 @@
                 style="padding-top: 4px"
                 theme="light"
                 transfer>
-                <span :class="prefixCls + '-body-left-box-content-item-name'">{{
-                  item[itemName]
-                }}
-                </span>
+                <span
+                  :class="prefixCls + '-body-left-box-content-item-name'"
+                  v-text="item[itemName]"></span>
               </Tooltip>
             </template>
             <template v-else>
@@ -40,11 +39,12 @@
                 transfer>
                 <span
                   :class="prefixCls + '-body-left-box-content-item-name'"
-                  class="sign">{{ item[itemName] }}
-                </span>
+                  class="sign"
+                  v-text="item[itemName]"></span>
                 <span
                   :class="prefixCls + '-body-left-box-content-item-name'"
-                  class="sign id">ID:{{ item[id] }}
+                  class="sign id">
+                  ID: {{ item[id] }}
                 </span>
 
                 <div
@@ -57,10 +57,13 @@
             </template>
             <span
               v-if="item[itemNum] && !item[itemIconCustom] && !item[itemIconIview]"
-              :class="prefixCls + '-body-left-box-content-item-num'">{{ item[itemNum] }}
+              :class="prefixCls + '-body-left-box-content-item-num'">
+              {{ item[itemNum] }}
             </span>
             <Icon
-              v-if="itemIconCustom && item[itemIconCustom] && !item[itemIconIview] && !item[itemNum]"
+              v-if="
+                itemIconCustom && item[itemIconCustom] && !item[itemIconIview] && !item[itemNum]
+              "
               :class="prefixCls + '-body-left-box-content-item-icon'"
               :color="iconColor"
               :custom="`${item[itemIconCustom]} icon iconfont`"
@@ -81,10 +84,10 @@
         <slot></slot>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 <script>
-const {prefix} = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'account-list'
 export default {
   name: prefixCls,
@@ -172,36 +175,33 @@ export default {
   },
   methods: {
     itemClasses(item) {
-      let {itemId, active} = this
+      let { itemId, active } = this
       return [
         `${this.prefixCls}-body-left-box-content-item`,
         {
-          [`${this.prefixCls}-body-left-box-content-item-active`]:
-          item[itemId] === active
+          [`${this.prefixCls}-body-left-box-content-item-active`]: item[itemId] === active
         }
       ]
     },
     init() {
       this.$nextTick(() => {
-        if(!this.dataList.length) {
+        if (!this.dataList.length) {
           return
         }
-        this.active = this.defaultActive
-            ? this.defaultActive
-            : this.dataList[0][this.itemId]
+        this.active = this.defaultActive ? this.defaultActive : this.dataList[0][this.itemId]
         const defaultActiveData = this.dataList.find(
-            item => item[this.itemId] === this.defaultActive
+          item => item[this.itemId] === this.defaultActive
         )
         const item = this.defaultActive ? defaultActiveData : this.dataList[0]
         this.choose(item, true)
       })
     },
     choose(item, isFirst = true) {
-      if(!this.showLeft) {
+      if (!this.showLeft) {
         return
       }
-      const {itemId} = this
-      if(item[itemId] === this.active && !isFirst) {
+      const { itemId } = this
+      if (item[itemId] === this.active && !isFirst) {
         return
       }
       const active = this.isEvent ? item[itemId] : this.active

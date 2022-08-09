@@ -1,0 +1,60 @@
+@text-emoj-input: ~"@{css-prefix}text-emoj-input";
+.@{text-emoj-input} {
+  position: relative;
+  display         : inline-block;
+  min-height      : 35px;
+  background-color: #edf1f5;
+  font-size       : 0;
+  padding         : 0 80px 0 16px;
+  vertical-align  : middle;
+
+  &-single-line {
+    overflow: hidden;
+    height  : 35px !important;
+
+    .@{text-emoj-input}-rich {
+      white-space   : nowrap;
+      overflow      : hidden;
+      vertical-align: middle;
+    }
+
+  }
+
+  &-is-error {
+    background-color: #FDE9E9 !important;
+  }
+
+  &-rich {
+    font-size       : 12px;
+    background-color: transparent;
+    border          : 0;
+    outline         : none;
+    line-height     : 35px;
+  }
+
+  &-placeholder {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 16px;
+    z-index: 2;
+    font-size       : 12px;
+    line-height     : 35px;
+    color: rgb(165, 163, 163);
+  }
+
+  &-ln-wrap {
+    position: absolute;
+    display: flex;
+    top: 2px;
+    right: 16px;
+    z-index: 3;
+    font-size: 12px;
+    line-height     : 30px;
+    color: #999;
+    cursor: pointer;
+  }
+  &-ln-wrap-l {
+    margin-right: 10px;
+  }
+}

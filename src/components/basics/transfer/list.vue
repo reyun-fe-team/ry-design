@@ -1,5 +1,5 @@
 <template>
-  <main class="inline-block">
+  <div class="inline-block">
     <div :class="classes">
       <header :class="prefixCls + '-header'">
         <Checkbox
@@ -55,10 +55,10 @@
         :left-active="leftActive"
         :right-active="rightActive"></Operation>
     </template>
-  </main>
+  </div>
 </template>
 <script>
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 let prefixCls = prefix + 'transfer-list'
 import Search from './search.vue'
 import Operation from './operation.vue'

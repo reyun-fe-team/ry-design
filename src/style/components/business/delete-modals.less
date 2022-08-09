@@ -1,0 +1,40 @@
+@delete-modals: ~"@{css-prefix}delete-modals";
+.@{delete-modals} {
+    width: 100%;
+    display: flex;
+        align-items: center;
+        justify-content: center;
+    &-modal-content {
+      position  : relative;
+      text-align: center;
+      width: 100%;
+      padding: 8px 8px 0 8px;
+      &-close {
+        position: absolute;
+        top     : 0px;
+        right   : 0px;
+        cursor  : pointer;
+        img {
+          width: 12px;
+          height: 12px;
+        }
+      }
+    
+      &-icon {
+        width : 80px;
+        height: 80px;
+        margin: 0 auto;
+        font-size: 0;
+        img {
+            width : 80px;
+            height: 80px;
+        }
+      }
+      &-content {
+        color     : #333333;
+        font-size : 14px;
+        line-height: 24px;
+      }
+    }
+}
+

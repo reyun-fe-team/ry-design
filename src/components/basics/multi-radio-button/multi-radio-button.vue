@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <div>
     <ul :class="[prefixCls]">
       <li
         v-for="item in buttonList"
@@ -21,7 +21,7 @@
               v-for="(list, index) in item.tip"
               :key="list + index"
               class="font-1-normal">
-              <span>{{ list }}</span>
+              <span v-text="list"></span>
             </p>
           </div>
           <Icon
@@ -31,12 +31,12 @@
         </Tooltip>
       </li>
     </ul>
-  </main>
+  </div>
 </template>
 
 <script>
 import _cloneDeep from 'lodash/cloneDeep'
-const { prefix } = require('../../../config.js')
+import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'multi-radio-button'
 export default {
   name: prefixCls,
