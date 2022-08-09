@@ -93,8 +93,8 @@ export default {
   },
   watch: {
     value: {
-      handler(n, o) {
-        if (!_isEqual(n, o)) {
+      handler(n) {
+        if (n) {
           let { defaultList } = this
           if (defaultList.map(e => e.value).includes(n)) {
             this.newValue = n
