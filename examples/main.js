@@ -110,6 +110,10 @@ const router = new VueRouter({
     {
       path: '/text-input-list',
       component: resolve => require(['./routers/text-input-list'], resolve)
+    },
+    {
+      path: '/wildcard',
+      component: resolve => require(['./routers/wildcard'], resolve)
     }
   ]
 })

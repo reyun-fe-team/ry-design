@@ -17,6 +17,7 @@ import TableMultiInputs from './components/basics/table-multi-inputs'
 import TextEmojInput from './components/basics/text-emoj-input'
 import Icon from './components/basics/icon'
 import TextInputList from './components/basics/text-input-list'
+import Wildcard from './components/basics/wildcard'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -73,7 +74,8 @@ const components = [
   Ellipsis,
   TextEmojInput,
   Icon,
-  TextInputList
+  TextInputList,
+  Wildcard
 ]
 const directives = {
   'line-clamp': lineClamp,
