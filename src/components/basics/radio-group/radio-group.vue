@@ -5,8 +5,8 @@
       :type="type"
       @on-change="onChange">
       <Radio
-        v-for="(e, i) in defaultList"
-        :key="i"
+        v-for="e in defaultList"
+        :key="e.value"
         :disabled="isDisabledAll || e.disabled || isDisabledItemFun(e)"
         :label="e.value">
         <span>{{ e.label }}</span>
@@ -93,8 +93,8 @@ export default {
   },
   watch: {
     value: {
-      handler(n) {
-        if (n) {
+      handler(n, o) {
+        if (!_isEqual(n, o)) {
           let { defaultList } = this
           if (defaultList.map(e => e.value).includes(n)) {
             this.newValue = n
