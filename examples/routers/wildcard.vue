@@ -9,7 +9,8 @@
       <rd-wildcard
         v-model="formInline.campaignName"
         :option="{ prop: 'campaignName', label: '计划' }"
-        :data="data"></rd-wildcard>
+        :data="data"
+        :save-rule="true"></rd-wildcard>
     </Form>
     <Button
       type="primary"

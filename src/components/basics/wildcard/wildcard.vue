@@ -85,6 +85,10 @@ export default {
       type: String,
       default: ''
     },
+    saveRule: {
+      type: Boolean,
+      default: false
+    },
     data: {
       type: Array,
       default: () => []
@@ -182,6 +186,7 @@ export default {
     // #utils
     initData(data) {
       this.keyword = this.value
+      this.saveNameRule = this.saveRule
       this.list = data.map(item => {
         return {
           ...item,
