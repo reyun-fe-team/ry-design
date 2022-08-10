@@ -1,0 +1,125 @@
+@multi-wildcard: ~"@{css-prefix}wildcard";
+@multi-wildcard-wrap: ~"@{css-prefix}wildcard-wrap";
+
+.@{multi-wildcard} {
+
+    // css 权限
+    .@{multi-wildcard-wrap} {
+        .ivu-form-item {
+            margin-bottom: 16px;
+        }
+
+        .ivu-form-item-error {
+            .ivu-input {
+                border: 1px solid #F12C2C !important;
+            }
+        }
+
+        .ivu-form-item-error-tip {
+            padding-top: 0;
+            color: #F12C2C;
+        }
+
+
+        .ivu-form-item-label {
+            font-size: 14px;
+            color: #151B39;
+            // TODO： 开发时测试代码
+            // color: red !important;
+            // font-weight: 500;
+            // TODO： 开发时测试代码
+        }
+
+        .ivu-input[disabled] {
+            background-color: #F7F7F7;
+        }
+
+        .ivu-input {
+            border-radius: 3px;
+            border-color: #DDDDDD;
+            color: #151B39;
+            padding-right: 60px;
+
+            &:focus {
+                border-color: #3989FA;
+            }
+
+            &:hover:not([disabled]) {
+                border-color: #3989FA;
+            }
+        }
+    }
+
+
+    &-keyword {
+        position: relative;
+        margin-bottom: 16px;
+
+        &-word-limit {
+            position: absolute;
+            right: 7px;
+            top: 2px;
+            bottom: 2px;
+            padding-left: 7px;
+            padding-right: 12px;
+            z-index: 9;
+            color: #999999;
+        }
+    }
+
+    &-list {
+        display: flex;
+        justify-content: space-between;
+
+        &-name-rule {
+            margin-right: 100px;
+            flex: 1;
+            display: flex;
+            justify-content: start;
+
+            &-label {
+                line-height: 1;
+                width: 48px;
+                color: #999;
+                flex: 0 0 48px;
+            }
+
+            &-item-wrap {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            &-item {
+
+                cursor: pointer;
+                font-style: normal;
+                padding-right: 16px;
+                padding-bottom: 16px;
+                line-height: 12px;
+                color: #151B39;
+                user-select: none;
+
+                &-active {
+                    color: #999;
+                }
+
+                &:hover {
+                    color: #3989FA !important;
+                }
+            }
+        }
+
+        &-name-save {
+
+            .ivu-checkbox {
+                margin-right: 4px;
+            }
+
+            .ivu-checkbox-wrapper {
+                margin-right: 0;
+                line-height: 12px;
+                vertical-align: top;
+            }
+        }
+    }
+}
