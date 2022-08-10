@@ -1,5 +1,6 @@
 ##props
 v-model/value
+saveRule 保存默认规则
 data   通配符待选数据
 dataConfig 数据配置
 calculateLength 计划字符长度

@@ -1,45 +1,52 @@
 @multi-wildcard: ~"@{css-prefix}wildcard";
+@multi-wildcard-wrap: ~"@{css-prefix}wildcard-wrap";
 
 .@{multi-wildcard} {
-    .ivu-form-item {
-        margin-bottom: 16px;
-    }
+    // css 权限
+    .@{multi-wildcard-wrap} {
+        .ivu-form-item {
+            margin-bottom: 16px;
+        }
 
-    .ivu-form-item-error {
+        .ivu-form-item-error {
+            .ivu-input {
+                border: 1px solid #F12C2C !important;
+            }
+        }
+
+        .ivu-form-item-error-tip {
+            padding-top: 0;
+            color: #F12C2C;
+        }
+
+
+        .ivu-form-item-label {
+            font-size: 14px;
+            // color: #151B39;
+            color: red !important;
+            font-weight: 500;
+        }
+
+        .ivu-input[disabled] {
+            background-color: #F7F7F7;
+        }
+
         .ivu-input {
-            border: 1px solid #F12C2C !important;
+            border-radius: 3px;
+            border-color: #DDDDDD;
+            color: #151B39;
+            padding-right: 60px;
+
+            &:focus {
+                border-color: #3989FA;
+            }
+
+            &:hover:not([disabled]) {
+                border-color: #3989FA;
+            }
         }
     }
 
-    .ivu-form-item-error-tip {
-        padding-top: 0;
-        color: #F12C2C;
-    }
-
-
-    .ivu-form-item-label {
-        font-size: 14px;
-        color: #151B39;
-    }
-
-    .ivu-input[disabled] {
-        background-color: #F7F7F7;
-    }
-
-    .ivu-input {
-        border-radius: 3px;
-        border-color: #DDDDDD;
-        color: #151B39;
-        padding-right: 60px;
-
-        &:focus {
-            border-color: #3989FA;
-        }
-
-        &:hover:not([disabled]) {
-            border-color: #3989FA;
-        }
-    }
 
     &-keyword {
         position: relative;
@@ -107,6 +114,8 @@
 
             .ivu-checkbox-wrapper {
                 margin-right: 0;
+                line-height: 12px;
+                vertical-align: top;
             }
         }
 

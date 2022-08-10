@@ -1,54 +1,57 @@
 <template>
   <div :class="classes">
-    <FormItem
-      :prop="mergedOptions.prop"
-      :label="mergedOptions.label"
-      :label-width="mergedOptions.labelWidth">
-      <div :class="prefixCls + '-keyword'">
-        <Input
-          v-model="keyword"
-          :disabled="disabled"
-          type="text"
-          placeholder="请输入"
-          @on-keydown="onKeyDown"></Input>
-        <span :class="prefixCls + '-keyword-word-limit'">{{ showWordLimit }}</span>
-      </div>
-      <div :class="prefixCls + '-list'">
-        <div :class="prefixCls + '-list-name-rule'">
-          <span :class="prefixCls + '-list-name-rule-label'">通配符:</span>
-          <p
-            :class="prefixCls + '-list-name-rule-item-wrap'"
-            @click="handleNameItem">
-            <i
-              v-for="item in list"
-              :key="item.title"
-              :class="[
-                prefixCls + '-list-name-rule-item',
-                { [prefixCls + '-list-name-rule-item-active']: keyword.includes(item.title) }
-              ]"
-              :data-value="item.title">
-              {{ prefix }}{{ item.label }}
-              <Tooltip
-                v-if="item.tooltip"
-                :content="item.tooltip"
-                theme="light"
-                placement="top">
-                <Icon
-                  type="ios-help-circle-outline"
-                  size="13" />
-              </Tooltip>
-            </i>
-          </p>
+    <div :class="prefixCls + '-wrap'">
+      <FormItem
+        :prop="mergedOptions.prop"
+        :label="mergedOptions.label"
+        :label-width="mergedOptions.labelWidth">
+        <div :class="prefixCls + '-keyword'">
+          <Input
+            v-model="keyword"
+            :disabled="disabled"
+            type="text"
+            placeholder="请输入"
+            @on-keydown="onKeyDown"></Input>
+          <span :class="prefixCls + '-keyword-word-limit'">{{ showWordLimit }}</span>
         </div>
-        <div :class="prefixCls + '-list-name-save'">
-          <Checkbox
-            v-model="saveNameRule"
-            on-change="onSaveRuleChange">
-            保存默认规则
-          </Checkbox>
+        <div :class="prefixCls + '-list'">
+          <div :class="prefixCls + '-list-name-rule'">
+            <span :class="prefixCls + '-list-name-rule-label'">通配符:</span>
+            <p
+              :class="prefixCls + '-list-name-rule-item-wrap'"
+              @click="handleNameItem">
+              <i
+                v-for="item in list"
+                :key="item.title"
+                :class="[
+                  prefixCls + '-list-name-rule-item',
+                  { [prefixCls + '-list-name-rule-item-active']: keyword.includes(item.title) }
+                ]"
+                :data-value="item.title">
+                {{ prefix }}{{ item.label }}
+                <Tooltip
+                  v-if="item.tooltip"
+                  :content="item.tooltip"
+                  theme="light"
+                  placement="top">
+                  <Icon
+                    type="ios-help-circle-outline"
+                    size="13" />
+                </Tooltip>
+              </i>
+            </p>
+          </div>
+          <div :class="prefixCls + '-list-name-save'">
+            <Checkbox
+              v-model="saveNameRule"
+              @on-change="onSaveRuleChange">
+              保存默认规则
+            </Checkbox>
+          </div>
         </div>
-      </div>
-    </FormItem>
+        <slot name="tip"></slot>
+      </FormItem>
+    </div>
   </div>
 </template>
 
@@ -73,7 +76,7 @@ export default {
       type: Function,
       default: e => e.length
     },
-    maxlength: {
+    maxLength: {
       type: Number,
       default: 0
     },
@@ -124,7 +127,7 @@ export default {
     },
     showWordLimit() {
       let len = this.calculateLength(this.keyword)
-      return len + '/' + this.maxlength
+      return len + '/' + this.maxLength
     }
   },
   watch: {
