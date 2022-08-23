@@ -40,10 +40,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: ['css-loader?minimize', 'autoprefixer-loader'],
-          fallback: 'style-loader'
-        })
+        use: [{ loader: 'style-loader' }, { loader: 'css-loader', options: { importLoaders: 1 } }]
       },
       {
         test: /\.less/,
