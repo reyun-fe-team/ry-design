@@ -10,6 +10,7 @@
         v-model="formInline.campaignName"
         :option="{ prop: 'campaignName', label: '计划' }"
         :data="data"
+        join-symbol="_"
         :save-rule="true"></rd-wildcard>
     </Form>
     <Button
