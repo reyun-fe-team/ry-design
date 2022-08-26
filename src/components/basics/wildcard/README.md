@@ -7,6 +7,7 @@ calculateLength 计划字符长度
 maxlength 字符长度
 disabled 禁用
 prefix 前缀
+joinSymbol 连接符
 
 option: {
     prop: '',

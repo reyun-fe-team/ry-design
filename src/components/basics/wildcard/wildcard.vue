@@ -88,6 +88,10 @@ export default {
       type: String,
       default: ''
     },
+    joinSymbol: {
+      type: String,
+      default: ''
+    },
     saveRule: {
       type: Boolean,
       default: false
@@ -211,10 +215,21 @@ export default {
       this.$emit('on-name-programs', ids)
     },
     changeKeyword(item) {
+      let activeTitle = item.title
+      let replaceName = ''
+      if (this.keyword) {
+        let index = this.keyword.indexOf(activeTitle)
+        if (index === 0) {
+          replaceName = new RegExp(`${activeTitle}([${this.joinSymbol}]+)?`)
+        } else {
+          replaceName = new RegExp(`([${this.joinSymbol}]+)?${activeTitle}`)
+          activeTitle = `${this.joinSymbol}${activeTitle}`
+        }
+      }
       if (this.keyword.includes(item.title) || this.keyword.includes(item.reg)) {
-        this.keyword = this.keyword.replace(item.title, '')
+        this.keyword = this.keyword.replace(replaceName, '')
       } else {
-        this.keyword += item.title
+        this.keyword += activeTitle
       }
     }
   }
