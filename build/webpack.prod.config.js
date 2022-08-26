@@ -38,17 +38,17 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/
       },
-      {
-        test: /\.css$/,
-        use: [{ loader: 'style-loader' }, { loader: 'css-loader', options: { importLoaders: 1 } }]
-      },
       // {
       //   test: /\.css$/,
-      //   use: ExtractTextPlugin.extract({
-      //     use: ['css-loader?minimize', 'autoprefixer-loader'],
-      //     fallback: 'style-loader'
-      //   })
+      //   use: [{ loader: 'style-loader' }, { loader: 'css-loader', options: { importLoaders: 1 } }]
       // },
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          use: ['css-loader?minimize', 'autoprefixer-loader'],
+          fallback: 'style-loader'
+        })
+      },
       {
         test: /\.less/,
         use: ExtractTextPlugin.extract({
