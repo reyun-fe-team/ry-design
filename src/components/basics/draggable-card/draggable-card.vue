@@ -144,7 +144,7 @@ export default {
       deep: true,
       immediate: true,
       handler(now) {
-        this.list = this.initdata(now)
+        this.list = this.initData(now)
       }
     },
     ids: {
@@ -205,7 +205,7 @@ export default {
     },
 
     // 实例调用
-    initdata(data) {
+    initData(data) {
       let arr = data.map(item => {
         return {
           ...item,

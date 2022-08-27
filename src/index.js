@@ -15,6 +15,9 @@ import WordLimit from './components/basics/word-limit'
 import Ellipsis from './components/basics/ellipsis'
 import TableMultiInputs from './components/basics/table-multi-inputs'
 import TextEmojInput from './components/basics/text-emoj-input'
+import Icon from './components/basics/icon'
+import TextInputList from './components/basics/text-input-list'
+import Wildcard from './components/basics/wildcard'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -33,6 +36,7 @@ import './style/index.less'
 
 // directives
 import lineClamp from './directives/line-clamp'
+import clickOutside from './directives/click-out-side'
 
 Vue.use(ViewUI)
 const consoleLogVersion = () => {
@@ -68,10 +72,14 @@ const components = [
   WordLimit,
   BatchUploadXls,
   Ellipsis,
-  TextEmojInput
+  TextEmojInput,
+  Icon,
+  TextInputList,
+  Wildcard
 ]
 const directives = {
-  'line-clamp': lineClamp
+  'line-clamp': lineClamp,
+  'click-outside': clickOutside
 }
 
 const install = function (Vue) {
@@ -111,5 +119,6 @@ export default {
   TableMultiInputs,
   TextItemShow,
   DeleteModals,
-  TextEmojInput
+  TextEmojInput,
+  TextInputList
 }
