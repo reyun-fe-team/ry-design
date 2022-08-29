@@ -9,6 +9,7 @@
       <rd-wildcard
         v-model="formInline.campaignName"
         :option="{ prop: 'campaignName', label: '计划' }"
+        :wildcard-label-config="{ label: 'asd', width: 68, tooltip: '123' }"
         :data="data"
         join-symbol="_"
         :save-rule="true"></rd-wildcard>
