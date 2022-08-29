@@ -2,9 +2,9 @@
   <div :class="classes">
     <div :class="prefixCls + '-wrap'">
       <FormItem
-        :prop="mergedOptions.prop"
-        :label="mergedOptions.label"
-        :label-width="mergedOptions.labelWidth">
+        :prop="mergeOptions.prop"
+        :label="mergeOptions.label"
+        :label-width="mergeOptions.labelWidth">
         <div :class="prefixCls + '-keyword'">
           <Input
             v-model="keyword"
@@ -16,7 +16,23 @@
         </div>
         <div :class="prefixCls + '-list'">
           <div :class="prefixCls + '-list-name-rule'">
-            <span :class="prefixCls + '-list-name-rule-label'">通配符:</span>
+            <span
+              :class="prefixCls + '-list-name-rule-label'"
+              :style="{
+                width: mergeWildcardLabelConfig.width + 'px',
+                flexBasis: mergeWildcardLabelConfig.width + 'px'
+              }">
+              {{ mergeWildcardLabelConfig.label }}
+              <Tooltip
+                v-if="mergeWildcardLabelConfig.tooltip"
+                :content="mergeWildcardLabelConfig.tooltip"
+                theme="light"
+                placement="top">
+                <Icon
+                  type="ios-help-circle-outline"
+                  size="13" />
+              </Tooltip>
+            </span>
             <p
               :class="prefixCls + '-list-name-rule-item-wrap'"
               @click="handleNameItem">
@@ -62,6 +78,11 @@ const defaultOptions = {
   label: '',
   prop: '',
   labelWidth: 104
+}
+const defaultWildcardLabelConfig = {
+  label: '通配符:',
+  width: 48,
+  tooltip: ''
 }
 let titleList = []
 
@@ -114,6 +135,10 @@ export default {
       require: true,
       type: Object,
       default: () => {}
+    },
+    wildcardLabelConfig: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -121,7 +146,8 @@ export default {
       prefixCls,
       keyword: '',
       saveNameRule: false,
-      mergedOptions: {},
+      mergeOptions: {},
+      mergeWildcardLabelConfig: {},
       list: []
     }
   },
@@ -203,7 +229,12 @@ export default {
         }
       })
       titleList = this.list.map(item => item.title)
-      this.mergedOptions = Object.assign({}, defaultOptions, this.option)
+      this.mergeOptions = Object.assign({}, defaultOptions, this.option)
+      this.mergeWildcardLabelConfig = Object.assign(
+        {},
+        defaultWildcardLabelConfig,
+        this.wildcardLabelConfig
+      )
     },
     emitData() {
       this.$emit('input', this.keyword)
