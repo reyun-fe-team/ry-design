@@ -12,7 +12,8 @@
         :wildcard-label-config="{ label: 'asd', width: 68, tooltip: '123' }"
         :data="data"
         join-symbol="_"
-        :save-rule="true"></rd-wildcard>
+        :save-rule="true"
+        :show-save-rule="false"></rd-wildcard>
     </Form>
     <Button
       type="primary"

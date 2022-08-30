@@ -57,7 +57,9 @@
               </i>
             </p>
           </div>
-          <div :class="prefixCls + '-list-name-save'">
+          <div
+            v-if="showSaveRule"
+            :class="prefixCls + '-list-name-save'">
             <Checkbox
               v-model="saveNameRule"
               @on-change="onSaveRuleChange">
@@ -139,6 +141,10 @@ export default {
     wildcardLabelConfig: {
       type: Object,
       default: () => {}
+    },
+    showSaveRule: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
