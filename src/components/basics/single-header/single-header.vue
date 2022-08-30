@@ -9,7 +9,9 @@
       <div :class="prefixCls + '-content-slot'">
         <slot name="content"></slot>
       </div>
-      <div :class="prefixCls + '-content-button-group'">
+      <div
+        v-if="showBtnGroup"
+        :class="prefixCls + '-content-button-group'">
         <Button
           :class="prefixCls + '-content-button'"
           @click="handleReset">
@@ -52,6 +54,10 @@ export default {
     queryText: {
       type: String,
       default: '查询'
+    },
+    showBtnGroup: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
