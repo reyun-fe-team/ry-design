@@ -114,6 +114,10 @@ const router = new VueRouter({
     {
       path: '/wildcard',
       component: resolve => require(['./routers/wildcard'], resolve)
+    },
+    {
+      path: '/util-class',
+      component: resolve => require(['./routers/util-class'], resolve)
     }
   ]
 })
