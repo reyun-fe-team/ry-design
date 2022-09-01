@@ -9,7 +9,7 @@
       </p>
     </div>
     <Alert>有</Alert>
-    <div class="base small-scroll">
+    <div class="base small-scroll-y">
       <p
         v-for="index in max"
         :key="index">
@@ -17,7 +17,7 @@
       </p>
     </div>
     <Alert>小区域滑动</Alert>
-    <div class="base small-scroll">
+    <div class="base small-scroll-y">
       <rd-text-item-show
         :tooltip="basic.text"
         two-line-display
