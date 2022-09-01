@@ -54,8 +54,7 @@
       <InputNumber
         v-model="value1"
         :max="10"
-        :min="1"
-        class="prefix-container-basic-number"></InputNumber>
+        :min="1"></InputNumber>
       <Select
         slot="append"
         v-model="select1"
@@ -66,14 +65,36 @@
     </rd-prefix-container>
 
     <rd-prefix-container style="margin-top: 16px">
-      <Button
+      <Select
         slot="prepend"
-        icon="ios-search"></Button>
+        v-model="select1"
+        style="width: 80px">
+        <Option value="http">http://</Option>
+        <Option value="https">https://</Option>
+      </Select>
       <InputNumber
         v-model="value1"
         :max="10"
-        :min="1"
-        class="prefix-container-basic-number"></InputNumber>
+        :min="1"></InputNumber>
+      <Button
+        slot="append"
+        icon="ios-search">
+        test
+      </Button>
+    </rd-prefix-container>
+
+    <rd-prefix-container style="margin-top: 16px">
+      <!-- <Select
+        slot="prepend"
+        v-model="select1"
+        style="width: 80px">
+        <Option value="http">http://</Option>
+        <Option value="https">https://</Option>
+      </Select> -->
+      <Input
+        v-model="value1"
+        :max="10"
+        :min="1"></Input>
       <Button
         slot="append"
         icon="ios-search">
