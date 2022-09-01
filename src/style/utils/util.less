@@ -19,6 +19,44 @@
   }
 }
 
+// 滚动条
+.default-scroll-y {
+  &::-webkit-scrollbar {
+    width: 14px;
+    height: 0;
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #FAFAFA;
+    border-radius: 0;
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    border-left: 1px solid #e8e8e8;
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: @scrollbar-bg;
+    background-clip: padding-box;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 3px;
+    border-radius: 100px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: @scrollbar-hover-bg;
+  }
+
+  &::-webkit-scrollbar-button {
+
+  }
+}
+
 .text-overflow {
   overflow: hidden;
   text-overflow: ellipsis;

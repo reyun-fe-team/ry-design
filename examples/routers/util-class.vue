@@ -66,6 +66,23 @@
         {{ item.label }}
       </Option>
     </Select>
+    <Alert>Modals</Alert>
+    <Button @click="modal = true">打开 modal</Button>
+    <Modal
+      v-model="modal"
+      title="111"
+      class-name="vertical-center-modal">
+      <div
+        style="height: 450px; overflow-y: scroll"
+        class="">
+        <p
+          v-for="item in 200"
+          style="white-space: nowrap">
+          ConteContent of dialogContent of dialogContent of dialogContent of dialogContent of
+          dialogContent of dialogContent of dialognt of dialog
+        </p>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -127,7 +144,9 @@ export default {
           label: '2'
         }
       ],
-      selectValue: ''
+      selectValue: '',
+      modal: false,
+      modals: false
     }
   }
 }
@@ -139,5 +158,9 @@ export default {
   height: 200px;
   padding: 0 16px;
   border: 1px solid #ccc;
+}
+/deep/.ivu-modal-body {
+  height: 300px !important;
+  overflow-y: auto;
 }
 </style>
