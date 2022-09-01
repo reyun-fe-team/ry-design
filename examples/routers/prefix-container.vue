@@ -37,8 +37,7 @@
       <InputNumber
         v-model="value1"
         :max="10"
-        :min="1"
-        class="prefix-container-basic-number"></InputNumber>
+        :min="1"></InputNumber>
       <Button
         slot="append"
         icon="ios-search"></Button>
@@ -125,13 +124,3 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-.select {
-   /deep/ .ivu-select-selection {
-    border-radius: 0;
-  }
-}
-.prefix-container-basic-number {
-  border-radius: 0;
-}
-</style>

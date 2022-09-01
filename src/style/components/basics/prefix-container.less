@@ -47,7 +47,6 @@
         box-shadow      : none
       }
     }
-
     &-append {
       white-space              : nowrap;
       vertical-align           : middle;
@@ -86,6 +85,20 @@
         color           : inherit;
         margin          : -6px -8px 0 -10px;
         box-shadow      : none
+      }
+    }
+  }
+  &-body{
+    &-prepend{
+      .ivu-input-number,.ivu-select-selection{
+        border-top-left-radius:     0;
+        border-bottom-left-radius:  0;
+      }
+    }
+    &-append{
+      .ivu-input-number,.ivu-select-selection{
+        border-top-right-radius:    0;
+        border-bottom-right-radius: 0;
       }
     }
   }
