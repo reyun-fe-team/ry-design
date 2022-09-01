@@ -68,15 +68,17 @@
     </Select>
     <Alert>Modals</Alert>
     <Button @click="modal = true">打开 modal</Button>
+
     <Modal
       v-model="modal"
       title="111"
       class-name="vertical-center-modal">
       <div
         style="height: 450px; overflow-y: scroll"
-        class="">
+        class="small-scroll-y">
         <p
           v-for="item in 200"
+          :key="item"
           style="white-space: nowrap">
           ConteContent of dialogContent of dialogContent of dialogContent of dialogContent of
           dialogContent of dialogContent of dialognt of dialog
