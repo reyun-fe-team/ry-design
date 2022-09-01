@@ -1,3 +1,4 @@
+// 辅助类
 // 滚动条
 .small-scroll-y {
   &::-webkit-scrollbar {
@@ -16,4 +17,43 @@
   &::-webkit-scrollbar-thumb:hover {
     background-color: @scrollbar-hover-bg;
   }
+}
+
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pull-left {
+  float: left;
+}
+
+.pull-right {
+  float: right;
+}
+
+// 显示隐藏
+.hide {
+  display: none;
+}
+.show {
+  display: block ;
+}
+
+// Alignment
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.text-justify {
+  text-align: justify;
+}
+.text-nowrap {
+  white-space: nowrap;
 }

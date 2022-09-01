@@ -73,7 +73,6 @@
 export default {
   data() {
     return {
-      modal1: false,
       max: 20,
       basic: {
         text: '极速创建基础信息极速创建基础信息'
