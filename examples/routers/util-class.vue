@@ -71,8 +71,7 @@
 
     <Modal
       v-model="modal"
-      title="111"
-      class-name="vertical-center-modal">
+      title="111">
       <div
         style="height: 450px; overflow-y: scroll"
         class="small-scroll-y">
@@ -85,6 +84,33 @@
         </p>
       </div>
     </Modal>
+    <Button @click="onClick1">弹框居中滚动条更改样式</Button>
+    <div v-if="modalVisible1">
+      <rd-modals
+        v-model="modalVisible1"
+        is-slot-default-header
+        footer-border-none
+        :header-obj="headerObj"
+        :width="600"
+        @on-cancel="handleCancel1">
+        <div slot="content">
+          <Form
+            :label-width="72"
+            class="form-content"
+            @submit.native.prevent>
+            <template v-for="item in formData.arr">
+              <FormItem :key="item">
+                <span slot="label">搜索{{ item }}</span>
+                <Input
+                  v-model="formData.search"
+                  clearable
+                  style="width: 184px"></Input>
+              </FormItem>
+            </template>
+          </Form>
+        </div>
+      </rd-modals>
+    </div>
   </div>
 </template>
 
@@ -148,7 +174,58 @@ export default {
       ],
       selectValue: '',
       modal: false,
-      modals: false
+      modals: false,
+      modalVisible1: false,
+      modalVisible2: false,
+      headerObj: {
+        title: '带副标题的弹框',
+        subTitle: '个广告计划',
+        subNum: 3,
+        titleNum: 5,
+        total: 500
+      },
+      formData: {
+        search: '',
+        arr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+      },
+      accountList: [
+        {
+          label: '西瓜科技有限公司',
+          disabled: false,
+          children: [
+            {
+              accountId: 'a-1',
+              name: '账户a-1'
+            },
+            {
+              accountId: 'a-2',
+              name: '账户a-2'
+            }
+          ]
+        },
+        {
+          label: '芒果科技有限公司',
+          disabled: false,
+          children: [
+            {
+              accountId: 'b-1',
+              name: '账户a-1'
+            },
+            {
+              accountId: 'b-2',
+              name: '账户a-2'
+            }
+          ]
+        }
+      ]
+    }
+  },
+  methods: {
+    onClick1() {
+      this.modalVisible1 = true
+    },
+    handleCancel1() {
+      this.modalVisible1 = false
     }
   }
 }
@@ -161,8 +238,8 @@ export default {
   padding: 0 16px;
   border: 1px solid #ccc;
 }
-/deep/.ivu-modal-body {
-  height: 300px !important;
+ /deep/ .ivu-modal-body {
   overflow-y: auto;
+  height: 300px !important;
 }
 </style>

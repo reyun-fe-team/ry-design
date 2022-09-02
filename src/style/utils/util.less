@@ -1,5 +1,6 @@
 // 辅助类
-// 滚动条
+
+// 滚动条迷你
 .small-scroll-y {
   &::-webkit-scrollbar {
     width: 4px;
@@ -19,25 +20,19 @@
   }
 }
 
-// 滚动条
+// 滚动条-默认，覆盖浏览器内置滚动条
 .default-scroll-y {
   &::-webkit-scrollbar {
     width: 14px;
     height: 0;
-    margin-left: 2px;
-    margin-right: 2px;
   }
   &::-webkit-scrollbar-track {
-    background: #FAFAFA;
+    background: #fafafa;
     border-radius: 0;
-    margin-left: 2px;
-    margin-right: 2px;
   }
 
   &::-webkit-scrollbar-track-piece {
     border-left: 1px solid #e8e8e8;
-    margin-left: 2px;
-    margin-right: 2px;
   }
 
   &::-webkit-scrollbar-thumb {
@@ -45,7 +40,8 @@
     background-clip: padding-box;
     border-color: transparent;
     border-style: solid;
-    border-width: 3px;
+    border-right-width: 2px;
+    border-left-width: 3px;
     border-radius: 100px;
   }
   &::-webkit-scrollbar-thumb:hover {
