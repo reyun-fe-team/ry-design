@@ -12,7 +12,11 @@
             type="text"
             placeholder="请输入"
             @on-keydown="onKeyDown"></Input>
-          <span :class="prefixCls + '-keyword-word-limit'">{{ showWordLimit }}</span>
+          <span
+            v-if="showWordLimit"
+            :class="prefixCls + '-keyword-word-limit'">
+            {{ wordLimit }}
+          </span>
         </div>
         <div :class="prefixCls + '-list'">
           <div :class="prefixCls + '-list-name-rule'">
@@ -26,6 +30,7 @@
               <Tooltip
                 v-if="mergeWildcardLabelConfig.tooltip"
                 :content="mergeWildcardLabelConfig.tooltip"
+                max-width="250"
                 theme="light"
                 placement="top">
                 <Icon
@@ -48,6 +53,7 @@
                 <Tooltip
                   v-if="item.tooltip"
                   :content="item.tooltip"
+                  max-width="250"
                   theme="light"
                   placement="top">
                   <Icon
@@ -57,7 +63,9 @@
               </i>
             </p>
           </div>
-          <div :class="prefixCls + '-list-name-save'">
+          <div
+            v-if="showSaveRule"
+            :class="prefixCls + '-list-name-save'">
             <Checkbox
               v-model="saveNameRule"
               @on-change="onSaveRuleChange">
@@ -139,6 +147,14 @@ export default {
     wildcardLabelConfig: {
       type: Object,
       default: () => {}
+    },
+    showSaveRule: {
+      type: Boolean,
+      default: true
+    },
+    showWordLimit: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -155,7 +171,7 @@ export default {
     classes() {
       return [`${prefixCls}`]
     },
-    showWordLimit() {
+    wordLimit() {
       let len = this.calculateLength(this.keyword)
       return len + '/' + this.maxLength
     }
