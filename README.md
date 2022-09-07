@@ -7,6 +7,9 @@
 
 Npm 地址（可查看最新版本）
 https://www.npmjs.com/package/ry-design 
+## 版本
+
+<img src="https://img.shields.io/npm/v/ry-design" alt="" />
 
 ## 引入方式
 
