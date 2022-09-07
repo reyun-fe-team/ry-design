@@ -1,6 +1,5 @@
 <template>
   <div style="margin: 20px">
-    {{ list }}
     <rd-text-input-list
       v-model="list"
       :emoji-list="emojiList"

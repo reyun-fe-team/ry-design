@@ -1,9 +1,11 @@
 <template>
-  <div :class="[prefixCls, { [prefixCls + '-single-line']: isSingleLine }]">
+  <div
+    :class="[prefixCls, { [prefixCls + '-single-line']: isSingleLine }]"
+    @click.stop.prevent="handlerClick">
     <div
       ref="rich-edit"
       :class="prefixCls + '-rich'"
-      :contenteditable="isEdit && contenteditable"
+      :contenteditable="contenteditable"
       @focus="handlerFocus"
       @blur="handlerBlur"
       @keyup="handlerKeyup"
@@ -16,8 +18,9 @@
       :class="prefixCls + '-placeholder'">
       {{ placeholder }}
     </div>
+    <!-- 显示文字个数(编辑状态才显示) -->
     <div
-      v-show="isEdit"
+      v-if="isEdit"
       :class="prefixCls + '-ln-wrap'">
       <div :class="prefixCls + '-ln-wrap-l'">{{ totalln }}/{{ maxLength }}</div>
       <div :class="prefixCls + '-ln-wrap-r'">
@@ -95,6 +98,11 @@ export default {
       type: Number,
       default: 30
     },
+    // 是否需要点击自动聚焦还是手动聚焦,默认点击完之后就会聚焦
+    clickFocus: {
+      type: Boolean,
+      default: true
+    },
     // 文本计算方法
     calcTextFn: Function,
     // 验证方法
@@ -118,8 +126,13 @@ export default {
     }
   },
   watch: {
-    value: 'formatValue',
-    isEdit: 'formatValue'
+    value: {
+      handler() {
+        if (this.value) {
+          this.echoValue2Ttml()
+        }
+      }
+    }
   },
   mounted() {
     this.supportRange = typeOf(document.createRange) === 'function'
@@ -129,45 +142,18 @@ export default {
     })
   },
   methods: {
-    formatValue() {
-      this.$nextTick(() => {
-        if (!this.value && !this.isEdit) {
-          return
-        }
-
-        if (!this.isEdit) {
-          this.$emit('on-blur', null, this.getValue())
-
-          this.$nextTick(() => {
-            this.echoValue2Ttml()
-          })
-          return
-        }
-        const copyDom = document.createElement('div')
-        copyDom.innerHTML = this.value
-        const imgs = copyDom.getElementsByTagName('img')
-        const enterFlag = [...imgs].find(img => img.getAttribute('data-type') === 'enter')
-        if (enterFlag) {
-          const tmp = document.createElement('div')
-          tmp.appendChild(enterFlag)
-          const tmpStr = tmp.innerHTML
-
-          this.replaceContent(this.value.replaceAll(tmpStr, `${tmpStr}<br>&nbsp;`))
-        }
-      })
-    },
     // 回显value
-    echoValue2Ttml() {
+    echoValue2Ttml(pointer = true) {
       this.richEditRef.innerHTML = ''
       if (!this.canUseHtml) {
-        this.insertText(this.value)
+        pointer ? this.insertText(this.value) : (this.richEditRef.innerHTML = this.value)
       } else {
         let html = this.value
         if (this.transformText2Html) {
-          html = this.transformText2Html(this.value)
+          html = this.transformText2Html(this.value, this.isEdit)
+          console.log('this.isEdit: ', this.isEdit)
         }
-        // this.insertHtmlMark(html)
-        this.richEditRef.innerHTML = html
+        pointer ? this.insertHtmlMark(html) : (this.richEditRef.innerHTML = html)
       }
     },
     // 输入事件（使用操作都会触发）
@@ -188,7 +174,7 @@ export default {
       const oiginalText = this.transformHtml2Text
         ? this.transformHtml2Text(stringHtml)
         : getPlainText(stringHtml)
-      // this.$emit('input', oiginalText)
+      this.$emit('input', oiginalText)
       this.$emit('on-change', {
         currentData,
         keyInputEvent: e,
@@ -245,35 +231,21 @@ export default {
       e.stopPropagation()
       this.saveSelection()
     },
-    // 聚焦事件
+    // 点击事件
+    handlerClick(e) {
+      this.$emit('on-click', e)
+    },
+    // 聚焦事件,不是点击聚焦
     handlerFocus(e) {
-      if (this.isEdit) {
+      if (!this.clickFocus) {
         return
       }
       this.$emit('on-foucs', e)
     },
     // 失焦事件
     handlerBlur(e) {
-      if (this.isEdit) {
-        return
-      }
-      this.$emit('on-blur', e)
-      // const stringHtml = e.target.innerHTML
-      // // 使用默认的获取纯文本的方法
-      // let oiginalText = getPlainText(stringHtml)
-      // if (this.transformHtml2Text) {
-      //   oiginalText = this.transformHtml2Text(stringHtml)
-      // }
-      // oiginalText = oiginalText.replaceAll('<br>&nbsp;', '')
-      // console.log('回填value: ', oiginalText)
-      // this.$nextTick(() => {
-      //   this.$emit('input', oiginalText)
-      // })
-    },
-    // 替换editer内容
-    replaceContent(html) {
-      this.richEditRef.innerHTML = ''
-      this.insertHtmlMark(html)
+      this.$emit('on-blur', e, this.getValue())
+      this.$emit('input', this.getValue())
     },
     // 插入html标记
     insertHtmlMark(html) {
@@ -284,16 +256,6 @@ export default {
       if (this.validHtmlMarkFn) {
         pass = this.validHtmlMarkFn(html)
       }
-      //  else {
-      //   默认只能加图片
-      //   const reg = /<img[^>]*>/gi
-      //   const images = html.match(reg)
-      //   if (isEmpty(images)) {
-      //     return
-      //   }
-      //   只能加一个图片
-      //   html = images[0]
-      // }
       // 不通过
       if (!pass) {
         return
@@ -308,11 +270,9 @@ export default {
         this.currentRange && this.currentRange.collapse(false)
       }
       this.saveSelection()
-      // isEnter && this.insertHtmlMark('<br/>&nbsp;', false)
     },
     //  插入纯文本
     insertText(string) {
-      // string = getPlainText(string)
       if (!string) {
         return
       }
@@ -397,27 +357,13 @@ export default {
     },
     // 计算输入框的输入长度
     calcInputLength() {
+      this.totalln = 0
       if (!this.richEditRef) {
-        this.totalln = 0
         return
       }
-      let copyDom = document.createElement('div')
-      copyDom.innerHTML = this.richEditRef.innerHTML.replaceAll('&nbsp;', '')
-      // 计算文本长度
-      let textLn = 0
-      const textStr = copyDom.innerText.replace(/[\r\n]/g, '').replace('&nbsp;', '')
       if (this.calcTextFn) {
-        textLn = this.calcTextFn(textStr)
-      } else {
-        textLn = textStr.length
+        this.totalln = this.calcTextFn(this.richEditRef.innerHTML)
       }
-      const imgs = copyDom.getElementsByTagName('img')
-      const emojLn = [...imgs].reduce(
-        (pre, cur) => (cur.getAttribute('data-type') === 'emoj' ? pre + 1 : pre),
-        0
-      )
-      this.totalln = textLn + emojLn
-      copyDom = null
     },
     // 校验
     valid() {
@@ -425,7 +371,7 @@ export default {
       if (this.validFn) {
         error = this.validFn(this.totalln, this.richEditRef)
       }
-      this.$emit('error', error)
+      this.$emit('on-error', error)
     },
     // 自定义聚焦
     focus() {

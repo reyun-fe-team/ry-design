@@ -25,21 +25,19 @@
           :ref="`emojInput-${index}`"
           :value="value[index] || ''"
           :is-edit="middle.activeClass === index"
-          :class="[
-            { 'middle-style-li-active': middle.activeClass === index },
-            errors.includes(index) && prefixCls + '-is-error'
-          ]"
+          :class="getInputClass(index)"
           :transform-html2-text="transformHtml2Text"
           :transform-text2-html="transformText2Html"
-          :calc-text-fn="calcTextFn"
+          :calc-text-fn="newCalcTextFn"
           :valid-fn="validFn"
           :max-length="maxLength"
           :min-length="minLength"
           @on-keydown="handlerKeydown($event, index)"
+          @on-foucs="e => handlerFoucs(e, index)"
           @on-blur="(e, value) => handlerBlur(e, value, index)"
-          @input="val => handleEmitInput(val, index)"
-          @click.native="onClickEditorLine(index)"
-          @error="status => onError(status, index)" />
+          @on-click="onClickEditorLine(index)"
+          @input="value => handleEmitInput(value, index)"
+          @on-error="status => onError(status, index)" />
         <div
           v-if="(useEmoj || useEnter) && middle.activeClass === index"
           :class="prefixCls + '-btn-wrap'">
@@ -128,6 +126,7 @@ export default {
       type: Function,
       default: text => {
         // 默认每个文字算2个字符
+        // eslint-disable-next-line no-control-regex
         const copyText = text.replaceAll(/[^\x00-\xff]/g, '**')
         return copyText.length
       }
@@ -170,6 +169,35 @@ export default {
     }
   },
   methods: {
+    // 输入框的className
+    getInputClass(index) {
+      let active = this.middle.activeClass === index
+      let error = this.errors.includes(index)
+      return {
+        'middle-style-li-active': active,
+        [prefixCls + '-is-error']: error
+      }
+    },
+    // 计算文本长度
+    newCalcTextFn(richEditHtml) {
+      let copyDom = document.createElement('div')
+      copyDom.innerHTML = richEditHtml.replaceAll('&nbsp;', '')
+      // 计算文本长度
+      let textLn = 0
+      const textStr = copyDom.innerText.replace(/[\r\n]/g, '').replace('&nbsp;', '')
+      if (this.calcTextFn) {
+        textLn = this.calcTextFn(textStr)
+      } else {
+        textLn = textStr.length
+      }
+      const imgs = copyDom.getElementsByTagName('img')
+      const emojLn = [...imgs].reduce(
+        (pre, cur) => (cur.getAttribute('data-type') === 'emoj' ? pre + 1 : pre),
+        0
+      )
+      copyDom = null
+      return textLn + emojLn
+    },
     handlerKeydown({ keyDownEvent, disableInputFn }, index) {
       if (keyDownEvent.keyCode === 13) {
         disableInputFn()
@@ -192,17 +220,25 @@ export default {
         })
       }
     },
-    handlerBlur(e, value, index) {
-      if (value === undefined) {
-        return
-      }
-      this.handleEmitInput(value, index)
-    },
     transformHtml2Text(html) {
       return html
     },
-    transformText2Html(text) {
-      return text
+    // 文本转换为html
+    transformText2Html(text, isEdit) {
+      let html = text
+      if (isEdit) {
+        const copyDom = document.createElement('div')
+        copyDom.innerHTML = text
+        const imgs = copyDom.getElementsByTagName('img')
+        const enterFlag = [...imgs].find(img => img.getAttribute('data-type') === 'enter')
+        if (enterFlag) {
+          const tmp = document.createElement('div')
+          tmp.appendChild(enterFlag)
+          const tmpStr = tmp.innerHTML
+          html = html.replaceAll(tmpStr, `${tmpStr}<br>&nbsp;`)
+        }
+      }
+      return html
     },
     getFaceHtml(icon, type) {
       const str = `<img style="pointer-events: none; margin-left: 4px; " src="${icon}" draggable="false" width="16" height="16" data-type="${type}">`
@@ -235,23 +271,44 @@ export default {
       copyValue[index] = value || ''
       this.$emit('input', copyValue)
     },
-    // 点击编辑行
-    onClickEditorLine(index) {
-      if (!this.$refs[`emojInput-${index}`][0].richEditRef.innerHTML) {
-        const el = this.$refs[`emojInput-${index}`][0]
-        this.middle.activeClass = index
-        this.$nextTick(() => {
-          el.focus()
-        })
-      }
-      if (this.middle.activeClass === index) {
+    handlerFoucs(e, index) {
+      console.log('handlerFoucs: ', index)
+      // 回显变成多行行
+      const ref = this.$refs[`emojInput-${index}`]
+      if (!ref) {
         return
       }
-      const el = this.$refs[`emojInput-${index}`][0]
-      this.middle.activeClass = index
-      this.$nextTick(() => {
-        el.focus()
-      })
+      const el = ref[0]
+      // el && el.echoValue2Ttml()
+    },
+    // 失去焦点
+    handlerBlur(e, value, index) {
+      if (!value) {
+        return
+      }
+      this.handleEmitInput(value, index)
+      // 回显变成一行
+      const ref = this.$refs[`emojInput-${index}`]
+      if (!ref) {
+        return
+      }
+      const el = ref[0]
+      // el && el.echoValue2Ttml()
+    },
+
+    // 点击编辑行,手动控制焦点(聚焦)
+    onClickEditorLine(index) {
+      const ref = this.$refs[`emojInput-${index}`]
+      if (!ref) {
+        return
+      }
+      const el = ref[0]
+      if (this.middle.activeClass !== index) {
+        this.middle.activeClass = index
+        this.$nextTick(() => {
+          el.richEditRef.focus()
+        })
+      }
     },
     // 点击编辑行区域外
     onClickEditorLineOutSide(index) {
