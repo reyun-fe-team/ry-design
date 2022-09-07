@@ -13,6 +13,7 @@
         :data="data"
         join-symbol="_"
         :save-rule="true"
+        :show-word-limit="false"
         :show-save-rule="false"></rd-wildcard>
     </Form>
     <Button
@@ -32,7 +33,12 @@ export default {
     return {
       value: [],
       data: [
-        { label: '+投放方式', id: 'a', title: '{投放方式}', tooltip: 'tooltip' },
+        {
+          label: '+投放方式',
+          id: 'a',
+          title: '{投放方式}',
+          tooltip: 'tooltiptooltiptooltiptooltiptooltiptooltiptooltiptooltiptooltiptooltip'
+        },
         { label: '+序号', id: 'b', title: '{序号}' },
         { label: '+日期', id: 'c', title: '{日期}' },
         { label: '+定向包名称', id: 'd', title: '{定向包名称}' },
