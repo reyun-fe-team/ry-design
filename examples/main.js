@@ -118,6 +118,10 @@ const router = new VueRouter({
     {
       path: '/util-class',
       component: resolve => require(['./routers/util-class'], resolve)
+    },
+    {
+      path: '/cascader-transfer',
+      component: resolve => require(['./routers/cascader-transfer'], resolve)
     }
   ]
 })

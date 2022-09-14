@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="48px" viewBox="0 0 64 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 3</title>
+    <defs>
+        <linearGradient x1="59.0379999%" y1="100%" x2="59.0379999%" y2="0%" id="linearGradient-1">
+            <stop stop-color="#FCFCFC" offset="0%"></stop>
+            <stop stop-color="#E3E3E3" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="5.17687208%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#EDEDED" offset="0%"></stop>
+            <stop stop-color="#D5D6D5" offset="100%"></stop>
+        </linearGradient>
+        <path d="M23.4285714,9.14285714 L33.7142857,9.14285714 C34.6610596,9.14285714 35.4285714,9.910369 35.4285714,10.8571429 C35.4285714,11.8039167 34.6610596,12.5714286 33.7142857,12.5714286 L23.4285714,12.5714286 C22.4817976,12.5714286 21.7142857,11.8039167 21.7142857,10.8571429 C21.7142857,9.910369 22.4817976,9.14285714 23.4285714,9.14285714 Z" id="path-3"></path>
+        <filter x="-51.0%" y="-145.8%" width="202.1%" height="508.3%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.771427763   0 0 0 0 0.771427763   0 0 0 0 0.771427763  0 0 0 1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <path d="M23.4285714,17.1428571 L40.5714286,17.1428571 C41.5182024,17.1428571 42.2857143,17.910369 42.2857143,18.8571429 C42.2857143,19.8039167 41.5182024,20.5714286 40.5714286,20.5714286 L23.4285714,20.5714286 C22.4817976,20.5714286 21.7142857,19.8039167 21.7142857,18.8571429 C21.7142857,17.910369 22.4817976,17.1428571 23.4285714,17.1428571 Z" id="path-5"></path>
+        <filter x="-34.0%" y="-145.8%" width="168.1%" height="508.3%" filterUnits="objectBoundingBox" id="filter-6">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.771427763   0 0 0 0 0.771427763   0 0 0 0 0.771427763  0 0 0 1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <path d="M23.4285714,25.1428571 L30.2857143,25.1428571 C31.2324881,25.1428571 32,25.910369 32,26.8571429 C32,27.8039167 31.2324881,28.5714286 30.2857143,28.5714286 L23.4285714,28.5714286 C22.4817976,28.5714286 21.7142857,27.8039167 21.7142857,26.8571429 C21.7142857,25.910369 22.4817976,25.1428571 23.4285714,25.1428571 Z" id="path-7"></path>
+        <filter x="-68.1%" y="-145.8%" width="236.1%" height="508.3%" filterUnits="objectBoundingBox" id="filter-8">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.771427763   0 0 0 0 0.771427763   0 0 0 0 0.771427763  0 0 0 1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <rect id="path-9" x="36.5714286" y="9.14285714" width="5.71428571" height="3.42857143"></rect>
+        <filter x="-122.5%" y="-145.8%" width="345.0%" height="508.3%" filterUnits="objectBoundingBox" id="filter-10">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.771427763   0 0 0 0 0.771427763   0 0 0 0 0.771427763  0 0 0 1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="定向包" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.8">
+        <g id="新建定向包-交互展开" transform="translate(-799.000000, -1967.000000)">
+            <g id="编组-3" transform="translate(799.000000, 1967.000000)">
+                <g id="编组-11">
+                    <path d="M32,27.5714286 C48.5721852,27.5714286 62.2200162,36.3212485 63.9999053,47.57083 L9.46889414e-05,47.57083 C1.77998383,36.3212485 15.4278148,27.5714286 32,27.5714286 Z" id="形状结合" fill="url(#linearGradient-1)" opacity="0.59849621"></path>
+                    <path d="M48,0 L48,32.5714286 C48,34.7805676 46.209139,36.5714286 44,36.5714286 L16,36.5714286 L16,36.5714286 L16,4 C16,1.790861 17.790861,4.05812251e-16 20,0 L48,0 L48,0 Z" id="形状" fill="url(#linearGradient-2)" fill-rule="nonzero"></path>
+                    <g id="矩形">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                        <use fill="#FDFEFF" fill-rule="evenodd" xlink:href="#path-3"></use>
+                    </g>
+                    <g id="矩形">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                        <use fill="#FDFEFF" fill-rule="evenodd" xlink:href="#path-5"></use>
+                    </g>
+                    <g id="矩形">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-8)" xlink:href="#path-7"></use>
+                        <use fill="#FDFEFF" fill-rule="evenodd" xlink:href="#path-7"></use>
+                    </g>
+                    <g id="矩形">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-10)" xlink:href="#path-9"></use>
+                        <use fill="#FDFEFF" fill-rule="evenodd" xlink:href="#path-9"></use>
+                    </g>
+                </g>
+                <g id="编组" transform="translate(21.714286, 9.142857)">
+                    <g id="编组-2" transform="translate(-0.000000, 0.000000)"></g>
+                    <g id="编组-2备份-4" transform="translate(-0.000000, 8.000000)"></g>
+                    <g id="编组-2备份-2" transform="translate(-0.000000, 16.000000)"></g>
+                    <g id="编组-2备份" transform="translate(14.857143, 0.000000)"></g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
