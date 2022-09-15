@@ -10,6 +10,8 @@
     &-left-box {
       width: 184px;
       border-right: 1px solid @border-color-base;
+      display: flex;
+      flex-direction: column;
 
       &-title {
         background: #F9F9F9;
@@ -22,13 +24,8 @@
       }
 
       &-content {
-        height: 405px;
         overflow-y: auto;
-
-        &::-webkit-scrollbar {
-          -webkit-appearance: none;
-          width: 7px;
-        }
+        .small-scroll-y();
 
         &-item {
           height: 48px;
@@ -96,11 +93,6 @@
             opacity: 1 !important;
           }
         }
-      }
-
-      ::-webkit-scrollbar-thumb {
-        border-radius: 4px;
-        background-color: rgba(0, 0, 0, 0.4);
       }
 
     }

@@ -67,17 +67,24 @@ module.exports = {
         })
       },
       {
-        test: /\.(svg|eot|ttf)$/,
+        test: /\.(png|jpg|gif|)$/,
+        // test: /\.(svg|eot|ttf)$/,
         loader: 'file-loader',
         options: {
           name: '[name].[ext]?[hash]',
           publicPath: 'fonts',
           outputPath: 'styles/fonts'
         }
+        // exclude: /node_modules/
       },
       {
         test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
         loader: 'url-loader'
+        // options: {
+        //   name: '[name].[ext]?[hash]',
+        //   publicPath: 'fonts',
+        //   outputPath: 'styles/fonts'
+        // }
       }
     ]
   },

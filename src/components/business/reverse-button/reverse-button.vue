@@ -23,7 +23,7 @@
       :class="editClasses"
       @click="handleClick">
       <span>{{ prefixEditText }}</span>
-      <span>{{ suffixEditText }}</span>
+      <span :class="editBtnClasses">{{ suffixEditText }}</span>
     </div>
   </div>
 </template>
@@ -86,6 +86,13 @@ export default {
         return `${prefixCls}-edit  ivu-btn disabled`
       } else {
         return `${prefixCls}-edit  ivu-btn`
+      }
+    },
+    editBtnClasses() {
+      if (!this.disabled) {
+        return 'normal'
+      } else {
+        return ''
       }
     },
     loadingClasses() {
