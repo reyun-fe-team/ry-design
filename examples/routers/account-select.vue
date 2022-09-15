@@ -1,10 +1,20 @@
 <template>
   <div>
-    666
+    <rd-prefix-container>
+      <span slot="prepend">投放账户</span>
+      <rd-account-select
+        v-model="data"
+        :data="accountList"></rd-account-select>
+    </rd-prefix-container>
+    <!-- <Form
+      ref="form"
+      :model="formInline"
+      :rules="ruleInline"
+      @submit.prevent> -->
     <rd-account-select
       v-model="data"
       :data="accountList"></rd-account-select>
-
+    <!-- </Form> -->
     <rd-account-select
       v-model="dataGroup"
       grouping
@@ -723,7 +733,19 @@ export default {
           nameWithAdverId: '预约测试账号2(1686411905085454)',
           value: '19783809'
         }
-      ]
+      ],
+      formInline: {
+        campaignName: ''
+      },
+      ruleInline: {
+        campaignName: [
+          { required: true, message: '不能为空', trigger: 'change' },
+          {
+            max: 50,
+            message: '超出最大'
+          }
+        ]
+      }
     }
   }
 }

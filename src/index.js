@@ -28,6 +28,7 @@ import ReverseButton from './components/business/reverse-button'
 import { LayoutModuleConfig, LayoutModuleView } from './components/business/layout-module-config'
 import TextItemShow from './components/business/text-item-show'
 import DeleteModals from './components/business/delete-modals'
+import AccountSelect from './components/business/account-select'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -75,7 +76,8 @@ const components = [
   TextEmojInput,
   Icon,
   TextInputList,
-  Wildcard
+  Wildcard,
+  AccountSelect
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -120,5 +122,6 @@ export default {
   TextItemShow,
   DeleteModals,
   TextEmojInput,
-  TextInputList
+  TextInputList,
+  AccountSelect
 }
