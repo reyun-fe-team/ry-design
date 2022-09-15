@@ -1,24 +1,49 @@
 <template>
   <div>
+    <h2>prefix-container</h2>
     <rd-prefix-container>
       <span slot="prepend">投放账户</span>
       <rd-account-select
         v-model="data"
         :data="accountList"></rd-account-select>
     </rd-prefix-container>
-    <!-- <Form
-      ref="form"
-      :model="formInline"
-      :rules="ruleInline"
-      @submit.prevent> -->
+    <h2>没有组的概念</h2>
     <rd-account-select
       v-model="data"
       :data="accountList"></rd-account-select>
-    <!-- </Form> -->
+    <h2>组</h2>
     <rd-account-select
       v-model="dataGroup"
       grouping
       :data="accountListGroup"></rd-account-select>
+    <h2>form</h2>
+    <Form
+      ref="formInline"
+      :model="formInline"
+      :rules="ruleInline"
+      @submit.prevent>
+      <FormItem
+        prop="campaignName"
+        label="选择账户">
+        <rd-account-select
+          v-model="formInline.campaignName"
+          :data="accountList"></rd-account-select>
+      </FormItem>
+      <h2>form-组</h2>
+      <FormItem
+        prop="campaignName1"
+        label="选择账户">
+        <rd-account-select
+          v-model="formInline.campaignName1"
+          grouping
+          :data="accountListGroup"></rd-account-select>
+      </FormItem>
+    </Form>
+    <Button
+      type="primary"
+      @click="handleSubmit('formInline')">
+      Signin
+    </Button>
   </div>
 </template>
 
@@ -735,17 +760,50 @@ export default {
         }
       ],
       formInline: {
-        campaignName: ''
+        campaignName: [],
+        campaignName1: []
       },
       ruleInline: {
         campaignName: [
-          { required: true, message: '不能为空', trigger: 'change' },
           {
-            max: 50,
-            message: '超出最大'
+            validator: (rule, value, callback) => {
+              this.$nextTick(() => {
+                if (!this.formInline.campaignName.length) {
+                  callback(new Error('添加账号'))
+                } else {
+                  callback()
+                }
+              })
+            },
+            trigger: 'change'
+          }
+        ],
+        campaignName1: [
+          {
+            validator: (rule, value, callback) => {
+              this.$nextTick(() => {
+                if (!this.formInline.campaignName1.length) {
+                  callback(new Error('添加账号'))
+                } else {
+                  callback()
+                }
+              })
+            },
+            trigger: 'change'
           }
         ]
       }
+    }
+  },
+  methods: {
+    handleSubmit(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.$Message.success('Success!')
+        } else {
+          this.$Message.error('Fail!')
+        }
+      })
     }
   }
 }
