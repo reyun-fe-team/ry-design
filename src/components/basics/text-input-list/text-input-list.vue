@@ -240,10 +240,7 @@ export default {
         index = this.this.middle.preActiveClass
       }
       const com = this.$refs[`emojInput-${index}`][0]
-      if (
-        this.middle.activeClass === this.middle.preActiveClass &&
-        this.middle.activeClass === null
-      ) {
+      if (this.middle.preActiveClass === null && this.middle.activeClass === null) {
         com.$el.click()
         this.$nextTick(() => {
           com.insertText(text)
