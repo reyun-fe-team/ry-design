@@ -1,10 +1,8 @@
 <template>
-  <div
-    v-click-outside="onClickEditorOutSide"
-    :class="prefixCls">
+  <div :class="prefixCls">
     <!-- 行号 -->
     <div
-      v-for="index in maxLine"
+      v-for="(item, index) in maxLine"
       :key="index"
       :class="prefixCls + '-line'">
       <div
@@ -14,13 +12,11 @@
           isHaveError(index) ? prefixCls + '-is-error' : ''
         ]">
         <span :class="[isHaveError(index) ? prefixCls + '-error-left' : '']">
-          {{ index }}
+          {{ item }}
         </span>
       </div>
 
-      <div
-        v-click-outside="() => onClickEditorLineOutSide(index)"
-        :class="prefixCls + '-right-list'">
+      <div :class="prefixCls + '-right-list'">
         <rd-text-emoj-input
           :ref="`emojInput-${index}`"
           :value="value[index] || ''"
@@ -36,13 +32,14 @@
           :max-length="maxLength"
           :min-length="minLength"
           @on-keydown="handlerKeydown($event, index)"
-          @on-blur="(e, value) => handlerBlur(e, value, index)"
+          @on-clear="handlerClear(index)"
           @input="val => handleEmitInput(val, index)"
           @click.native="onClickEditorLine(index)"
           @error="status => onError(status, index)" />
         <div
           v-if="(useEmoj || useEnter) && middle.activeClass === index"
-          :class="prefixCls + '-btn-wrap'">
+          :class="prefixCls + '-btn-wrap'"
+          @click.stop>
           <Poptip
             v-if="useEmoj"
             v-model="showEmojPan"
@@ -65,7 +62,7 @@
           <img
             v-if="useEnter"
             src="../../../images/text-input-list/add-line-feed.png"
-            @click="enter(index)" />
+            @click="insertEnter(index)" />
         </div>
       </div>
     </div>
@@ -131,6 +128,10 @@ export default {
         const copyText = text.replaceAll(/[^\x00-\xff]/g, '**')
         return copyText.length
       }
+    },
+    // 错误校验方法
+    propsValidFn: {
+      type: Function
     }
   },
   data() {
@@ -156,7 +157,10 @@ export default {
   },
   computed: {
     curEmojInput() {
-      return this.$refs[`emojInput-${this.middle.activeClass}`][0]
+      return (
+        this.$refs[`emojInput-${this.middle.activeClass}`] &&
+        this.$refs[`emojInput-${this.middle.activeClass}`][0]
+      )
     },
     isHaveError() {
       return function (index) {
@@ -167,36 +171,37 @@ export default {
   watch: {
     'middle.activeClass'(cur, pre) {
       this.middle.preActiveClass = pre
+    },
+    value(cur) {
+      if (cur.length === 0 && this.middle.activeClass !== null) {
+        this.curEmojInput.formatValue()
+      }
     }
   },
   methods: {
     handlerKeydown({ keyDownEvent, disableInputFn }, index) {
+      // 回车换行
       if (keyDownEvent.keyCode === 13) {
         disableInputFn()
-
         const curIndex = index + 1
-
         if (curIndex >= this.maxLine) {
           return
         }
-        // 回车换行 & 记录数据变化
-        const value = this.curEmojInput.getValue()
-        this.handleEmitInput(value, index)
-
         this.middle.activeClass = curIndex
+        this.$refs[`emojInput-${index}`][0].blur()
         this.$nextTick(() => {
-          this.$refs[`emojInput-${index + 1}`][0].blur()
-          setTimeout(() => {
-            this.$refs[`emojInput-${curIndex}`][0].focus()
-          }, 0)
+          this.$refs[`emojInput-${curIndex}`][0].focus('end')
         })
       }
     },
-    handlerBlur(e, value, index) {
-      if (value === undefined) {
-        return
-      }
-      this.handleEmitInput(value, index)
+    handlerClear(index) {
+      const copyValue = JSON.parse(JSON.stringify(this.value))
+      copyValue.splice(index, 1)
+      this.$emit('input', copyValue)
+      this.$nextTick(() => {
+        this.curEmojInput.formatValue()
+        this.curEmojInput.focus('end')
+      })
     },
     transformHtml2Text(html) {
       return html
@@ -205,10 +210,10 @@ export default {
       return text
     },
     getFaceHtml(icon, type) {
-      const str = `<img style="pointer-events: none; margin-left: 4px; " src="${icon}" draggable="false" width="16" height="16" data-type="${type}">`
+      const str = `<img style="pointer-events: none; margin-left: 4px; vertical-align: middle; " src="${icon}" draggable="false" width="16" height="16" data-type="${type}">`
       return str
     },
-    enter() {
+    insertEnter() {
       // 如果输入框内不存在内容，不允许点击换行符
       if (!this.curEmojInput.getValue()) {
         this.$Message.error('请先输入文本内容')
@@ -226,6 +231,27 @@ export default {
       let html = this.getFaceHtml(this.faceIcon, 'emoj')
       this.curEmojInput.insertHtmlMark(html)
     },
+    // 插入文本
+    insertText(text) {
+      let index = 0
+      if (this.middle.activeClass || this.middle.activeClass === 0) {
+        index = this.middle.activeClass
+      } else if (this.middle.preActiveClass) {
+        index = this.this.middle.preActiveClass
+      }
+      const com = this.$refs[`emojInput-${index}`][0]
+      if (
+        this.middle.activeClass === this.middle.preActiveClass &&
+        this.middle.activeClass === null
+      ) {
+        com.$el.click()
+        this.$nextTick(() => {
+          com.insertText(text)
+        })
+        return
+      }
+      com.insertText(text)
+    },
     // 向外抛出 input 事件，改变绑定数据
     handleEmitInput(value, index) {
       if (this.value[index] === value) {
@@ -237,65 +263,47 @@ export default {
     },
     // 点击编辑行
     onClickEditorLine(index) {
-      if (!this.$refs[`emojInput-${index}`][0].richEditRef.innerHTML) {
-        const el = this.$refs[`emojInput-${index}`][0]
-        this.middle.activeClass = index
-        this.$nextTick(() => {
-          el.focus()
-        })
-      }
-      if (this.middle.activeClass === index) {
-        return
-      }
       const el = this.$refs[`emojInput-${index}`][0]
       this.middle.activeClass = index
       this.$nextTick(() => {
         el.focus()
       })
     },
-    // 点击编辑行区域外
-    onClickEditorLineOutSide(index) {
-      if (index !== this.middle.preActiveClass) {
-        return
-      }
-
-      const el = this.$refs[`emojInput-${index}`][0]
-      const value = el.getValue()
-      this.handleEmitInput(value, index)
-    },
-    // 点击整体编辑区域外
-    onClickEditorOutSide() {
-      if (this.showEmojPan) {
-        return
-      }
-
-      const index = this.middle.activeClass
-      const el = this.$refs[`emojInput-${index}`][0]
-      const value = el.getValue()
-      this.handleEmitInput(value, index)
-
-      this.$nextTick(() => {
-        this.middle.activeClass = null
-      })
-    },
-    validFn(ln) {
+    // 错误类型
+    validFn(ln, value) {
+      let errors = []
       if (ln && (ln > this.maxLength || ln < this.minLength)) {
-        return true
+        errors.push('lengthError')
       }
-
-      return false
+      if (typeof this.propsValidFn === 'function') {
+        const allErrors = this.propsValidFn(value)
+        errors = [...errors, ...allErrors]
+      }
+      return errors
     },
-    onError(status, index) {
+    onError(errors, index) {
       setTimeout(() => {
         const isHaveError = this.errors.indexOf(index)
         if (isHaveError > -1) {
-          if (!status) {
+          if (!errors.length) {
             this.errors.splice(isHaveError, 1)
           }
-          return
+        } else {
+          errors.length && this.errors.push(index)
         }
-        status && this.errors.push(index)
+
+        this.$emit('on-error', index, errors)
       }, 600)
+    },
+    getValue() {
+      let index = 0
+      if (this.middle.activeClass || this.middle.activeClass === 0) {
+        index = this.middle.activeClass
+      } else if (this.middle.preActiveClass) {
+        index = this.this.middle.preActiveClass
+      }
+      const com = this.$refs[`emojInput-${index}`][0]
+      return com.getValue()
     }
   }
 }
