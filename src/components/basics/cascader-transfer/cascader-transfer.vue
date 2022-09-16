@@ -29,7 +29,7 @@
             class="font-main font-1">
             已选（
             <span :class="goBeyondMaxLen ? 'error' : ''">{{ selectDatas.length }}</span>
-            /{{ max }}）
+            / {{ max }}）
           </span>
           <span
             v-else
