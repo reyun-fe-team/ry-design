@@ -2,7 +2,9 @@
   <main :class="prefixCls">
     <div :class="prefixCls + '-content'">
       <div :class="prefixCls + '-content-massage'">
-        <div :class="prefixCls + '-content-massage-header'">{{ title }}</div>
+        <div :class="[prefixCls + '-content-massage-header', 'font-main', 'font-1']">
+          {{ title }}
+        </div>
         <cascader-content
           ref="muti"
           :class="prefixCls + '-cascader-content'"
@@ -61,13 +63,16 @@
             :class="prefixCls + '-select-wrapper-content-item-wrapper'">
             <span
               :class="prefixCls + '-select-wrapper-content-item-wrapper-item-label'"
-              class="font-main">
-              {{ item[labelName] }}
+              class="font-main text-overflow">
+              {{ item[selectedLabel] }}
             </span>
             <span
               :class="prefixCls + '-select-wrapper-content-item-wrapper-remove-btn'"
               @click="handleRemove(item)">
-              <Icon type="md-close"></Icon>
+              <Icon
+                color="#b8b9bb"
+                size="16"
+                type="md-close-circle" />
             </span>
           </li>
         </ul>
@@ -139,19 +144,27 @@ export default {
     isQuery: {
       type: Boolean,
       default: false
+    },
+    // 已选展示的名称（有层级关系的展示）
+    selectedLabelName: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
       prefixCls,
       svg,
-      mutiDatas: [],
+      mutiDatas: this.datas,
       selectDatas: []
     }
   },
   computed: {
     goBeyondMaxLen() {
       return this.selectDatas.length > this.max
+    },
+    selectedLabel() {
+      return this.selectedLabelName || this.labelName
     }
   },
   watch: {
@@ -217,7 +230,16 @@ export default {
     handleReciveCycle(datas) {
       datas.map(item => {
         if (item.check) {
-          this.selectDatas.push(item)
+          if (this.onlyBottom) {
+            // 如果只有最底层可选, 判断是否为最后一层数据，最后一层直接push，否则继续循环
+            if (!item.children || !item.children.length) {
+              this.selectDatas.push(item)
+            } else {
+              this.handleReciveCycle(item.children)
+            }
+          } else {
+            this.selectDatas.push(item)
+          }
         } else {
           if (item.children && item.children.length) {
             this.handleReciveCycle(item.children)
@@ -297,7 +319,16 @@ export default {
           if (item.children && item.children.length) {
             item.children = this.handleChildrenCheck(item.children)
           }
-          this.selectDatas.push(item)
+          if (this.onlyBottom) {
+            // 如果只有最底层可选, 判断是否为最后一层数据，最后一层直接push，否则继续循环
+            if (!item.children || !item.children.length) {
+              this.selectDatas.push(item)
+            } else {
+              this.handleDefaultCycle(item.children, datas)
+            }
+          } else {
+            this.selectDatas.push(item)
+          }
         } else {
           this.$set(item, 'check', false)
           this.$set(item, 'little', false)
