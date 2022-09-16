@@ -17,8 +17,7 @@
           :label="labelName"
           :value="valueName"
           :is-query="isQuery"
-          @update="reciveDatas"
-          @onSearch="onSearch" />
+          @update="reciveDatas" />
       </div>
       <div
         v-show="isShowMuitCascader"
@@ -106,7 +105,7 @@ export default {
     // 栏目 title
     title: {
       type: String,
-      default: '省份'
+      default: ''
     },
     // 数据数组 [{value,label,children:[{value,label,children:[]}]}] 嵌套
     datas: {
@@ -351,9 +350,6 @@ export default {
         }
         return item
       })
-    },
-    onSearch(e) {
-      this.$emit('on-search', e)
     },
     // 取消全选
     clearAll() {
