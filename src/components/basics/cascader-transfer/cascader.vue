@@ -222,6 +222,8 @@ export default {
         item.little = false
       }
       this.selectedIndex = index
+      let value = item[this.value]
+      this.selectedValue = value
       // 点击父辈同级,如果没有子集则收缩
       if (this.$refs.children) {
         this.$refs.children.childrenDatas = []
