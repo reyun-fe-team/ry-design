@@ -6,6 +6,7 @@
           v-if="isQuery"
           v-model="query"
           clearable
+          search
           placeholder="请输入关键词搜索"
           @on-change="handleQuery" />
         <div v-if="entites.length">

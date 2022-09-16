@@ -106,7 +106,7 @@ export default {
     // 栏目 title
     title: {
       type: String,
-      default: '省份'
+      default: ''
     },
     // 数据数组 [{value,label,children:[{value,label,children:[]}]}] 嵌套
     datas: {
