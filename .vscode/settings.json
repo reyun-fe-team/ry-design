@@ -4,7 +4,7 @@
   },
   "eslint.format.enable": true,
   "[vue]": {
-      "editor.defaultFormatter": "octref.vetur"
+      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "vueStyle.formatOnSave": true,
 }
