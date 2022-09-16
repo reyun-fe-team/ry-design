@@ -136,9 +136,11 @@ export default {
     },
     // 输入事件
     changeValue(row, index, event, key) {
+      // 需要先赋值，不然在外部组件更改了tableData会导致当前数据项不一致
+      this.tableData[index] = row
+
       clearTimeout(this.timer)
       this.timer = setTimeout(async () => {
-        this.tableData[index] = row
         // 对this.columns含有校验方法（validate）的数据进行校验
         const validateKey = []
         this.columns.forEach(item => {
