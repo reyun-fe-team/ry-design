@@ -75,8 +75,7 @@
       :is-show-check-all="isShowCheckAll"
       :label="label"
       :value="value"
-      @update="childUpdate"
-      @onSearch="onSearch"></rd-cascader>
+      @update="childUpdate"></rd-cascader>
   </main>
 </template>
 
@@ -204,7 +203,6 @@ export default {
       let value = item[this.value]
       this.selectedValue = value
       this.hookParentId = `${this.parentId}-${value}`
-      this.$emit('onSearch', value)
       // 点击父辈同级,如果没有子集则收缩
       if (this.$refs.children) {
         this.$refs.children.childrenDatas = []
@@ -262,9 +260,6 @@ export default {
     },
     updateToParent() {
       this.$emit('update', this.entites)
-    },
-    onSearch(e) {
-      this.$emit('onSearch', e)
     },
     // 选择不得超过限定数量
     maxCheck() {

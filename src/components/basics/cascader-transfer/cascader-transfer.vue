@@ -17,8 +17,7 @@
           :label="labelName"
           :value="valueName"
           :is-query="isQuery"
-          @update="reciveDatas"
-          @onSearch="onSearch" />
+          @update="reciveDatas" />
       </div>
       <div
         v-show="isShowMuitCascader"
@@ -351,9 +350,6 @@ export default {
         }
         return item
       })
-    },
-    onSearch(e) {
-      this.$emit('on-search', e)
     },
     // 取消全选
     clearAll() {
