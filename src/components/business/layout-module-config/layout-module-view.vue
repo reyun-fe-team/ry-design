@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-25 14:53:12
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-09-09 16:04:58
+ * @LastEditTime: 2022-09-19 16:16:02
  * @FilePath: /ry-design/src/components/business/layout-module-config/module-view/index.vue
  * @Description: 单个模块的渲染组件
 -->
@@ -14,23 +14,31 @@
       <div class="title">{{ title }}</div>
       <template v-if="hasSlot('header')">
         <slot name="header">
-          <Render v-if="rFns['header']" :render="rFns['header']"></Render>
+          <Render
+            v-if="rFns['header']"
+            :render="rFns['header']"></Render>
         </slot>
       </template>
     </div>
     <!-- 显示内容区域 -->
-    <div :class="[prefixCls + '-main', 'rd-mini-scroll-y']">
+    <div :class="[prefixCls + '-main', 'small-scroll-y']">
       <template v-if="hasSlot('main')">
         <slot name="main">
-          <Render v-if="rFns['main']" :render="rFns['main']"></Render>
+          <Render
+            v-if="rFns['main']"
+            :render="rFns['main']"></Render>
         </slot>
       </template>
     </div>
     <!-- 尾部 -->
-    <div v-if="showFooter" :class="prefixCls + '-footer'">
+    <div
+      v-if="showFooter"
+      :class="prefixCls + '-footer'">
       <template v-if="hasSlot('footer')">
         <slot name="footer">
-          <Render v-if="rFns['footer']" :render="rFns['footer']"></Render>
+          <Render
+            v-if="rFns['footer']"
+            :render="rFns['footer']"></Render>
         </slot>
       </template>
     </div>
