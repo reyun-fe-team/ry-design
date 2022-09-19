@@ -1,6 +1,6 @@
 <template>
   <div
-    v-click-outside="onClickEditorOutSide"
+    v-click-outside="handlerClickOverallEditing"
     :class="prefixCls">
     <!-- 行号 -->
     <div
@@ -19,7 +19,7 @@
       </div>
 
       <div
-        v-click-outside="() => onClickEditorLineOutSide(index)"
+        v-click-outside="() => handlerClickEditorOutSide(index)"
         :class="prefixCls + '-right-list'">
         <rd-text-emoj-input
           :ref="`emojInput-${index}`"
@@ -33,11 +33,10 @@
           :max-length="maxLength"
           :min-length="minLength"
           @on-keydown="handlerKeydown($event, index)"
-          @on-foucs="e => handlerFoucs(e, index)"
           @on-blur="(e, value) => handlerBlur(e, value, index)"
-          @on-click="onClickEditorLine(index)"
+          @on-click="handlerClickLine(index)"
           @input="value => handleEmitInput(value, index)"
-          @on-error="status => onError(status, index)" />
+          @on-error="status => handlerError(status, index)" />
         <div
           v-if="(useEmoj || useEnter) && middle.activeClass === index"
           :class="prefixCls + '-btn-wrap'">
@@ -130,6 +129,11 @@ export default {
         const copyText = text.replaceAll(/[^\x00-\xff]/g, '**')
         return copyText.length
       }
+    },
+    // html转成文本的方法
+    // eslint-disable-next-line vue/require-default-prop
+    html2Text: {
+      type: Function
     }
   },
   data() {
@@ -140,7 +144,7 @@ export default {
         preActiveClass: null,
         activeClass: null,
         faceIcon: '',
-        addLineFeedIcon: require('../../../images/text-input-list/line-feed.png'),
+        addLineFeedIcon: require('@src/images/text-input-list/line-feed.png'),
         middleData: [
           {
             id: 1,
@@ -155,7 +159,15 @@ export default {
   },
   computed: {
     curEmojInput() {
-      return this.$refs[`emojInput-${this.middle.activeClass}`][0]
+      let { activeClass } = this.middle
+      if (!activeClass) {
+        return null
+      }
+      let ref = this.$refs[`emojInput-${activeClass}`]
+      if (!ref) {
+        return null
+      }
+      return ref[0]
     },
     isHaveError() {
       return function (index) {
@@ -198,6 +210,62 @@ export default {
       copyDom = null
       return textLn + emojLn
     },
+    // html转换为文本
+    transformHtml2Text(html) {
+      return this.html2Text ? this.html2Text() : html
+    },
+    // 文本转换为html
+    transformText2Html(text, isEdit) {
+      let html = text
+      if (isEdit) {
+        const copyDom = document.createElement('div')
+        copyDom.innerHTML = text
+        const imgs = copyDom.getElementsByTagName('img')
+        const enterFlag = [...imgs].find(img => img.getAttribute('data-type') === 'enter')
+        if (enterFlag) {
+          const tmp = document.createElement('div')
+          tmp.appendChild(enterFlag)
+          const tmpStr = tmp.innerHTML
+          html = html.replaceAll(tmpStr, `${tmpStr}<br>&nbsp;`)
+        }
+      }
+      return html
+    },
+    // 获取表情符号的html
+    getFaceHtml(icon, type) {
+      const str = `<img style="pointer-events: none; margin-left: 4px; " src="${icon}" draggable="false" width="16" height="16" data-type="${type}">`
+      return str
+    },
+    // 添加回车符号
+    enter() {
+      // 如果输入框内不存在内容，不允许点击换行符
+      if (!this.curEmojInput.getValue()) {
+        this.$Message.error('请先输入文本内容')
+        return
+      }
+      if (this.curEmojInput.getEnters() >= this.maxEnter) {
+        this.$Message.error(`最多能插入${this.maxEnter}换行`)
+        return
+      }
+      let html = `${this.getFaceHtml(this.middle.addLineFeedIcon, 'enter')}<br>&nbsp;`
+      this.curEmojInput.insertHtmlMark(html)
+    },
+    // 添加表情符号
+    insertFace(val) {
+      this.faceIcon = val.url
+      let html = this.getFaceHtml(this.faceIcon, 'emoj')
+      this.curEmojInput.insertHtmlMark(html)
+    },
+    // 验证
+    validFn(ln) {
+      if (ln && (ln > this.maxLength || ln < this.minLength)) {
+        return true
+      }
+
+      return false
+    },
+    // -————————--————————————————————————————————————事件处理相关——————————————------————————————————
+    // 按键按下事件
     handlerKeydown({ keyDownEvent, disableInputFn }, index) {
       if (keyDownEvent.keyCode === 13) {
         disableInputFn()
@@ -220,48 +288,6 @@ export default {
         })
       }
     },
-    transformHtml2Text(html) {
-      return html
-    },
-    // 文本转换为html
-    transformText2Html(text, isEdit) {
-      let html = text
-      if (isEdit) {
-        const copyDom = document.createElement('div')
-        copyDom.innerHTML = text
-        const imgs = copyDom.getElementsByTagName('img')
-        const enterFlag = [...imgs].find(img => img.getAttribute('data-type') === 'enter')
-        if (enterFlag) {
-          const tmp = document.createElement('div')
-          tmp.appendChild(enterFlag)
-          const tmpStr = tmp.innerHTML
-          html = html.replaceAll(tmpStr, `${tmpStr}<br>&nbsp;`)
-        }
-      }
-      return html
-    },
-    getFaceHtml(icon, type) {
-      const str = `<img style="pointer-events: none; margin-left: 4px; " src="${icon}" draggable="false" width="16" height="16" data-type="${type}">`
-      return str
-    },
-    enter() {
-      // 如果输入框内不存在内容，不允许点击换行符
-      if (!this.curEmojInput.getValue()) {
-        this.$Message.error('请先输入文本内容')
-        return
-      }
-      if (this.curEmojInput.getEnters() >= this.maxEnter) {
-        this.$Message.error(`最多能插入${this.maxEnter}换行`)
-        return
-      }
-      let html = `${this.getFaceHtml(this.middle.addLineFeedIcon, 'enter')}<br>&nbsp;`
-      this.curEmojInput.insertHtmlMark(html)
-    },
-    insertFace(val) {
-      this.faceIcon = val.url
-      let html = this.getFaceHtml(this.faceIcon, 'emoj')
-      this.curEmojInput.insertHtmlMark(html)
-    },
     // 向外抛出 input 事件，改变绑定数据
     handleEmitInput(value, index) {
       if (this.value[index] === value) {
@@ -271,33 +297,18 @@ export default {
       copyValue[index] = value || ''
       this.$emit('input', copyValue)
     },
-    handlerFoucs(e, index) {
-      console.log('handlerFoucs: ', index)
-      // 回显变成多行行
-      const ref = this.$refs[`emojInput-${index}`]
-      if (!ref) {
-        return
-      }
-      const el = ref[0]
-      // el && el.echoValue2Ttml()
-    },
     // 失去焦点
     handlerBlur(e, value, index) {
       if (!value) {
         return
       }
+      // 回填数据
       this.handleEmitInput(value, index)
       // 回显变成一行
-      const ref = this.$refs[`emojInput-${index}`]
-      if (!ref) {
-        return
-      }
-      const el = ref[0]
-      // el && el.echoValue2Ttml()
+      // isEdit === false 自动触发回显变成一行
     },
-
     // 点击编辑行,手动控制焦点(聚焦)
-    onClickEditorLine(index) {
+    handlerClickLine(index) {
       const ref = this.$refs[`emojInput-${index}`]
       if (!ref) {
         return
@@ -311,23 +322,30 @@ export default {
       }
     },
     // 点击编辑行区域外
-    onClickEditorLineOutSide(index) {
+    handlerClickEditorOutSide(index) {
       if (index !== this.middle.preActiveClass) {
         return
       }
-
-      const el = this.$refs[`emojInput-${index}`][0]
+      const ref = this.$refs[`emojInput-${index}`]
+      if (!ref) {
+        return
+      }
+      const el = ref[0]
       const value = el.getValue()
       this.handleEmitInput(value, index)
     },
     // 点击整体编辑区域外
-    onClickEditorOutSide() {
+    handlerClickOverallEditing() {
       if (this.showEmojPan) {
         return
       }
 
       const index = this.middle.activeClass
-      const el = this.$refs[`emojInput-${index}`][0]
+      const ref = this.$refs[`emojInput-${index}`]
+      if (!ref) {
+        return
+      }
+      const el = ref[0]
       const value = el.getValue()
       this.handleEmitInput(value, index)
 
@@ -335,14 +353,8 @@ export default {
         this.middle.activeClass = null
       })
     },
-    validFn(ln) {
-      if (ln && (ln > this.maxLength || ln < this.minLength)) {
-        return true
-      }
-
-      return false
-    },
-    onError(status, index) {
+    // 错误
+    handlerError(status, index) {
       setTimeout(() => {
         const isHaveError = this.errors.indexOf(index)
         if (isHaveError > -1) {

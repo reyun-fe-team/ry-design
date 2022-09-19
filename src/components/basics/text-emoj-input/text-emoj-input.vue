@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[prefixCls, { [prefixCls + '-single-line']: isSingleLine }]"
-    @click.stop.prevent="handlerClick">
+    @click.prevent="handlerClick">
     <div
       ref="rich-edit"
       :class="prefixCls + '-rich'"
@@ -126,12 +126,11 @@ export default {
     }
   },
   watch: {
-    value: {
-      handler() {
-        if (this.value) {
-          this.echoValue2Ttml()
-        }
-      }
+    // 是否编辑状态更改
+    isEdit() {
+      this.$nextTick(() => {
+        this.value && this.echoValue2Ttml()
+      })
     }
   },
   mounted() {
@@ -143,17 +142,18 @@ export default {
   },
   methods: {
     // 回显value
-    echoValue2Ttml(pointer = true) {
+    echoValue2Ttml() {
       this.richEditRef.innerHTML = ''
       if (!this.canUseHtml) {
-        pointer ? this.insertText(this.value) : (this.richEditRef.innerHTML = this.value)
+        this.insertText(this.value)
       } else {
         let html = this.value
         if (this.transformText2Html) {
           html = this.transformText2Html(this.value, this.isEdit)
-          console.log('this.isEdit: ', this.isEdit)
         }
-        pointer ? this.insertHtmlMark(html) : (this.richEditRef.innerHTML = html)
+        // 按之前的光标标记位置去回显数据
+        // this.insertHtmlMark(html)
+        this.richEditRef.innerHTML = html
       }
     },
     // 输入事件（使用操作都会触发）

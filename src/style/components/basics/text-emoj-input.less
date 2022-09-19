@@ -1,6 +1,7 @@
 @text-emoj-input: ~"@{css-prefix}text-emoj-input";
+
 .@{text-emoj-input} {
-  position: relative;
+  position        : relative;
   display         : inline-block;
   min-height      : 35px;
   background-color: #edf1f5;
@@ -33,27 +34,29 @@
   }
 
   &-placeholder {
-    position: absolute;
-    height: 100%;
-    top: 0;
-    left: 16px;
-    z-index: 2;
-    font-size       : 12px;
-    line-height     : 35px;
-    color: rgb(165, 163, 163);
+    position   : absolute;
+    height     : 100%;
+    top        : 0;
+    left       : 16px;
+    z-index    : 2;
+    font-size  : 12px;
+    line-height: 35px;
+    color      : rgb(165, 163, 163);
+    user-select: none;
   }
 
   &-ln-wrap {
-    position: absolute;
-    display: flex;
-    top: 2px;
-    right: 16px;
-    z-index: 3;
-    font-size: 12px;
-    line-height     : 30px;
-    color: #999;
-    cursor: pointer;
+    position   : absolute;
+    display    : flex;
+    top        : 2px;
+    right      : 16px;
+    z-index    : 3;
+    font-size  : 12px;
+    line-height: 30px;
+    color      : #999;
+    cursor     : pointer;
   }
+
   &-ln-wrap-l {
     margin-right: 10px;
   }
