@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:43:38
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-07-20 18:01:10
+ * @LastEditTime: 2022-09-19 16:02:07
  * @FilePath: /ry-design/src/components/business/text-item-show/text-item-show.vue
  * @Description: 极速创建基础信息，单项显示控件
 -->
@@ -58,7 +58,9 @@
       :class="[prefixCls + '-classify']">
       <div :class="[prefixCls + '-classify-text', 'show-text']">
         <div class="classify-thumbnail">
-          <img :src="data.thumbnail" />
+          <img
+            :src="data.thumbnail"
+            :onerror="onerrorImgSrc" />
         </div>
         <div class="classify-infos">
           <div class="classify-info-item">
@@ -132,6 +134,15 @@ export default {
   data() {
     return {
       prefixCls
+    }
+  },
+  computed: {
+    // 默认图地址
+    onerrorImgSrc() {
+      if (this.type !== 'classify') {
+        return ''
+      }
+      return 'this.src="' + require('./error.jpg') + '"'
     }
   }
 }
