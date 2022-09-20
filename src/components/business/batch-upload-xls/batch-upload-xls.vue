@@ -139,10 +139,7 @@
           <slot name="hintText">{{ hintText }}</slot>
         </p>
         <div
-          v-if="
-            ['portionSucceed', 'error'].includes(isSucceedType) ||
-            tableStatusList.includes[isSucceedType]
-          "
+          v-if="['portionSucceed', 'error'].includes(isSucceedType) || showErrorTable"
           :class="prefixCls + '-error-tables'">
           <Table
             v-bind="tableOpction"
@@ -257,9 +254,9 @@ export default {
       default: () => {}
     },
     // 表格状态
-    tableStatusList: {
-      type: Array,
-      default: () => []
+    showErrorTable: {
+      type: Boolean,
+      default: false
     },
     // 重试文字 (String 非必穿，有就传没有就算了,默认为“重试”）
     tautologyText: {
