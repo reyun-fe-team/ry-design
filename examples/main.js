@@ -110,6 +110,18 @@ const router = new VueRouter({
     {
       path: '/text-input-list',
       component: resolve => require(['./routers/text-input-list'], resolve)
+    },
+    {
+      path: '/wildcard',
+      component: resolve => require(['./routers/wildcard'], resolve)
+    },
+    {
+      path: '/util-class',
+      component: resolve => require(['./routers/util-class'], resolve)
+    },
+    {
+      path: '/cascader-transfer',
+      component: resolve => require(['./routers/cascader-transfer'], resolve)
     }
   ]
 })

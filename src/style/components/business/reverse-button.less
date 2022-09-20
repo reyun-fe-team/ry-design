@@ -7,10 +7,11 @@
         span {
             display: flex;
             align-items: center;
+            justify-content: center;
             .text-limit();
 
             :first-child {
-                margin-right: 10px;
+                margin-right: 2px;
             }
         }
     }
@@ -28,19 +29,26 @@
             .text-limit();
         }
 
-        .disabled {  
+        .normal {
+            color:@primary-color;
+        }
+
+        .disabled {
             cursor: not-allowed;
             color: @btn-disable-color;
             background-color: @btn-disable-background-color;
             border-color: @border-color-base;
         }
+
+
     }
 
     &-loading {
         width: 280px;
         display: flex;
         align-items: center;
-        justify-content:center;
+        justify-content: center;
+
         span {
             flex-shrink: 1;
             margin-right: 10px;
