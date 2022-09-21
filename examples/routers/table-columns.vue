@@ -37,6 +37,7 @@ export default {
                   slot: 'aaa1',
                   check: true,
                   fixed: 'left',
+                  tooltip: '可选提示',
                   title: '广告组名称',
                   disabled: true,
                   unlock: true,
