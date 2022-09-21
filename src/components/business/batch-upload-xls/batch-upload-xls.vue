@@ -142,7 +142,7 @@
           v-if="['portionSucceed', 'error'].includes(isSucceedType) || showErrorTable"
           :class="prefixCls + '-error-tables'">
           <Table
-            v-bind="tableOpction"
+            v-bind="tableOption"
             :columns="columnsHeader"
             :data="errorTable"></Table>
         </div>
@@ -249,7 +249,7 @@ export default {
       default: () => []
     },
     // 表格属性
-    tableOpction: {
+    tableOption: {
       type: Object,
       default: () => {}
     },
