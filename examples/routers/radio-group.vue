@@ -16,7 +16,7 @@ export default {
       value: '111',
       list: [
         {
-          label: '按展示付费(oCPM)',
+          label: '按',
           value: 'PRICING_OCPM',
           disabledTooltip: '123123123',
           tooltip: ['11111111111111', '22222222'],
