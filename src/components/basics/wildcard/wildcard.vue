@@ -256,7 +256,7 @@ export default {
       this.$emit('input', this.keyword)
       this.$emit('on-change', this.keyword)
       let ids = this.list
-        .filter(e => this.keyword.includes(e.title) || this.keyword.includes(e.reg))
+        .filter(e => this.keyword.includes(e.title) || this.keyword.includes(e.alias))
         .map(e => e.id)
         .filter(Boolean)
       this.$emit('on-name-programs', ids)
