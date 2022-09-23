@@ -21,19 +21,19 @@
           :label="item.label">
           <Option
             v-for="el in item.children"
-            :key="el.mediaAccountId"
+            :key="el.value"
             :disabled="item.disabled || el.disabled"
-            :value="el.mediaAccountId"
-            :label="el.nameWithAdverId"></Option>
+            :value="el.value"
+            :label="el.label"></Option>
         </OptionGroup>
       </template>
       <template v-else>
         <Option
           v-for="el in accountList"
-          :key="el.mediaAccountId"
+          :key="el.value"
           :disabled="el.disabled"
-          :value="el.mediaAccountId"
-          :label="el.nameWithAdverId"></Option>
+          :value="el.value"
+          :label="el.label"></Option>
       </template>
     </Select>
   </div>

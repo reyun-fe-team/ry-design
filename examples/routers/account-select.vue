@@ -66,7 +66,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1692207118558215(直播推广)',
-              nameWithAdverId: '直播推广(1692207118558215)',
+              label: '直播推广(1692207118558215)',
               value: '204813',
               accountName: '直播推广',
               accountId: '1692207118558215'
@@ -86,7 +86,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1700994591908871(商品账户)',
-              nameWithAdverId: '商品账户(1700994591908871)',
+              label: '商品账户(1700994591908871)',
               value: '163635',
               accountName: '商品账户',
               accountId: '1700994591908871'
@@ -106,7 +106,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1634200346909700(E客户2账号1,千万别用)',
-              nameWithAdverId: 'E客户2账号1,千万别用(1634200346909700)',
+              label: 'E客户2账号1,千万别用(1634200346909700)',
               value: '42855',
               accountName: 'E客户2账号1,千万别用',
               accountId: '1634200346909700'
@@ -119,7 +119,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1634200597136396(f客户账号2,千万别用)',
-              nameWithAdverId: 'f客户账号2,千万别用(1634200597136396)',
+              label: 'f客户账号2,千万别用(1634200597136396)',
               value: '42856',
               accountName: 'f客户账号2,千万别用',
               accountId: '1634200597136396'
@@ -139,7 +139,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1706950103950343(客户账号，勿动)',
-              nameWithAdverId: '客户账号，勿动(1706950103950343)',
+              label: '客户账号，勿动(1706950103950343)',
               value: '163642',
               accountName: '客户账号，勿动',
               accountId: '1706950103950343'
@@ -159,7 +159,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1641193686676484(游戏礼包测试)',
-              nameWithAdverId: '游戏礼包测试(1641193686676484)',
+              label: '游戏礼包测试(1641193686676484)',
               value: '204823',
               accountName: '游戏礼包测试',
               accountId: '1641193686676484'
@@ -179,7 +179,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1708873100730382(备用直达账号, 非测勿用)',
-              nameWithAdverId: '备用直达账号, 非测勿用(1708873100730382)',
+              label: '备用直达账号, 非测勿用(1708873100730382)',
               value: '204824',
               accountName: '备用直达账号, 非测勿用',
               accountId: '1708873100730382'
@@ -199,7 +199,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1693296101554189(游戏礼包测试-1)',
-              nameWithAdverId: '游戏礼包测试-1(1693296101554189)',
+              label: '游戏礼包测试-1(1693296101554189)',
               value: '19783808',
               accountName: '游戏礼包测试-1',
               accountId: '1693296101554189'
@@ -219,7 +219,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1662583944415245(礼包码专用-其他勿动)',
-              nameWithAdverId: '礼包码专用-其他勿动(1662583944415245)',
+              label: '礼包码专用-其他勿动(1662583944415245)',
               value: '19858964',
               accountName: '礼包码专用-其他勿动',
               accountId: '1662583944415245'
@@ -239,7 +239,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1705245755560973(快应用账户)',
-              nameWithAdverId: '快应用账户(1705245755560973)',
+              label: '快应用账户(1705245755560973)',
               value: '204811',
               accountName: '快应用账户',
               accountId: '1705245755560973'
@@ -259,7 +259,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1637289497376779(123)',
-              nameWithAdverId: '123(1637289497376779)',
+              label: '123(1637289497376779)',
               value: '42853',
               accountName: '123',
               accountId: '1637289497376779'
@@ -279,7 +279,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1649895381861389(热云-4)',
-              nameWithAdverId: '热云-4(1649895381861389)',
+              label: '热云-4(1649895381861389)',
               value: '1154',
               accountName: '热云-4',
               accountId: '1649895381861389'
@@ -292,7 +292,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1648987205666823(热云-5)',
-              nameWithAdverId: '热云-5(1648987205666823)',
+              label: '热云-5(1648987205666823)',
               value: '1155',
               accountName: '热云-5',
               accountId: '1648987205666823'
@@ -305,7 +305,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1649638379064323(热云-6)',
-              nameWithAdverId: '热云-6(1649638379064323)',
+              label: '热云-6(1649638379064323)',
               value: '1153',
               accountName: '热云-6',
               accountId: '1649638379064323'
@@ -325,7 +325,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1024366663709223(事件管理测试账号)',
-              nameWithAdverId: '事件管理测试账号(1024366663709223)',
+              label: '事件管理测试账号(1024366663709223)',
               value: '163645',
               accountName: '事件管理测试账号',
               accountId: '1024366663709223'
@@ -345,7 +345,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1636566821593091(添翼25)',
-              nameWithAdverId: '添翼25(1636566821593091)',
+              label: '添翼25(1636566821593091)',
               value: '1104',
               accountName: '添翼25',
               accountId: '1636566821593091'
@@ -365,7 +365,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1668896402945037(热云-A1)',
-              nameWithAdverId: '热云-A1(1668896402945037)',
+              label: '热云-A1(1668896402945037)',
               value: '1157',
               accountName: '热云-A1',
               accountId: '1668896402945037'
@@ -385,7 +385,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1686411905612807(预约测试账号)',
-              nameWithAdverId: '预约测试账号(1686411905612807)',
+              label: '预约测试账号(1686411905612807)',
               value: '204814',
               accountName: '预约测试账号',
               accountId: '1686411905612807'
@@ -398,7 +398,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1686411905085454(预约测试账号2)',
-              nameWithAdverId: '预约测试账号2(1686411905085454)',
+              label: '预约测试账号2(1686411905085454)',
               value: '19783809',
               accountName: '预约测试账号2',
               accountId: '1686411905085454'
@@ -418,7 +418,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1702893990353933()',
-              nameWithAdverId: '(1702893990353933)',
+              label: '(1702893990353933)',
               value: '19858972',
               accountName: '',
               accountId: '1702893990353933'
@@ -431,7 +431,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1703168882299911()',
-              nameWithAdverId: '(1703168882299911)',
+              label: '(1703168882299911)',
               value: '19858973',
               accountName: '',
               accountId: '1703168882299911'
@@ -444,7 +444,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1703168881218574(WIFI闪电宝-BF-02)',
-              nameWithAdverId: 'WIFI闪电宝-BF-02(1703168881218574)',
+              label: 'WIFI闪电宝-BF-02(1703168881218574)',
               value: '19858970',
               accountName: 'WIFI闪电宝-BF-02',
               accountId: '1703168881218574'
@@ -464,7 +464,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1702249679675470()',
-              nameWithAdverId: '(1702249679675470)',
+              label: '(1702249679675470)',
               value: '204822',
               accountName: '',
               accountId: '1702249679675470'
@@ -484,7 +484,7 @@ export default {
               mediaCode: 'toutiao',
               mediaName: '头条',
               name: '1677271073840135(C)',
-              nameWithAdverId: 'C(1677271073840135)',
+              label: 'C(1677271073840135)',
               value: '9946',
               accountName: 'C',
               accountId: '1677271073840135'
@@ -502,7 +502,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1702249679675470()',
-          nameWithAdverId: '(1702249679675470)',
+          label: '(1702249679675470)',
           value: '204822'
         },
         {
@@ -513,7 +513,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1702893990353933()',
-          nameWithAdverId: '(1702893990353933)',
+          label: '(1702893990353933)',
           value: '19858972'
         },
         {
@@ -524,7 +524,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1703168882299911()',
-          nameWithAdverId: '(1703168882299911)',
+          label: '(1703168882299911)',
           value: '19858973'
         },
         {
@@ -535,7 +535,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1703168881218574(WIFI闪电宝-BF-02)',
-          nameWithAdverId: 'WIFI闪电宝-BF-02(1703168881218574)',
+          label: 'WIFI闪电宝-BF-02(1703168881218574)',
           value: '19858970'
         },
         {
@@ -546,7 +546,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1637289497376779(123)',
-          nameWithAdverId: '123(1637289497376779)',
+          label: '123(1637289497376779)',
           value: '42853'
         },
         {
@@ -557,7 +557,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1677271073840135(C)',
-          nameWithAdverId: 'C(1677271073840135)',
+          label: 'C(1677271073840135)',
           value: '9946'
         },
         {
@@ -568,7 +568,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1634200346909700(E客户2账号1,千万别用)',
-          nameWithAdverId: 'E客户2账号1,千万别用(1634200346909700)',
+          label: 'E客户2账号1,千万别用(1634200346909700)',
           value: '42855'
         },
         {
@@ -579,7 +579,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1634200597136396(f客户账号2,千万别用)',
-          nameWithAdverId: 'f客户账号2,千万别用(1634200597136396)',
+          label: 'f客户账号2,千万别用(1634200597136396)',
           value: '42856'
         },
         {
@@ -590,7 +590,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1024366663709223(事件管理测试账号)',
-          nameWithAdverId: '事件管理测试账号(1024366663709223)',
+          label: '事件管理测试账号(1024366663709223)',
           value: '163645'
         },
         {
@@ -601,7 +601,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1700994591908871(商品账户)',
-          nameWithAdverId: '商品账户(1700994591908871)',
+          label: '商品账户(1700994591908871)',
           value: '163635'
         },
         {
@@ -612,7 +612,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1708873100730382(备用直达账号, 非测勿用)',
-          nameWithAdverId: '备用直达账号, 非测勿用(1708873100730382)',
+          label: '备用直达账号, 非测勿用(1708873100730382)',
           value: '204824'
         },
         {
@@ -623,7 +623,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1706950103950343(客户账号，勿动)',
-          nameWithAdverId: '客户账号，勿动(1706950103950343)',
+          label: '客户账号，勿动(1706950103950343)',
           value: '163642'
         },
         {
@@ -634,7 +634,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1705245755560973(快应用账户)',
-          nameWithAdverId: '快应用账户(1705245755560973)',
+          label: '快应用账户(1705245755560973)',
           value: '204811'
         },
         {
@@ -645,7 +645,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1636566821593091(添翼25)',
-          nameWithAdverId: '添翼25(1636566821593091)',
+          label: '添翼25(1636566821593091)',
           value: '1104'
         },
         {
@@ -656,7 +656,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1641193686676484(游戏礼包测试)',
-          nameWithAdverId: '游戏礼包测试(1641193686676484)',
+          label: '游戏礼包测试(1641193686676484)',
           value: '204823'
         },
         {
@@ -667,7 +667,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1693296101554189(游戏礼包测试-1)',
-          nameWithAdverId: '游戏礼包测试-1(1693296101554189)',
+          label: '游戏礼包测试-1(1693296101554189)',
           value: '19783808'
         },
         {
@@ -678,7 +678,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1649895381861389(热云-4)',
-          nameWithAdverId: '热云-4(1649895381861389)',
+          label: '热云-4(1649895381861389)',
           value: '1154'
         },
         {
@@ -689,7 +689,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1648987205666823(热云-5)',
-          nameWithAdverId: '热云-5(1648987205666823)',
+          label: '热云-5(1648987205666823)',
           value: '1155'
         },
         {
@@ -700,7 +700,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1649638379064323(热云-6)',
-          nameWithAdverId: '热云-6(1649638379064323)',
+          label: '热云-6(1649638379064323)',
           value: '1153'
         },
         {
@@ -711,7 +711,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1668896402945037(热云-A1)',
-          nameWithAdverId: '热云-A1(1668896402945037)',
+          label: '热云-A1(1668896402945037)',
           value: '1157'
         },
         {
@@ -722,7 +722,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1692207118558215(直播推广)',
-          nameWithAdverId: '直播推广(1692207118558215)',
+          label: '直播推广(1692207118558215)',
           value: '204813'
         },
         {
@@ -733,7 +733,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1662583944415245(礼包码专用-其他勿动)',
-          nameWithAdverId: '礼包码专用-其他勿动(1662583944415245)',
+          label: '礼包码专用-其他勿动(1662583944415245)',
           value: '19858964'
         },
         {
@@ -744,7 +744,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1686411905612807(预约测试账号)',
-          nameWithAdverId: '预约测试账号(1686411905612807)',
+          label: '预约测试账号(1686411905612807)',
           value: '204814'
         },
         {
@@ -755,7 +755,7 @@ export default {
           mediaCode: 'toutiao',
           mediaName: '头条',
           name: '1686411905085454(预约测试账号2)',
-          nameWithAdverId: '预约测试账号2(1686411905085454)',
+          label: '预约测试账号2(1686411905085454)',
           value: '19783809'
         }
       ],
