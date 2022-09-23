@@ -125,9 +125,6 @@ export default {
   DeleteModals,
   TextEmojInput,
   TextInputList,
-<<<<<<< HEAD
-  AccountSelect
-=======
+  AccountSelect,
   CascaderTransfer
->>>>>>> master
 }
