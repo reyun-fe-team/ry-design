@@ -120,7 +120,6 @@ export default {
         this.accountQueryInfo.isAfterSelect = false
         setTimeout(() => {
           this.$refs.select.setQuery(this.accountQueryInfo.queryKey)
-          this.accountFilterMethod(this.accountQueryInfo.queryKey)
         }, 20)
       }
     },
@@ -135,10 +134,14 @@ export default {
         return
       }
       if (!this.grouping) {
-        this.accountList = this.accountListClone.filter(item => item.name.indexOf(query) > -1)
+        this.accountList = this.accountListClone.filter(
+          item => item.name.toLowerCase().indexOf(query.toLowerCase()) > -1
+        )
       } else {
         this.accountList = _cloneDeep(this.accountListClone).reduce((list, current) => {
-          let filter = current.children.filter(item => item.name.indexOf(query) > -1)
+          let filter = current.children.filter(
+            item => item.name.toLowerCase().indexOf(query.toLowerCase()) > -1
+          )
           current.children = filter
           if (filter.length) {
             list.push(current)
