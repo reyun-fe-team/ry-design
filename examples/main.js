@@ -122,6 +122,10 @@ const router = new VueRouter({
     {
       path: '/account-select',
       component: resolve => require(['./routers/account-select'], resolve)
+    },
+    {
+      path: '/cascader-transfer',
+      component: resolve => require(['./routers/cascader-transfer'], resolve)
     }
   ]
 })

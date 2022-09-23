@@ -92,7 +92,7 @@
                     theme="light"
                     placement="top"
                     :max-width="200"
-                    :content="item.title">
+                    :content="item.tooltip || item.title">
                     <span :class="prefixCls + '-view-list-content-item-title'">
                       {{ item.title }}
                     </span>

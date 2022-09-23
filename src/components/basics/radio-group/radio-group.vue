@@ -9,32 +9,65 @@
         :key="e.value"
         :disabled="isDisabledAll || e.disabled || isDisabledItemFun(e)"
         :label="e.value">
-        <span>{{ e.label }}</span>
-        <Tooltip
-          v-if="e.tooltip"
-          :transfer="true"
-          :delay="delay"
-          :max-width="maxWidth"
-          :placement="placement"
-          theme="light">
-          <div
-            slot="content"
-            class="display-flex flex-direction-column">
-            <template v-if="isArray(e.tooltip)">
-              <p
-                v-for="(item, index) in e.tooltip"
-                :key="index"
-                v-text="item"></p>
-            </template>
-            <template v-if="isString(e.tooltip)">
-              <p v-text="e.tooltip"></p>
-            </template>
-          </div>
-          <Icon
-            :type="iconIview"
-            class="cursor-pointer icon-question tip-icon"
-            size="16"></Icon>
-        </Tooltip>
+        <template
+          v-if="
+            !(isDisabledAll || e.disabled || isDisabledItemFun(e)) ||
+            ((isDisabledAll || e.disabled || isDisabledItemFun(e)) && !e.disabledTooltip)
+          ">
+          <span>{{ e.label }}</span>
+          <Tooltip
+            v-if="e.tooltip"
+            :transfer="true"
+            :delay="delay"
+            :max-width="maxWidth"
+            :placement="placement"
+            theme="light">
+            <div
+              slot="content"
+              class="display-flex flex-direction-column">
+              <template v-if="isArray(e.tooltip)">
+                <p
+                  v-for="(item, index) in e.tooltip"
+                  :key="index"
+                  v-text="item"></p>
+              </template>
+              <template v-if="isString(e.tooltip)">
+                <p v-text="e.tooltip"></p>
+              </template>
+            </div>
+            <Icon
+              :type="iconIview"
+              class="cursor-pointer icon-question tip-icon"
+              size="16"></Icon>
+          </Tooltip>
+        </template>
+        <template v-else>
+          <Tooltip
+            v-if="e.disabledTooltip"
+            :transfer="true"
+            :delay="delay"
+            :max-width="maxWidth"
+            :placement="placement"
+            theme="light">
+            <span>{{ e.label }}</span>
+            <div
+              slot="content"
+              class="display-flex flex-direction-column">
+              <template v-if="isArray(e.disabledTooltip)">
+                <p
+                  v-for="(item, index) in e.disabledTooltip"
+                  :key="index"
+                  v-text="item"></p>
+              </template>
+              <template v-if="isString(e.disabledTooltip)">
+                <p v-text="e.disabledTooltip"></p>
+              </template>
+            </div>
+          </Tooltip>
+          <template v-else>
+            <span>{{ e.label }}</span>
+          </template>
+        </template>
       </Radio>
     </RadioGroup>
   </div>

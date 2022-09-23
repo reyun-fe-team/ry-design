@@ -18,6 +18,7 @@ import TextEmojInput from './components/basics/text-emoj-input'
 import Icon from './components/basics/icon'
 import TextInputList from './components/basics/text-input-list'
 import Wildcard from './components/basics/wildcard'
+import CascaderTransfer from './components/basics/cascader-transfer'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -77,7 +78,8 @@ const components = [
   Icon,
   TextInputList,
   Wildcard,
-  AccountSelect
+  AccountSelect,
+  CascaderTransfer
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -123,5 +125,9 @@ export default {
   DeleteModals,
   TextEmojInput,
   TextInputList,
+<<<<<<< HEAD
   AccountSelect
+=======
+  CascaderTransfer
+>>>>>>> master
 }
