@@ -44,6 +44,19 @@
       @click="handleSubmit('formInline')">
       Signin
     </Button>
+    <Dropdown>
+      <a href="javascript:void(0)">
+        下拉菜单
+        <Icon type="ios-arrow-down"></Icon>
+      </a>
+      <DropdownMenu slot="list">
+        <DropdownItem disabled>驴打滚123123</DropdownItem>
+        <DropdownItem disabled>炸酱面</DropdownItem>
+        <DropdownItem disabled>豆汁儿</DropdownItem>
+        <DropdownItem>冰糖葫芦</DropdownItem>
+        <DropdownItem divided>北京烤鸭</DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
   </div>
 </template>
 
