@@ -184,6 +184,9 @@ export default {
         this.initData(now)
       }
     },
+    value() {
+      this.keyword = this.value
+    },
     keyword() {
       this.emitData()
     }
