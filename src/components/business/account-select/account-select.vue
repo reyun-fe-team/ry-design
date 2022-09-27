@@ -9,7 +9,7 @@
       multiple
       :style="{ width: width + 'px' }"
       :max-tag-count="maxTagCount"
-      placeholder="请搜索或选择媒体账户"
+      :placeholder="placeholder"
       :max-tag-placeholder="maxTagPlaceholder"
       @on-select="handleSelect"
       @on-open-change="handleOpenChange"
@@ -46,8 +46,8 @@ export default {
   name: prefixCls,
   props: {
     value: {
-      type: [String, Number, Array],
-      default: ''
+      type: [Array],
+      default: () => []
     },
     data: {
       type: Array,
@@ -67,18 +67,28 @@ export default {
     maxTagCount: {
       type: Number,
       default: 1
+    },
+    // 跨主体
+    crossSubject: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: String,
+      default: '请搜索或选择媒体账户'
     }
   },
   data() {
+    const accountList = this.getFilterAccountList()
     return {
       accountQueryInfo: {
         isAfterSelect: false,
         queryKey: ''
       },
-      accountList: this.data,
-      accountListClone: this.data,
+      accountList,
+      accountListClone: _cloneDeep(accountList),
       current: this.value,
-      prefixCls: prefixCls
+      prefixCls
     }
   },
   computed: {
@@ -92,9 +102,10 @@ export default {
     },
     data: {
       deep: true,
-      handler(newVal) {
-        this.accountList = newVal
-        this.accountListClone = _cloneDeep(newVal)
+      handler() {
+        const accountList = this.getFilterAccountList()
+        this.accountList = accountList
+        this.accountListClone = _cloneDeep(accountList)
       }
     },
     current(value, oldVal) {
@@ -102,11 +113,25 @@ export default {
       if (JSON.stringify(value) === JSON.stringify(oldVal)) {
         return
       }
+      if (this.grouping && !this.crossSubject) {
+        this.handleChangeAccount(value)
+      }
       this.$emit('input', value)
       this.$emit('on-change', value)
     }
   },
   methods: {
+    // 设置账号disabled
+    getFilterAccountList() {
+      let _data = _cloneDeep(this.data)
+      if (this.grouping && !this.crossSubject) {
+        const first = this.value[0]
+        _data.forEach(val => {
+          val.disabled = first ? !val.children.some(item => item.value === first) : false
+        })
+      }
+      return _data
+    },
     handleSelect() {
       this.accountQueryInfo.isAfterSelect = true
     },
@@ -135,12 +160,12 @@ export default {
       }
       if (!this.grouping) {
         this.accountList = this.accountListClone.filter(
-          item => item.name.toLowerCase().indexOf(query.toLowerCase()) > -1
+          item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
         )
       } else {
         this.accountList = _cloneDeep(this.accountListClone).reduce((list, current) => {
           let filter = current.children.filter(
-            item => item.name.toLowerCase().indexOf(query.toLowerCase()) > -1
+            item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
           )
           current.children = filter
           if (filter.length) {
@@ -152,6 +177,25 @@ export default {
     },
     maxTagPlaceholder(value) {
       return value
+    },
+    // 选择账号
+    handleChangeAccount(newValue) {
+      const first = newValue[0]
+      this.accountList.forEach(val => {
+        val.disabled = first ? !val.children.some(item => item.value === first) : false
+      })
+      this.accountListClone.forEach(val => {
+        val.disabled = first ? !val.children.some(item => item.value === first) : false
+      })
+      let find = this.accountList.find(val => {
+        return val.children.some(item => item.value === first)
+      })
+      if (find) {
+        this.current = newValue.map(item => {
+          // 保障顺序
+          return find.children.find(val => item === val.value)
+        })
+      }
     }
   }
 }
