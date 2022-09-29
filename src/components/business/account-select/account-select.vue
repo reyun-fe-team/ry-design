@@ -5,12 +5,12 @@
       v-model="current"
       :class="classes"
       filterable
-      clearable
       multiple
       :style="{ width: width + 'px' }"
       :max-tag-count="maxTagCount"
       :placeholder="placeholder"
       :max-tag-placeholder="maxTagPlaceholder"
+      :disabled="disabled"
       @on-select="handleSelect"
       @on-open-change="handleOpenChange"
       @on-query-change="handleQueryChange">
@@ -56,7 +56,7 @@ export default {
       }
     },
     width: {
-      type: Number,
+      type: [Number, String],
       default: 400
     },
     // 组形态
@@ -76,6 +76,14 @@ export default {
     placeholder: {
       type: String,
       default: '请搜索或选择媒体账户'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    transfer: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -147,11 +155,13 @@ export default {
           this.$refs.select.setQuery(this.accountQueryInfo.queryKey)
         }, 20)
       }
+      this.$emit('on-query-change', data)
     },
     handleOpenChange(val) {
       if (!val) {
         this.$refs.select.query = ''
       }
+      this.$emit('on-open-change', val)
     },
     accountFilterMethod(query) {
       if (!query) {

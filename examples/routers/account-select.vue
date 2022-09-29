@@ -81,7 +81,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '直播推广(1692207118558215)',
+              label: '直播推广',
               value: '204813'
             }
           ]
@@ -91,7 +91,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '商品账户(1700994591908871)',
+              label: '乐凡互娱01',
               value: '163635'
             }
           ]
@@ -101,11 +101,11 @@ export default {
           disabled: false,
           children: [
             {
-              label: 'E客户2账号1,千万别用(1634200346909700)',
+              label: '广州四三九九01',
               value: '42855'
             },
             {
-              label: 'f客户账号2,千万别用(1634200597136396)',
+              label: '广州四三九九02',
               value: '42856'
             }
           ]
@@ -115,7 +115,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '客户账号，勿动(1706950103950343)',
+              label: '客户账号，勿动',
               value: '163642'
             }
           ]
@@ -125,7 +125,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '游戏礼包测试(1641193686676484)',
+              label: '游戏礼包测试',
               value: '204823'
             }
           ]
@@ -135,7 +135,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '备用直达账号, 非测勿用(1708873100730382)',
+              label: '淘宝01',
               value: '204824'
             }
           ]
@@ -145,7 +145,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '游戏礼包测试-1(1693296101554189)',
+              label: '游戏礼包测试-1',
               value: '19783808'
             }
           ]
@@ -155,7 +155,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '礼包码专用-其他勿动(1662583944415245)',
+              label: '礼包码专用-其他勿动',
               value: '19858964'
             }
           ]
@@ -165,7 +165,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '快应用账户(1705245755560973)',
+              label: '快应用账户',
               value: '204811'
             }
           ]
@@ -175,7 +175,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '123(1637289497376779)',
+              label: '北京米花01',
               value: '42853'
             }
           ]
@@ -185,15 +185,15 @@ export default {
           disabled: false,
           children: [
             {
-              label: '热云-4(1649895381861389)',
+              label: '热云-1',
               value: '1154'
             },
             {
-              label: '热云-5(1648987205666823)',
+              label: '热云-2',
               value: '1155'
             },
             {
-              label: '热云-6(1649638379064323)',
+              label: '热云-3',
               value: '1153'
             }
           ]
@@ -203,7 +203,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '事件管理测试账号(1024366663709223)',
+              label: '名药汇医01',
               value: '163645'
             }
           ]
@@ -213,7 +213,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '添翼25(1636566821593091)',
+              label: '汕头市添翼01',
               value: '1104'
             }
           ]
@@ -223,7 +223,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '热云-A1(1668896402945037)',
+              label: '球球-A1',
               value: '1157'
             }
           ]
@@ -233,11 +233,11 @@ export default {
           disabled: false,
           children: [
             {
-              label: '预约测试账号(1686411905612807)',
+              label: '预约测试账号',
               value: '204814'
             },
             {
-              label: '预约测试账号2(1686411905085454)',
+              label: '预约测试账号2',
               value: '19783809'
             }
           ]
@@ -247,15 +247,15 @@ export default {
           disabled: false,
           children: [
             {
-              label: '(1702893990353933)',
+              label: '精灵02',
               value: '19858972'
             },
             {
-              label: '(1703168882299911)',
-              value: '1703168882299911'
+              label: '精灵03',
+              value: '19858222'
             },
             {
-              label: 'WIFI闪电宝-BF-02(1703168881218574)',
+              label: '精灵04',
               value: '19858970'
             }
           ]
@@ -265,7 +265,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: '(1702249679675470)',
+              label: '欣网01',
               value: '204822'
             }
           ]
@@ -275,7 +275,7 @@ export default {
           disabled: false,
           children: [
             {
-              label: 'C(1677271073840135)',
+              label: '掌沃06',
               value: '9946'
             }
           ]
@@ -283,100 +283,48 @@ export default {
       ],
       accountList: [
         {
-          label: '(1702249679675470)',
+          label: '热云数据01',
           value: '204822'
         },
         {
-          label: '(1702893990353933)',
+          label: '热云数据02',
           value: '19858972'
         },
         {
-          label: '(1703168882299911)',
+          label: '热云数据03',
           value: '19858973'
         },
         {
-          label: 'WIFI闪电宝-BF-02(1703168881218574)',
+          label: '热云数据04',
           value: '19858970'
         },
         {
-          label: '123(1637289497376779)',
+          label: '热云数据05',
           value: '42853'
         },
         {
-          label: 'C(1677271073840135)',
+          label: '热云数据06',
           value: '9946'
         },
         {
-          label: 'E客户2账号1,千万别用(1634200346909700)',
+          label: '热云数据07',
           value: '42855'
         },
         {
-          label: 'f客户账号2,千万别用(1634200597136396)',
+          label: '热云数据08',
           value: '42856'
         },
         {
-          label: '事件管理测试账号(1024366663709223)',
+          label: '热云数据09',
           value: '163645'
         },
         {
-          label: '商品账户(1700994591908871)',
+          label: '热云数据10',
           value: '163635'
         },
         {
-          label: '备用直达账号, 非测勿用(1708873100730382)',
+          label: '热云数据11',
           value: '204824'
-        },
-        {
-          label: '客户账号，勿动(1706950103950343)',
-          value: '163642'
-        },
-        {
-          label: '快应用账户(1705245755560973)',
-          value: '204811'
-        },
-        {
-          label: '添翼25(1636566821593091)',
-          value: '1104'
-        },
-        {
-          label: '游戏礼包测试(1641193686676484)',
-          value: '204823'
-        },
-        {
-          label: '游戏礼包测试-1(1693296101554189)',
-          value: '19783808'
-        },
-        {
-          label: '热云-4(1649895381861389)',
-          value: '1154'
-        },
-        {
-          label: '热云-5(1648987205666823)',
-          value: '1155'
-        },
-        {
-          label: '热云-6(1649638379064323)',
-          value: '1153'
-        },
-        {
-          label: '热云-A1(1668896402945037)',
-          value: '1157'
-        },
-        {
-          label: '直播推广(1692207118558215)',
-          value: '204813'
-        },
-        {
-          label: '礼包码专用-其他勿动(1662583944415245)',
-          value: '19858964'
-        },
-        {
-          label: '预约测试账号(1686411905612807)',
-          value: '204814'
-        },
-        {
-          label: '预约测试账号2(1686411905085454)',
-          value: '19783809'
         }
       ],
       formInline: {
