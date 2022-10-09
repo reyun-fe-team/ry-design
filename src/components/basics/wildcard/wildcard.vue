@@ -8,6 +8,7 @@
         <div :class="prefixCls + '-keyword'">
           <Input
             v-model="keyword"
+            :clearable="clearable"
             :disabled="disabled"
             type="text"
             placeholder="请输入"
@@ -46,7 +47,10 @@
                 :key="item.title"
                 :class="[
                   prefixCls + '-list-name-rule-item',
-                  { [prefixCls + '-list-name-rule-item-active']: keyword.includes(item.title) }
+                  {
+                    [prefixCls + '-list-name-rule-item-active']:
+                      keyword.includes(item.title) || keyword.includes(item.alias)
+                  }
                 ]"
                 :data-value="item.title">
                 {{ prefix }}{{ item.label }}
@@ -155,6 +159,10 @@ export default {
     showWordLimit: {
       type: Boolean,
       default: true
+    },
+    clearable: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

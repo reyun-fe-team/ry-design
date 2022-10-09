@@ -20,6 +20,7 @@ option: {
     label: '',
     labelWidth: 104
 }
+clearable  清空
 
 
 Event

@@ -8,13 +8,15 @@
       @submit.prevent>
       <rd-wildcard
         v-model="formInline.campaignName"
+        clearable
         :option="{ prop: 'campaignName', label: '计划' }"
         :wildcard-label-config="{ label: 'asd', width: 68, tooltip: '123' }"
         :data="data"
         join-symbol="_"
         :save-rule="true"
         :show-word-limit="false"
-        :show-save-rule="false"></rd-wildcard>
+        :show-save-rule="false"
+        @on-name-programs="onNamePrograms"></rd-wildcard>
     </Form>
     <Button
       type="primary"
@@ -23,6 +25,7 @@
     </Button>
     <p>
       {{ formInline.campaignName }}
+      {{ formInline.ids }}
     </p>
   </div>
 </template>
@@ -39,7 +42,7 @@ export default {
           title: '{投放方式}',
           tooltip: 'tooltiptooltiptooltiptooltiptooltiptooltiptooltiptooltiptooltiptooltip'
         },
-        { label: '+序号', id: 'b', title: '{序号}' },
+        { label: '+序号', id: 'b', title: '{序号_01}', alias: '{序号' },
         { label: '+日期', id: 'c', title: '{日期}' },
         { label: '+定向包名称', id: 'd', title: '{定向包名称}' },
         {
@@ -58,7 +61,8 @@ export default {
         }
       ],
       formInline: {
-        campaignName: ''
+        campaignName: '',
+        ids: []
       },
       ruleInline: {
         campaignName: [
@@ -72,6 +76,9 @@ export default {
     }
   },
   methods: {
+    onNamePrograms(value) {
+      this.formInline.ids = value
+    },
     getStrLen(str) {
       if (typeof str === 'string' && str) {
         return str.split('').reduce((total, cur) => {
