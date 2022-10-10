@@ -5,6 +5,22 @@
         :prop="mergeOptions.prop"
         :label="mergeOptions.label"
         :label-width="mergeOptions.labelWidth">
+        <label
+          v-if="mergeOptions.tooltip"
+          slot="label"
+          :style="{ width: mergeOptions.labelWidth + 'px' }">
+          {{ mergeOptions.label }}
+          <Tooltip
+            placement="top"
+            max-width="410"
+            theme="light"
+            :content="mergeOptions.tooltip">
+            <Icon
+              type="ios-help-circle-outline"
+              size="16"
+              class="cursor-pointer icon-question tip-icon"></Icon>
+          </Tooltip>
+        </label>
         <div :class="prefixCls + '-keyword'">
           <Input
             v-model="keyword"
