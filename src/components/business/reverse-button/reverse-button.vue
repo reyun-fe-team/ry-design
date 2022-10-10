@@ -44,7 +44,7 @@ export default {
     },
     suffixEditText: {
       type: String,
-      default: '编辑'
+      default: '配置'
     },
     width: {
       type: [Number, String],
