@@ -18,7 +18,8 @@ wildcardLabelConfig: {
 option: {
     prop: '',
     label: '',
-    labelWidth: 104
+    labelWidth: 104,
+    tooltip: ''  // 提示内容
 }
 clearable  清空
 
