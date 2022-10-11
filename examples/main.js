@@ -126,6 +126,10 @@ const router = new VueRouter({
     {
       path: '/cascader-transfer',
       component: resolve => require(['./routers/cascader-transfer'], resolve)
+    },
+    {
+      path: '/exception',
+      component: resolve => require(['./routers/exception'], resolve)
     }
   ]
 })
