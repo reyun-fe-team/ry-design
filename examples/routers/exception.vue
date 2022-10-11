@@ -8,11 +8,3 @@
     <rd-exception type="500" />
   </main>
 </template>
-<script>
-export default {
-  data() {
-    return {}
-  },
-  methods: {}
-}
-</script>

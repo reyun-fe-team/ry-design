@@ -59,3 +59,31 @@
         }
     }
 }
+
+@media screen and (max-width: @screen-md) {
+    .@{exception} {
+        &-img {
+            padding-right: 88px;
+        }
+    }
+}
+
+@media screen and (max-width: @screen-sm) {
+    .@{exception} {
+        display: block;
+        text-align: center;
+        &-img {
+            margin: 0 auto 24px;
+            padding-right: 0;
+        }
+    }
+}
+
+@media screen and (max-width: @screen-xs) {
+    .@{exception} {
+        &-img {
+            margin-bottom: -24px;
+            overflow: hidden;
+        }
+    }
+}
