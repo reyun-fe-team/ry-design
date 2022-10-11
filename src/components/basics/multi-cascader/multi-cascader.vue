@@ -1,7 +1,7 @@
 <!--
  * @Author: yangyufeng
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-05-17 15:55:20
+ * @LastEditTime: 2022-10-11 11:56:28
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
  * @Description: 下拉多选联动
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader.vue
@@ -65,7 +65,7 @@
         <div
           :class="[prefixCls + '-ground']"
           @click.stop>
-          <div>
+          <div :class="[prefixCls + '-ground-pos']">
             <multi-cascader-list
               :list="root.childNodes"
               :level="1"
@@ -122,10 +122,12 @@ export default {
   },
   props: {
     // 多选时最多显示多少个 tag
+    // eslint-disable-next-line vue/require-default-prop
     maxTagCount: {
       type: Number
     },
     // 隐藏 tag 时显示的内容，参数是剩余项数量
+    // eslint-disable-next-line vue/require-default-prop
     maxTagPlaceholder: {
       type: Function
     },
@@ -186,6 +188,7 @@ export default {
       default: '请选择'
     },
     // 最大选择数 使用该属性不能使用全选功能
+    // eslint-disable-next-line vue/require-default-prop
     maxCount: {
       type: Number
     },
@@ -227,6 +230,7 @@ export default {
       default: false
     },
     // 自定义搜索方法
+    // eslint-disable-next-line vue/require-default-prop
     filterMethod: {
       type: Function
     },

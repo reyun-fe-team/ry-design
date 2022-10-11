@@ -1,14 +1,15 @@
 <template>
   <div>
-    <rd-multi-cascader v-model="list"
-                       style="width: 200px"
-                       :echo-label="labels"
-                       :data="data2"
-                       sync
-                       :sync-call-back="syncCallBack"
-                       @getLables="getLables"
-                       :maxTagCount="3"
-                       :maxTagPlaceholder="(num) => `更多${num}个`"></rd-multi-cascader>
+    <!-- sync
+    :sync-call-back="syncCallBack" -->
+    <rd-multi-cascader
+      v-model="list"
+      style="width: 200px"
+      :echo-label="labels"
+      :data="data"
+      :max-tag-count="3"
+      :max-tag-placeholder="num => `更多${num}个`"
+      @getLables="getLables"></rd-multi-cascader>
   </div>
 </template>
 <script>
