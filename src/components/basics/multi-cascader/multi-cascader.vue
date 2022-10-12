@@ -1,7 +1,7 @@
 <!--
  * @Author: yangyufeng
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-10-11 11:56:28
+ * @LastEditTime: 2022-10-12 11:59:18
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
  * @Description: 下拉多选联动
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader.vue
@@ -17,15 +17,15 @@
       v-bind="$attrs"
       @on-visible-change="visibleChange">
       <div
-        :class="[prefixCls + '-labels']"
+        :class="[prefixCls + '-labels', 'small-scroll-y']"
         @mouseenter="handleMouseenter"
         @mouseleave="handleMouseleave">
         <div
           v-if="selectedLabels.length > 0"
           :class="[prefixCls + '-labels-tags']">
           <Tag
-            v-for="tag in newSelectedLabels"
-            :key="getKey(tag)"
+            v-for="(tag, index) in newSelectedLabels"
+            :key="index"
             :fade="false"
             closable
             @on-close="removeOne(tag)">
@@ -65,8 +65,10 @@
         <div
           :class="[prefixCls + '-ground']"
           @click.stop>
+          <!-- 根节点面板 -->
           <div :class="[prefixCls + '-ground-pos']">
             <multi-cascader-list
+              :sync="sync"
               :list="root.childNodes"
               :level="1"
               :active-list="activeList"
@@ -75,17 +77,20 @@
               :use-max="useMax"
               :label-key="labelKey"
               :expand-trigger="expandTrigger"
+              @handle-showEmptyWrap="handleShowEmptyWrap"
               @handle-click="handleClick"
               @handle-check="handleCheck"
               @handle-checkAll="handleCheckAll"></multi-cascader-list>
           </div>
+          <!-- 子级节点面板 -->
           <template v-for="item in maxLevellist">
             <div
               v-if="item.rendered && showData[item.id].length"
               v-show="activeList.length >= item.id"
-              :key="getKey(item)"
+              :key="item.id"
               :class="[prefixCls + '-ground-pos']">
               <multi-cascader-list
+                :sync="sync"
                 :list="showData[item.id]"
                 :level="item.id + 1"
                 :active-list="activeList"
@@ -94,11 +99,18 @@
                 :use-max="useMax"
                 :label-key="labelKey"
                 :expand-trigger="expandTrigger"
+                @handle-showEmptyWrap="handleShowEmptyWrap"
                 @handle-click="handleClick"
                 @handle-check="handleCheck"
                 @handle-checkAll="handleCheckAll"></multi-cascader-list>
             </div>
           </template>
+          <!-- 暂无数据面板 -->
+          <div
+            v-if="isShowEmptyData.show"
+            :class="[prefixCls + '-ground-pos']">
+            <div :class="[prefixCls + '-empty']">暂无数据</div>
+          </div>
         </div>
       </div>
     </Dropdown>
@@ -295,7 +307,12 @@ export default {
       activeList: [],
       // 搜索
       searchText: '',
-      searchResult: []
+      searchResult: [],
+      // 暂无数据显示
+      isShowEmptyData: {
+        show: false,
+        level: 0
+      }
     }
   },
   computed: {
@@ -313,12 +330,13 @@ export default {
       if (maxTagCount === undefined) {
         return ''
       }
-      const num = selectedLabels.length - maxTagCount
+      const selectedNum = selectedLabels.length
+      const num = selectedNum - maxTagCount
       if (num > 0) {
         if (maxTagPlaceholder) {
-          return maxTagPlaceholder(num)
+          return maxTagPlaceholder(num, selectedNum)
         } else {
-          return `+ ${num}...`
+          return `${selectedNum}`
         }
       } else {
         return ''
@@ -459,6 +477,10 @@ export default {
         let v = c === 'x' ? r : (r & 0x3) | 0x8
         return v.toString(16)
       })
+    },
+    // 显示暂无数据面板
+    handleShowEmptyWrap(data) {
+      this.isShowEmptyData = data
     },
     // 面板一层点击
     handleClick(node, levelIndex, level) {
