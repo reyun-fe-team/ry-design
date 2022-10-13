@@ -51,46 +51,46 @@ const consoleLogVersion = () => {
 }
 consoleLogVersion()
 
-const components = [
-  Transfer,
-  PrefixContainer,
-  MultiCascader,
-  SingleHeader,
-  PageHeader,
-  Breadcrumb,
-  MultiRadioButton,
-  AccountList,
-  PageHeaderModule,
-  RadioGroup,
-  Modals,
-  EditRowBid,
-  TableColumns,
-  ReverseButton,
-  LayoutModuleConfig,
-  LayoutModuleView,
-  DraggableCard,
-  DeleteModals,
-  TableMultiInputs,
-  TextItemShow,
-  WordLimit,
-  BatchUploadXls,
-  Ellipsis,
-  TextEmojInput,
-  Icon,
-  TextInputList,
-  Wildcard,
-  AccountSelect,
-  CascaderTransfer,
-  Exception
-]
+const components = {
+  RdTransfer: Transfer,
+  RdPrefixContainer: PrefixContainer,
+  RdMultiCascader: MultiCascader,
+  RdSingleHeader: SingleHeader,
+  RdPageHeader: PageHeader,
+  RdBreadcrumb: Breadcrumb,
+  RdMultiRadioButton: MultiRadioButton,
+  RdAccountList: AccountList,
+  RdPageHeaderModule: PageHeaderModule,
+  RdRadioGroup: RadioGroup,
+  RdModals: Modals,
+  RdEditRowBid: EditRowBid,
+  RdTableColumns: TableColumns,
+  RdReverseButton: ReverseButton,
+  RdLayoutModuleConfig: LayoutModuleConfig,
+  RdLayoutModuleView: LayoutModuleView,
+  RdDraggableCard: DraggableCard,
+  RdDeleteModals: DeleteModals,
+  RdTableMultiInputs: TableMultiInputs,
+  RdTextItemShow: TextItemShow,
+  RdWordLimit: WordLimit,
+  RdBatchUploadXls: BatchUploadXls,
+  RdEllipsis: Ellipsis,
+  RdTextEmojInput: TextEmojInput,
+  RdIcon: Icon,
+  RdTextInputList: TextInputList,
+  RdWildcard: Wildcard,
+  RdAccountSelect: AccountSelect,
+  RdCascaderTransfer: CascaderTransfer,
+  RdException: Exception
+}
 const directives = {
   'line-clamp': lineClamp,
   'click-outside': clickOutside
 }
 
 const install = function (Vue) {
-  components.forEach(component => {
-    Vue.component(component.name, component)
+  Object.keys(components).forEach(key => {
+    Vue.component(key, components[key])
   })
   Object.keys(directives).forEach(key => {
     Vue.directive(key, directives[key])
