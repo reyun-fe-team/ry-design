@@ -105,6 +105,11 @@ export default {
       type: Number,
       default: 3
     },
+    // 最大表情添加数
+    maxEmoji: {
+      type: Number,
+      default: 4
+    },
     // 可以使用表情
     useEmoj: {
       type: Boolean,
@@ -209,8 +214,8 @@ export default {
     transformText2Html(text) {
       return text
     },
-    getFaceHtml(icon, type) {
-      const str = `<img style="pointer-events: none; margin-left: 4px; vertical-align: middle; " src="${icon}" draggable="false" width="16" height="16" data-type="${type}">`
+    getFaceHtml(icon, type, name) {
+      const str = `<img style="pointer-events: none; margin-left: 4px; vertical-align: middle; " src="${icon}" draggable="false" width="16" height="16" data-type="${type}" data-name="${name}">`
       return str
     },
     insertEnter() {
@@ -220,15 +225,19 @@ export default {
         return
       }
       if (this.curEmojInput.getEnters() >= this.maxEnter) {
-        this.$Message.error(`最多能插入${this.maxEnter}换行`)
+        this.$Message.error(`最多能插入${this.maxEnter + 1}个换行`)
         return
       }
-      let html = `${this.getFaceHtml(this.middle.addLineFeedIcon, 'enter')}<br>&nbsp;`
+      let html = `${this.getFaceHtml(this.middle.addLineFeedIcon, 'enter', '[回车]')}<br>&nbsp;`
       this.curEmojInput.insertHtmlMark(html)
     },
     insertFace(val) {
+      if (this.curEmojInput.getEmojiNum() >= this.maxEmoji) {
+        this.$Message.warning(`建议不超过${this.maxEmoji}个表情包`)
+        return
+      }
       this.faceIcon = val.url
-      let html = this.getFaceHtml(this.faceIcon, 'emoj')
+      let html = this.getFaceHtml(this.faceIcon, 'emoj', val.value)
       this.curEmojInput.insertHtmlMark(html)
     },
     // 插入文本
@@ -290,7 +299,7 @@ export default {
         }
 
         this.$emit('on-error', index, errors)
-      }, 600)
+      })
     },
     getValue() {
       let index = 0
