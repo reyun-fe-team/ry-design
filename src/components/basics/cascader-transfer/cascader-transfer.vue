@@ -38,6 +38,15 @@
           <span
             v-show="selectDatas.length"
             class="font-1-normal">
+            <slot name="btn">
+              <a
+                v-if="isExport"
+                style="margin-right: 5px"
+                href="javascript:void(0);"
+                @click="exportAll">
+                导出
+              </a>
+            </slot>
             <a
               href="javascript:void(0);"
               @click="clearAll">
@@ -56,8 +65,15 @@
         <ul
           v-else
           :class="prefixCls + '-select-wrapper-content'">
+          <Input
+            v-if="isSelectedSearch"
+            v-model="selectedKeyword"
+            :class="prefixCls + '-select-wrapper-content-search'"
+            clearable
+            search
+            :placeholder="selectedSearchPlaceholder" />
           <li
-            v-for="(item, index) in selectDatas"
+            v-for="(item, index) in dynamicSelectList"
             :key="`selected${index}`"
             :class="prefixCls + '-select-wrapper-content-item-wrapper'">
             <span
@@ -148,6 +164,18 @@ export default {
     selectedLabelName: {
       type: String,
       default: ''
+    },
+    selectedSearchPlaceholder: {
+      type: String,
+      default: '请输入省/市/区县搜索'
+    },
+    isSelectedSearch: {
+      type: Boolean,
+      default: false
+    },
+    isExport: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -155,7 +183,8 @@ export default {
       prefixCls,
       svg,
       mutiDatas: this.datas,
-      selectDatas: []
+      selectDatas: [],
+      selectedKeyword: ''
     }
   },
   computed: {
@@ -164,6 +193,13 @@ export default {
     },
     selectedLabel() {
       return this.selectedLabelName || this.labelName
+    },
+    dynamicSelectList() {
+      if (this.selectedKeyword) {
+        return this.selectDatas.filter(f => f.label.indexOf(this.selectedKeyword) > -1)
+      } else {
+        return this.selectDatas
+      }
     }
   },
   watch: {
@@ -183,14 +219,14 @@ export default {
           this.mutiDatas = val
         })
       }
+    },
+    mutiDatas: {
+      handler() {
+        this.$nextTick(() => {
+          this.setDefaultDatas(this.value)
+        })
+      }
     }
-    // mutiDatas: {
-    //   handler() {
-    //     this.$nextTick(() => {
-    //       this.setDefaultDatas(this.value)
-    //     })
-    //   }
-    // }
   },
   methods: {
     update() {
@@ -355,6 +391,13 @@ export default {
     clearAll() {
       // 调用子组件的清空实现
       this.$refs.muti.handleCheckAll(false)
+    },
+    // 导出选中数据
+    exportAll() {
+      let list = this.selectDatas.map(item => {
+        return item[this.valueName]
+      })
+      this.$emit('export', list)
     }
   }
 }
