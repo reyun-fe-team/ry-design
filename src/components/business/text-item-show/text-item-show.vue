@@ -1,8 +1,8 @@
 <!--
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:43:38
- * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-09-19 16:02:07
+ * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
+ * @LastEditTime: 2022-10-18 16:18:15
  * @FilePath: /ry-design/src/components/business/text-item-show/text-item-show.vue
  * @Description: 极速创建基础信息，单项显示控件
 -->
@@ -42,6 +42,14 @@
     <div
       v-if="type === 'title'"
       :class="[prefixCls + '-title']">
+      <div
+        v-if="getTitleThumbnail().show"
+        class="title-thumbnail">
+        <img
+          :style="getTitleThumbnail().style"
+          :src="getTitleThumbnail().src"
+          :onerror="onerrorImgSrc" />
+      </div>
       <div :class="[prefixCls + '-title-text', 'show-text']">
         <div class="main-title">{{ data.title }}</div>
         <div class="sub-title">{{ data.subTitle }}</div>
@@ -82,6 +90,7 @@
 </template>
 <script>
 import { prefix } from '@src/config.js'
+import { typeOf } from '../../../util/assist'
 const prefixCls = prefix + 'text-item-show'
 export default {
   name: prefixCls,
@@ -96,30 +105,6 @@ export default {
       type: Boolean,
       default: false
     },
-    // 显示的数据
-    // basic
-    // {
-    //   text: '最短信息长度超过25个字—最短信息长度超过25个字'
-    // }
-
-    // title
-    // {
-    //   title: '标题&主要信息',
-    //   subTitle: '次要信息、ID、出'
-    // }
-
-    // classify
-    // {
-    //   classify: {
-    //     name: '商品库名称',
-    //     id: '5533567'
-    //   },
-    //   info: {
-    //     name: '商品名称',
-    //     id: '5533567'
-    //   },
-    //   thumbnail: require('./product.png')
-    // }
     data: {
       type: Object,
       default: () => ({})
@@ -139,10 +124,22 @@ export default {
   computed: {
     // 默认图地址
     onerrorImgSrc() {
-      if (this.type !== 'classify') {
-        return ''
-      }
       return 'this.src="' + require('./error.jpg') + '"'
+    }
+  },
+  methods: {
+    // 获取title类型时的缩略图的数据信息
+    getTitleThumbnail() {
+      if (this.type !== 'title' || typeOf(this.data.thumbnailInfo) !== 'object') {
+        return { show: false }
+      }
+
+      let style = {}
+      const { isRadius, src = '' } = this.data.thumbnailInfo || {}
+      if (isRadius) {
+        style = { 'border-radius': '50%' }
+      }
+      return { show: true, style, src }
     }
   }
 }
