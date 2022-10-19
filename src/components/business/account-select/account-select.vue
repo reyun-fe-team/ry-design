@@ -6,7 +6,6 @@
       :class="classes"
       filterable
       multiple
-      :style="{ width: width + 'px' }"
       :max-tag-count="maxTagCount"
       :placeholder="placeholder"
       :max-tag-placeholder="maxTagPlaceholder"
@@ -54,10 +53,6 @@ export default {
       default() {
         return []
       }
-    },
-    width: {
-      type: [Number, String],
-      default: 400
     },
     // 组形态
     grouping: {
@@ -186,7 +181,7 @@ export default {
       }
     },
     maxTagPlaceholder(value) {
-      return value
+      return value + this.maxTagCount
     },
     // 选择账号
     handleChangeAccount(newValue) {

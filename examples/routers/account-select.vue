@@ -1,11 +1,31 @@
 <template>
   <div>
+    普通select
+    <Select
+      v-model="model"
+      multiple
+      style="width: 260px"
+      filterable>
+      <Option
+        v-for="item in cityList"
+        :key="item.value"
+        :value="item.value">
+        {{ item.label }}
+      </Option>
+    </Select>
     {{ data }}---{{ dataGroup }}
     <h2>prefix-container</h2>
     <rd-prefix-container>
       <span slot="prepend">投放账户</span>
       <rd-account-select
         v-model="data"
+        :data="accountList"></rd-account-select>
+    </rd-prefix-container>
+    <rd-prefix-container>
+      <span slot="prepend">投放账户</span>
+      <rd-account-select
+        v-model="data"
+        style="width: 400px"
         :data="accountList"></rd-account-select>
     </rd-prefix-container>
     <h2>没有组的概念</h2>
@@ -71,7 +91,34 @@
 export default {
   data() {
     return {
-      data: ['204822'],
+      cityList: [
+        {
+          value: 'New York',
+          label: 'New York'
+        },
+        {
+          value: 'London',
+          label: 'London'
+        },
+        {
+          value: 'Sydney',
+          label: 'Sydney'
+        },
+        {
+          value: 'Ottawa',
+          label: 'Ottawa'
+        },
+        {
+          value: 'Paris',
+          label: 'Paris'
+        },
+        {
+          value: 'Canberra',
+          label: 'Canberra'
+        }
+      ],
+      model: [],
+      data: ['204822', '19858972'],
       dataGroup: ['42855'],
       crossSubjectData: ['42855'],
       accountListGroup: [],
@@ -283,7 +330,8 @@ export default {
       ],
       accountList: [
         {
-          label: '热云数据01',
+          label:
+            '热云数据01热云数据01热云数据01热云数据01热云数据01热云数据01热云数据01热云数据01热云数据01',
           value: '204822'
         },
         {
