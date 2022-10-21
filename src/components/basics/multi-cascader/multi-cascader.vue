@@ -1,8 +1,8 @@
 <!--
  * @Author: yangyufeng
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-10-12 11:59:18
- * @LastEditors: 杨玉峰 yangyufeng@reyun.com
+ * @LastEditTime: 2022-10-21 15:08:17
+ * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
  * @Description: 下拉多选联动
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader.vue
 -->
@@ -624,11 +624,11 @@ export default {
     },
     // 获取value
     getValue() {
-      let result = this.selectedNodes.map(o => {
+      let result = this.selectedNodes.map(oNode => {
         if (!this.onlyShowChecked) {
-          let level = o.level
+          let level = oNode.level
           let valueKey = ''
-          let node = _cloneDeep(o)
+          let node = oNode
           while (level !== 0) {
             valueKey = node[this.valueKey] + (valueKey ? this.separator : '') + valueKey
             node = node.parent
@@ -636,7 +636,7 @@ export default {
           }
           return valueKey
         }
-        return o[this.valueKey]
+        return oNode[this.valueKey]
       })
       // 有不存在的id 小于0的
       let hasEmptyIndex = _findIndex(this.selectedIds, v => +v < 0)
@@ -692,49 +692,52 @@ export default {
     },
     // 选中数据更新转态
     updateSelect(data, needCheckNode = false, setValue = false) {
-      let tempSelectedNodes = []
+      const { value: echoVal, label: echoName } = this.storeEchoData
 
+      let tempSelectedNodes = []
       // 不存在的id 设置为小于0
       let newId = 0
-      const { value: echoVal, label: echoName } = this.storeEchoData
-      const ids = echoVal.map(v => --newId)
+      const ids = echoVal.map(() => --newId)
 
       let tempSelectedLabels = echoName.length === 0 ? [] : _cloneDeep(echoName)
       let tempSelectedIds = ids.length === 0 ? [] : ids
 
-      data.forEach(o => {
-        let targetNode
+      for (let index = 0; index < data.length; index++) {
+        const o = data[index]
+
+        let targetNode = null
         if (setValue) {
           targetNode = _find(this.store.nodeList, v => `${v.id}` === `${o}`)
-          // tempSelectedIds.push(targetNode.id);
-          targetNode && !tempSelectedIds.includes(o) && tempSelectedIds.push(o)
         } else {
           targetNode = this.store.nodesMap[o]
-          targetNode && !tempSelectedIds.includes(o) && tempSelectedIds.push(o)
         }
+
+        // 有目标节点
         if (targetNode) {
+          !tempSelectedIds.includes(o) && tempSelectedIds.push(o)
           needCheckNode && targetNode.check(true)
-          let label = ''
+          let label = targetNode.showLabel || ''
+
           if (!this.onlyShowChecked) {
             let level = targetNode.level
-            let node = _cloneDeep(targetNode)
+            let node = targetNode
             while (level !== 0) {
               label = node.showLabel + (label ? this.separator : '') + label
               node = node.parent
               level--
             }
-          } else {
-            label = targetNode.showLabel
           }
+
           // 显示最后一层
           if (this.labelLv === 'last') {
             const labelArr = label.split(this.separator)
             label = labelArr[labelArr.length - 1]
           }
+
           tempSelectedNodes.push(targetNode)
           tempSelectedLabels.push(label)
         }
-      })
+      }
       this.selectedNodes = tempSelectedNodes
       this.selectedLabels = tempSelectedLabels
       this.selectedIds = tempSelectedIds
