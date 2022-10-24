@@ -18,7 +18,7 @@
             :to="redirect"
             type="primary"
             size="large">
-            {{ backText }}
+            <span class="btn">{{ backText }}</span>
           </Button>
         </slot>
       </div>
