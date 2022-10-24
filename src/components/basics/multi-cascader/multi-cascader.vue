@@ -1,7 +1,7 @@
 <!--
  * @Author: yangyufeng
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-10-24 19:39:39
+ * @LastEditTime: 2022-10-24 19:55:38
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
  * @Description: 下拉多选联动
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader.vue
@@ -385,6 +385,7 @@ export default {
     value: {
       deep: true,
       handler(n, o) {
+        this.updateDropPosition()
         const JS = JSON.stringify
         if (!n || !o || JS(n) === JS(o)) {
           return
@@ -401,13 +402,6 @@ export default {
         }
         // 先清空 在选中
         this.renderData()
-
-        // 更新位置
-        this.$nextTick(() => {
-          const ref = this.$refs['Dropdown']
-          const dropRef = ref.$refs.drop
-          dropRef && dropRef.update()
-        })
       }
     },
     // 返回labels
@@ -422,6 +416,14 @@ export default {
     this.init()
   },
   methods: {
+    // 更新位置
+    updateDropPosition() {
+      this.$nextTick(() => {
+        const ref = this.$refs['Dropdown']
+        const dropRef = ref.$refs.drop
+        dropRef && dropRef.update()
+      })
+    },
     // watch selectedNodes handler
     selectedNodesWatch: _debounce(function () {
       const selected = this.selectedNodes.map(o => o[this.valueKey])
