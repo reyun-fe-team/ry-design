@@ -46,7 +46,7 @@ export default {
   name: prefixCls,
   props: {
     value: {
-      type: [Array, String],
+      type: [Array, String, Number],
       default: () => []
     },
     data: {
