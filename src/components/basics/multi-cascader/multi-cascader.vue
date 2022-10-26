@@ -1,7 +1,7 @@
 <!--
  * @Author: yangyufeng
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-10-24 19:55:38
+ * @LastEditTime: 2022-10-26 17:30:13
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
  * @Description: 下拉多选联动
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader.vue
@@ -726,8 +726,8 @@ export default {
         if (targetNode) {
           !tempSelectedIds.includes(o) && tempSelectedIds.push(o)
           needCheckNode && targetNode.check(true)
-          let label = targetNode.showLabel || ''
 
+          let label = ''
           if (!this.onlyShowChecked) {
             let level = targetNode.level
             let node = targetNode
@@ -736,6 +736,8 @@ export default {
               node = node.parent
               level--
             }
+          } else {
+            label = targetNode.showLabel
           }
 
           // 显示最后一层
