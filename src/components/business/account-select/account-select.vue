@@ -1,18 +1,19 @@
 <template>
-  <div>
+  <div :class="classes">
     <Select
       ref="select"
       v-model="current"
-      :class="classes"
       filterable
-      multiple
+      :multiple="multiple"
       :max-tag-count="maxTagCount"
       :placeholder="placeholder"
       :max-tag-placeholder="maxTagPlaceholder"
       :disabled="disabled"
+      :clearable="clearable"
       @on-select="handleSelect"
       @on-open-change="handleOpenChange"
-      @on-query-change="handleQueryChange">
+      @on-query-change="handleQueryChange"
+      @on-clear="onClear">
       <template v-if="grouping">
         <OptionGroup
           v-for="item in accountList"
@@ -45,7 +46,7 @@ export default {
   name: prefixCls,
   props: {
     value: {
-      type: [Array],
+      type: [Array, String, Number],
       default: () => []
     },
     data: {
@@ -79,6 +80,18 @@ export default {
     transfer: {
       type: Boolean,
       default: false
+    },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    filterable: {
+      type: Boolean,
+      default: false
+    },
+    clearable: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -96,7 +109,7 @@ export default {
   },
   computed: {
     classes() {
-      return `${prefixCls}`
+      return [`${prefixCls}`, { [`${prefixCls}-multiple`]: this.multiple }]
     }
   },
   watch: {
@@ -116,7 +129,7 @@ export default {
       if (JSON.stringify(value) === JSON.stringify(oldVal)) {
         return
       }
-      if (this.grouping && !this.crossSubject) {
+      if (this.multiple && this.grouping && !this.crossSubject) {
         this.handleChangeAccount(value)
       }
       this.$emit('input', value)
@@ -126,6 +139,9 @@ export default {
   methods: {
     // 设置账号disabled
     getFilterAccountList() {
+      if (!this.multiple) {
+        return this.data
+      }
       let _data = _cloneDeep(this.data)
       if (this.grouping && !this.crossSubject) {
         const first = this.value[0]
@@ -136,9 +152,15 @@ export default {
       return _data
     },
     handleSelect() {
-      this.accountQueryInfo.isAfterSelect = true
+      if (this.multiple) {
+        this.accountQueryInfo.isAfterSelect = true
+      }
     },
     handleQueryChange(data) {
+      this.$emit('on-query-change', data)
+      if (!this.multiple) {
+        return
+      }
       if (data) {
         this.accountQueryInfo.queryKey = data
       }
@@ -150,10 +172,9 @@ export default {
           this.$refs.select.setQuery(this.accountQueryInfo.queryKey)
         }, 20)
       }
-      this.$emit('on-query-change', data)
     },
     handleOpenChange(val) {
-      if (!val) {
+      if (this.multiple && !val) {
         this.$refs.select.query = ''
       }
       this.$emit('on-open-change', val)
@@ -201,6 +222,9 @@ export default {
           return find.children.find(val => item === val.value)
         })
       }
+    },
+    onClear() {
+      this.$emit('on-clear')
     }
   }
 }

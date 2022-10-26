@@ -13,16 +13,16 @@
         {{ item.label }}
       </Option>
     </Select>
-    {{ data }}---{{ dataGroup }}
+    data:{{ data }}---dataGroup:{{ dataGroup }}
     <h2>prefix-container</h2>
     <rd-prefix-container>
-      <span slot="prepend">投放账户</span>
+      <span slot="prepend">投放账户-单选</span>
       <rd-account-select
         v-model="data"
         :data="accountList"></rd-account-select>
     </rd-prefix-container>
     <rd-prefix-container>
-      <span slot="prepend">投放账户</span>
+      <span slot="prepend">投放账户-单选</span>
       <rd-account-select
         v-model="data"
         style="width: 400px"
@@ -35,11 +35,13 @@
     <h2>组</h2>
     <rd-account-select
       v-model="dataGroup"
+      :multiple="false"
       grouping
       :data="accountListGroup"></rd-account-select>
     <h2>跨主体</h2>
     <rd-account-select
       v-model="crossSubjectData"
+      multiple
       grouping
       :data="accountListGroup"
       cross-subject></rd-account-select>
@@ -54,6 +56,7 @@
         label="选择账户">
         <rd-account-select
           v-model="formInline.campaignName"
+          multiple
           :data="accountList"></rd-account-select>
       </FormItem>
       <h2>form-组</h2>
@@ -62,6 +65,7 @@
         label="选择账户">
         <rd-account-select
           v-model="formInline.campaignName1"
+          multiple
           grouping
           :data="accountListGroup"></rd-account-select>
       </FormItem>
@@ -118,8 +122,8 @@ export default {
         }
       ],
       model: [],
-      data: ['204822', '19858972'],
-      dataGroup: ['42855'],
+      data: '204822', //['204822', '19858972'],
+      dataGroup: [], //，['42855'],
       crossSubjectData: ['42855'],
       accountListGroup: [],
       accountListGroup1: [

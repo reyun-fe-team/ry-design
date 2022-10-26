@@ -1,27 +1,6 @@
 @account-select: ~"@{css-prefix}account-select";
 
 .@{account-select} {
- 
-
-  .ivu-select-selection {
-    &>div{
-      display:flex;
-      .ivu-tag {
-        max-width: 25%;
-        background-color: rgba(243, 243, 244, 1);
-        border: none;
-        min-width: 24px;
-      }
-      .ivu-tag:first-child{
-        max-width:60%
-      }
-      .ivu-select-input{
-        max-width: 15%;
-        width: inherit!important;
-      }
-    }
-  }
-
   .ivu-select-group-title {
     padding-left: 10px;
     color: #999;
@@ -45,6 +24,26 @@
   
   .ivu-select-input {
     color: #151b39;
+  }
+}
+.@{account-select}-multiple{
+  .ivu-select-selection {
+    &>div{
+      display:flex;
+      .ivu-tag {
+        max-width: 25%;
+        background-color: rgba(243, 243, 244, 1);
+        border: none;
+        min-width: 24px;
+      }
+      .ivu-tag:first-child{
+        max-width:60%
+      }
+      .ivu-select-input{
+        max-width: 15%;
+        width: inherit!important;
+      }
+    }
   }
 }
 
