@@ -1,7 +1,7 @@
 <!--
  * @Author: yangyufeng
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-10-26 17:30:13
+ * @LastEditTime: 2022-10-28 15:48:31
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
  * @Description: 下拉多选联动
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader.vue
@@ -27,9 +27,10 @@
           <Tag
             v-for="(tag, index) in newSelectedLabels"
             :key="index"
+            :style="tagStyle"
             :fade="false"
             closable
-            @on-close="removeOne(tag)">
+            @on-close="removeOne(tag, value[index])">
             <span
               :class="[prefixCls + '-labels-tags-text']"
               :title="tag">
@@ -134,6 +135,11 @@ export default {
     multiCascaderList
   },
   props: {
+    // tag的最大显示宽度，单位：px。传入 0 不限制；默认最大值为88
+    tagMaxWidth: {
+      type: [String, Number],
+      default: 88
+    },
     // 多选时最多显示多少个 tag
     // eslint-disable-next-line vue/require-default-prop
     maxTagCount: {
@@ -317,6 +323,15 @@ export default {
     }
   },
   computed: {
+    // 标签的样式
+    tagStyle() {
+      if (!this.tagMaxWidth || this.tagMaxWidth === '0') {
+        return {}
+      }
+      return {
+        maxWidth: this.tagMaxWidth + 'px'
+      }
+    },
     // 显示的选择的label
     newSelectedLabels() {
       const { selectedLabels, maxTagCount } = this
@@ -677,28 +692,33 @@ export default {
       this.$emit('input', result)
     },
     // 标签单个删除
-    removeOne(label) {
+    removeOne(label, value) {
       // 删除传入的数据
       let { label: echoName, value: echoVal } = this.storeEchoData
-      if (echoName.includes(label)) {
-        let index = _findIndex(echoName, name => name === label)
+      if (echoVal.includes(value)) {
+        let index = _findIndex(echoVal, { value })
         echoName.splice(index, 1)
         echoVal.splice(index, 1)
         this.store.selectedIds.splice(index, 1)
         this.updateSelect(this.store.selectedIds)
         const result = this.getValue()
         this.$emit('input', result)
-        this.$emit('remove-tag', label)
+        this.$emit('remove-tag', label, value)
         return
       }
-      let targetNode = _find(this.selectedNodes, { showLabel: label })
+      let targetNode = _find(this.selectedNodes, { value })
+      // 不是只显示选中的
       if (!this.onlyShowChecked) {
-        let str = label.substring(label.lastIndexOf(this.separator) + 1)
-        targetNode = _find(this.selectedNodes, { showLabel: str })
+        let vArr = value.split(this.separator) || []
+        // 最后一个值
+        let vLast = vArr.at(-1) || ''
+        if (vLast) {
+          targetNode = _find(this.selectedNodes, { value: vLast })
+        }
       }
-      targetNode.checked = false
+      targetNode && (targetNode.checked = false)
       this.handleCheck(targetNode)
-      this.$emit('remove-tag', label)
+      this.$emit('remove-tag', label, value)
     },
     // 选中数据更新转态
     updateSelect(data, needCheckNode = false, setValue = false) {

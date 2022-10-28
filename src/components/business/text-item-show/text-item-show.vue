@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:43:38
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2022-10-18 16:18:15
+ * @LastEditTime: 2022-10-28 16:09:31
  * @FilePath: /ry-design/src/components/business/text-item-show/text-item-show.vue
  * @Description: 极速创建基础信息，单项显示控件
 -->
@@ -41,13 +41,14 @@
     <!-- title -->
     <div
       v-if="type === 'title'"
-      :class="[prefixCls + '-title']">
+      :class="[prefixCls + '-title']"
+      :style="{ height: titleThumbnail.show ? '56px' : '' }">
       <div
-        v-if="getTitleThumbnail().show"
+        v-if="titleThumbnail.show"
         class="title-thumbnail">
         <img
-          :style="getTitleThumbnail().style"
-          :src="getTitleThumbnail().src"
+          :style="titleThumbnail.style"
+          :src="titleThumbnail.src"
           :onerror="onerrorImgSrc" />
       </div>
       <div :class="[prefixCls + '-title-text', 'show-text']">
@@ -90,7 +91,7 @@
 </template>
 <script>
 import { prefix } from '@src/config.js'
-import { typeOf } from '../../../util/assist'
+import _isEmpty from 'lodash/isEmpty'
 const prefixCls = prefix + 'text-item-show'
 export default {
   name: prefixCls,
@@ -125,20 +126,14 @@ export default {
     // 默认图地址
     onerrorImgSrc() {
       return 'this.src="' + require('./error.jpg') + '"'
-    }
-  },
-  methods: {
+    },
     // 获取title类型时的缩略图的数据信息
-    getTitleThumbnail() {
-      if (this.type !== 'title' || typeOf(this.data.thumbnailInfo) !== 'object') {
+    titleThumbnail() {
+      let { thumbnailInfo = {} } = this.data
+      if (this.type !== 'title' || _isEmpty(thumbnailInfo)) {
         return { show: false }
       }
-
-      let style = {}
-      const { isRadius, src = '' } = this.data.thumbnailInfo || {}
-      if (isRadius) {
-        style = { 'border-radius': '50%' }
-      }
+      const { style = {}, src = '' } = thumbnailInfo
       return { show: true, style, src }
     }
   }

@@ -3,6 +3,7 @@
     <p>同步的</p>
     <rd-multi-cascader
       v-model="allListModel"
+      tag-max-width="0"
       :max-tag-placeholder="num => `+${num}`"
       style="width: 400px"
       :echo-label="allListLabels"
@@ -23,14 +24,13 @@
       :max-tag-count="1"
       @getLables="getLables"></rd-multi-cascader>
 
-    <p>大数据量</p>
+    <p>label相同的</p>
     <rd-multi-cascader
-      v-model="selectReviewUser"
-      :max-request="2"
-      label-lv="last"
-      label-key="name"
-      style="width: 320px"
-      :data="reviewUserList"></rd-multi-cascader>
+      v-model="sameLabelValues"
+      style="width: 300px"
+      :data="sameLabelData"
+      label-lv="all"
+      :max-request="2"></rd-multi-cascader>
   </div>
 </template>
 <script>
@@ -150,138 +150,118 @@ export default {
           label: '资源'
         }
       ],
-
-      // 大数据量
-      selectReviewUser: [],
-      reviewUserList: [
+      // label相同的
+      sameLabelData: [
         {
+          label: '2019',
+          value: '2019',
           children: [
-            { name: '测试-1', value: 2398 },
-            { name: '测试', value: 2265 },
-            { name: '测试', value: 2516 }
-          ],
-          role: 'ADMIN',
-          roleName: '管理员',
-          name: '管理员',
-          value: 'ADMIN'
+            { value: '201901', label: '01' },
+            { value: '201902', label: '02' },
+            { value: '201903', label: '03' },
+            { value: '201904', label: '04' },
+            { value: '201905', label: '05' },
+            { value: '201906', label: '06' },
+            { value: '201907', label: '07' },
+            { value: '201908', label: '08' },
+            { value: '201909', label: '09' },
+            { value: '201910', label: '10' },
+            { value: '201911', label: '11' },
+            { value: '201912', label: '12' }
+          ]
         },
         {
+          label: '2020',
+          value: '2020',
           children: [
-            { name: '球球', value: 2548 },
-            { name: '球球', value: 2547 },
-            { name: '球球', value: 2546 },
-            { name: '神一样的男人', value: 2528 },
-            { name: 'zyj', value: 30041 },
-            { name: '测试0422', value: 30032 },
-            { name: '毕扬', value: 30042 },
-            { name: '刘柏良', value: 30082 },
-            { name: '1111111', value: 2507 },
-            { name: '测试新增员工', value: 2296 },
-            { name: '测试新建2', value: 2297 },
-            { name: '陈航', value: 30076 },
-            { name: '陈琬昱', value: 2271 },
-            { name: 'csm1', value: 2413 },
-            { name: 'csm2', value: 2414 },
-            { name: 'csm3', value: 2415 },
-            { name: 'demo', value: 2405 },
-            { name: 'demo', value: 2406 },
-            { name: 'demo', value: 2407 },
-            { name: 'zhangmeng', value: 2459 },
-            { name: '傅文', value: 2571 },
-            { name: '共享文件夹', value: 2474 },
-            { name: '郭亚男', value: 2561 },
-            { name: '宇宙1', value: 2286 },
-            { name: '宇宙', value: 2472 },
-            { name: '郭宇宙5', value: 2287 },
-            { name: '宇宙', value: 2270 },
-            { name: '和老板', value: 2404 },
-            { name: '日本JK', value: 2399 },
-            { name: '姜同帅', value: 2554 },
-            { name: '吴剑宇', value: 2609 },
-            { name: '吉喆', value: 2591 },
-            { name: '康文静', value: 2277 },
-            { name: 'KIKI', value: 2608 },
-            { name: 'zhangmeng', value: 2458 },
-            { name: '李大鹏', value: 2422 },
-            { name: '李简', value: 2518 },
-            { name: '林泽良', value: 2597 },
-            { name: 'js-刘鹏飞', value: 2576 },
-            { name: '飞帅', value: 2272 },
-            { name: '刘伟', value: 2401 },
-            { name: '刘雪', value: 2452 },
-            { name: '刘旭阳', value: 2601 },
-            { name: '李一凡', value: 2552 },
-            { name: '鹏帅', value: 2273 },
-            { name: '李云召', value: 2550 },
-            { name: 'ads123', value: 2492 },
-            { name: '马春福', value: 2556 },
-            { name: '小米', value: 2276 },
-            { name: '堂岛遥香', value: 2448 },
-            { name: '南忠锋', value: 2423 },
-            { name: '彭芳', value: 30075 },
-            { name: '任丽娟', value: 2512 },
-            { name: 'sandto', value: 2402 },
-            { name: '单通', value: 2275 },
-            { name: '石丛林', value: 2283 },
-            { name: '审核专用', value: 2555 },
-            { name: '史雷', value: 2543 },
-            { name: 'siyu.song', value: 30064 },
-            { name: '宋小帅', value: 2527 },
-            { name: '宋涛哥', value: 2285 },
-            { name: '宋小帅', value: 2562 },
-            { name: '孙鑫', value: 2279 },
-            { name: '宋小帅', value: 2409 },
-            { name: 'KDA', value: 2454 },
-            { name: '田晓川', value: 2583 },
-            { name: '王辰', value: 2580 },
-            { name: '王海涛', value: 2278 },
-            { name: '宋帅帅', value: 2403 },
-            { name: '吴丽萍', value: 2557 },
-            { name: '邢保振1', value: 2294 },
-            { name: 'Xing2', value: 2569 },
-            { name: 'xbz3', value: 2596 },
-            { name: '夏经理', value: 2553 },
-            { name: '张孝伟', value: 2605 },
-            { name: '旭阳', value: 2549 },
-            { name: '曹亚楠', value: 2606 },
-            { name: '杨玉峰', value: 2520 },
-            { name: '张拥杰', value: 2604 },
-            { name: 'java-苑志强', value: 2575 },
-            { name: '苑志强', value: 2412 },
-            { name: '俞大老板', value: 2266 },
-            { name: '于桐', value: 2564 },
-            { name: '秀', value: 2567 },
-            { name: '张波', value: 30065 },
-            { name: '春鹏', value: 30079 },
-            { name: '张静', value: 2451 },
-            { name: '111111', value: 2446 },
-            { name: '张猛', value: 2268 },
-            { name: '张圣林', value: 2456 },
-            { name: '1', value: 2594 },
-            { name: '张雨', value: 2559 },
-            { name: '赵鹏超', value: 2513 },
-            { name: '赵庆伟2', value: 30080 },
-            { name: '赵庆伟', value: 2558 },
-            { name: '赵涛', value: 2566 },
-            { name: '郑高峰', value: 2455 },
-            { name: 'js-周博', value: 2574 },
-            { name: '周博', value: 2450 },
-            { name: '周珊珊', value: 2517 },
-            { name: '周天阳', value: 2420 },
-            { name: '周文政', value: 2453 },
-            { name: 'zuohaitao', value: 2529 },
-            { name: '左海涛', value: 30061 },
-            { name: 'zht123', value: 2602 },
-            { name: 'zuo优化经理', value: 2590 },
-            { name: '海涛', value: 2473 },
-            { name: '左海涛', value: 2267 }
-          ],
-          role: 'MANAGER',
-          roleName: '优化经理',
-          name: '优化经理',
-          value: 'MANAGER'
+            { value: '202001', label: '01' },
+            { value: '202002', label: '02' },
+            { value: '202003', label: '03' },
+            { value: '202004', label: '04' },
+            { value: '202005', label: '05' },
+            { value: '202006', label: '06' },
+            { value: '202007', label: '07' },
+            { value: '202008', label: '08' },
+            { value: '202009', label: '09' },
+            { value: '202010', label: '10' },
+            { value: '202011', label: '11' },
+            { value: '202012', label: '12' }
+          ]
+        },
+        {
+          label: '2021',
+          value: '2021',
+          children: [
+            { value: '202101', label: '01' },
+            { value: '202102', label: '02' },
+            { value: '202103', label: '03' },
+            { value: '202104', label: '04' },
+            { value: '202105', label: '05' },
+            { value: '202106', label: '06' },
+            { value: '202107', label: '07' },
+            { value: '202108', label: '08' },
+            { value: '202109', label: '09' },
+            { value: '202110', label: '10' },
+            { value: '202111', label: '11' },
+            { value: '202112', label: '12' }
+          ]
+        },
+        {
+          label: '2022',
+          value: '2022',
+          children: [
+            { value: '202201', label: '01' },
+            { value: '202202', label: '02' },
+            { value: '202203', label: '03' },
+            { value: '202204', label: '04' },
+            { value: '202205', label: '05' },
+            { value: '202206', label: '06' },
+            { value: '202207', label: '07' },
+            { value: '202208', label: '08' },
+            { value: '202209', label: '09' },
+            { value: '202210', label: '10' },
+            { value: '202211', label: '11' },
+            { value: '202212', label: '12' }
+          ]
+        },
+        {
+          label: '2023',
+          value: '2023',
+          children: [
+            { value: '202301', label: '01' },
+            { value: '202302', label: '02' },
+            { value: '202303', label: '03' },
+            { value: '202304', label: '04' },
+            { value: '202305', label: '05' },
+            { value: '202306', label: '06' },
+            { value: '202307', label: '07' },
+            { value: '202308', label: '08' },
+            { value: '202309', label: '09' },
+            { value: '202310', label: '10' },
+            { value: '202311', label: '11' },
+            { value: '202312', label: '12' }
+          ]
+        },
+        {
+          label: '2024',
+          value: '2024',
+          children: [
+            { value: '202401', label: '01' },
+            { value: '202402', label: '02' },
+            { value: '202403', label: '03' },
+            { value: '202404', label: '04' },
+            { value: '202405', label: '05' },
+            { value: '202406', label: '06' },
+            { value: '202407', label: '07' },
+            { value: '202408', label: '08' },
+            { value: '202409', label: '09' },
+            { value: '202410', label: '10' },
+            { value: '202411', label: '11' },
+            { value: '202412', label: '12' }
+          ]
         }
-      ]
+      ],
+      sameLabelValues: ['2019-201901', '2019-201902', '2020-202001', '2020-202002']
     }
   },
   methods: {
