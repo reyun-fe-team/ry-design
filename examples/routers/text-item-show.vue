@@ -2,12 +2,12 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:53:40
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2022-10-18 16:14:29
+ * @LastEditTime: 2022-10-28 16:10:17
  * @FilePath: /ry-design/examples/routers/text-item-show.vue
  * @Description: 极速创建基础信息，单项显示控件 示例
 -->
 <template>
-  <div style="margin: 20px">
+  <div style="margin: 20px; width: 400px">
     <rd-text-item-show
       :tooltip="basic.text"
       two-line-display
@@ -22,6 +22,16 @@
     <rd-text-item-show
       type="title"
       :data="title">
+      <template #btnGroup>
+        <Icon
+          style="width: 50px"
+          type="md-create" />
+      </template>
+    </rd-text-item-show>
+
+    <rd-text-item-show
+      type="title"
+      :data="titleInfo">
       <template #btnGroup>
         <Icon
           style="width: 50px"
@@ -51,9 +61,15 @@ export default {
         title: '极速创建基础信息',
         subTitle: '单项显示控件 示例极速创建基础信息，单项显示控件 示例',
         thumbnailInfo: {
-          isRadius: true,
+          style: {
+            'border-radius': '10%'
+          },
           src: ''
         }
+      },
+      titleInfo: {
+        title: '没有图片的标题',
+        subTitle: '没有图片的子标题'
       },
       classify: {
         classify: {
