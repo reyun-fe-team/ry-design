@@ -239,9 +239,12 @@ export default {
       if (!text) {
         return
       }
+
+      this.$emit('on-paste', e)
+
       // 纯文本就粘贴
-      const newText = getPlainText(text)
-      this.insertText(newText)
+      // const newText = getPlainText(text)
+      // this.insertText(newText)
     },
     // 键盘按下事件
     handlerKeydown(e) {
