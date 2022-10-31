@@ -14,6 +14,17 @@ const convertIdeogramToNormalCharacter = (val = '') => {
   })
 }
 
+export const getSplitReg = (str = '') => {
+  if (str.indexOf('\\r\\n') > -1) {
+    return /\\r\\n/
+  } else if (str.indexOf('\\r') > -1) {
+    return /\\r/
+  } else if (str.indexOf('\\n') > -1) {
+    return /\\n/
+  }
+  return /\\r\\n/
+}
+
 // 获取富文本的纯文字内容
 export const getPlainText = (richCont = '') => {
   let value = richCont

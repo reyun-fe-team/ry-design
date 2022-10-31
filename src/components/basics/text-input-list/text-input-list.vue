@@ -33,6 +33,7 @@
           :min-length="minLength"
           @on-keydown="handlerKeydown($event, index)"
           @on-clear="handlerClear(index)"
+          @on-paste="handlerPaste($event, index)"
           @input="val => handleEmitInput(val, index)"
           @click.native="onClickEditorLine(index)"
           @error="status => onError(status, index)" />
@@ -74,6 +75,7 @@ import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'text-input-list'
 
 import rdTextEmojInput from '../text-emoj-input/text-emoj-input'
+import { getSplitReg } from '../../../util/text-emoj-input'
 
 export default {
   name: prefixCls,
@@ -266,6 +268,31 @@ export default {
       const copyValue = JSON.parse(JSON.stringify(this.value))
       copyValue[index] = value || ''
       this.$emit('input', copyValue)
+    },
+    // 粘贴
+    handlerPaste(event, index) {
+      let itemList = event.clipboardData.items
+      for (let i = 0; i < itemList.length; i++) {
+        let item = itemList[i]
+        if (item.kind === 'string' && item.type.match('text/plain')) {
+          item.getAsString(str => {
+            let splitReg = getSplitReg(JSON.stringify(str).replace(/"/g, ''))
+            let arr = JSON.stringify(str)
+              .replace(/"/g, '')
+              .split(splitReg)
+              .filter(o => o)
+            const copyValue = JSON.parse(JSON.stringify(this.value))
+            arr.forEach((o, i) => {
+              if (i === 0) {
+                this.insertText(o || '')
+              } else if (index + i < this.maxLine) {
+                copyValue[index + i] = o
+              }
+            })
+            this.$emit('input', copyValue)
+          })
+        }
+      }
     },
     // 点击编辑行
     onClickEditorLine(index) {
