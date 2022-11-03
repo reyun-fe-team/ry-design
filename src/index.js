@@ -31,11 +31,17 @@ import { LayoutModuleConfig, LayoutModuleView } from './components/business/layo
 import TextItemShow from './components/business/text-item-show'
 import DeleteModals from './components/business/delete-modals'
 import AccountSelect from './components/business/account-select'
+import ProductSelect from './components/business/product-select'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
 import 'view-design/dist/styles/iview.css'
 import './style/index.less'
+
+// umy-ui u-table
+import { UTable, UTableColumn } from 'umy-ui'
+Vue.use(UTable)
+Vue.use(UTableColumn)
 
 // directives
 import lineClamp from './directives/line-clamp'
@@ -81,7 +87,8 @@ const components = [
   Wildcard,
   AccountSelect,
   CascaderTransfer,
-  Exception
+  Exception,
+  ProductSelect
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -129,5 +136,6 @@ export default {
   TextInputList,
   AccountSelect,
   CascaderTransfer,
-  Exception
+  Exception,
+  ProductSelect
 }

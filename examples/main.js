@@ -130,6 +130,10 @@ const router = new VueRouter({
     {
       path: '/exception',
       component: resolve => require(['./routers/exception'], resolve)
+    },
+    {
+      path: '/product-select',
+      component: resolve => require(['./routers/product-select'], resolve)
     }
   ]
 })
