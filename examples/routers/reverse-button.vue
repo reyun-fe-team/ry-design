@@ -8,6 +8,14 @@
         :suffix-edit-text="suffixEditText"
         :status="status"
         @on-click="handleClick"></rd-reverse-button>
+      <span>选择状态禁用</span>
+      <rd-reverse-button
+        :disabled="true"
+        :select-text="text"
+        :prefix-edit-text="prefixEditText"
+        :suffix-edit-text="suffixEditText"
+        :status="status"
+        @on-click="handleClick"></rd-reverse-button>
     </div>
     <div
       class="item"
@@ -41,7 +49,7 @@ export default {
       title: '选择状态',
       text: '请选择应用',
       prefixEditText: '已选择应用10个',
-      suffixEditText: '编辑',
+      suffixEditText: '配置',
       status: 'select'
     }
   },

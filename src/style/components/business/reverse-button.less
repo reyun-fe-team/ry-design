@@ -2,25 +2,39 @@
 
 .@{reverse-button} {
     &-select {
-        width: 120px;
-
+        min-width: 120px;
+        border-color: #dddddd;
+        color: @text-color;
+        font-size: @font-size-base;
+        padding: 0 16px;
+        background-color: #f7f7f7;
         span {
             display: flex;
             align-items: center;
+            justify-content: center;
             .text-limit();
 
             :first-child {
-                margin-right: 10px;
+                margin-right: 4px;
             }
+        }
+
+        &:hover {
+            color: @primary-color;
+            border-color: @primary-color;
+            background-color: #f7f7f7;
         }
     }
 
     &-edit {
         width: 280px;
+        height: 40px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         font-size: @font-size-base;
+        border-color: #dddddd;
+        padding: 0 16px;
 
         :first-child {
             flex-shrink: 1;
@@ -28,19 +42,35 @@
             .text-limit();
         }
 
-        .disabled {  
+        .normal {
+            color: @primary-color;
+        }
+
+        .disabled {
             cursor: not-allowed;
             color: @btn-disable-color;
             background-color: @btn-disable-background-color;
             border-color: @border-color-base;
         }
+
+        &:hover {
+            color: @text-color;
+            font-size: @font-size-base;
+            border-color: #dddddd;
+            background-color: #f1f3f5;
+        }
     }
 
     &-loading {
         width: 280px;
+        height: 40px;
         display: flex;
         align-items: center;
-        justify-content:center;
+        justify-content: left;
+        font-size: @font-size-base;
+        border-color: #dddddd;
+        background-color: #f7f7f7;
+        padding: 0 16px;
         span {
             flex-shrink: 1;
             margin-right: 10px;

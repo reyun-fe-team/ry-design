@@ -1,0 +1,108 @@
+@text-input-list: ~"@{css-prefix}text-input-list";
+
+.@{text-input-list} {
+  overflow-y: auto;
+  height: 100%;
+  margin-bottom: 5px;
+  border: 1px solid #dadfe3;
+
+  &-line {
+    display: flex;
+    &:hover {
+      .rd-text-input-list-left-list {
+        background: #edf1f5;
+      }
+      .rd-text-emoj-input {
+        background-color: #edf1f5;
+      }
+    }
+  }
+
+  &-left-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F9F9F9;
+    width: 40px;
+  }
+
+  &-error-left {
+    position: relative;
+    display: inline-block;
+    width: 25px;
+    height: 20px;
+    color: #fff;
+    line-height: 20px;
+    text-align: center;
+    background-color: #f45858;
+    border-radius: 5px;
+  }
+
+  &-error-left::after {
+    content: '';
+    position: absolute;
+    top: 5.5px;
+    right: -8px;
+    width: 0;
+    height: 0;
+    border: 4px solid #f45858;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+  }
+
+  &-right-list {
+    width: 100%;
+    display: flex;
+  }
+
+  &-btn-wrap {
+    margin: 0 16px;
+    padding-top: 5px;
+    display: flex;
+    align-items: baseline;
+
+    .ivu-poptip {
+      margin: 5px 16px 0 0;
+    }
+
+    img {
+      width: 16px;
+      height: auto;
+    }
+  }
+
+  &-is-error {
+    background-color: #FDE9E9 !important;
+  }
+
+  &-poptip {
+    .ivu-poptip-body {
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #cccccc;
+      border-radius: 3px;
+      background-color: #ffffff;
+      width: 262px;
+      position: absolute;
+      z-index: 99;
+      white-space: normal;
+    }
+  }
+
+  &-item-common {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .rd-text-emoj-input {
+    background: #fff;
+    flex: 1;
+  }
+
+  .middle-style-li-active {
+    background-color: #edf1f5;
+  }
+}

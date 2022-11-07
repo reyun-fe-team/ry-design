@@ -2,27 +2,15 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:49:35
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-07-18 13:57:28
+ * @LastEditTime: 2022-09-09 16:16:09
  * @FilePath: /ry-design/examples/routers/layout-module-config.vue
  * @Description: layout-module-config 组件示例
 -->
 <template>
   <div style="margin: 20px">
-    <Button
-      style="margin: 20px"
-      @click="toggleSort">
-      交换组件位置
-    </Button>
-    <Button
-      style="margin: 20px"
-      @click="toggleWidth">
-      改变容器宽度
-    </Button>
-    <Button
-      style="margin: 20px"
-      @click="toggleType">
-      改变使用类型
-    </Button>
+    <Button style="margin: 20px" @click="toggleSort">交换组件位置</Button>
+    <Button style="margin: 20px" @click="toggleWidth">改变容器宽度</Button>
+    <Button style="margin: 20px" @click="toggleType">改变使用类型</Button>
 
     <rd-layout-module-config
       :slot-list="slotList"
@@ -36,31 +24,19 @@
         <rd-layout-module-view
           title="落地页内容名称太长了超出显示省略号落地页内容名称太长了超出显示省略号">
           <div slot="header"><a>配置</a></div>
-          <div
-            slot="main"
-            style="background: #f90; height: 500px">
-            落地页面板内容
-          </div>
+          <div slot="main" style="background: #f90; height: 500px">落地页面板内容</div>
         </rd-layout-module-view>
       </template>
       <template #convert>
         <rd-layout-module-view title="转化">
           <div slot="header"><a>配置</a></div>
-          <div
-            slot="main"
-            style="background: #a88; height: 500px">
-            转化面板内容
-          </div>
+          <div slot="main" style="background: #a88; height: 500px">转化面板内容</div>
         </rd-layout-module-view>
       </template>
       <template #event>
         <rd-layout-module-view title="事件资产">
           <div slot="header"><a>配置</a></div>
-          <div
-            slot="main"
-            style="background: #f00; height: 500px">
-            事件资产面板内容
-          </div>
+          <div slot="main" style="background: #f00; height: 500px">事件资产面板内容</div>
         </rd-layout-module-view>
       </template>
     </rd-layout-module-config>
@@ -82,27 +58,52 @@ export default {
     slotRenders() {
       return {
         creative: h => {
-          const header = h('div', { slot: 'header' }, [h('a', '清空')])
-          const main = h(
+          const header = h(
             'div',
-            { slot: 'main', style: 'background: #ccc; height: 500px' },
-            '创意面板内容'
+            {
+              slot: 'header'
+            },
+            [h('a', '清空')]
           )
-          const footerStyle =
-            'height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;'
+
+          const main = h =>
+            h(
+              'div',
+              {
+                style: {
+                  background: '#ccc',
+                  height: '500px'
+                }
+              },
+              '创意面板内容'
+            )
+
           const footer = h(
             'div',
             {
               slot: 'footer',
-              style: footerStyle
+              style: {
+                height: '100%',
+                display: 'flex',
+                'align-items': 'center',
+                'justify-content': 'center',
+                cursor: 'pointer'
+              }
             },
             [h('a', '选择素材')]
           )
-          return h('rd-layout-module-view', { props: { title: '创意', showFooter: true } }, [
-            header,
-            main,
-            footer
-          ])
+
+          return h(
+            'rd-layout-module-view',
+            {
+              props: {
+                title: '创意',
+                showFooter: true,
+                mainRender: main
+              }
+            },
+            [header, main, footer]
+          )
         }
       }
     }

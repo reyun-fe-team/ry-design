@@ -1,14 +1,15 @@
 <!--
  * @Author: yangyufeng
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-05-17 15:55:20
- * @LastEditors: 杨玉峰 yangyufeng@reyun.com
+ * @LastEditTime: 2022-10-28 15:48:31
+ * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
  * @Description: 下拉多选联动
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader.vue
 -->
 <template>
   <div :class="[prefixCls]">
     <Dropdown
+      ref="Dropdown"
       trigger="click"
       :placement="placement"
       :transfer="transfer"
@@ -17,18 +18,19 @@
       v-bind="$attrs"
       @on-visible-change="visibleChange">
       <div
-        :class="[prefixCls + '-labels']"
+        :class="[prefixCls + '-labels', 'small-scroll-y']"
         @mouseenter="handleMouseenter"
         @mouseleave="handleMouseleave">
         <div
           v-if="selectedLabels.length > 0"
           :class="[prefixCls + '-labels-tags']">
           <Tag
-            v-for="tag in newSelectedLabels"
-            :key="getKey(tag)"
+            v-for="(tag, index) in newSelectedLabels"
+            :key="index"
+            :style="tagStyle"
             :fade="false"
             closable
-            @on-close="removeOne(tag)">
+            @on-close="removeOne(tag, value[index])">
             <span
               :class="[prefixCls + '-labels-tags-text']"
               :title="tag">
@@ -65,8 +67,10 @@
         <div
           :class="[prefixCls + '-ground']"
           @click.stop>
-          <div>
+          <!-- 根节点面板 -->
+          <div :class="[prefixCls + '-ground-pos']">
             <multi-cascader-list
+              :sync="sync"
               :list="root.childNodes"
               :level="1"
               :active-list="activeList"
@@ -75,17 +79,20 @@
               :use-max="useMax"
               :label-key="labelKey"
               :expand-trigger="expandTrigger"
+              @handle-showEmptyWrap="handleShowEmptyWrap"
               @handle-click="handleClick"
               @handle-check="handleCheck"
               @handle-checkAll="handleCheckAll"></multi-cascader-list>
           </div>
+          <!-- 子级节点面板 -->
           <template v-for="item in maxLevellist">
             <div
               v-if="item.rendered && showData[item.id].length"
               v-show="activeList.length >= item.id"
-              :key="getKey(item)"
+              :key="item.id"
               :class="[prefixCls + '-ground-pos']">
               <multi-cascader-list
+                :sync="sync"
                 :list="showData[item.id]"
                 :level="item.id + 1"
                 :active-list="activeList"
@@ -94,11 +101,18 @@
                 :use-max="useMax"
                 :label-key="labelKey"
                 :expand-trigger="expandTrigger"
+                @handle-showEmptyWrap="handleShowEmptyWrap"
                 @handle-click="handleClick"
                 @handle-check="handleCheck"
                 @handle-checkAll="handleCheckAll"></multi-cascader-list>
             </div>
           </template>
+          <!-- 暂无数据面板 -->
+          <div
+            v-if="isShowEmptyData.show"
+            :class="[prefixCls + '-ground-pos']">
+            <div :class="[prefixCls + '-empty']">暂无数据</div>
+          </div>
         </div>
       </div>
     </Dropdown>
@@ -121,11 +135,18 @@ export default {
     multiCascaderList
   },
   props: {
+    // tag的最大显示宽度，单位：px。传入 0 不限制；默认最大值为88
+    tagMaxWidth: {
+      type: [String, Number],
+      default: 88
+    },
     // 多选时最多显示多少个 tag
+    // eslint-disable-next-line vue/require-default-prop
     maxTagCount: {
       type: Number
     },
     // 隐藏 tag 时显示的内容，参数是剩余项数量
+    // eslint-disable-next-line vue/require-default-prop
     maxTagPlaceholder: {
       type: Function
     },
@@ -186,6 +207,7 @@ export default {
       default: '请选择'
     },
     // 最大选择数 使用该属性不能使用全选功能
+    // eslint-disable-next-line vue/require-default-prop
     maxCount: {
       type: Number
     },
@@ -227,6 +249,7 @@ export default {
       default: false
     },
     // 自定义搜索方法
+    // eslint-disable-next-line vue/require-default-prop
     filterMethod: {
       type: Function
     },
@@ -291,10 +314,24 @@ export default {
       activeList: [],
       // 搜索
       searchText: '',
-      searchResult: []
+      searchResult: [],
+      // 暂无数据显示
+      isShowEmptyData: {
+        show: false,
+        level: 0
+      }
     }
   },
   computed: {
+    // 标签的样式
+    tagStyle() {
+      if (!this.tagMaxWidth || this.tagMaxWidth === '0') {
+        return {}
+      }
+      return {
+        maxWidth: this.tagMaxWidth + 'px'
+      }
+    },
     // 显示的选择的label
     newSelectedLabels() {
       const { selectedLabels, maxTagCount } = this
@@ -309,12 +346,13 @@ export default {
       if (maxTagCount === undefined) {
         return ''
       }
-      const num = selectedLabels.length - maxTagCount
+      const selectedNum = selectedLabels.length
+      const num = selectedNum - maxTagCount
       if (num > 0) {
         if (maxTagPlaceholder) {
-          return maxTagPlaceholder(num)
+          return maxTagPlaceholder(num, selectedNum)
         } else {
-          return `+ ${num}...`
+          return `${selectedNum}`
         }
       } else {
         return ''
@@ -362,6 +400,7 @@ export default {
     value: {
       deep: true,
       handler(n, o) {
+        this.updateDropPosition()
         const JS = JSON.stringify
         if (!n || !o || JS(n) === JS(o)) {
           return
@@ -392,6 +431,14 @@ export default {
     this.init()
   },
   methods: {
+    // 更新位置
+    updateDropPosition() {
+      this.$nextTick(() => {
+        const ref = this.$refs['Dropdown']
+        const dropRef = ref.$refs.drop
+        dropRef && dropRef.update()
+      })
+    },
     // watch selectedNodes handler
     selectedNodesWatch: _debounce(function () {
       const selected = this.selectedNodes.map(o => o[this.valueKey])
@@ -455,6 +502,10 @@ export default {
         let v = c === 'x' ? r : (r & 0x3) | 0x8
         return v.toString(16)
       })
+    },
+    // 显示暂无数据面板
+    handleShowEmptyWrap(data) {
+      this.isShowEmptyData = data
     },
     // 面板一层点击
     handleClick(node, levelIndex, level) {
@@ -598,11 +649,11 @@ export default {
     },
     // 获取value
     getValue() {
-      let result = this.selectedNodes.map(o => {
+      let result = this.selectedNodes.map(oNode => {
         if (!this.onlyShowChecked) {
-          let level = o.level
+          let level = oNode.level
           let valueKey = ''
-          let node = _cloneDeep(o)
+          let node = oNode
           while (level !== 0) {
             valueKey = node[this.valueKey] + (valueKey ? this.separator : '') + valueKey
             node = node.parent
@@ -610,7 +661,7 @@ export default {
           }
           return valueKey
         }
-        return o[this.valueKey]
+        return oNode[this.valueKey]
       })
       // 有不存在的id 小于0的
       let hasEmptyIndex = _findIndex(this.selectedIds, v => +v < 0)
@@ -641,57 +692,65 @@ export default {
       this.$emit('input', result)
     },
     // 标签单个删除
-    removeOne(label) {
+    removeOne(label, value) {
       // 删除传入的数据
       let { label: echoName, value: echoVal } = this.storeEchoData
-      if (echoName.includes(label)) {
-        let index = _findIndex(echoName, name => name === label)
+      if (echoVal.includes(value)) {
+        let index = _findIndex(echoVal, { value })
         echoName.splice(index, 1)
         echoVal.splice(index, 1)
         this.store.selectedIds.splice(index, 1)
         this.updateSelect(this.store.selectedIds)
         const result = this.getValue()
         this.$emit('input', result)
-        this.$emit('remove-tag', label)
+        this.$emit('remove-tag', label, value)
         return
       }
-      let targetNode = _find(this.selectedNodes, { showLabel: label })
+      let targetNode = _find(this.selectedNodes, { value })
+      // 不是只显示选中的
       if (!this.onlyShowChecked) {
-        let str = label.substring(label.lastIndexOf(this.separator) + 1)
-        targetNode = _find(this.selectedNodes, { showLabel: str })
+        let vArr = value.split(this.separator) || []
+        // 最后一个值
+        let vLast = vArr.at(-1) || ''
+        if (vLast) {
+          targetNode = _find(this.selectedNodes, { value: vLast })
+        }
       }
-      targetNode.checked = false
+      targetNode && (targetNode.checked = false)
       this.handleCheck(targetNode)
-      this.$emit('remove-tag', label)
+      this.$emit('remove-tag', label, value)
     },
     // 选中数据更新转态
     updateSelect(data, needCheckNode = false, setValue = false) {
-      let tempSelectedNodes = []
+      const { value: echoVal, label: echoName } = this.storeEchoData
 
+      let tempSelectedNodes = []
       // 不存在的id 设置为小于0
       let newId = 0
-      const { value: echoVal, label: echoName } = this.storeEchoData
-      const ids = echoVal.map(v => --newId)
+      const ids = echoVal.map(() => --newId)
 
       let tempSelectedLabels = echoName.length === 0 ? [] : _cloneDeep(echoName)
       let tempSelectedIds = ids.length === 0 ? [] : ids
 
-      data.forEach(o => {
-        let targetNode
+      for (let index = 0; index < data.length; index++) {
+        const o = data[index]
+
+        let targetNode = null
         if (setValue) {
           targetNode = _find(this.store.nodeList, v => `${v.id}` === `${o}`)
-          // tempSelectedIds.push(targetNode.id);
-          targetNode && !tempSelectedIds.includes(o) && tempSelectedIds.push(o)
         } else {
           targetNode = this.store.nodesMap[o]
-          targetNode && !tempSelectedIds.includes(o) && tempSelectedIds.push(o)
         }
+
+        // 有目标节点
         if (targetNode) {
+          !tempSelectedIds.includes(o) && tempSelectedIds.push(o)
           needCheckNode && targetNode.check(true)
+
           let label = ''
           if (!this.onlyShowChecked) {
             let level = targetNode.level
-            let node = _cloneDeep(targetNode)
+            let node = targetNode
             while (level !== 0) {
               label = node.showLabel + (label ? this.separator : '') + label
               node = node.parent
@@ -700,15 +759,17 @@ export default {
           } else {
             label = targetNode.showLabel
           }
+
           // 显示最后一层
           if (this.labelLv === 'last') {
             const labelArr = label.split(this.separator)
             label = labelArr[labelArr.length - 1]
           }
+
           tempSelectedNodes.push(targetNode)
           tempSelectedLabels.push(label)
         }
-      })
+      }
       this.selectedNodes = tempSelectedNodes
       this.selectedLabels = tempSelectedLabels
       this.selectedIds = tempSelectedIds

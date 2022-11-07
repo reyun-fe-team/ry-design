@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3538835 */
-  src: url('iconfont.woff2?t=1658804630227') format('woff2'),
-       url('iconfont.woff?t=1658804630227') format('woff'),
-       url('iconfont.ttf?t=1658804630227') format('truetype');
+  src: url('iconfont.woff2?t=1659341890638') format('woff2'),
+       url('iconfont.woff?t=1659341890638') format('woff'),
+       url('iconfont.ttf?t=1659341890638') format('truetype');
 }
 
 .iconfont {
@@ -14,18 +14,18 @@
 }
 
 .ry-icon-suo:before {
-  content: "\e62c";
+  content: "\ff001";
 }
 
 .ry-icon-tuodong:before {
-  content: "\e62d";
+  content: "\ff002";
 }
 
 .ry-icon-shanchu:before {
-  content: "\e62e";
+  content: "\ff003";
 }
 
 .ry-icon-zhiding:before {
-  content: "\e62f";
+  content: "\ff004";
 }
 

@@ -1,18 +1,9 @@
-<!--
- * @Author: 杨玉峰 yangyufeng@reyun.com
- * @Date: 2022-06-15 19:27:55
- * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-27 17:18:15
- * @FilePath: /ry-design/src/components/basics/text-emoj-input/text-emoj-input.vue
- * @Description: 文本表情输入
--->
 <template>
   <div :class="[prefixCls, { [prefixCls + '-single-line']: isSingleLine }]">
     <div
       ref="rich-edit"
       :class="prefixCls + '-rich'"
-      :value="value"
-      :contenteditable="contenteditable"
+      :contenteditable="isEdit && contenteditable"
       @focus="handlerFocus"
       @blur="handlerBlur"
       @keyup="handlerKeyup"
@@ -20,6 +11,21 @@
       @mouseup="handlerMouseup"
       @input="handlerInput"
       @paste="handlerPaste"></div>
+    <div
+      v-show="!totalln && !value"
+      :class="prefixCls + '-placeholder'">
+      {{ placeholder }}
+    </div>
+    <div
+      v-show="isEdit"
+      :class="prefixCls + '-ln-wrap'">
+      <div :class="prefixCls + '-ln-wrap-l'">{{ totalln }}/{{ maxLength }}</div>
+      <div :class="prefixCls + '-ln-wrap-r'">
+        <Icon
+          type="md-close"
+          @click="onClear"></Icon>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -39,29 +45,21 @@ export default {
      * @returns {boolean} true 可以插入 false 不能插入
      */
     // eslint-disable-next-line vue/require-default-prop
-    validHtmlMarkFn: {
-      type: Function
-    },
+    validHtmlMarkFn: Function,
     /**
      * @description 将html标记 转换为 通用文本内容
      * @param {string} value html标记内容
      * @returns {string} 通用文本内容
      */
     // eslint-disable-next-line vue/require-default-prop
-    transformHtml2Text: {
-      require: true,
-      type: Function
-    },
+    transformHtml2Text: Function,
     /**
      * @description 将通用文本内容  转换为 html标记
      * @param {string} value 通用文本内容
      * @returns {string} html标记内容
      */
     // eslint-disable-next-line vue/require-default-prop
-    transformText2Html: {
-      require: true,
-      type: Function
-    },
+    transformText2Html: Function,
     // 传入的默认文本（通用文本内容）
     value: {
       require: true,
@@ -77,7 +75,30 @@ export default {
     isSingleLine: {
       type: Boolean,
       default: false
-    }
+    },
+    // 光标所在的编辑行
+    isEdit: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: String,
+      default: '请输入或粘贴创意标题，每行一标题，敲击回车换行'
+    },
+    // 文本字符最小长度
+    minLength: {
+      type: Number,
+      default: 6
+    },
+    // 文本字符最大长度
+    maxLength: {
+      type: Number,
+      default: 30
+    },
+    // 文本计算方法
+    calcTextFn: Function,
+    // 验证方法
+    validFn: Function
   },
   data() {
     return {
@@ -91,25 +112,69 @@ export default {
       // 是否支持文本范围
       supportRange: '',
       // eslint-disable-next-line vue/no-reserved-keys
-      rangeParentElement: null
+      rangeParentElement: null,
+      // 已输入的字符长度
+      totalln: 0
     }
   },
   watch: {
-    value(newVal, oldVal) {
-      if (newVal === oldVal) {
+    value() {
+      if (!this.isEdit) {
+        this.$nextTick(() => {
+          this.echoValue2Ttml()
+          this.calcInputLength()
+          this.valid()
+        })
+      }
+    },
+    isEdit() {
+      if (!this.value && !this.isEdit) {
         return
       }
-      this.echoValue2Ttml()
+      if (!this.isEdit) {
+        this.$emit('on-blur', null, this.getValue())
+
+        this.$nextTick(() => {
+          this.echoValue2Ttml()
+        })
+        return
+      }
+
+      if (!this.value) {
+        return
+      }
+
+      this.formatValue()
     }
   },
   mounted() {
     this.supportRange = typeOf(document.createRange) === 'function'
     this.richEditRef = this.$refs['rich-edit']
     this.$nextTick(() => {
-      this.echoValue2Ttml()
+      this.value && this.echoValue2Ttml()
     })
   },
   methods: {
+    formatValue() {
+      this.$nextTick(() => {
+        const copyDom = document.createElement('div')
+        copyDom.innerHTML = this.value
+        const imgs = copyDom.getElementsByTagName('img')
+        const enterFlag = [...imgs].find(img => img.getAttribute('data-type') === 'enter')
+        if (enterFlag && this.isEdit) {
+          const tmp = document.createElement('div')
+          tmp.appendChild(enterFlag)
+          const tmpStr = tmp.innerHTML
+
+          this.replaceContent(this.value.replaceAll(tmpStr, `${tmpStr}<br>&nbsp;`))
+        } else {
+          this.replaceContent(this.value)
+        }
+
+        this.calcInputLength()
+        this.valid()
+      })
+    },
     // 回显value
     echoValue2Ttml() {
       this.richEditRef.innerHTML = ''
@@ -120,13 +185,12 @@ export default {
         if (this.transformText2Html) {
           html = this.transformText2Html(this.value)
         }
-        console.log('回显value: ', html)
-        this.insertHtmlMark(html)
+        // this.insertHtmlMark(html)
+        this.richEditRef.innerHTML = html
       }
     },
     // 输入事件（使用操作都会触发）
     handlerInput(e) {
-      e.stopPropagation()
       /**
        * @property {event} keyInputEvent 输入事件
        * @property {string} stringHtml 输入框的html 内容
@@ -138,12 +202,12 @@ export default {
       // const reg = /<img[^>]*>/gi
       // const v = stringHtml.match(reg)
       const disableInputFn = () => e.preventDefault()
+      e.stopPropagation()
       // 使用默认的获取纯文本的方法
-      let oiginalText = getPlainText(stringHtml)
-      if (this.transformHtml2Text) {
-        oiginalText = this.transformHtml2Text(stringHtml)
-      }
-      // this.$emit('input', oiginalText)
+      const oiginalText = this.transformHtml2Text
+        ? this.transformHtml2Text(stringHtml)
+        : getPlainText(stringHtml)
+      this.$emit('input', oiginalText)
       this.$emit('on-change', {
         currentData,
         keyInputEvent: e,
@@ -151,6 +215,11 @@ export default {
         oiginalText,
         disableInputFn
       })
+      // 计算长度
+      this.calcInputLength()
+      // 错误校验
+      this.valid()
+      // this.saveSelection()
     },
     // 粘贴(禁止粘贴文件和图片)
     handlerPaste(e) {
@@ -170,9 +239,12 @@ export default {
       if (!text) {
         return
       }
+
+      this.$emit('on-paste', e)
+
       // 纯文本就粘贴
-      const newText = getPlainText(text)
-      this.insertText(newText)
+      // const newText = getPlainText(text)
+      // this.insertText(newText)
     },
     // 键盘按下事件
     handlerKeydown(e) {
@@ -198,10 +270,16 @@ export default {
     },
     // 聚焦事件
     handlerFocus(e) {
+      if (this.isEdit) {
+        return
+      }
       this.$emit('on-foucs', e)
     },
     // 失焦事件
     handlerBlur(e) {
+      if (!this.isEdit) {
+        return
+      }
       this.$emit('on-blur', e)
       const stringHtml = e.target.innerHTML
       // 使用默认的获取纯文本的方法
@@ -209,8 +287,10 @@ export default {
       if (this.transformHtml2Text) {
         oiginalText = this.transformHtml2Text(stringHtml)
       }
-      console.log('回填value: ', oiginalText)
-      this.$emit('input', oiginalText)
+      oiginalText = oiginalText.replaceAll('<br>&nbsp;', '')
+      this.$nextTick(() => {
+        this.$emit('input', oiginalText)
+      })
     },
     // 替换editer内容
     replaceContent(html) {
@@ -225,16 +305,17 @@ export default {
       let pass = true
       if (this.validHtmlMarkFn) {
         pass = this.validHtmlMarkFn(html)
-      } else {
-        // 默认只能加图片
-        // const reg = /<img[^>]*>/gi
-        // const images = html.match(reg)
-        // if (isEmpty(images)) {
-        //   return
-        // }
-        // 只能加一个图片
-        // html = images[0]
       }
+      //  else {
+      //   默认只能加图片
+      //   const reg = /<img[^>]*>/gi
+      //   const images = html.match(reg)
+      //   if (isEmpty(images)) {
+      //     return
+      //   }
+      //   只能加一个图片
+      //   html = images[0]
+      // }
       // 不通过
       if (!pass) {
         return
@@ -249,6 +330,7 @@ export default {
         this.currentRange && this.currentRange.collapse(false)
       }
       this.saveSelection()
+      // isEnter && this.insertHtmlMark('<br/>&nbsp;', false)
     },
     //  插入纯文本
     insertText(string) {
@@ -256,13 +338,15 @@ export default {
       if (!string) {
         return
       }
+      // 传入到文本框
       this.restoreSelection()
       this.richEditRef.focus()
+
       if (document.selection) {
         this.currentRange.pasteHTML(string)
       } else {
         document.execCommand('insertText', false, string)
-        this.currentRange.collapse(false)
+        this.currentRange && this.currentRange.collapse(false)
       }
       this.saveSelection()
     },
@@ -311,31 +395,91 @@ export default {
         range.select()
       }
     },
-    keepLastIndex() {
-      if (window.getSelection) {
-        //ie11 10 9 ff safari
-        // 解决ff不获取焦点无法定位问题
-        this.richEditRef.focus()
-        // 创建range
-        let range = window.getSelection()
-        // range 选择obj下所有子内容
-        range.selectAllChildren(this.richEditRef)
-        // 光标移至最后
-        range.collapseToEnd()
+    // 计算输入框的输入长度
+    calcInputLength() {
+      if (!this.richEditRef) {
+        this.totalln = 0
+        return
       }
-      if (document.selection) {
-        // ie10 9 8 7 6 5
-        // 创建选择对象
-        let range = document.selection.createRange()
-        // let range = document.body.createTextRange();
-        // range定位到richEditRef
-        range.moveToElementText(this.richEditRef)
-        // 光标移至最后
+      let copyDom = document.createElement('div')
+      // 需要匹配换行符替换为空
+      copyDom.innerHTML = this.richEditRef.innerHTML.replaceAll('&nbsp;', '')
+      // 计算文本长度
+      let textLn = 0
+      const textStr = copyDom.innerText.replace(/[\r\n]/g, '')
+      if (this.calcTextFn) {
+        textLn = this.calcTextFn(textStr)
+      } else {
+        textLn = textStr.length
+      }
+      const imgs = copyDom.getElementsByTagName('img')
+      const emojLn = [...imgs].reduce(
+        (pre, cur) => (cur.getAttribute('data-type') === 'emoj' ? pre + 1 : pre),
+        0
+      )
+      this.totalln = textLn + emojLn
+      copyDom = null
+    },
+    // 校验
+    valid() {
+      let errors = []
+      if (this.validFn) {
+        errors = this.validFn(this.totalln, this.getValue())
+      }
+      this.$emit('error', errors)
+    },
+    // 自定义聚焦
+    focus(position) {
+      this.richEditRef.focus()
+      // 移动光标到最后位置
+      if (position === 'end') {
+        const range = document.createRange()
+        range.selectNodeContents(this.richEditRef)
         range.collapse(false)
-        range.select()
+        const sel = window.getSelection()
+        sel.removeAllRanges()
+        sel.addRange(range)
       }
+    },
+    // 自定义失焦
+    blur() {
+      this.richEditRef.blur()
+    },
+    // 获取输入值
+    getValue() {
+      const stringHtml = this.richEditRef.innerHTML
+      // 使用默认的获取纯文本的方法
+      let oiginalText = getPlainText(stringHtml)
+      if (this.transformHtml2Text) {
+        oiginalText = this.transformHtml2Text(stringHtml)
+      }
+      oiginalText = oiginalText.replaceAll('<br>&nbsp;', '').replaceAll('<br>', '')
+      return oiginalText
+    },
+    // 获取已插入表情图片的个数
+    getEmojiNum() {
+      let copyDom = document.createElement('div')
+      copyDom.innerHTML = this.richEditRef.innerHTML.replaceAll('&nbsp;', '')
+      const imgs = copyDom.getElementsByTagName('img')
+      const emojLn = [...imgs].reduce(
+        (pre, cur) => (cur.getAttribute('data-type') === 'emoj' ? pre + 1 : pre),
+        0
+      )
+      return emojLn
+    },
+    // 获取已插入换行符个数
+    getEnters() {
+      if (!this.richEditRef) {
+        return 0
+      }
+      const brs = this.richEditRef.innerHTML.match(/<br>&nbsp;/g)
+      return brs ? brs.length : 0
+    },
+    //清除
+    onClear() {
+      this.richEditRef.innerHTML = ''
+      this.$emit('on-clear')
     }
-    // ------------光标相关-----------
   }
 }
 </script>

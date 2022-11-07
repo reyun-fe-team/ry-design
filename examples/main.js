@@ -108,6 +108,34 @@ const router = new VueRouter({
       component: resolve => require(['./routers/common-table/index'], resolve)
     },
     {
+      path: '/text-input-list',
+      component: resolve => require(['./routers/text-input-list'], resolve)
+    },
+    {
+      path: '/wildcard',
+      component: resolve => require(['./routers/wildcard'], resolve)
+    },
+    {
+      path: '/util-class',
+      component: resolve => require(['./routers/util-class'], resolve)
+    },
+    {
+      path: '/account-select',
+      component: resolve => require(['./routers/account-select'], resolve)
+    },
+    {
+      path: '/cascader-transfer',
+      component: resolve => require(['./routers/cascader-transfer'], resolve)
+    },
+    {
+      path: '/exception',
+      component: resolve => require(['./routers/exception'], resolve)
+    },
+    {
+      path: '/product-select',
+      component: resolve => require(['./routers/product-select'], resolve)
+    },
+    {
       path: '/account-group-list',
       component: resolve => require(['./routers/account-group-list'], resolve)
     }

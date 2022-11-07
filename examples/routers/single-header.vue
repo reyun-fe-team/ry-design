@@ -3,43 +3,19 @@
     <rd-single-header
       @on-reset="handleReset"
       @on-query="handleQuery">
-      <div slot="content">
-        <Form
-          :label-width="72"
-          class="form-content"
-          inline
-          @submit.native.prevent>
-          <FormItem label="账号">
-            <Select
-              v-model="formData.accountIds"
-              :max-tag-count="2"
-              class="select"
-              filterable
-              multiple
-              placeholder="请搜索或选择媒体账号"
-              style="width: 400px">
-              <OptionGroup
-                v-for="item in accountList"
-                :key="item.label"
-                :label="item.label">
-                <Option
-                  v-for="(el, index) in item.children"
-                  :key="index"
-                  :disabled="item.disabled"
-                  :value="el.accountId">
-                  {{ el.name }}
-                </Option>
-              </OptionGroup>
-            </Select>
-          </FormItem>
-          <FormItem label="搜索">
-            <Input
-              v-model="formData.search"
-              clearable
-              placeholder="输入名称"
-              style="width: 184px"></Input>
-          </FormItem>
-        </Form>
+      <div
+        slot="content"
+        class="abc">
+        <div
+          style="
+            background: #00ffff;
+            height: 32px;
+            width: 500px;
+            text-align: center;
+            line-height: 32px;
+          ">
+          slot
+        </div>
       </div>
     </rd-single-header>
   </div>
