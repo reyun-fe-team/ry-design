@@ -1,7 +1,7 @@
 {
   "name": "ry-design",
   "main": "dist/ry-design.min.js",
-  "version": "1.6.5",
+  "version": "2.0.9",
   "repository": {
     "type": "git",
     "url": "git@github.com:reyun-fe-team/ry-design.git"
@@ -12,6 +12,7 @@
   },
   "author": "ry",
   "dependencies": {
+    "umy-ui": "^1.1.6",
     "view-design": "^4.6.1",
     "vue": "^2.6.7"
   },
@@ -23,6 +24,7 @@
     "babel-eslint": "^10.1.0",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^7.1.5",
+    "babel-plugin-component": "^1.1.1",
     "babel-plugin-dynamic-import-node": "^1.2.0",
     "babel-plugin-import": "^1.13.0",
     "babel-plugin-syntax-jsx": "^6.18.0",

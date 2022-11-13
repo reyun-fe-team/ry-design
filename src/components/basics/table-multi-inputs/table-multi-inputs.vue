@@ -20,8 +20,9 @@
           :border="false"
           style="width: 100%"
           clearable
+          @[pasteEventName].native="event => handlePaste(row, index, event, item.key)"
           @on-enter="enter(row, index, column)"
-          @on-change="changeValue(row, index)" />
+          @on-change="event => changeValue(row, index, event, item.key)" />
         <Icon
           v-if="tableData.length > 1 && item.slot === 'del'"
           :key="item.key + 'icon'"
@@ -45,6 +46,11 @@ const prefixCls = prefix + 'table-multi-inputs'
 export default {
   name: prefixCls,
   props: {
+    // 是否能使用粘贴事件
+    isCanPaste: {
+      type: Boolean,
+      default: false
+    },
     columns: {
       type: Array,
       default: () => []
@@ -74,7 +80,33 @@ export default {
       }
     }
   },
+  computed: {
+    // 是否需要粘贴事件
+    pasteEventName() {
+      return this.isCanPaste ? 'paste' : ''
+    }
+  },
+  watch: {
+    // 数据变化需要更新到组件内部
+    data: {
+      deep: true,
+      handler() {
+        this.tableData = _cloneDeep(this.data)
+      }
+    }
+  },
   methods: {
+    // 粘贴事件回调
+    handlePaste(row, index, event, key) {
+      let pastedText = ''
+      if (event.clipboardData && event.clipboardData.getData) {
+        pastedText = event.clipboardData.getData('Text')
+      } else {
+        pastedText = event.originalEvent.clipboardData.getData('Text')
+      }
+      this.$emit('on-paste', { pastedText, key, index, row, event })
+    },
+    // 回车事件
     enter(row, index, column) {
       // 表格一行有几个input框
       const inputColumn = this.columns.filter(item => item.type === 'input')
@@ -102,10 +134,13 @@ export default {
         focusInput.focus()
       })
     },
-    changeValue(row, index) {
+    // 输入事件
+    changeValue(row, index, event, key) {
+      // 需要先赋值，不然在外部组件更改了tableData会导致当前数据项不一致
+      this.tableData[index] = row
+
       clearTimeout(this.timer)
       this.timer = setTimeout(async () => {
-        this.tableData[index] = row
         // 对this.columns含有校验方法（validate）的数据进行校验
         const validateKey = []
         this.columns.forEach(item => {
@@ -115,28 +150,44 @@ export default {
         })
         this.errorInfo.errorTip = ''
         this.errorInfo.errorRow = null
+
+        // 单个在变化
+        this.$emit('on-row-change', { row, index, value: event.target.value, key })
         // 循环this.data里面的数据，校验不正确的立即终止循环，并且返回第一个校验不正确的提示信息
         for (let i = 0; i < this.tableData.length; i++) {
-          const keys = Object.keys(this.tableData[i])
+          let item = this.tableData[i]
+          let keys = validateKey
           for (let j = 0; j < keys.length; j++) {
-            if (validateKey.includes(keys[j])) {
-              const validateObj = this.columns.find(ele => ele.key === keys[j])
-              try {
-                await validateObj.validate(this.tableData[i][keys[j]])
-              } catch (error) {
-                this.errorInfo.errorTip = error.message
-                this.errorInfo.errorRow = i
-                this.$emit('on-change', this.tableData, this.errorInfo.errorTip)
-                return
-              }
+            let nowKey = keys[j]
+            let validateObj = this.columns.find(ele => ele.key === nowKey)
+            if (!validateObj) {
+              continue
+            }
+            try {
+              await validateObj.validate(item[nowKey], i, item, nowKey)
+            } catch (error) {
+              this.errorInfo.errorTip = error.message
+              this.errorInfo.errorRow = i
+              // 验证失败
+              this.$emit('on-validate-error', this.errorInfo)
+              // 更新全部数据
+              this.$emit('on-change', this.tableData, this.errorInfo.errorTip)
+              return
             }
           }
         }
+        // 更新全部数据
         this.$emit('on-change', this.tableData, this.errorInfo.errorTip)
       }, 500)
     },
+    // 删除
     del(index) {
+      this.$emit('on-delete', this.tableData[index], index)
       this.tableData.splice(index, 1)
+      // 删除时如果错误信息与当前一致，则清空
+      if (index === this.errorInfo.errorRow) {
+        this.errorInfo = { errorTip: '', errorRow: null }
+      }
       this.$emit('on-change', this.tableData)
     },
     rowClassName(row, index) {

@@ -118,8 +118,34 @@ export default {
     }
   },
   watch: {
-    value: 'formatValue',
-    isEdit: 'formatValue'
+    value() {
+      if (!this.isEdit) {
+        this.$nextTick(() => {
+          this.echoValue2Ttml()
+          this.calcInputLength()
+          this.valid()
+        })
+      }
+    },
+    isEdit() {
+      if (!this.value && !this.isEdit) {
+        return
+      }
+      if (!this.isEdit) {
+        this.$emit('on-blur', null, this.getValue())
+
+        this.$nextTick(() => {
+          this.echoValue2Ttml()
+        })
+        return
+      }
+
+      if (!this.value) {
+        return
+      }
+
+      this.formatValue()
+    }
   },
   mounted() {
     this.supportRange = typeOf(document.createRange) === 'function'
@@ -131,29 +157,22 @@ export default {
   methods: {
     formatValue() {
       this.$nextTick(() => {
-        if (!this.value && !this.isEdit) {
-          return
-        }
-
-        if (!this.isEdit) {
-          this.$emit('on-blur', null, this.getValue())
-
-          this.$nextTick(() => {
-            this.echoValue2Ttml()
-          })
-          return
-        }
         const copyDom = document.createElement('div')
         copyDom.innerHTML = this.value
         const imgs = copyDom.getElementsByTagName('img')
         const enterFlag = [...imgs].find(img => img.getAttribute('data-type') === 'enter')
-        if (enterFlag) {
+        if (enterFlag && this.isEdit) {
           const tmp = document.createElement('div')
           tmp.appendChild(enterFlag)
           const tmpStr = tmp.innerHTML
 
           this.replaceContent(this.value.replaceAll(tmpStr, `${tmpStr}<br>&nbsp;`))
+        } else {
+          this.replaceContent(this.value)
         }
+
+        this.calcInputLength()
+        this.valid()
       })
     },
     // 回显value
@@ -188,7 +207,7 @@ export default {
       const oiginalText = this.transformHtml2Text
         ? this.transformHtml2Text(stringHtml)
         : getPlainText(stringHtml)
-      // this.$emit('input', oiginalText)
+      this.$emit('input', oiginalText)
       this.$emit('on-change', {
         currentData,
         keyInputEvent: e,
@@ -200,6 +219,7 @@ export default {
       this.calcInputLength()
       // 错误校验
       this.valid()
+      // this.saveSelection()
     },
     // 粘贴(禁止粘贴文件和图片)
     handlerPaste(e) {
@@ -219,9 +239,12 @@ export default {
       if (!text) {
         return
       }
+
+      this.$emit('on-paste', e)
+
       // 纯文本就粘贴
-      const newText = getPlainText(text)
-      this.insertText(newText)
+      // const newText = getPlainText(text)
+      // this.insertText(newText)
     },
     // 键盘按下事件
     handlerKeydown(e) {
@@ -254,21 +277,20 @@ export default {
     },
     // 失焦事件
     handlerBlur(e) {
-      if (this.isEdit) {
+      if (!this.isEdit) {
         return
       }
       this.$emit('on-blur', e)
-      // const stringHtml = e.target.innerHTML
-      // // 使用默认的获取纯文本的方法
-      // let oiginalText = getPlainText(stringHtml)
-      // if (this.transformHtml2Text) {
-      //   oiginalText = this.transformHtml2Text(stringHtml)
-      // }
-      // oiginalText = oiginalText.replaceAll('<br>&nbsp;', '')
-      // console.log('回填value: ', oiginalText)
-      // this.$nextTick(() => {
-      //   this.$emit('input', oiginalText)
-      // })
+      const stringHtml = e.target.innerHTML
+      // 使用默认的获取纯文本的方法
+      let oiginalText = getPlainText(stringHtml)
+      if (this.transformHtml2Text) {
+        oiginalText = this.transformHtml2Text(stringHtml)
+      }
+      oiginalText = oiginalText.replaceAll('<br>&nbsp;', '')
+      this.$nextTick(() => {
+        this.$emit('input', oiginalText)
+      })
     },
     // 替换editer内容
     replaceContent(html) {
@@ -316,13 +338,15 @@ export default {
       if (!string) {
         return
       }
+      // 传入到文本框
       this.restoreSelection()
       this.richEditRef.focus()
+
       if (document.selection) {
         this.currentRange.pasteHTML(string)
       } else {
         document.execCommand('insertText', false, string)
-        this.currentRange.collapse(false)
+        this.currentRange && this.currentRange.collapse(false)
       }
       this.saveSelection()
     },
@@ -371,30 +395,6 @@ export default {
         range.select()
       }
     },
-    keepLastIndex() {
-      if (window.getSelection) {
-        //ie11 10 9 ff safari
-        // 解决ff不获取焦点无法定位问题
-        this.richEditRef.focus()
-        // 创建range
-        let range = window.getSelection()
-        // range 选择obj下所有子内容
-        range.selectAllChildren(this.richEditRef)
-        // 光标移至最后
-        range.collapseToEnd()
-      }
-      if (document.selection) {
-        // ie10 9 8 7 6 5
-        // 创建选择对象
-        let range = document.selection.createRange()
-        // let range = document.body.createTextRange();
-        // range定位到richEditRef
-        range.moveToElementText(this.richEditRef)
-        // 光标移至最后
-        range.collapse(false)
-        range.select()
-      }
-    },
     // 计算输入框的输入长度
     calcInputLength() {
       if (!this.richEditRef) {
@@ -402,10 +402,11 @@ export default {
         return
       }
       let copyDom = document.createElement('div')
+      // 需要匹配换行符替换为空
       copyDom.innerHTML = this.richEditRef.innerHTML.replaceAll('&nbsp;', '')
       // 计算文本长度
       let textLn = 0
-      const textStr = copyDom.innerText.replace(/[\r\n]/g, '').replace('&nbsp;', '')
+      const textStr = copyDom.innerText.replace(/[\r\n]/g, '')
       if (this.calcTextFn) {
         textLn = this.calcTextFn(textStr)
       } else {
@@ -421,22 +422,24 @@ export default {
     },
     // 校验
     valid() {
-      let error = false
+      let errors = []
       if (this.validFn) {
-        error = this.validFn(this.totalln, this.richEditRef)
+        errors = this.validFn(this.totalln, this.getValue())
       }
-      this.$emit('error', error)
+      this.$emit('error', errors)
     },
     // 自定义聚焦
-    focus() {
+    focus(position) {
       this.richEditRef.focus()
       // 移动光标到最后位置
-      const range = document.createRange()
-      range.selectNodeContents(this.richEditRef)
-      range.collapse(false)
-      const sel = window.getSelection()
-      sel.removeAllRanges()
-      sel.addRange(range)
+      if (position === 'end') {
+        const range = document.createRange()
+        range.selectNodeContents(this.richEditRef)
+        range.collapse(false)
+        const sel = window.getSelection()
+        sel.removeAllRanges()
+        sel.addRange(range)
+      }
     },
     // 自定义失焦
     blur() {
@@ -453,22 +456,29 @@ export default {
       oiginalText = oiginalText.replaceAll('<br>&nbsp;', '').replaceAll('<br>', '')
       return oiginalText
     },
+    // 获取已插入表情图片的个数
+    getEmojiNum() {
+      let copyDom = document.createElement('div')
+      copyDom.innerHTML = this.richEditRef.innerHTML.replaceAll('&nbsp;', '')
+      const imgs = copyDom.getElementsByTagName('img')
+      const emojLn = [...imgs].reduce(
+        (pre, cur) => (cur.getAttribute('data-type') === 'emoj' ? pre + 1 : pre),
+        0
+      )
+      return emojLn
+    },
     // 获取已插入换行符个数
     getEnters() {
       if (!this.richEditRef) {
         return 0
       }
-      const brs = this.richEditRef.innerHTML.match(/<br>/g)
+      const brs = this.richEditRef.innerHTML.match(/<br>&nbsp;/g)
       return brs ? brs.length : 0
     },
     //清除
     onClear() {
       this.richEditRef.innerHTML = ''
-      this.$nextTick(() => {
-        this.calcInputLength()
-        this.error = false
-        this.focus()
-      })
+      this.$emit('on-clear')
     }
   }
 }

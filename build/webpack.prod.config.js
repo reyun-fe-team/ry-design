@@ -38,10 +38,6 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/
       },
-      // {
-      //   test: /\.css$/,
-      //   use: [{ loader: 'style-loader' }, { loader: 'css-loader', options: { importLoaders: 1 } }]
-      // },
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
@@ -70,18 +66,25 @@ module.exports = {
           fallback: 'style-loader'
         })
       },
-      {
-        test: /\.(svg|eot|ttf)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]?[hash]',
-          publicPath: 'fonts',
-          outputPath: 'styles/fonts'
-        }
-      },
+      // {
+      //   test: /\.(png|jpg|gif|)$/,
+      //   // test: /\.(svg|eot|ttf)$/,
+      //   loader: 'file-loader',
+      //   options: {
+      //     name: '[name].[ext]?[hash]',
+      //     publicPath: 'fonts',
+      //     outputPath: 'styles/fonts'
+      //   }
+      //   // exclude: /node_modules/
+      // },
       {
         test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
         loader: 'url-loader'
+        // options: {
+        //   name: '[name].[ext]?[hash]',
+        //   publicPath: 'fonts',
+        //   outputPath: 'styles/fonts'
+        // }
       }
     ]
   },

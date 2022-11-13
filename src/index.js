@@ -18,6 +18,8 @@ import TextEmojInput from './components/basics/text-emoj-input'
 import Icon from './components/basics/icon'
 import TextInputList from './components/basics/text-input-list'
 import Wildcard from './components/basics/wildcard'
+import CascaderTransfer from './components/basics/cascader-transfer'
+import Exception from './components/basics/exception'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -28,11 +30,18 @@ import ReverseButton from './components/business/reverse-button'
 import { LayoutModuleConfig, LayoutModuleView } from './components/business/layout-module-config'
 import TextItemShow from './components/business/text-item-show'
 import DeleteModals from './components/business/delete-modals'
+import AccountSelect from './components/business/account-select'
+import ProductSelect from './components/business/product-select'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
 import 'view-design/dist/styles/iview.css'
 import './style/index.less'
+
+// umy-ui u-table
+import { UTable, UTableColumn } from 'umy-ui'
+Vue.use(UTable)
+Vue.use(UTableColumn)
 
 // directives
 import lineClamp from './directives/line-clamp'
@@ -75,7 +84,11 @@ const components = [
   TextEmojInput,
   Icon,
   TextInputList,
-  Wildcard
+  Wildcard,
+  AccountSelect,
+  CascaderTransfer,
+  Exception,
+  ProductSelect
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -120,5 +133,9 @@ export default {
   TextItemShow,
   DeleteModals,
   TextEmojInput,
-  TextInputList
+  TextInputList,
+  AccountSelect,
+  CascaderTransfer,
+  Exception,
+  ProductSelect
 }

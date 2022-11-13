@@ -2,13 +2,13 @@
   <div :class="classes">
     <div
       v-if="prepend"
-      :class="prefixCls + '-group-prepend'">
+      :class="classPrepend">
       <slot name="prepend"></slot>
     </div>
-    <slot></slot>
+    <div :class="classBody"><slot></slot></div>
     <div
       v-if="append"
-      :class="prefixCls + '-group-append'">
+      :class="classAppend">
       <slot name="append"></slot>
     </div>
   </div>
@@ -27,11 +27,18 @@ export default {
   },
   computed: {
     classes() {
+      return `${prefixCls}-wrapper`
+    },
+    classPrepend() {
+      return { [this.prefixCls + '-group-prepend']: this.prepend }
+    },
+    classAppend() {
+      return { [prefixCls + '-group-append']: this.append }
+    },
+    classBody() {
       return [
-        `${prefixCls}-wrapper`,
-        {
-          [`${prefixCls}-group`]: this.prepend || this.append
-        }
+        { [this.prefixCls + '-body-prepend']: this.prepend },
+        { [prefixCls + '-body-append']: this.append }
       ]
     }
   },

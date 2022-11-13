@@ -114,6 +114,26 @@ const router = new VueRouter({
     {
       path: '/wildcard',
       component: resolve => require(['./routers/wildcard'], resolve)
+    },
+    {
+      path: '/util-class',
+      component: resolve => require(['./routers/util-class'], resolve)
+    },
+    {
+      path: '/account-select',
+      component: resolve => require(['./routers/account-select'], resolve)
+    },
+    {
+      path: '/cascader-transfer',
+      component: resolve => require(['./routers/cascader-transfer'], resolve)
+    },
+    {
+      path: '/exception',
+      component: resolve => require(['./routers/exception'], resolve)
+    },
+    {
+      path: '/product-select',
+      component: resolve => require(['./routers/product-select'], resolve)
     }
   ]
 })

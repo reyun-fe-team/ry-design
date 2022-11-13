@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-25 14:53:12
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-07-18 13:35:53
+ * @LastEditTime: 2022-09-19 16:16:02
  * @FilePath: /ry-design/src/components/business/layout-module-config/module-view/index.vue
  * @Description: 单个模块的渲染组件
 -->
@@ -12,22 +12,34 @@
     <!-- 头部 -->
     <div :class="prefixCls + '-header'">
       <div class="title">{{ title }}</div>
-      <template v-if="hasRender('header')">
-        <Render :render="renderSlots['header']"></Render>
+      <template v-if="hasSlot('header')">
+        <slot name="header">
+          <Render
+            v-if="rFns['header']"
+            :render="rFns['header']"></Render>
+        </slot>
       </template>
     </div>
     <!-- 显示内容区域 -->
-    <div :class="[prefixCls + '-main', 'rd-mini-scroll-y']">
-      <template v-if="hasRender('main')">
-        <Render :render="renderSlots['main']"></Render>
+    <div :class="[prefixCls + '-main', 'small-scroll-y']">
+      <template v-if="hasSlot('main')">
+        <slot name="main">
+          <Render
+            v-if="rFns['main']"
+            :render="rFns['main']"></Render>
+        </slot>
       </template>
     </div>
     <!-- 尾部 -->
     <div
       v-if="showFooter"
       :class="prefixCls + '-footer'">
-      <template v-if="hasRender('footer')">
-        <Render :render="renderSlots['footer']"></Render>
+      <template v-if="hasSlot('footer')">
+        <slot name="footer">
+          <Render
+            v-if="rFns['footer']"
+            :render="rFns['footer']"></Render>
+        </slot>
       </template>
     </div>
   </div>
@@ -77,24 +89,29 @@ export default {
     }
   },
   computed: {
-    // 配置的可以渲染的插槽的熏染行数(插槽和渲染函数混合用，渲染函数覆盖插槽)
-    renderSlots() {
+    // 渲染组件
+    rList() {
       const slots = ['header', 'main']
       // 显示尾部才需要加载尾部的渲染函数
       if (this.showFooter) {
         slots.push('footer')
       }
-      const obj = {}
-      for (let index = 0; index < slots.length; index++) {
-        const slotName = slots[index]
+      return slots
+    },
+    // 配置的可以渲染的插槽的熏染行数(插槽和渲染函数混合用，渲染函数覆盖插槽)
+    rFns() {
+      let obj = {}
+      const renderFuncs = {
+        header: this.headerRender,
+        main: this.mainRender,
+        footer: this.footerRender
+      }
+      for (let index = 0; index < this.rList.length; index++) {
+        const name = this.rList[index]
         // 是否有渲染函数
-        const renderFunc = this.$props[slotName + 'Render'] || ''
-        let func = this.$scopedSlots[slotName] || ''
-        if (renderFunc && typeOf(renderFunc) === 'function') {
-          func = renderFunc
-        }
-        if (func && typeOf(func) === 'function') {
-          obj[slotName] = func
+        const fn = renderFuncs[name] || ''
+        if (typeOf(fn) === 'function') {
+          obj[name] = fn
         }
       }
       return obj
@@ -102,12 +119,8 @@ export default {
   },
   methods: {
     // 有没有对应的渲染行数
-    hasRender(slotName) {
-      const h = this.renderSlots[slotName]
-      if (h && typeOf(h) === 'function') {
-        return true
-      }
-      return false
+    hasSlot(slotName) {
+      return this.rList.includes(slotName)
     }
   }
 }

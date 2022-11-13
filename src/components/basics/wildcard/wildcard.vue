@@ -2,21 +2,59 @@
   <div :class="classes">
     <div :class="prefixCls + '-wrap'">
       <FormItem
-        :prop="mergedOptions.prop"
-        :label="mergedOptions.label"
-        :label-width="mergedOptions.labelWidth">
+        :prop="mergeOptions.prop"
+        :label="mergeOptions.label"
+        :label-width="mergeOptions.labelWidth">
+        <label
+          v-if="mergeOptions.tooltip"
+          slot="label"
+          :style="{ width: mergeOptions.labelWidth + 'px' }">
+          {{ mergeOptions.label }}
+          <Tooltip
+            placement="top"
+            max-width="410"
+            theme="light"
+            :content="mergeOptions.tooltip">
+            <Icon
+              type="ios-help-circle-outline"
+              size="16"
+              class="cursor-pointer icon-question tip-icon"></Icon>
+          </Tooltip>
+        </label>
         <div :class="prefixCls + '-keyword'">
           <Input
             v-model="keyword"
+            :clearable="clearable"
             :disabled="disabled"
             type="text"
             placeholder="请输入"
             @on-keydown="onKeyDown"></Input>
-          <span :class="prefixCls + '-keyword-word-limit'">{{ showWordLimit }}</span>
+          <span
+            v-if="showWordLimit"
+            :class="prefixCls + '-keyword-word-limit'">
+            {{ wordLimit }}
+          </span>
         </div>
         <div :class="prefixCls + '-list'">
           <div :class="prefixCls + '-list-name-rule'">
-            <span :class="prefixCls + '-list-name-rule-label'">通配符:</span>
+            <span
+              :class="prefixCls + '-list-name-rule-label'"
+              :style="{
+                width: mergeWildcardLabelConfig.width + 'px',
+                flexBasis: mergeWildcardLabelConfig.width + 'px'
+              }">
+              {{ mergeWildcardLabelConfig.label }}
+              <Tooltip
+                v-if="mergeWildcardLabelConfig.tooltip"
+                :content="mergeWildcardLabelConfig.tooltip"
+                max-width="250"
+                theme="light"
+                placement="top">
+                <Icon
+                  type="ios-help-circle-outline"
+                  size="13" />
+              </Tooltip>
+            </span>
             <p
               :class="prefixCls + '-list-name-rule-item-wrap'"
               @click="handleNameItem">
@@ -25,13 +63,17 @@
                 :key="item.title"
                 :class="[
                   prefixCls + '-list-name-rule-item',
-                  { [prefixCls + '-list-name-rule-item-active']: keyword.includes(item.title) }
+                  {
+                    [prefixCls + '-list-name-rule-item-active']:
+                      keyword.includes(item.title) || keyword.includes(item.alias)
+                  }
                 ]"
                 :data-value="item.title">
                 {{ prefix }}{{ item.label }}
                 <Tooltip
                   v-if="item.tooltip"
                   :content="item.tooltip"
+                  max-width="250"
                   theme="light"
                   placement="top">
                   <Icon
@@ -41,7 +83,9 @@
               </i>
             </p>
           </div>
-          <div :class="prefixCls + '-list-name-save'">
+          <div
+            v-if="showSaveRule"
+            :class="prefixCls + '-list-name-save'">
             <Checkbox
               v-model="saveNameRule"
               @on-change="onSaveRuleChange">
@@ -62,6 +106,11 @@ const defaultOptions = {
   label: '',
   prop: '',
   labelWidth: 104
+}
+const defaultWildcardLabelConfig = {
+  label: '通配符:',
+  width: 48,
+  tooltip: ''
 }
 let titleList = []
 
@@ -114,6 +163,22 @@ export default {
       require: true,
       type: Object,
       default: () => {}
+    },
+    wildcardLabelConfig: {
+      type: Object,
+      default: () => {}
+    },
+    showSaveRule: {
+      type: Boolean,
+      default: true
+    },
+    showWordLimit: {
+      type: Boolean,
+      default: true
+    },
+    clearable: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -121,7 +186,8 @@ export default {
       prefixCls,
       keyword: '',
       saveNameRule: false,
-      mergedOptions: {},
+      mergeOptions: {},
+      mergeWildcardLabelConfig: {},
       list: []
     }
   },
@@ -129,7 +195,7 @@ export default {
     classes() {
       return [`${prefixCls}`]
     },
-    showWordLimit() {
+    wordLimit() {
       let len = this.calculateLength(this.keyword)
       return len + '/' + this.maxLength
     }
@@ -141,6 +207,9 @@ export default {
       handler(now) {
         this.initData(now)
       }
+    },
+    value() {
+      this.keyword = this.value
     },
     keyword() {
       this.emitData()
@@ -203,13 +272,18 @@ export default {
         }
       })
       titleList = this.list.map(item => item.title)
-      this.mergedOptions = Object.assign({}, defaultOptions, this.option)
+      this.mergeOptions = Object.assign({}, defaultOptions, this.option)
+      this.mergeWildcardLabelConfig = Object.assign(
+        {},
+        defaultWildcardLabelConfig,
+        this.wildcardLabelConfig
+      )
     },
     emitData() {
       this.$emit('input', this.keyword)
       this.$emit('on-change', this.keyword)
       let ids = this.list
-        .filter(e => this.keyword.includes(e.title) || this.keyword.includes(e.reg))
+        .filter(e => this.keyword.includes(e.title) || this.keyword.includes(e.alias))
         .map(e => e.id)
         .filter(Boolean)
       this.$emit('on-name-programs', ids)

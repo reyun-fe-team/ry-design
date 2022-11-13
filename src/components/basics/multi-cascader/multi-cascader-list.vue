@@ -1,19 +1,14 @@
 <!--
  * @Author: yangyufneg
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-06-24 19:34:00
+ * @LastEditTime: 2022-10-12 11:53:13
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
  * @Description: 下拉多选联动-list面板
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader-list.vue
 -->
 <template>
   <div :class="[prefixCls + '-wrap']">
-    <div
-      v-show="showEmpty"
-      class="empty">
-      暂无数据
-    </div>
-    <ul :class="[prefixCls]">
+    <ul :class="[prefixCls, 'small-scroll-y']">
       <li
         v-if="!useMax && showCheckBox"
         :class="[prefixCls + '-li']">
@@ -31,7 +26,7 @@
       </li>
       <li
         v-for="(node, nodeIndex) in list"
-        :key="getKey(node)"
+        :key="node.id"
         :class="[
           prefixCls + '-li',
           { [prefixCls + '-li-active']: activeList[level - 1] === node.id }
@@ -115,6 +110,11 @@ export default {
     notUseAble: {
       type: Boolean,
       default: false
+    },
+    // 异步加载子元素 异步传入数据
+    sync: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -157,17 +157,38 @@ export default {
       return this.list.every(v => v.disabled)
     }
   },
+  watch: {
+    showEmpty() {
+      this.$emit('handle-showEmptyWrap', { show: this.showEmpty, level: this.level })
+    }
+  },
   methods: {
     // 显示下一级的箭头
     showNextIcon(node) {
       let show = true
-      // 是不是最大层级了
-      // const canMax = this.maxRequest ? this.level >= this.maxRequest : false
-      // 加载不显示 没有下一级不显示 最大层级了不显示
-      // || !node.showExpIcon || canMax
+
+      // 加载中
       if (node.loading) {
         show = false
+        return show
       }
+
+      // 异步的模式： 知道最大请求层级，当前层级为最大层级时不展示下级图标
+      if (this.sync) {
+        if (this.maxRequest && this.level >= this.maxRequest) {
+          show = false
+          return show
+        }
+      }
+
+      // 不是异步的模式：知道了数据层级，没有下级数据了，不展示下级图标
+      if (!this.sync) {
+        if (node.childNodes.length <= 0) {
+          show = false
+          return show
+        }
+      }
+
       return show
     },
     handleCheckAll(val) {

@@ -8,12 +8,20 @@ maxlength 字符长度
 disabled 禁用
 prefix 前缀
 joinSymbol 连接符
-
+<!-- 通配符label配置 -->
+wildcardLabelConfig: {
+    label: '通配符:',
+    width: 48,
+    tooltip: ''
+}
+<!-- formItem配置 -->
 option: {
     prop: '',
     label: '',
-    labelWidth: 104
+    labelWidth: 104,
+    tooltip: ''  // 提示内容
 }
+clearable  清空
 
 
 Event
