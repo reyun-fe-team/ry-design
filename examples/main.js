@@ -130,6 +130,10 @@ const router = new VueRouter({
     {
       path: '/exception',
       component: resolve => require(['./routers/exception'], resolve)
+    },
+    {
+      path: '/digital-details-tooltip',
+      component: resolve => require(['./routers/digital-details-tooltip'], resolve)
     }
   ]
 })
