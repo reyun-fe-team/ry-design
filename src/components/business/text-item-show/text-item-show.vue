@@ -42,7 +42,7 @@
     <div
       v-if="type === 'title'"
       :class="[prefixCls + '-title']"
-      :style="{ height: titleThumbnail.show ? '56px' : '' }">
+      :style="{ minHeight: titleThumbnail.show ? '56px' : '' }">
       <div
         v-if="titleThumbnail.show"
         class="title-thumbnail">
@@ -51,9 +51,15 @@
           :src="titleThumbnail.src"
           :onerror="onerrorImgSrc" />
       </div>
-      <div :class="[prefixCls + '-title-text', 'show-text']">
+      <div
+        :class="[
+          prefixCls + '-title-text',
+          'show-text',
+          data.thirdTitle ? 'show-third-title' : ''
+        ]">
         <div class="main-title">{{ data.title }}</div>
         <div class="sub-title">{{ data.subTitle }}</div>
+        <div class="sub-title">{{ data.thirdTitle }}</div>
       </div>
       <!-- btnGroup -->
       <div :class="[prefixCls + '-btns']">
