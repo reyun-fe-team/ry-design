@@ -158,6 +158,7 @@
                 big-data-checkbox
                 :height="selectedTableHeight"
                 :border="false"
+                :data-changes-scroll-top="false"
                 use-virtual
                 :show-header="false"
                 :row-height="firstSelectedRowHeight"
@@ -191,6 +192,7 @@
                 big-data-checkbox
                 :height="selectedTableHeight"
                 :border="false"
+                :data-changes-scroll-top="false"
                 use-virtual
                 :show-header="false"
                 :row-height="secondSelectedRowHeight"
@@ -523,15 +525,60 @@ export default {
     },
     select(selection) {
       if (this.level === 'first') {
-        this.$emit('on-selected', selection)
+        // 当前左侧表格数据所有id集合
+        const firstTableDataKeys = this.firstTableData.map(item => item[this.firstRowId])
+        // 当前左侧表格数据选中的id集合
+        const selectionKeys = selection.map(item => item[this.firstRowId])
+        // 已选表格数据id集合
+        const firstSelectedKeys = this.firstSelectedData.map(item => item[this.firstRowId])
+        // 已选数据在当前左侧表格显示的id集合（搜索之后有部分已选数据在左侧表格不展示）
+        const showTableKeys = firstSelectedKeys.filter(item => firstTableDataKeys.includes(item))
+        // 当前左侧表格删除的已选数据 (当前左侧表格数据没有选中&&已选表格数据有)
+        const deleteFirstSelectedKeys = firstTableDataKeys.filter(
+          item => !selectionKeys.includes(item) && firstSelectedKeys.includes(item)
+        )
+        // 当前左侧选中数据去掉右侧已选数据
+        const NewArr = selection.filter(item => !showTableKeys.includes(item[this.firstRowId]))
+        // 右侧已选数据去掉删除后的数据
+        const oldArr = this.firstSelectedData.filter(
+          item => !deleteFirstSelectedKeys.includes(item[this.firstRowId])
+        )
+        const res = oldArr.concat(NewArr)
+        this.$emit('on-selected', res)
       } else if (this.level === 'second') {
+        // 当前激活左侧二级表格数据所有id集合
+        const secondTableDataKeys = this.secondTableData.map(item => item[this.secondRowId])
+        // 当前激活左侧二级表格数据选中的id集合
+        const selectionKeys = selection.map(item => item[this.secondRowId])
+        // 当前激活已选二级表格数据id集合
+        let secondSelectedData = _cloneDeep(this.secondSelectedData) || []
+        const oldVal = secondSelectedData.find(item => item[this.firstRowId] === this.activeFirstId)
+        let secondSelectedKeys = []
+        if (oldVal) {
+          secondSelectedKeys = oldVal.data.map(item => item[this.secondRowId])
+        }
+        // 已选数据在当前左侧二级表格显示的id集合（搜索之后有部分已选数据在左侧表格不展示）
+        const showTableKeys = secondSelectedKeys.filter(item => secondTableDataKeys.includes(item))
+        // 当前左侧二级表格删除的已选数据 (当前左侧二级表格数据没有选中&&已选二级表格数据有)
+        const deleteSecondSelectedKeys = secondTableDataKeys.filter(
+          item => !selectionKeys.includes(item) && secondSelectedKeys.includes(item)
+        )
+        // 当前左侧选中数据去掉右侧已选数据
+        const NewArr = selection.filter(item => !showTableKeys.includes(item[this.secondRowId]))
+        // 右侧已选数据去掉删除后的数据
+        const oldArr =
+          (oldVal &&
+            oldVal.data.filter(
+              item => !deleteSecondSelectedKeys.includes(item[this.secondRowId])
+            )) ||
+          []
+        const res = oldArr.concat(NewArr)
+
         const obj = {
           [this.firstRowId]: this.activeFirstId,
           [this.firstTableTitleField]: this.activeFirstName,
-          data: selection
+          data: res
         }
-        let secondSelectedData = _cloneDeep(this.secondSelectedData) || []
-        const oldVal = secondSelectedData.find(item => item[this.firstRowId] === this.activeFirstId)
         if (oldVal) {
           secondSelectedData = secondSelectedData.map(item => {
             if (item[this.firstRowId] === this.activeFirstId) {
