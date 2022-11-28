@@ -6,6 +6,12 @@
   margin-bottom: 5px;
   border: 1px solid #dadfe3;
 
+  &-content {
+    width: 100%;
+    marginBottom: 0px;
+    border: 0px
+  }
+
   &-line {
     display: flex;
     &:hover {
@@ -104,5 +110,10 @@
 
   .middle-style-li-active {
     background-color: #edf1f5;
+  }
+
+  .virtual-list {
+    height: 100%;
+    overflow-y: auto
   }
 }
