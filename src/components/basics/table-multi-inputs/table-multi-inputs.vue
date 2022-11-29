@@ -1,7 +1,7 @@
 <template>
   <main :class="prefixCls">
     <Table
-      :class="prefixCls + '-table'"
+      :class="`${prefixCls}-table ${prefixCls}-table-${tableId}`"
       border
       :max-height="400"
       :columns="columns"
@@ -68,6 +68,16 @@ export default {
     addNewData: {
       type: Object,
       default: () => {}
+    },
+    // 是否显示表头
+    showHeader: {
+      type: Boolean,
+      default: true
+    },
+    // 表格唯一标识
+    tableId: {
+      type: [Number, String],
+      default: ''
     }
   },
   data() {
@@ -120,7 +130,9 @@ export default {
       // 下一个要聚焦的input，在所有input的数量中属于第几个
       const nextLen = index * inputColumnLength + (inputColIndex + 1)
       // 所有input的数量
-      const allInputLen = document.getElementsByClassName(`${this.prefixCls}-input-item`).length
+      const allInputLen = document.querySelectorAll(
+        `.${this.prefixCls}-table-${this.tableId} .${this.prefixCls}-input-item`
+      ).length
       // 光标聚焦到最后一个，如果当前表格数量 < 最大表格数, 并且下一个要聚焦的input <= 所有input的数量（即只有光标处于最后的input框且可以继续增加的时候才会push）  则给表格的data，push一条新数据
       if (inputColIndex + 1 >= inputColumnLength && allInputLen <= nextLen) {
         this.tableData.push(this.addNewData)
@@ -128,7 +140,9 @@ export default {
       // 光标移到下一个input
       this.$nextTick(() => {
         const focusInput = document
-          .getElementsByClassName(`${this.prefixCls}-input-item`)
+          .querySelectorAll(
+            `.${this.prefixCls}-table-${this.tableId} .${this.prefixCls}-input-item`
+          )
           // eslint-disable-next-line no-unexpected-multiline
           [nextLen].getElementsByClassName('ivu-input')[0]
         focusInput.focus()
