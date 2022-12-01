@@ -78,7 +78,6 @@ import rdTextEmojInput from '../../text-emoj-input/text-emoj-input'
 import { getSplitReg } from '../../../../util/text-emoj-input'
 
 export default {
-  // name: prefixCls,
   components: {
     rdTextEmojInput
   },
