@@ -22,7 +22,7 @@
           :value="value[index] || ''"
           :is-edit="middle.activeClass === index"
           :class="[
-            { 'middle-style-li-active': middle.activeClass === index },
+            middle.activeClass === index ? prefixCls + 'middle-style-li-active' : '',
             isHaveError(index) ? prefixCls + '-is-error' : ''
           ]"
           :transform-html2-text="transformHtml2Text"
@@ -288,6 +288,7 @@ export default {
                 o && this.dispatch('on-error', index + i, this.validFn(this.calcInputLength(o), o))
               }
             })
+            this.$refs.emojInput.blur()
             this.dispatch('input', copyValue)
           })
         }
