@@ -2,7 +2,7 @@
   <div :class="prefixCls">
     <virtual-list
       ref="list"
-      class="virtual-list"
+      :class="prefixCls + '-virtual-list'"
       :data-key="'uid'"
       :data-sources="getLine"
       :extra-props="{ ...$attrs, middle, maxLine, errorList, value }"
