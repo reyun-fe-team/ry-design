@@ -1,7 +1,7 @@
 <!--
  * @Author: yangyufneg
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-12-02 16:48:42
+ * @LastEditTime: 2022-12-02 17:49:46
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
  * @Description: 下拉多选联动-list面板
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader-list.vue
@@ -47,6 +47,8 @@
           <span style="margin-left: 5px">
             <Tooltip
               v-if="node[tooltipKey]"
+              transfer
+              max-width="300"
               :content="node[tooltipKey]"
               theme="light"
               placement="right-start">
