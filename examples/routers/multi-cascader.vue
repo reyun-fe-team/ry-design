@@ -3,6 +3,7 @@
     <p>同步的</p>
     <rd-multi-cascader
       v-model="allListModel"
+      :show-empty-wrap-by-not-synced="false"
       tag-max-width="0"
       :max-tag-placeholder="num => `+${num}`"
       style="width: 400px"
@@ -45,11 +46,14 @@ export default {
           showCheck: true,
           value: 'zhinan',
           label: '指南',
+          tooltip: '指南tooltip指南tooltip指南tooltip',
           children: [
             {
               showCheck: true,
               value: 'shejiyuanze',
               label: '设计原则',
+              tooltip:
+                '设计原则tooltip设计原则tooltip设计原则tooltip设计原则tooltip设计原则tooltip设计原则tooltip设计原则tooltip设计原则tooltip',
               children: [
                 {
                   value: 'yizhi',

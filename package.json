@@ -1,7 +1,7 @@
 {
   "name": "ry-design",
   "main": "dist/ry-design.min.js",
-  "version": "2.0.9",
+  "version": "2.0.95",
   "repository": {
     "type": "git",
     "url": "git@github.com:reyun-fe-team/ry-design.git"
@@ -14,7 +14,8 @@
   "dependencies": {
     "umy-ui": "^1.1.6",
     "view-design": "^4.6.1",
-    "vue": "^2.6.7"
+    "vue": "^2.6.10",
+    "vue-virtual-scroll-list": "^2.3.4"
   },
   "devDependencies": {
     "autoprefixer": "^9.6.0",
