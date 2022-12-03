@@ -1,8 +1,8 @@
 <!--
  * @Author: yangyufneg
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-10-12 11:53:13
- * @LastEditors: 杨玉峰 yangyufeng@reyun.com
+ * @LastEditTime: 2022-12-03 18:55:16
+ * @LastEditors: yangyufeng yangyufeng.web@qq.com
  * @Description: 下拉多选联动-list面板
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader-list.vue
 -->
@@ -44,10 +44,15 @@
         <p
           :class="[prefixCls + '-li-label']"
           @click="handleClick(node, nodeIndex, level)">
-          <span
-            :title="node[labelKey]"
-            style="margin-left: 5px">
-            {{ node[labelKey] }}
+          <span style="margin-left: 5px">
+            <Tooltip
+              v-if="node[tooltipKey]"
+              :content="node[tooltipKey]"
+              theme="light"
+              placement="right-start">
+              <span>{{ node[labelKey] }}</span>
+            </Tooltip>
+            <span v-else>{{ node[labelKey] }}</span>
           </span>
           <Icon
             v-if="node.loading"
@@ -73,6 +78,17 @@ const prefixCls = prefix + 'multi-cascader-list'
 export default {
   name: prefixCls,
   props: {
+    // 作为 tooltip 唯一标识的键名
+    // 面板选项的tooltip字段key
+    tooltipKey: {
+      type: String,
+      default: 'tooltip'
+    },
+    // 主动控制是否显示"暂无数据"面板项
+    showEmptyWrapByNotSynced: {
+      type: Boolean,
+      default: true
+    },
     // 最大的请求层级 0 为不限制
     maxRequest: {
       type: Number,
@@ -126,6 +142,9 @@ export default {
   computed: {
     // 有没有下一级的数据
     showEmpty() {
+      if (!this.sync && !this.showEmptyWrapByNotSynced) {
+        return false
+      }
       const lastId = this.activeList.at(-1) || ''
 
       // 层级一样
@@ -159,7 +178,7 @@ export default {
   },
   watch: {
     showEmpty() {
-      this.$emit('handle-showEmptyWrap', { show: this.showEmpty, level: this.level })
+      this.$emit('handle-show-empty-wrap', { show: this.showEmpty, level: this.level })
     }
   },
   methods: {
