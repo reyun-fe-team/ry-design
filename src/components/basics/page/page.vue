@@ -1,24 +1,9 @@
 <template>
-  <div v-if="total">
-    <!-- 默认分页 -->
+  <div
+    v-if="total"
+    :class="prefixCls">
     <Page
-      v-if="type === 'default'"
-      :class="prefixCls"
-      :total="total"
-      size="small"
-      :page-size="localSize"
-      :current="localCurrent"
-      :page-size-opts="localSizeOptions"
-      show-total
-      show-elevator
-      show-sizer
-      transfer
-      @on-change="pageChange"
-      @on-page-size-change="sizeChange" />
-    <!-- 弹框分页 -->
-    <Page
-      v-else
-      :class="prefixCls"
+      :class="[prefixCls + '-' + type]"
       :total="total"
       :page-size="localSize"
       :current="localCurrent"
@@ -39,7 +24,7 @@ const prefixCls = prefix + 'page'
 export default {
   name: prefixCls,
   props: {
-    // 类型：普通分页default，弹框分页m-large、m-middle、m-small
+    // 类型：[默认default、弹框m-large、弹框m-middle、弹框m-small]
     type: { type: String, default: 'default' },
     total: {
       required: true,

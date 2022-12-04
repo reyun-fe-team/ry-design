@@ -4,7 +4,31 @@
     position: relative;
     text-align: right;
     margin: 16px;
-    min-width: 600px;
+
+    &-default {
+        min-width: 800px;
+
+        .ivu-page-options-elevator {
+            height: 32px !important;
+            line-height: 32px !important;
+        }
+
+        input {
+            height: 32px !important;
+        }
+    }
+
+    &-m-large {
+        min-width: 800px;
+    }
+
+    &-m-middle {
+        min-width: 400px;
+    }
+
+    &-m-small {
+        min-width: 300px;
+    }
 
     .ivu-page-total {
         position: absolute;
@@ -12,17 +36,4 @@
         left: 0;
     }
 
-    // .ivu-page-prev ivu-page-disabled {
-    //     line-height: 24px !important;
-    // }
-
-    // .ivu-page-item {
-    //     height: 24px !important;
-    //     vertical-align: baseline;
-    //     line-height: 32px;
-    // }
-
-    input {
-        height: 24px !important;
-    }
 }
