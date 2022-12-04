@@ -134,6 +134,10 @@ const router = new VueRouter({
     {
       path: '/product-select',
       component: resolve => require(['./routers/product-select'], resolve)
+    },
+    {
+      path: '/page',
+      component: resolve => require(['./routers/page'], resolve)
     }
   ]
 })
