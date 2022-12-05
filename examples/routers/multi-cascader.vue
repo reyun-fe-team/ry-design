@@ -52,7 +52,8 @@ export default {
               showCheck: true,
               value: 'shejiyuanze',
               label: '设计原则',
-              tooltip: '设计原则tooltip设计原则tooltip',
+              tooltip:
+                '设计原则tooltip设计原则tooltip设计原则tooltip设计原则tooltip设计原则tooltip设计原则tooltip设计原则tooltip设计原则tooltip设计原则tooltip设计原则tooltip',
               children: [
                 {
                   value: 'yizhi',

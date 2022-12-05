@@ -1,8 +1,8 @@
 <!--
  * @Author: yangyufneg
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-12-03 18:55:16
- * @LastEditors: yangyufeng yangyufeng.web@qq.com
+ * @LastEditTime: 2022-12-05 11:32:30
+ * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
  * @Description: 下拉多选联动-list面板
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader-list.vue
 -->
@@ -48,6 +48,8 @@
             <Tooltip
               v-if="node[tooltipKey]"
               :content="node[tooltipKey]"
+              max-width="300"
+              transfer
               theme="light"
               placement="right-start">
               <span>{{ node[labelKey] }}</span>
