@@ -11,6 +11,8 @@
       size="small"
       :show-total="isShowTotal"
       :show-elevator="isShowElevator"
+      :simple="isSimple"
+      :disabled="disabled"
       show-sizer
       transfer
       @on-change="pageChange"
@@ -19,13 +21,20 @@
 </template>
 
 <script>
+import { oneOf } from '@src/util/assist.js'
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'page'
 export default {
   name: prefixCls,
   props: {
-    // 类型：[默认default、弹框m-large、弹框m-middle、弹框m-small]
-    type: { type: String, default: 'default' },
+    // 类型：[默认default、弹框m-large、弹框m-middle、弹框m-small、弹框m-simple]
+    type: {
+      type: String,
+      default: 'default',
+      validator(value) {
+        return oneOf(value, ['default', 'm-large', 'm-middle', 'm-small', 'm-simple'])
+      }
+    },
     total: {
       required: true,
       type: Number,
@@ -47,6 +56,11 @@ export default {
     localStorageSizeKey: {
       type: String,
       default: ''
+    },
+    // 禁用
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -63,6 +77,9 @@ export default {
     },
     isShowElevator() {
       return ['default', 'm-large'].includes(this.type)
+    },
+    isSimple() {
+      return ['m-simple'].includes(this.type)
     }
   },
   watch: {

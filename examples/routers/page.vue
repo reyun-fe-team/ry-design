@@ -32,7 +32,21 @@
       :total="500"></rd-page>
     <br />
     <p class="group-text">
-      5、分页localStorageSizeKey参数：
+      5、弹框分页(m-simple)：
+      <span>应用场景：适用于弹窗极简区域的表格底部。</span>
+    </p>
+    <rd-page
+      type="m-simple"
+      :total="500"></rd-page>
+    <br />
+    <p class="group-text">6、分页禁用</p>
+    <rd-page
+      type="m-small"
+      disabled="disabled"
+      local-storage-size-key="m-small"
+      :total="500"></rd-page>
+    <p class="group-text">
+      7、分页localStorageSizeKey参数：
       <span>应用场景：适用于记录最后一次size数据。</span>
     </p>
     <rd-page
