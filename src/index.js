@@ -20,6 +20,7 @@ import TextInputList from './components/basics/text-input-list'
 import Wildcard from './components/basics/wildcard'
 import CascaderTransfer from './components/basics/cascader-transfer'
 import Exception from './components/basics/exception'
+import Button from './components/basics/custom-button'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -88,7 +89,8 @@ const components = [
   AccountSelect,
   CascaderTransfer,
   Exception,
-  ProductSelect
+  ProductSelect,
+  Button
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -137,5 +139,6 @@ export default {
   AccountSelect,
   CascaderTransfer,
   Exception,
-  ProductSelect
+  ProductSelect,
+  Button
 }
