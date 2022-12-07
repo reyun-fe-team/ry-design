@@ -1,20 +1,30 @@
 <!--
  * @Date: 2022-12-07 16:13:28
- * @LastEditTime: 2022-12-07 17:28:03
+ * @LastEditTime: 2022-12-07 19:42:50
  * @Description: 按钮组件
 -->
 <template>
-  <div :class="classes">
+  <div
+    :class="classes"
+    @click="handleClick">
     <!--普通按钮 -->
-    <template v-if="isNormalized">
-      <normalized-button
-        :type="type"
-        :loading="loading"
-        :disabled="disabled"
-        :icon="icon">
-        <slot></slot>
-      </normalized-button>
-    </template>
+    <normalized-button
+      v-if="isNormalized"
+      :type="type"
+      :loading="loading"
+      :disabled="disabled"
+      :icon="icon">
+      <slot></slot>
+    </normalized-button>
+    <!-- 插画按钮 -->
+    <illustration-button
+      v-if="type === 'illustration'"
+      :loading="loading"
+      :disabled="disabled"
+      :illustration-url="illustrationUrl"
+      :corner-marker="cornerMarker">
+      <slot></slot>
+    </illustration-button>
   </div>
 </template>
 <script>
@@ -22,10 +32,13 @@ import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'button'
 
 import normalizedButton from './normalized-button'
+import illustrationButton from './illustration-button'
+
 export default {
   name: prefixCls,
   components: {
-    normalizedButton
+    normalizedButton,
+    illustrationButton
   },
   props: {
     // 组件类型
@@ -72,6 +85,11 @@ export default {
       // 普通按钮 text 文字按钮 primary 主要按钮  dashed 灰色框按钮 default 默认纯白色按钮
       let list = ['text', 'primary', 'dashed', 'default']
       return list.includes(this.type)
+    }
+  },
+  methods: {
+    handleClick($event) {
+      this.$emit('click', $event)
     }
   }
 }

@@ -1,8 +1,55 @@
 @button: ~'@{css-prefix}button';
 @button-normalized: ~'@{css-prefix}button-normalized';
+@button-illustration: ~'@{css-prefix}button-';
 
 .@{button} {
   display: inline-block;
+}
+
+// 插画按钮
+.@{button}-illustration {
+  position: relative;
+  min-width: 88px;
+  height: 32px;
+  background: #3989fa;
+  border-radius: 3px 4px 4px 3px;
+  overflow: hidden;
+  .illustration-button {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    outline: none;
+    user-select: none;
+    z-index: 1;
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .illustration-background {
+    display: flex;
+    justify-content: flex-start;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #3a88fa;
+    padding-right: 16px;
+    .head {
+      width: 40px;
+      height: 100%;
+      margin-right: 4px;
+    }
+    .text {
+      margin-right: 4px;
+    }
+    .recommend {
+      position: absolute;
+    }
+  }
 }
 
 // 常规按钮
