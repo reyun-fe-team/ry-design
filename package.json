@@ -14,8 +14,7 @@
   "dependencies": {
     "umy-ui": "^1.1.6",
     "view-design": "^4.6.1",
-    "vue": "^2.6.10",
-    "vue-virtual-scroll-list": "^2.3.4"
+    "vue": "^2.6.10"
   },
   "devDependencies": {
     "autoprefixer": "^9.6.0",

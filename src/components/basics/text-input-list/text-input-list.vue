@@ -15,8 +15,8 @@
   </div>
 </template>
 <script>
-import VirtualList from 'vue-virtual-scroll-list'
-import Item from './components/title-list'
+import VirtualList from './virtualList'
+import Item from './title-list'
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'text-input-list'
 export default {
