@@ -89,6 +89,14 @@ module.exports = {
     ]
   },
   plugins: [new CleanWebpackPlugin(), new ExtractTextPlugin('styles/[name].css')],
+  externals: {
+    vue: {
+      root: 'Vue',
+      commonjs: 'vue',
+      commonjs2: 'vue',
+      amd: 'vue'
+    }
+  },
   resolve: {
     alias: {
       vue$: 'vue/dist/vue.esm.js',

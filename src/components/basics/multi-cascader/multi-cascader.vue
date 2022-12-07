@@ -1,8 +1,8 @@
 <!--
  * @Author: yangyufeng
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-10-28 15:48:31
- * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
+ * @LastEditTime: 2022-12-03 18:54:32
+ * @LastEditors: yangyufeng yangyufeng.web@qq.com
  * @Description: 下拉多选联动
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader.vue
 -->
@@ -70,6 +70,8 @@
           <!-- 根节点面板 -->
           <div :class="[prefixCls + '-ground-pos']">
             <multi-cascader-list
+              :tooltip-key="tooltipKey"
+              :show-empty-wrap-by-not-synced="showEmptyWrapByNotSynced"
               :sync="sync"
               :list="root.childNodes"
               :level="1"
@@ -79,7 +81,7 @@
               :use-max="useMax"
               :label-key="labelKey"
               :expand-trigger="expandTrigger"
-              @handle-showEmptyWrap="handleShowEmptyWrap"
+              @handle-show-empty-wrap="handleShowEmptyWrap"
               @handle-click="handleClick"
               @handle-check="handleCheck"
               @handle-checkAll="handleCheckAll"></multi-cascader-list>
@@ -92,6 +94,8 @@
               :key="item.id"
               :class="[prefixCls + '-ground-pos']">
               <multi-cascader-list
+                :tooltip-key="tooltipKey"
+                :show-empty-wrap-by-not-synced="showEmptyWrapByNotSynced"
                 :sync="sync"
                 :list="showData[item.id]"
                 :level="item.id + 1"
@@ -101,7 +105,7 @@
                 :use-max="useMax"
                 :label-key="labelKey"
                 :expand-trigger="expandTrigger"
-                @handle-showEmptyWrap="handleShowEmptyWrap"
+                @handle-show-empty-wrap="handleShowEmptyWrap"
                 @handle-click="handleClick"
                 @handle-check="handleCheck"
                 @handle-checkAll="handleCheckAll"></multi-cascader-list>
@@ -258,20 +262,26 @@ export default {
       type: String,
       default: prefixCls + '-select'
     },
-    // 作为 value 唯一标识的键名，绑定值为对象类型时必填
+    // 作为 value 唯一标识的键名
     valueKey: {
       type: String,
       default: 'value'
     },
-    // 作为 label 唯一标识的键名，绑定值为对象类型时必填
+    // 作为 label 唯一标识的键名
     labelKey: {
       type: String,
       default: 'label'
     },
-    // 作为 children 唯一标识的键名，绑定值为对象类型时必填
+    // 作为 children 唯一标识的键名
     childrenKey: {
       type: String,
       default: 'children'
+    },
+    // 作为 tooltip 唯一标识的键名
+    // 面板选项的tooltip字段key
+    tooltipKey: {
+      type: String,
+      default: 'tooltip'
     },
     // 下级展开方式
     expandTrigger: {
@@ -280,6 +290,13 @@ export default {
     },
     // 是否允许父子联动
     selectChildren: {
+      type: Boolean,
+      default: true
+    },
+    // 当传入全量数据时，将可主动控制是否显示"暂无数据"面板项
+    // 使用该属性时，sync需要关闭
+    // 默认展示
+    showEmptyWrapByNotSynced: {
       type: Boolean,
       default: true
     }
