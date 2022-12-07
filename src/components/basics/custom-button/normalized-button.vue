@@ -1,6 +1,6 @@
 <!--
  * @Date: 2022-12-07 16:56:34
- * @LastEditTime: 2022-12-07 17:28:12
+ * @LastEditTime: 2022-12-07 18:13:36
  * @Description: 普通类型的按钮
 -->
 <template>
@@ -8,7 +8,8 @@
     :class="classes"
     :type="type"
     :loading="loading"
-    :disabled="disabled">
+    :disabled="disabled"
+    :icon="icon">
     <slot></slot>
   </Button>
 </template>

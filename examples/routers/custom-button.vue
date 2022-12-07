@@ -1,6 +1,11 @@
 <template>
   <div>
-    <rd-button type="dashed">测试</rd-button>
+    <rd-button
+      type="dashed"
+      disabled
+      icon="ios-search">
+      测试
+    </rd-button>
   </div>
 </template>
 
