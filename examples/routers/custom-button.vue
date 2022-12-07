@@ -65,6 +65,27 @@
           </rd-button>
         </span>
       </div>
+      <div style="margin-bottom: 10px; padding-left: 10px">
+        <span style="display: inline-block; width: 100px">文字按钮</span>
+        <span>
+          <rd-button
+            type="text"
+            icon="ios-search">
+            正常状态
+          </rd-button>
+          <rd-button
+            type="text"
+            loading>
+            加载中状态
+          </rd-button>
+          <rd-button
+            type="text"
+            disabled
+            icon="ios-search">
+            禁用状态
+          </rd-button>
+        </span>
+      </div>
     </div>
   </div>
 </template>
