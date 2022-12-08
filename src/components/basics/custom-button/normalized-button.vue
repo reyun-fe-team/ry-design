@@ -1,6 +1,6 @@
 <!--
  * @Date: 2022-12-07 16:56:34
- * @LastEditTime: 2022-12-07 18:13:36
+ * @LastEditTime: 2022-12-08 16:56:57
  * @Description: 普通类型的按钮
 -->
 <template>
@@ -17,7 +17,7 @@
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'button-normalized'
 export default {
-  name: 'ButtonNormalized',
+  name: 'NormalizedButton',
   props: {
     // 组件类型 text 文字按钮 primary 主要按钮  dashed 灰色框按钮 default 默认纯白色按钮
     type: {

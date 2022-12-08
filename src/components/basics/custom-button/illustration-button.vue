@@ -1,6 +1,6 @@
 <!--
  * @Date: 2022-12-07 18:30:20
- * @LastEditTime: 2022-12-08 15:40:33
+ * @LastEditTime: 2022-12-08 16:56:47
  * @Description: 插画按钮
 -->
 <template>
@@ -20,10 +20,10 @@
         class="illustration-image"
         :style="headIcon"></div>
       <!-- 下拉箭头 -->
-      <Icon
+      <rd-icon
         v-if="showDropdownMenu"
         type="ios-arrow-down"
-        class="illustration-arrow"></Icon>
+        class="illustration-arrow"></rd-icon>
     </Button>
     <template
       v-if="showDropdownMenu"
@@ -49,7 +49,7 @@ import Render from './../../base/render'
 import _isArray from 'lodash/isArray'
 
 export default {
-  name: 'ButtonIllustration',
+  name: 'IllustrationButton',
   components: {
     Render
   },

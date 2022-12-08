@@ -117,6 +117,18 @@
         </span>
       </div>
     </div>
+    <div style="margin-bottom: 25px">
+      <h3 style="margin-bottom: 15px">纯图标按钮</h3>
+      <div style="margin-bottom: 10px; padding-left: 10px">
+        <span style="display: inline-block; width: 100px">主要按钮</span>
+        <span>
+          <rd-button
+            type="icon"
+            is-selected
+            icon="ios-apps-outline"></rd-button>
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 

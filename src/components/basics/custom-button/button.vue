@@ -1,6 +1,6 @@
 <!--
  * @Date: 2022-12-07 16:13:28
- * @LastEditTime: 2022-12-08 16:46:43
+ * @LastEditTime: 2022-12-08 17:22:18
  * @Description: 按钮组件
 -->
 <template>
@@ -32,6 +32,12 @@
       :drop-down-props="dropDownProps">
       <slot></slot>
     </illustration-button>
+    <!-- 纯图标按钮 -->
+    <icon-button
+      v-if="type === 'icon'"
+      :icon-size="iconSize"
+      :is-selected="isSelected"
+      :icon="icon"></icon-button>
   </div>
 </template>
 <script>
@@ -42,14 +48,17 @@ import _isEmpty from 'lodash/isEmpty'
 import _isArray from 'lodash/isArray'
 import normalizedButton from './normalized-button'
 import illustrationButton from './illustration-button'
+import iconButton from './icon-button'
 
 export default {
   name: prefixCls,
   components: {
     normalizedButton,
-    illustrationButton
+    illustrationButton,
+    iconButton
   },
   props: {
+    // -----------------插画按钮-----------
     // 下拉属性（插画按钮支持）
     dropDownItems: {
       type: Array,
@@ -80,7 +89,7 @@ export default {
       type: String,
       default: 'default'
     },
-    // icon字体类型
+    // icon字体类型 (插画按钮不支持)
     icon: {
       type: String,
       default: ''
@@ -101,13 +110,25 @@ export default {
         }
       }
     },
-    // 加载中状态
+    // 加载中状态(插画按钮、图标按钮不支持)
     loading: {
       type: Boolean,
       default: false
     },
-    // 是否禁用按钮
+    // 是否禁用按钮(图标按钮不支持)
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    // ————————————————————————图标按钮——————————————————
+    // 图标按钮大小
+    // large、small
+    iconSize: {
+      type: String,
+      default: 'large'
+    },
+    // 按钮是否选择中
+    isSelected: {
       type: Boolean,
       default: false
     }

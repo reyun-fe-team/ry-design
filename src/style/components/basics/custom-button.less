@@ -1,6 +1,7 @@
 @button: ~'@{css-prefix}button';
 @button-normalized: ~'@{css-prefix}button-normalized';
 @button-illustration: ~'@{css-prefix}button-illustration';
+@button-icon: ~'@{css-prefix}button-icon';
 
 .@{button} {
   display: inline-block;
@@ -11,6 +12,20 @@
     position: absolute;
     top: 0;
     z-index: 1;
+  }
+}
+
+// 纯图标按钮
+.@{button-icon} {
+  background: #f3f3f4;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &:hover,
+  &-selected {
+    color: #3989fa;
   }
 }
 
