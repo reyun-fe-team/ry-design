@@ -7,7 +7,12 @@
         <span>
           <rd-button
             type="primary"
-            icon="ios-search">
+            icon="ios-search"
+            :corner-marker="{
+              offset: [14, -8],
+              placement: 'right-top',
+              src: 'http://test2.adsdesk.cn/toutiao-app/static/img/create-recommend.f55345e8.svg'
+            }">
             正常状态
           </rd-button>
           <rd-button
@@ -53,6 +58,11 @@
             正常状态
           </rd-button>
           <rd-button
+            :corner-marker="{
+              offset: [14, -8],
+              placement: 'right-top',
+              src: 'http://test2.adsdesk.cn/toutiao-app/static/img/create-recommend.f55345e8.svg'
+            }"
             type="dashed"
             loading>
             加载中状态
@@ -93,6 +103,11 @@
         <span style="display: inline-block; width: 100px">主要按钮</span>
         <span>
           <rd-button
+            :corner-marker="{
+              offset: [14, -8],
+              placement: 'right-top',
+              src: 'http://test2.adsdesk.cn/toutiao-app/static/img/create-recommend.f55345e8.svg'
+            }"
             type="illustration"
             is-drop-down
             :drop-down-items="dropDownItems"

@@ -1,17 +1,18 @@
 <!--
  * @Date: 2022-12-07 16:13:28
- * @LastEditTime: 2022-12-08 15:37:20
+ * @LastEditTime: 2022-12-08 16:46:43
  * @Description: 按钮组件
 -->
 <template>
   <div
-    :class="classes"
+    :class="[prefixCls]"
     @click="handleClick">
     <!-- 角标 -->
-    <div
-      v-if="cornerMarker"
-      class="recommend"
-      :style="cornerMarker"></div>
+    <img
+      v-if="showCornerMarker"
+      :class="[prefixCls + '-recommend']"
+      :src="cornerMarker.src"
+      :style="cornerMarkerStyle" />
     <!--普通按钮 -->
     <normalized-button
       v-if="isNormalized"
@@ -36,7 +37,9 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'button'
-
+import _assign from 'lodash/assign'
+import _isEmpty from 'lodash/isEmpty'
+import _isArray from 'lodash/isArray'
 import normalizedButton from './normalized-button'
 import illustrationButton from './illustration-button'
 
@@ -83,9 +86,20 @@ export default {
       default: ''
     },
     // 按钮角标（右上角）
+    // style property
     // eslint-disable-next-line vue/require-default-prop
     cornerMarker: {
-      type: Object
+      type: Object,
+      default: () => {
+        return {
+          offset: [],
+          // right-top  let-top
+          placement: 'right-top',
+          width: '',
+          height: '',
+          src: ''
+        }
+      }
     },
     // 加载中状态
     loading: {
@@ -98,17 +112,55 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      prefixCls
+    }
+  },
   computed: {
-    // 类名class集合
-    classes() {
-      const classList = [`${prefixCls}`]
-      return classList
-    },
     // 普通的按钮
     isNormalized() {
       // 普通按钮 text 文字按钮 primary 主要按钮  dashed 灰色框按钮 default 默认纯白色按钮
       let list = ['text', 'primary', 'dashed', 'default']
       return list.includes(this.type)
+    },
+    // 显示角标
+    showCornerMarker() {
+      if (!this.cornerMarker) {
+        return false
+      }
+      if (!this.cornerMarker.src) {
+        return false
+      }
+      return true
+    },
+    cornerMarkerStyle() {
+      if (!this.showCornerMarker) {
+        return {}
+      }
+      let style = {}
+      let { width, height, placement, offset = [] } = this.cornerMarker
+      if (!placement) {
+        placement = 'right-top'
+      }
+      let placementOptions = {
+        'right-top': { right: 0 },
+        'let-top': { left: 0 }
+      }
+      if (placementOptions[placement]) {
+        _assign(style, placementOptions[placement])
+      }
+      if (width) {
+        _assign(style, { width: width + 'px' })
+      }
+      if (height) {
+        _assign(style, { height: height + 'px' })
+      }
+      if (!_isEmpty(offset) && _isArray(offset)) {
+        _assign(style, { transform: `translate(${offset[0]}px, ${offset[1]}px)` })
+      }
+
+      return style
     }
   },
   methods: {
