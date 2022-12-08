@@ -1,54 +1,48 @@
 @button: ~'@{css-prefix}button';
 @button-normalized: ~'@{css-prefix}button-normalized';
-@button-illustration: ~'@{css-prefix}button-';
+@button-illustration: ~'@{css-prefix}button-illustration';
 
 .@{button} {
   display: inline-block;
 }
 
 // 插画按钮
-.@{button}-illustration {
+.@{button-illustration} {
+  color: #ffffff !important;
   position: relative;
+  background: #3a88fa;
   min-width: 88px;
   height: 32px;
-  background: #3989fa;
-  border-radius: 3px 4px 4px 3px;
-  overflow: hidden;
-  .illustration-button {
+  padding: 0 16px 0 40px;
+  border: 1px solid #3a88fa;
+  .illustration-image {
     position: absolute;
     left: 0;
     top: 0;
-    right: 0;
-    bottom: 0;
-    background: transparent;
-    outline: none;
-    user-select: none;
+    width: 40px;
+    height: 100%;
     z-index: 1;
-    border: 0;
-    padding: 0;
-    margin: 0;
+    background-position: left center;
+    background-size: contain;
+    background-repeat: no-repeat;
   }
-  .illustration-background {
-    display: flex;
-    justify-content: flex-start;
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background: #3a88fa;
-    padding-right: 16px;
-    .head {
-      width: 40px;
-      height: 100%;
-      margin-right: 4px;
-    }
-    .text {
-      margin-right: 4px;
-    }
-    .recommend {
-      position: absolute;
-    }
+  .illustration-text {
+    margin: 0 4px;
+  }
+  .illustration-arrow {
+    color: #fbfbfb;
+  }
+  // 划过
+  &:hover {
+    border: 1px solid #3989fa;
+    background: #3989fa;
+    opacity: 0.8;
+  }
+  // 禁用
+  &:disabled {
+    border: 1px solid #3989fa !important;
+    background: #3989fa !important;
+    opacity: 0.5 !important;
   }
 }
 
