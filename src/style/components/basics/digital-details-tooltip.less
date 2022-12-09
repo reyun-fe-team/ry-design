@@ -1,9 +1,54 @@
 @digital-details-tooltip: ~'@{css-prefix}digital-details-tooltip';
+@digital-details-list: ~'@{css-prefix}digital-details-list';
 
 .@{digital-details-tooltip} {
-  display: inline-block;
+  color: #575b65;
+  user-select: none;
+  &:hover {
+    color: #338afe;
+  }
+  &-icon {
+    cursor: pointer;
+  }
+  &-transfer {
+    .ivu-poptip-inner {
+      overflow: hidden;
+    }
+    .ivu-poptip-body {
+      padding: 16px;
+      max-height: 240px;
+      overflow: auto;
+    }
+  }
 }
 
-.@{digital-details-tooltip}-icon{
-  cursor: pointer;
+.@{digital-details-list} {
+  max-width: 320px;
+  .title-group {
+    font-size: 12px;
+    margin-bottom: 16px;
+    color: #151b39;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .title-head {
+      height: 24px;
+      line-height: 24px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .title-item {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      min-height: 24px;
+      line-height: 24px;
+      .title-text {
+        flex: 1;
+        white-space: pre-wrap;
+        text-align: justify;
+      }
+    }
+  }
 }
