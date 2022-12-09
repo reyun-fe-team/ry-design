@@ -7,7 +7,7 @@
       <div
         :class="[
           prefixCls + '-left-list',
-          { 'middle-style-li-active': middle.activeClass === index },
+          middle.activeClass === index ? prefixCls + '-left-list-active' : '',
           isHaveError(index) ? prefixCls + '-is-error' : ''
         ]">
         <span :class="[isHaveError(index) ? prefixCls + '-error-left' : '']">
@@ -22,7 +22,7 @@
           :value="value[index] || ''"
           :is-edit="middle.activeClass === index"
           :class="[
-            middle.activeClass === index ? prefixCls + 'middle-style-li-active' : '',
+            middle.activeClass === index ? prefixCls + '-right-list-active' : '',
             isHaveError(index) ? prefixCls + '-is-error' : ''
           ]"
           :transform-html2-text="transformHtml2Text"
