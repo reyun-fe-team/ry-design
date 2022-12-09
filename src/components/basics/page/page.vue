@@ -124,7 +124,7 @@ export default {
       }
     },
     emitChange() {
-      this.$emit('pageChange', { current: this.localCurrent, size: this.localSize })
+      this.$emit('page-change', { current: this.localCurrent, size: this.localSize })
     }
   }
 }

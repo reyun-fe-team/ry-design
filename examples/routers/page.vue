@@ -41,9 +41,8 @@
     <br />
     <p class="group-text">6、分页禁用</p>
     <rd-page
-      type="m-small"
+      type="m-simple"
       disabled="disabled"
-      local-storage-size-key="m-small"
       :total="500"></rd-page>
     <p class="group-text">
       7、分页localStorageSizeKey参数：
@@ -62,10 +61,7 @@ export default {
   props: {},
   data() {
     return {}
-  },
-  computed: {},
-  mounted() {},
-  methods: {}
+  }
 }
 </script>
 <style lang="less" scoped>
