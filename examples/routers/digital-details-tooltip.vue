@@ -12,6 +12,13 @@
       <rd-digital-details-tooltip
         type="list"
         :list-detail-data="listData2"></rd-digital-details-tooltip>
+      <br />
+      <br />
+      <b style="margin-right: 10px">表格展示</b>
+      <rd-digital-details-tooltip
+        type="table"
+        :columns="columns"
+        :table-detail-data="tableData"></rd-digital-details-tooltip>
     </div>
   </div>
 </template>
@@ -20,10 +27,6 @@
 export default {
   data() {
     return {
-      columns: [
-        { key: 'index', title: '序号' },
-        { key: 'title', title: '文本' }
-      ],
       listData2: [
         {
           showOrder: false,
@@ -75,6 +78,68 @@ export default {
               title: 'Poptip 还 confirm 确认框，与 Modal 不同的是，它会出现在就近元素，相对轻量。'
             }
           ]
+        }
+      ],
+      columns: [
+        {
+          key: 'word',
+          title: '关键词',
+          width: 160
+        },
+        {
+          key: 'way',
+          title: '匹配方式',
+          width: 80
+        }
+      ],
+      tableData: [
+        {
+          word: '关键词关键词关键词关',
+          way: '匹配方式1'
+        },
+        {
+          word: '关键词关键词关键词关键词关2',
+          way: '匹配方式2'
+        },
+        {
+          word: '关键词关键词关键词关键键词关键词3',
+          way: '匹配方式3'
+        },
+        {
+          word: '关键词关键词关键词关键词关键词关键词4',
+          way: '匹配方式4'
+        },
+        {
+          word: '关键词关关键词关键词关键词关键词关键词1',
+          way: '匹配方式1'
+        },
+        {
+          word: '关键词关键词关键词关键词关键键词关键词2',
+          way: '匹配方式2'
+        },
+        {
+          word: '关键词关键词关键词关键词关键词关键词3',
+          way: '匹配方式3'
+        },
+        {
+          word: '关键词关键词键词关键关键词4',
+          way: '匹配方式4'
+        },
+        {
+          word: '关键词关键词关键词关键词关键词关关键词1',
+          way: '匹配方式1'
+        },
+        {
+          word: '关键词关键词关键关键词2',
+          way: '匹配方式2'
+        },
+        {
+          word: '关键词关键词关键词关键词关键词关键词关键词关键词3',
+          way: '匹配方式3'
+        },
+        {
+          word: '关键词关键词关键词关键词关键词关键词关键词关键词4',
+          way: '匹配方式4'
         }
       ]
     }

@@ -1,6 +1,6 @@
 <!--
  * @Date: 2022-12-09 10:43:53
- * @LastEditTime: 2022-12-09 15:01:41
+ * @LastEditTime: 2022-12-09 15:30:38
  * @Description: 数字详情
 -->
 <template>
@@ -29,6 +29,11 @@
         <list-digital-details
           v-if="type === 'list'"
           :data="listDetailData"></list-digital-details>
+        <!-- 表格详情 -->
+        <table-digital-details
+          v-if="type === 'table'"
+          :data="tableDetailData"
+          :columns="columns"></table-digital-details>
       </template>
     </Poptip>
   </span>
@@ -39,12 +44,14 @@ const prefixCls = prefix + 'digital-details-tooltip'
 
 import ryIcon from '../icon/icon'
 import listDigitalDetails from './list-digital-details'
+import tableDigitalDetails from './table-digital-details'
 
 export default {
   name: prefixCls,
   components: {
     ryIcon,
-    listDigitalDetails
+    listDigitalDetails,
+    tableDigitalDetails
   },
   props: {
     // 显示个数
@@ -72,9 +79,9 @@ export default {
       type: Array,
       default: () => []
     },
-    // 传入的数据
-    data: {
-      type: [Object, Array],
+    // 表格展示数据
+    tableDetailData: {
+      type: [Array],
       default: () => []
     },
     // 列信息  [key title]

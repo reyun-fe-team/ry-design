@@ -1,5 +1,5 @@
 <template>
-  <div :class="[prefixCls]">
+  <div :class="[prefixCls, prefixScrollCls]">
     <div
       v-for="(item, i) in data"
       :key="i"
@@ -30,6 +30,7 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'digital-details-list'
+const prefixScrollCls = prefix + 'mini-scroll-y'
 
 export default {
   name: 'ListDigitalDetails',
@@ -41,7 +42,8 @@ export default {
   },
   data() {
     return {
-      prefixCls
+      prefixCls,
+      prefixScrollCls
     }
   }
 }
