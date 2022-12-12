@@ -2,11 +2,9 @@
  * virtual list default component
  */
 
-// import Vue from 'vue'
 import Virtual from './virtual'
-// import { Item, Slot } from './item'
-import Item from './list-item'
-import Slot from './list.solt'
+import Item from './virtual-list-item'
+import Slot from './virtual-list.solt'
 import { VirtualProps } from './props'
 
 const EVENT_TYPE = {
