@@ -1,110 +1,110 @@
-/**
- * item and slot component both use similar wrapper
- * we need to know their size change at any time
- */
+// /**
+//  * item and slot component both use similar wrapper
+//  * we need to know their size change at any time
+//  */
 
-import Vue from 'vue'
-import { ItemProps, SlotProps } from './props'
+// import Vue from 'vue'
+// import { ItemProps, SlotProps } from './props'
 
-const Wrapper = {
-  created() {
-    this.shapeKey = this.horizontal ? 'offsetWidth' : 'offsetHeight'
-  },
+// const Wrapper = {
+//   created() {
+//     this.shapeKey = this.horizontal ? 'offsetWidth' : 'offsetHeight'
+//   },
 
-  mounted() {
-    if (typeof ResizeObserver !== 'undefined') {
-      this.resizeObserver = new ResizeObserver(() => {
-        this.dispatchSizeChange()
-      })
-      this.resizeObserver.observe(this.$el)
-    }
-  },
+//   mounted() {
+//     if (typeof ResizeObserver !== 'undefined') {
+//       this.resizeObserver = new ResizeObserver(() => {
+//         this.dispatchSizeChange()
+//       })
+//       this.resizeObserver.observe(this.$el)
+//     }
+//   },
 
-  // since componet will be reused, so disptach when updated
-  updated() {
-    this.dispatchSizeChange()
-  },
+//   // since componet will be reused, so disptach when updated
+//   updated() {
+//     this.dispatchSizeChange()
+//   },
 
-  beforeDestroy() {
-    if (this.resizeObserver) {
-      this.resizeObserver.disconnect()
-      this.resizeObserver = null
-    }
-  },
+//   beforeDestroy() {
+//     if (this.resizeObserver) {
+//       this.resizeObserver.disconnect()
+//       this.resizeObserver = null
+//     }
+//   },
 
-  methods: {
-    getCurrentSize() {
-      return this.$el ? this.$el[this.shapeKey] : 0
-    },
+//   methods: {
+//     getCurrentSize() {
+//       return this.$el ? this.$el[this.shapeKey] : 0
+//     },
 
-    // tell parent current size identify by unqiue key
-    dispatchSizeChange() {
-      this.$parent.$emit(this.event, this.uniqueKey, this.getCurrentSize(), this.hasInitial)
-    }
-  }
-}
+//     // tell parent current size identify by unqiue key
+//     dispatchSizeChange() {
+//       this.$parent.$emit(this.event, this.uniqueKey, this.getCurrentSize(), this.hasInitial)
+//     }
+//   }
+// }
 
-// wrapping for item
-export const Item = Vue.component('VirtualListItem', {
-  mixins: [Wrapper],
+// // wrapping for item
+// export const Item = Vue.component('VirtualListItem', {
+//   mixins: [Wrapper],
 
-  props: ItemProps,
+//   props: ItemProps,
 
-  render(h) {
-    const {
-      tag,
-      component,
-      extraProps = {},
-      index,
-      source,
-      scopedSlots = {},
-      uniqueKey,
-      slotComponent
-    } = this
-    const props = {
-      ...extraProps,
-      source,
-      index
-    }
+//   render(h) {
+//     const {
+//       tag,
+//       component,
+//       extraProps = {},
+//       index,
+//       source,
+//       scopedSlots = {},
+//       uniqueKey,
+//       slotComponent
+//     } = this
+//     const props = {
+//       ...extraProps,
+//       source,
+//       index
+//     }
 
-    return h(
-      tag,
-      {
-        key: uniqueKey,
-        attrs: {
-          role: 'listitem'
-        }
-      },
-      [
-        slotComponent
-          ? h('div', slotComponent({ item: source, index: index, scope: props }))
-          : h(component, {
-              props,
-              scopedSlots: scopedSlots
-            })
-      ]
-    )
-  }
-})
+//     return h(
+//       tag,
+//       {
+//         key: uniqueKey,
+//         attrs: {
+//           role: 'listitem'
+//         }
+//       },
+//       [
+//         slotComponent
+//           ? h('div', slotComponent({ item: source, index: index, scope: props }))
+//           : h(component, {
+//               props,
+//               scopedSlots: scopedSlots
+//             })
+//       ]
+//     )
+//   }
+// })
 
-// wrapping for slot
-export const Slot = Vue.component('VirtualListSlot', {
-  mixins: [Wrapper],
+// // wrapping for slot
+// export const Slot = Vue.component('VirtualListSlot', {
+//   mixins: [Wrapper],
 
-  props: SlotProps,
+//   props: SlotProps,
 
-  render(h) {
-    const { tag, uniqueKey } = this
+//   render(h) {
+//     const { tag, uniqueKey } = this
 
-    return h(
-      tag,
-      {
-        key: uniqueKey,
-        attrs: {
-          role: uniqueKey
-        }
-      },
-      this.$slots.default
-    )
-  }
-})
+//     return h(
+//       tag,
+//       {
+//         key: uniqueKey,
+//         attrs: {
+//           role: uniqueKey
+//         }
+//       },
+//       this.$slots.default
+//     )
+//   }
+// })

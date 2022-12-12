@@ -2,9 +2,11 @@
  * virtual list default component
  */
 
-import Vue from 'vue'
+// import Vue from 'vue'
 import Virtual from './virtual'
-import { Item, Slot } from './item'
+// import { Item, Slot } from './item'
+import Item from './list-item'
+import Slot from './list.solt'
 import { VirtualProps } from './props'
 
 const EVENT_TYPE = {
@@ -16,7 +18,8 @@ const SLOT_TYPE = {
   FOOTER: 'tfoot'
 }
 
-const VirtualList = Vue.component('VirtualList', {
+export default {
+  name: 'VirtualList',
   props: VirtualProps,
 
   data() {
@@ -432,6 +435,4 @@ const VirtualList = Vue.component('VirtualList', {
       ]
     )
   }
-})
-
-export default VirtualList
+}
