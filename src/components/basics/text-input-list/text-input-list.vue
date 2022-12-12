@@ -1,6 +1,6 @@
 <template>
   <div :class="prefixCls">
-    <virtual-list
+    <rd-virtual-list
       ref="list"
       :class="prefixCls + '-virtual-list'"
       :data-key="'uid'"
@@ -15,14 +15,12 @@
   </div>
 </template>
 <script>
-import VirtualList from './virtualList'
 import Item from './title-list'
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'text-input-list'
 export default {
   name: prefixCls,
   components: {
-    VirtualList,
     Item
   },
   props: {

@@ -6,7 +6,7 @@ import Virtual from './virtual'
 import Item from './virtual-list-item'
 import Slot from './virtual-list.solt'
 import { VirtualProps } from './props'
-
+import { prefix } from '@src/config.js'
 const EVENT_TYPE = {
   ITEM: 'item_resize',
   SLOT: 'slot_resize'
@@ -17,7 +17,7 @@ const SLOT_TYPE = {
 }
 
 export default {
-  name: 'VirtualList',
+  name: prefix + 'virtual-list',
   props: VirtualProps,
 
   data() {
