@@ -12,6 +12,7 @@
   },
   "author": "ry",
   "dependencies": {
+    "moment": "^2.29.4",
     "umy-ui": "^1.1.6",
     "view-design": "^4.6.1",
     "vue": "^2.6.7"

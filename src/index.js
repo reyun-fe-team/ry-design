@@ -32,6 +32,7 @@ import TextItemShow from './components/business/text-item-show'
 import DeleteModals from './components/business/delete-modals'
 import AccountSelect from './components/business/account-select'
 import ProductSelect from './components/business/product-select'
+import SubmissionRule from './components/business/submission-rule'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -88,7 +89,8 @@ const components = [
   AccountSelect,
   CascaderTransfer,
   Exception,
-  ProductSelect
+  ProductSelect,
+  SubmissionRule
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -137,5 +139,6 @@ export default {
   AccountSelect,
   CascaderTransfer,
   Exception,
-  ProductSelect
+  ProductSelect,
+  SubmissionRule
 }
