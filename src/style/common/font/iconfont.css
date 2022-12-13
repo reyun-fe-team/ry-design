@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3538835 */
-  src: url('iconfont.woff2?t=1659341890638') format('woff2'),
-       url('iconfont.woff?t=1659341890638') format('woff'),
-       url('iconfont.ttf?t=1659341890638') format('truetype');
+  src: url('iconfont.woff2?t=1670931239962') format('woff2'),
+       url('iconfont.woff?t=1670931239962') format('woff'),
+       url('iconfont.ttf?t=1670931239962') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,30 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.ry-icon-more:before {
+  content: "\e686";
+}
+
+.ry-icon-ellipsis:before {
+  content: "\ae78b";
+}
+
+.ry-icon-jisu-delete:before {
+  content: "\e68c";
+}
+
+.ry-icon-jisu-edit:before {
+  content: "\e68d";
+}
+
+.ry-icon-sousuo:before {
+  content: "\e66b";
+}
+
+.ry-icon-close-tanch:before {
+  content: "\e62e";
 }
 
 .ry-icon-suo:before {

@@ -10,6 +10,7 @@
     :lock-scroll="lockScroll"
     :closable="closable"
     :mask-closable="maskClosable"
+    :styles="styles"
     @on-cancel="handleCancel"
     @on-visible-change="handleVisibleChange">
     <div
@@ -30,6 +31,13 @@
       v-if="isSlotHeader"
       slot="header">
       <slot name="header"></slot>
+    </div>
+    <div slot="close">
+      <slot name="close">
+        <Icon
+          custom="iconfont ry-icon-jisu-delete"
+          style="vertical-align: inherit"></Icon>
+      </slot>
     </div>
     <slot name="content"></slot>
     <div
@@ -162,6 +170,10 @@ export default {
     className: {
       type: String,
       default: ''
+    },
+    styles: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
