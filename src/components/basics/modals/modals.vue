@@ -36,7 +36,7 @@
       <slot name="close">
         <Icon
           custom="iconfont ry-icon-jisu-delete"
-          style="vertical-align: inherit"></Icon>
+          color="#333"></Icon>
       </slot>
     </div>
     <slot name="content"></slot>
