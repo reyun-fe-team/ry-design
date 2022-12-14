@@ -44,6 +44,7 @@
       multiple
       grouping
       :data="accountListGroup"
+      style="width: 400px"
       cross-subject></rd-account-select>
     <h2>form</h2>
     <Form
@@ -132,7 +133,8 @@ export default {
           disabled: false,
           children: [
             {
-              label: '直播推广',
+              label:
+                '直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广',
               value: '204813'
             }
           ]
@@ -152,11 +154,12 @@ export default {
           disabled: false,
           children: [
             {
-              label: '广州四三九九01',
+              label:
+                '广州四三九九01广州四三九九01广州四三九九01广州四三九九01广州四三九九01广州四三九九01广州四三九九01广州四三九九01',
               value: '42855'
             },
             {
-              label: '广州四三九九02',
+              label: '广州四三九九02广州四三九九02广州四三九九02广州四三九九02',
               value: '42856'
             }
           ]
