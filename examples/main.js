@@ -138,6 +138,10 @@ const router = new VueRouter({
     {
       path: '/submission-rule',
       component: resolve => require(['./routers/submission-rule'], resolve)
+    },
+    {
+      path: '/batch-modify-bids',
+      component: resolve => require(['./routers/batch-modify-bids'], resolve)
     }
   ]
 })

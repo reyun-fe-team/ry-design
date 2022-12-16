@@ -33,6 +33,7 @@ import DeleteModals from './components/business/delete-modals'
 import AccountSelect from './components/business/account-select'
 import ProductSelect from './components/business/product-select'
 import SubmissionRule from './components/business/submission-rule'
+import BatchModifyBids from './components/business/batch-modify-bids'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -90,7 +91,8 @@ const components = [
   CascaderTransfer,
   Exception,
   ProductSelect,
-  SubmissionRule
+  SubmissionRule,
+  BatchModifyBids
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -140,5 +142,6 @@ export default {
   CascaderTransfer,
   Exception,
   ProductSelect,
-  SubmissionRule
+  SubmissionRule,
+  BatchModifyBids
 }
