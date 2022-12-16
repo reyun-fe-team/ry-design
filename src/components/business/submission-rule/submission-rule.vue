@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@mobvista.com
  * @Date: 2022-12-13 16:50:46
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2022-12-13 19:03:19
+ * @LastEditTime: 2022-12-16 12:17:40
  * @FilePath: /ry-design/src/components/business/submission-rule/submission-rule.vue
  * @Description: 提交规则
 -->
@@ -10,18 +10,24 @@
   <div :class="[prefixCls]">
     <Form
       ref="formData"
+      label-width="60"
       :class="[prefixCls + '-form']"
       :model="formData">
       <!-- 提交方式 -->
-      <FormItem label="提交方式">
+      <FormItem
+        label="提交方式"
+        :class="[prefixCls + '-rule']">
         <rd-radio-group
           v-model="formData.submitRule"
+          :class="[prefixCls + '-rule-group']"
           :default-list="submitRulesList"
           @on-change="handleSubmitRule"></rd-radio-group>
       </FormItem>
 
       <!-- 设置 -->
-      <FormItem v-if="['DELAY', 'BATCH', 'REPEAT'].includes(formData.submitRule)">
+      <FormItem
+        v-if="['DELAY', 'BATCH', 'REPEAT'].includes(formData.submitRule)"
+        :class="[prefixCls + '-setting']">
         <!-- 提示 -->
         <span slot="label">
           设置
@@ -38,71 +44,77 @@
         </span>
 
         <!-- 开始时间 -->
-        <DatePicker
-          ref="StartTimePicker"
-          style="width: 200px; margin-right: 8px"
-          type="datetime"
-          :editable="false"
-          format="yyyy-MM-dd HH:mm"
-          :value="formData.startTime"
-          :options="dateOptions"
-          :clearable="false"
-          placeholder="请选择定时提交日期时间"
-          @on-ok="handleStartTime"
-          @on-clickoutside="handleStartTime"></DatePicker>
+        <div :class="[prefixCls + '-setting-item']">
+          <DatePicker
+            ref="StartTimePicker"
+            :class="[prefixCls + '-date-picker']"
+            type="datetime"
+            :editable="false"
+            format="yyyy-MM-dd HH:mm"
+            :value="formData.startTime"
+            :options="dateOptions"
+            :clearable="false"
+            placeholder="请选择定时提交日期时间"
+            @on-ok="handleStartTime"
+            @on-clickoutside="handleStartTime"></DatePicker>
+        </div>
 
         <!-- 时间间隔 -->
-        <template v-if="['BATCH', 'REPEAT'].includes(formData.submitRule)">
-          <ryExplain text="时间间隔"></ryExplain>
+        <div
+          v-if="['BATCH', 'REPEAT'].includes(formData.submitRule)"
+          :class="[prefixCls + '-setting-item']">
+          <div :class="[prefixCls + '-explain']">时间间隔</div>
           <Select
             v-model="formData.timeInterval"
             filterable
-            style="width: 80px; margin-right: 8px">
+            :class="[prefixCls + '-interval-select']">
             <Option
               v-for="item in timeList[formData.submitRule]"
               :key="item.value"
               :value="item.value"
               :label="item.label"></Option>
           </Select>
-        </template>
+        </div>
 
         <!-- 广告数量 -->
-        <template v-if="['BATCH'].includes(formData.submitRule)">
-          <ryExplain text="广告数量"></ryExplain>
+        <div
+          v-if="['BATCH'].includes(formData.submitRule)"
+          :class="[prefixCls + '-setting-item']">
+          <div :class="[prefixCls + '-explain']">广告数量</div>
           <InputNumber
             v-model="formData.batchAdNum"
+            :class="[prefixCls + '-adnum']"
             :min="1"
             :max="100"
             :active-change="false"
             :precision="0"></InputNumber>
-        </template>
+        </div>
 
         <!-- 重复次数 -->
-        <template v-if="['REPEAT'].includes(formData.submitRule)">
-          <ryExplain text="重复次数"></ryExplain>
+        <div
+          v-if="['REPEAT'].includes(formData.submitRule)"
+          :class="[prefixCls + '-setting-item']">
+          <div :class="[prefixCls + '-explain']">重复次数</div>
           <InputNumber
             v-model="formData.repeatTimes"
+            :class="[prefixCls + '-repeat-times']"
             :min="2"
             :max="10"
             :precision="0"
             :active-change="false"></InputNumber>
-        </template>
+        </div>
       </FormItem>
     </Form>
   </div>
 </template>
 <script>
 import moment from 'moment'
-import ryExplain from './explain'
 import { prefix } from '../../../config.js'
 import _cloneDeep from 'lodash/cloneDeep'
 import _assign from 'lodash/assign'
 const prefixCls = prefix + 'submission-rule'
 export default {
   name: prefixCls,
-  components: {
-    ryExplain
-  },
   props: {
     value: {
       type: Object,
