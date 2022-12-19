@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:50:21
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2022-12-19 11:19:32
+ * @LastEditTime: 2022-12-19 17:49:09
  * @FilePath: /ry-design/src/components/basics/layout-module-config/layout-module-config.vue
  * @Description: 极速创建第一步模块布局组件
  * @Tips 提示
@@ -14,7 +14,7 @@
     :class="[prefixCls]"
     :style="wrapStyle">
     <div
-      v-for="slot in renderSlots"
+      v-for="slot in getRenderSlots()"
       :key="slot.slotName"
       :style="getItemStyle(slot.slotName)">
       <template v-if="slot">
@@ -131,28 +131,6 @@ export default {
       }
 
       return styleObj
-    },
-    // 配置的可以渲染的插槽的熏染行数(插槽和渲染函数混合用，渲染函数覆盖插槽)
-    renderSlots() {
-      let arr = []
-      // render function
-      for (const slotName in this.slotRenders) {
-        const renderFunc = this.slotRenders[slotName]
-        if (typeOf(renderFunc) === 'function') {
-          arr.push({ slotName, type: 'function', render: renderFunc })
-        }
-      }
-
-      // slot
-      for (const slotName in this.$slots) {
-        const slots = this.$slots[slotName]
-        const slotVNode = slots[0]
-        if (!_isEmpty(slotVNode)) {
-          arr.push({ slotName, type: 'slot', slotVNode })
-        }
-      }
-
-      return arr
     }
   },
   watch: {
@@ -207,6 +185,28 @@ export default {
         'grid-row-start': rowStart,
         'grid-row-end': rowEnd
       }
+    },
+    // 配置的可以渲染的插槽的熏染行数(插槽和渲染函数混合用，渲染函数覆盖插槽)
+    getRenderSlots() {
+      let arr = []
+      // render function
+      for (const slotName in this.slotRenders) {
+        const renderFunc = this.slotRenders[slotName]
+        if (typeOf(renderFunc) === 'function') {
+          arr.push({ slotName, type: 'function', render: renderFunc })
+        }
+      }
+
+      // slot
+      for (const slotName in this.$slots) {
+        const slots = this.$slots[slotName]
+        const slotVNode = slots[0]
+        if (!_isEmpty(slotVNode)) {
+          arr.push({ slotName, type: 'slot', slotVNode })
+        }
+      }
+
+      return arr
     }
   }
 }
