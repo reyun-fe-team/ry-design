@@ -146,6 +146,10 @@ const router = new VueRouter({
     {
       path: '/batch-modify-bids',
       component: resolve => require(['./routers/batch-modify-bids'], resolve)
+    },
+    {
+      path: '/digital-details-tooltip',
+      component: resolve => require(['./routers/digital-details-tooltip'], resolve)
     }
   ]
 })

@@ -1,0 +1,112 @@
+@digital-details-tooltip: ~'@{css-prefix}digital-details-tooltip';
+@digital-details-list: ~'@{css-prefix}digital-details-list';
+@digital-details-table: ~'@{css-prefix}digital-details-table';
+
+.@{digital-details-tooltip} {
+  color: #575b65;
+  user-select: none;
+  &:hover {
+    color: #338afe;
+  }
+  &-icon {
+    cursor: pointer;
+  }
+  &-transfer {
+    .ivu-poptip-body {
+      padding: 0;
+    }
+    .ivu-poptip-body-content {
+      overflow: visible;
+    }
+  }
+}
+
+.@{digital-details-list} {
+  max-width: 320px;
+  max-height: 240px;
+  overflow: auto;
+  padding: 16px;
+  .title-group {
+    font-size: 12px;
+    margin-bottom: 16px;
+    color: #151b39;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .title-head {
+      height: 24px;
+      line-height: 24px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .title-item {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      min-height: 24px;
+      line-height: 24px;
+      .title-text {
+        flex: 1;
+        white-space: pre-wrap;
+        text-align: justify;
+      }
+    }
+  }
+}
+
+.@{digital-details-table} {
+  max-width: 320px;
+  max-height: 240px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 12px;
+  color: #151b39;
+  display: flex;
+  flex-direction: column;
+  .order {
+    width: 48px;
+  }
+  .thead {
+    width: 100%;
+    height: 28px;
+    line-height: 28px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    .col {
+      text-align: left;
+      font-weight: 600;
+      margin-right: 24px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  .tbody {
+    width: 100%;
+    padding-left: 8px;
+    padding-right: 8px;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    .row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      min-height: 28px;
+      line-height: 28px;
+      .row-item {
+        white-space: normal;
+        word-break: break-word;
+        margin-right: 24px;
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}

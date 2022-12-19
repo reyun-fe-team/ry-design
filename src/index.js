@@ -21,6 +21,7 @@ import Wildcard from './components/basics/wildcard'
 import CascaderTransfer from './components/basics/cascader-transfer'
 import Exception from './components/basics/exception'
 import Button from './components/basics/custom-button'
+import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -94,7 +95,8 @@ const components = [
   ProductSelect,
   SubmissionRule,
   Button,
-  BatchModifyBids
+  BatchModifyBids,
+  DigitalDetailsTooltip
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -146,5 +148,6 @@ export default {
   ProductSelect,
   SubmissionRule,
   Button,
-  BatchModifyBids
+  BatchModifyBids,
+  DigitalDetailsTooltip
 }
