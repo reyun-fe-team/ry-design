@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:50:21
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2022-12-19 17:49:09
+ * @LastEditTime: 2022-12-19 18:26:08
  * @FilePath: /ry-design/src/components/basics/layout-module-config/layout-module-config.vue
  * @Description: 极速创建第一步模块布局组件
  * @Tips 提示
@@ -14,21 +14,21 @@
     :class="[prefixCls]"
     :style="wrapStyle">
     <div
-      v-for="slot in getRenderSlots()"
-      :key="slot.slotName"
-      :style="getItemStyle(slot.slotName)">
-      <template v-if="slot">
+      v-for="slotName in flattenSlots"
+      :key="slotName"
+      :style="getItemStyle(slotName)">
+      <template v-if="getRenderSlot(slotName)">
         <!-- slot -->
         <Render
-          v-if="slot.type === 'slot'"
-          :render="() => slot.slotVNode"></Render>
+          v-if="getRenderSlot(slotName).type === 'slot'"
+          :render="() => getRenderSlot(slotName).slotVNode"></Render>
         <!-- function -->
         <Render
-          v-if="slot.type === 'function'"
-          :render="slot.render"></Render>
+          v-if="getRenderSlot(slotName).type === 'function'"
+          :render="getRenderSlot(slotName).render"></Render>
       </template>
       <div
-        v-if="!slot"
+        v-if="!getRenderSlot(slotName)"
         :class="prefixCls + '-empty-item'">
         组件没有传入
       </div>
@@ -44,6 +44,10 @@ import { valideSlotList } from '../../../util/layout-module-config'
 import _cloneDeep from 'lodash/cloneDeep'
 import _isEqual from 'lodash/isEqual'
 import _isEmpty from 'lodash/isEmpty'
+import _flattenDeep from 'lodash/flattenDeep'
+import _intersection from 'lodash/intersection'
+import _difference from 'lodash/difference'
+import _isArray from 'lodash/isArray'
 import { typeOf } from '../../../util/assist'
 import Render from './../../base/render'
 
@@ -100,22 +104,23 @@ export default {
   data() {
     return {
       prefixCls,
-      newSlotList: []
+      currentSlots: [],
+      flattenSlots: []
     }
   },
   computed: {
     // 最小宽度
     minWidth() {
-      return this.newSlotList.length * +this.itemMinWidth
+      return this.currentSlots.length * +this.itemMinWidth
     },
     // wrap样式
     wrapStyle() {
-      const { width, height, widthType, slotList, cloWidthList } = this
+      const { width, height, widthType, currentSlots, cloWidthList } = this
 
       let templateColumns = ''
       // 等分
       if (widthType === 'equalDivision') {
-        templateColumns = `repeat(${slotList.length}, ${100 / slotList.length}%)`
+        templateColumns = `repeat(${currentSlots.length}, ${100 / currentSlots.length}%)`
       }
       // 使用自定义比例
       if (widthType === 'customScale') {
@@ -138,11 +143,22 @@ export default {
     slotList: {
       deep: true,
       immediate: true,
-      handler(newVal, oldVal) {
-        if (_isEmpty(newVal) || !Array.isArray(newVal) || _isEqual(newVal, oldVal)) {
+      handler(newSlots, oldSlots) {
+        if (_isEmpty(newSlots) || !_isArray(newSlots) || _isEqual(newSlots, oldSlots)) {
           return
         }
-        this.newSlotList = _cloneDeep(newVal)
+        let flattenSlots = []
+        const oldList = _flattenDeep(oldSlots)
+        const newList = _flattenDeep(newSlots)
+        // 一样的，拿到没有变化的列，放到最前面
+        const intersection = _intersection(oldList, newList)
+        // 将新增的列在放到后面
+        const difference = _difference(newList, intersection)
+        // 合并后v-for只渲染新增的
+        flattenSlots = intersection.concat(difference)
+
+        this.currentSlots = _cloneDeep(newSlots)
+        this.flattenSlots = flattenSlots
       }
     }
   },
@@ -156,8 +172,8 @@ export default {
       // 边框线
       let borderBottom = ''
       let borderRight = ''
-      for (let col = 0; col < this.slotList.length; col++) {
-        const rows = this.slotList[col]
+      for (let col = 0; col < this.currentSlots.length; col++) {
+        const rows = this.currentSlots[col]
         const isOnRow = rows.length === 1
 
         for (let row = 0; row < rows.length; row++) {
@@ -169,7 +185,7 @@ export default {
             if (!isOnRow && row === 0) {
               borderBottom = LINE
             }
-            if (col < this.slotList.length - 1) {
+            if (col < this.currentSlots.length - 1) {
               borderRight = LINE
             }
             break
@@ -187,7 +203,7 @@ export default {
       }
     },
     // 配置的可以渲染的插槽的熏染行数(插槽和渲染函数混合用，渲染函数覆盖插槽)
-    getRenderSlots() {
+    getRenderSlot(slotName) {
       let arr = []
       // render function
       for (const slotName in this.slotRenders) {
@@ -206,7 +222,7 @@ export default {
         }
       }
 
-      return arr
+      return arr.find(val => slotName === val.slotName)
     }
   }
 }
