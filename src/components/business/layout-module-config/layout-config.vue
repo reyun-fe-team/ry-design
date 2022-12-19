@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:50:21
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2022-12-16 19:25:44
+ * @LastEditTime: 2022-12-19 11:19:32
  * @FilePath: /ry-design/src/components/basics/layout-module-config/layout-module-config.vue
  * @Description: 极速创建第一步模块布局组件
  * @Tips 提示
@@ -106,8 +106,7 @@ export default {
   computed: {
     // 最小宽度
     minWidth() {
-      const counts = this.newSlotList.length
-      return counts * +this.itemMinWidth
+      return this.newSlotList.length * +this.itemMinWidth
     },
     // wrap样式
     wrapStyle() {
@@ -124,11 +123,8 @@ export default {
       }
 
       const styleObj = {
-        display: 'grid',
         'grid-template-columns': templateColumns,
-        'grid-template-rows': `repeat(2, ${height / 2}px)`,
-        'grid-column-gap': '0px',
-        'grid-row-gap': '0px'
+        'grid-template-rows': `repeat(2, ${height / 2}px)`
       }
       if (+width > 0) {
         styleObj.width = width + 'px'

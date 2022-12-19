@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:49:35
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2022-12-16 19:31:32
+ * @LastEditTime: 2022-12-19 11:22:36
  * @FilePath: /ry-design/examples/routers/layout-module-config.vue
  * @Description: layout-module-config 组件示例
 -->
@@ -28,7 +28,7 @@
       :slot-list="slotList"
       :width="width"
       :item-min-width="200"
-      :height="477"
+      :height="600"
       :width-type="widthType"
       :clo-width-list="cloWidthList">
       <template #land>
