@@ -5,26 +5,28 @@
       :style="`width: ${width};height: ${height};`">
       <div :class="prefixCls + '-body-left-box'">
         <div :class="prefixCls + '-body-left-box-title'">
-          {{ title }}
+          {{ leftTitle }}
         </div>
         <div
           v-for="item in list"
-          :key="item[nameValue]"
+          :key="item[groupName]"
           :class="prefixCls + '-body-left-box-content'">
           <Tooltip
             :max-width="maxWidth"
             transfer
             :delay="delay"
             theme="light">
-            <div :class="prefixCls + '-body-left-box-content-title'">账户：{{ item[name] }}</div>
+            <div :class="prefixCls + '-body-left-box-content-title'">
+              账户：{{ item[groupName] }}
+            </div>
             <div slot="content">
-              <p>账户：{{ item[name] }}</p>
+              <p>账户：{{ item[groupName] }}</p>
             </div>
           </Tooltip>
           <ul>
             <li
               v-for="el in item.children"
-              :key="el[childNameValue]"
+              :key="el[itemId]"
               :class="itemClasses(el)"
               @click="choose(el, false)">
               <Tooltip
@@ -35,22 +37,40 @@
                 <div
                   :class="prefixCls + '-body-left-box-content-item-name'"
                   class="sign">
-                  {{ el[childName] }}
+                  {{ el[itemName] }}
                 </div>
-                <div slot="content">
-                  <p>{{ el[childName] }}</p>
+                <div
+                  slot="content"
+                  class="display-flex flex-direction-column">
+                  <p>{{ el[itemName] }}</p>
+                  <p v-if="id && el[id]">ID:{{ el[id] }}</p>
                 </div>
               </Tooltip>
               <span
-                v-if="el[nameNum]"
+                v-if="el[itemNum] && !el[itemIconCustom] && !el[itemIconIview]"
                 :class="prefixCls + '-body-left-box-content-item-num'">
-                {{ el[nameNum] }}
+                {{ el[itemNum] }}
               </span>
+
+              <Icon
+                v-if="itemIconCustom && el[itemIconCustom] && !el[itemIconIview] && !el[itemNum]"
+                :class="prefixCls + '-body-left-box-content-item-icon'"
+                :color="iconColor"
+                :custom="`${el[itemIconCustom]} icon iconfont`"
+                :size="iconSize"></Icon>
+              <Icon
+                v-if="itemIconIview && el[itemIconIview] && !el[itemIconCustom] && !el[itemNum]"
+                :class="prefixCls + '-body-left-box-content-item-icon'"
+                :color="iconColor"
+                :size="iconSize"
+                :type="el[itemIconIview]"></Icon>
             </li>
           </ul>
         </div>
       </div>
-      <div :class="prefixCls + '-body-right-box'">
+      <div
+        :class="prefixCls + '-body-right-box'"
+        :style="rightBoxStyle">
         <slot></slot>
       </div>
     </div>
@@ -71,34 +91,54 @@ export default {
       type: String,
       default: '520px'
     },
-    title: {
-      type: String,
-      default: '广告组'
+    leftTitle: {
+      type: [String, Boolean],
+      default: '账户'
     },
     dataList: {
       type: Array,
       default: () => [],
       require: true
     },
-    name: {
+    groupName: {
       type: String,
-      default: 'accountName'
+      default: 'groupName'
     },
-    nameValue: {
+    groupId: {
+      type: String,
+      default: 'groupId'
+    },
+    id: {
+      type: [String, Number],
+      default: ''
+    },
+    itemName: {
+      type: String,
+      default: 'adsMediaAccountName'
+    },
+    itemId: {
       type: String,
       default: 'adsMediaAccountId'
     },
-    nameNum: {
+    itemNum: {
       type: String,
       default: 'num'
     },
-    childName: {
+    itemIconCustom: {
       type: String,
-      default: 'unitName'
+      default: 'iconCustom'
     },
-    childNameValue: {
+    itemIconIview: {
       type: String,
-      default: 'unitId'
+      default: 'iconIview'
+    },
+    iconSize: {
+      type: Number,
+      default: 12
+    },
+    iconColor: {
+      type: String,
+      default: '#277ff3'
     },
     maxWidth: {
       type: [Number, String],
@@ -107,6 +147,14 @@ export default {
     delay: {
       type: Number,
       default: 1000
+    },
+    defaultActive: {
+      type: [String, Number],
+      default: ''
+    },
+    rightBoxStyle: {
+      type: [Object, String],
+      default: null
     }
   },
   data() {
@@ -121,7 +169,7 @@ export default {
         let children = p.children.map(c => {
           return {
             ...c,
-            [this.nameValue]: p[this.nameValue]
+            [this.groupId]: p[this.groupId]
           }
         })
         return { ...p, children }
@@ -129,26 +177,40 @@ export default {
     }
   },
   created() {
-    let { list, childNameValue } = this
-    this.active = list[0].children[0][childNameValue]
+    this.init()
   },
   methods: {
     itemClasses(item) {
-      let { prefixCls, childNameValue, active } = this
+      let { prefixCls, itemId, active } = this
       return [
         `${prefixCls}-body-left-box-content-item`,
-        { [`${prefixCls}-body-left-box-content-item-active`]: item[childNameValue] === active }
+        { [`${prefixCls}-body-left-box-content-item-active`]: item[itemId] === active }
       ]
     },
-    choose(item) {
-      const { childNameValue, nameValue } = this
-      // 当前已经选中的 不在返回
-      if (item[childNameValue] === this.active) {
+    init() {
+      if (!this.dataList.length) {
         return
       }
-      const active = item[childNameValue]
+      this.$nextTick(() => {
+        let { list, itemId, defaultActive } = this
+        let newList = []
+        this.active = defaultActive || list[0].children[0][itemId]
+        list.map(m => {
+          newList = [...m.children, ...newList]
+        })
+        let activeData = newList.find(f => f[this.itemId] === this.active)
+        this.choose(activeData)
+      })
+    },
+    choose(item) {
+      const { itemId, groupId } = this
+      // 当前已经选中的 不在返回
+      if (item[itemId] === this.active) {
+        return
+      }
+      const active = item[itemId]
       this.active = active
-      this.$emit('on-change', active, item[nameValue])
+      this.$emit('on-change', active, item[groupId])
     }
   }
 }

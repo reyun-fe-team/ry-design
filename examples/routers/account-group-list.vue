@@ -1,22 +1,21 @@
 <template>
   <div class="dis-flex">
     <rd-account-group-list
-      id="adsMediaAccountId"
+      id="accountId"
       :data-list="dataList"
       :icon-size="18"
-      item-id="id"
-      item-name="name"
+      item-id="accountId"
+      item-name="accountName"
       width="800px"
       @on-change="getActiveAccount">
       我是右边的插槽盒子
     </rd-account-group-list>
     <div>
-      当前选中的账户--
+      公司:
       <strong>{{ parent }}</strong>
-      &nbsp;&nbsp;&nbsp;广告组--
+      账户:
       <strong>{{ active }}</strong>
     </div>
-    <pre>{{ dataList }}}</pre>
   </div>
 </template>
 
@@ -26,40 +25,40 @@ export default {
     return {
       dataList: [
         {
-          accountName: '北京悠米悠米广告有限公司',
-          adsMediaAccountId: 'bj12345',
+          groupName: '北京悠米悠米广告有限公司',
+          groupId: 'bj12345',
           children: [
             {
               num: 1,
-              unitName: '广告组测试用名称1',
-              unitId: 'ggz111'
+              accountName: '广告组测试用名称1',
+              accountId: 'ggz111'
             }
           ]
         },
         {
-          accountName: 'User_1576228589840(4732053)',
-          adsMediaAccountId: '5566',
+          groupName: 'User_1576228589840(4732053)',
+          groupId: '5566',
           children: [
             {
               num: 1,
-              unitName: '多账号统一配置定向包{账户别名}提升应用安装071111:57:1602_N1',
-              unitId: 'ggz321'
+              accountName: '多账号统一配置定向包{账户别名}提升应用安装071111:57:1602_N1',
+              accountId: 'ggz321'
             },
             {
-              num: 1,
-              unitName: '多账号统一配置定向包{账户别名}提升应用安装070011:57:1602_N1',
-              unitId: 'ggz322'
+              accountName: '多账号统一配置定向包{账户别名}提升应用安装070011:57:1602_N1',
+              accountId: 'ggz322',
+              iconIview: 'ios-checkmark-circle-outline'
             }
           ]
         },
         {
-          accountName: '账户3',
-          adsMediaAccountId: '7788',
+          groupName: '账户3',
+          groupId: '7788',
           children: [
             {
-              num: 1,
-              unitName: '广告组3',
-              unitId: 'ggz099'
+              num: '不限',
+              accountName: '广告组3',
+              accountId: 'ggz099'
             }
           ]
         }
