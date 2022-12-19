@@ -1,11 +1,15 @@
 {
   "name": "ry-design",
   "main": "dist/ry-design.min.js",
-  "version": "2.0.98",
+  "version": "2.0.99",
   "repository": {
     "type": "git",
     "url": "git@github.com:reyun-fe-team/ry-design.git"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "dev": "webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --config build/webpack.dev.config.js",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.config.js"
@@ -14,7 +18,9 @@
   "dependencies": {
     "moment": "^2.29.4",
     "umy-ui": "^1.1.6",
-    "view-design": "^4.6.1",
+    "view-design": "^4.6.1"
+  },
+  "peerDependencies": {
     "vue": "^2.6.7"
   },
   "devDependencies": {

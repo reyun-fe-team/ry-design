@@ -16,7 +16,8 @@ import Ellipsis from './components/basics/ellipsis'
 import TableMultiInputs from './components/basics/table-multi-inputs'
 import TextEmojInput from './components/basics/text-emoj-input'
 import Icon from './components/basics/icon'
-import TextInputList from './components/basics/text-input-list'
+// import TextInputList from './components/basics/text-input-list'
+import { TextInputList, VirtualList } from './components/basics/text-input-list'
 import Wildcard from './components/basics/wildcard'
 import CascaderTransfer from './components/basics/cascader-transfer'
 import Exception from './components/basics/exception'
@@ -87,6 +88,7 @@ const components = [
   TextEmojInput,
   Icon,
   TextInputList,
+  VirtualList,
   Wildcard,
   AccountSelect,
   CascaderTransfer,
@@ -146,5 +148,6 @@ export default {
   ProductSelect,
   SubmissionRule,
   Button,
-  BatchModifyBids
+  BatchModifyBids,
+  VirtualList
 }

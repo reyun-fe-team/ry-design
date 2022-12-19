@@ -1,16 +1,16 @@
 {
   "name": "ry-design",
-  "version": "2.0.5",
+  "version": "2.0.99",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "ry-design",
-      "version": "2.0.5",
+      "version": "2.0.99",
       "dependencies": {
+        "moment": "^2.29.4",
         "umy-ui": "^1.1.6",
-        "view-design": "^4.6.1",
-        "vue": "^2.6.7"
+        "view-design": "^4.6.1"
       },
       "devDependencies": {
         "autoprefixer": "^9.6.0",
@@ -82,6 +82,9 @@
       "engines": {
         "node": ">= 4.0.0",
         "npm": ">= 3.0.0"
+      },
+      "peerDependencies": {
+        "vue": "^2.6.7"
       }
     },
     "node_modules/@babel/code-frame": {
@@ -11349,6 +11352,14 @@
       },
       "engines": {
         "node": ">=4"
+      }
+    },
+    "node_modules/moment": {
+      "version": "2.29.4",
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.29.4.tgz",
+      "integrity": "sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==",
+      "engines": {
+        "node": "*"
       }
     },
     "node_modules/move-concurrently": {
@@ -29186,6 +29197,11 @@
           }
         }
       }
+    },
+    "moment": {
+      "version": "2.29.4",
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.29.4.tgz",
+      "integrity": "sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w=="
     },
     "move-concurrently": {
       "version": "1.0.1",

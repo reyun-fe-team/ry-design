@@ -3,7 +3,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './app.vue'
 import ryDesign from '../src/index'
-
+// import iView from 'view-design'
+// import ryDesign from '../dist/ry-design.min.js'
+// import '../dist/styles/main.css'
+// Vue.use(iView)
 Vue.use(VueRouter)
 Vue.use(ryDesign)
 
