@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@mobvista.com
  * @Date: 2022-12-13 16:50:46
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2022-12-16 12:17:40
+ * @LastEditTime: 2022-12-16 14:35:02
  * @FilePath: /ry-design/src/components/business/submission-rule/submission-rule.vue
  * @Description: 提交规则
 -->
@@ -194,6 +194,17 @@ export default {
       return {
         BATCH: this.batchTimeList,
         REPEAT: this.repeatTimeList
+      }
+    }
+  },
+  watch: {
+    formData: {
+      deep: true,
+      immediate: true,
+      handler(n, o) {
+        if (JSON.stringify(n) !== JSON.stringify(o)) {
+          this.$emit('input', n)
+        }
       }
     }
   },
