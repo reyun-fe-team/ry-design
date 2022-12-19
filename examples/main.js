@@ -138,6 +138,10 @@ const router = new VueRouter({
     {
       path: '/submission-rule',
       component: resolve => require(['./routers/submission-rule'], resolve)
+    },
+    {
+      path: '/custom-button',
+      component: resolve => require(['./routers/custom-button'], resolve)
     }
   ]
 })
