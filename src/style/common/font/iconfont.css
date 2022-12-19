@@ -1,31 +1,45 @@
 @font-face {
-  font-family: "iconfont"; /* Project id 3538835 */
-  src: url('iconfont.woff2?t=1659341890638') format('woff2'),
-       url('iconfont.woff?t=1659341890638') format('woff'),
-       url('iconfont.ttf?t=1659341890638') format('truetype');
+  font-family:"iconfont";
+  /* Project id 3538835 */
+  src: url('iconfont.woff2?t=1670566593734') format('woff2'), url('iconfont.woff?t=1670566593734') format('woff'), url('iconfont.ttf?t=1670566593734') format('truetype');
 }
-
 .iconfont {
-  font-family: "iconfont" !important;
+  font-family:"iconfont" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.ry-icon-more:before {
+  content:"\e686";
+}
+.ry-icon-ellipsis:before {
+  content:"\ae78b";
+}
+.ry-icon-jisu-delete:before {
+  content:"\e68c";
+}
+.ry-icon-jisu-edit:before {
+  content:"\e68d";
+}
+.ry-icon-delete2:before {
+  content:"\e672";
+}
+.ry-icon-sousuo:before {
+  content:"\e66b";
+}
+.ry-icon-close-tanch:before {
+  content:"\e62e";
+}
 .ry-icon-suo:before {
-  content: "\ff001";
+  content:"\ff001";
 }
-
 .ry-icon-tuodong:before {
-  content: "\ff002";
+  content:"\ff002";
 }
-
 .ry-icon-shanchu:before {
-  content: "\ff003";
+  content:"\ff003";
 }
-
 .ry-icon-zhiding:before {
-  content: "\ff004";
+  content:"\ff004";
 }
-

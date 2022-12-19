@@ -6,6 +6,12 @@
   margin-bottom: 5px;
   border: 1px solid #dadfe3;
 
+  &-content {
+    width: 100%;
+    marginBottom: 0px;
+    border: 0px
+  }
+
   &-line {
     display: flex;
     &:hover {
@@ -24,6 +30,9 @@
     justify-content: center;
     background: #F9F9F9;
     width: 40px;
+    &-active {
+      background-color: #edf1f5 !important;
+    }
   }
 
   &-error-left {
@@ -54,6 +63,9 @@
   &-right-list {
     width: 100%;
     display: flex;
+    &-active {
+      background-color: #edf1f5 !important;
+    }
   }
 
   &-btn-wrap {
@@ -102,7 +114,12 @@
     flex: 1;
   }
 
-  .middle-style-li-active {
+  &-middle-style-li-active {
     background-color: #edf1f5;
+  }
+
+  &-virtual-list {
+    height: 100%;
+    overflow-y: auto
   }
 }
