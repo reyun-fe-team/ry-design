@@ -5,13 +5,13 @@
       <rd-digital-details-tooltip
         :count="10"
         type="list"
-        :list-detail-data="listData"></rd-digital-details-tooltip>
+        :data="listData"></rd-digital-details-tooltip>
       <br />
       <br />
       <b style="margin-right: 10px">列表展示-单组-无组名称-无序号</b>
       <rd-digital-details-tooltip
         type="list"
-        :list-detail-data="listData2"></rd-digital-details-tooltip>
+        :data="listData2"></rd-digital-details-tooltip>
       <br />
       <br />
       <b style="margin-right: 10px">表格展示</b>
@@ -159,7 +159,9 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style
+  lang="less"
+  scoped>
 .show-data {
   display: flex;
   .before,
