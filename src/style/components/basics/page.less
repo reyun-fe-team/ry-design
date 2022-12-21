@@ -1,0 +1,90 @@
+@prefix-page: ~"@{css-prefix}page";
+
+.@{prefix-page} {
+    position: relative;
+    text-align: right;
+    margin: 16px;
+
+    &-default {
+        min-width: 600px;
+
+        .ivu-page-options-elevator {
+            height: 32px !important;
+            line-height: 32px !important;
+        }
+
+        .ivu-page-options-sizer {
+            height: 32px !important;
+            line-height: 32px !important;
+        }
+
+        input {
+            height: 32px !important;
+            width: 48px !important;
+        }
+
+        .ivu-select-selection {
+            height: 32px !important;
+            line-height: 32px !important;
+        }
+
+        .ivu-select-selected-value {
+            height: 32px !important;
+            line-height: 32px !important;
+        }
+    }
+
+    &-m-large {
+        min-width: 560px;
+    }
+
+    &-m-middle {
+        min-width: 360px;
+    }
+
+    &-m-small {
+        min-width: 300px;
+    }
+
+    &-m-simple {
+        min-width: 200px;
+    }
+
+    .ivu-page-total {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .ivu-page-item a {
+        color: #151B39 !important;
+    }
+
+    .ivu-page-item-active {
+        a {
+            color: #3989fa !important;
+        }
+    }
+
+    .ivu-select {
+        color: #151B39 !important;
+    }
+
+    .ivu-page-item-active {
+        font-weight: 600 !important;
+        color: #3989fa !important;
+    }
+
+    .ivu-page-simple-pager {
+        input {
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            color: #3989fa !important;
+        }
+    }
+
+    .ivu-page-simple .ivu-page-simple-pager input[disabled]{
+        color: #ccc !important;
+    }
+
+}

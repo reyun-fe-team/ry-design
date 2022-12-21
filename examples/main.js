@@ -153,6 +153,10 @@ const router = new VueRouter({
     {
       path: '/digital-details-tooltip',
       component: resolve => require(['./routers/digital-details-tooltip'], resolve)
+    },
+    {
+      path: '/page',
+      component: resolve => require(['./routers/page'], resolve)
     }
   ]
 })
