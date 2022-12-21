@@ -109,7 +109,11 @@ export default {
   },
   computed: {
     classes() {
-      return [`${prefixCls}`, { [`${prefixCls}-multiple`]: this.multiple }]
+      return [
+        `${prefixCls}`,
+        { [`${prefixCls}-multiple`]: this.multiple },
+        { [`${prefixCls}-multiple-input`]: this.multiple && !!this.current.length }
+      ]
     }
   },
   watch: {
