@@ -20,7 +20,7 @@
           :key="item.label"
           :label="item.label">
           <Option
-            v-for="el in item.children"
+            v-for="el in item[childrenKey]"
             :key="el.value"
             :disabled="item.disabled || el.disabled"
             :value="el.value"
@@ -92,6 +92,10 @@ export default {
     clearable: {
       type: Boolean,
       default: false
+    },
+    childrenKey: {
+      type: String,
+      default: 'children'
     }
   },
   data() {
@@ -150,7 +154,7 @@ export default {
       if (this.grouping && !this.crossSubject) {
         const first = this.value[0]
         _data.forEach(val => {
-          val.disabled = first ? !val.children.some(item => item.value === first) : false
+          val.disabled = first ? !val[this.childrenKey].some(item => item.value === first) : false
         })
       }
       return _data
@@ -194,10 +198,10 @@ export default {
         )
       } else {
         this.accountList = _cloneDeep(this.accountListClone).reduce((list, current) => {
-          let filter = current.children.filter(
+          let filter = current[this.childrenKey].filter(
             item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
           )
-          current.children = filter
+          current[this.childrenKey] = filter
           if (filter.length) {
             list.push(current)
           }
@@ -212,18 +216,18 @@ export default {
     handleChangeAccount(newValue) {
       const first = newValue[0]
       this.accountList.forEach(val => {
-        val.disabled = first ? !val.children.some(item => item.value === first) : false
+        val.disabled = first ? !val[[this.childrenKey]].some(item => item.value === first) : false
       })
       this.accountListClone.forEach(val => {
-        val.disabled = first ? !val.children.some(item => item.value === first) : false
+        val.disabled = first ? !val[[this.childrenKey]].some(item => item.value === first) : false
       })
       let find = this.accountList.find(val => {
-        return val.children.some(item => item.value === first)
+        return val[[this.childrenKey]].some(item => item.value === first)
       })
       if (find) {
         this.current = newValue.map(item => {
           // 保障顺序
-          return find.children.find(val => item === val.value)
+          return find[[this.childrenKey]].find(val => item === val.value)
         })
       }
     },
