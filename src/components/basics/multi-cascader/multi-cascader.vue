@@ -1,14 +1,15 @@
 <!--
  * @Author: yangyufeng
  * @Date: 2022-04-02 11:53:02
- * @LastEditTime: 2022-10-12 11:59:18
- * @LastEditors: 杨玉峰 yangyufeng@reyun.com
+ * @LastEditTime: 2022-12-03 18:54:32
+ * @LastEditors: yangyufeng yangyufeng.web@qq.com
  * @Description: 下拉多选联动
  * @FilePath: /ry-design/src/components/basics/multi-cascader/multi-cascader.vue
 -->
 <template>
   <div :class="[prefixCls]">
     <Dropdown
+      ref="Dropdown"
       trigger="click"
       :placement="placement"
       :transfer="transfer"
@@ -26,9 +27,10 @@
           <Tag
             v-for="(tag, index) in newSelectedLabels"
             :key="index"
+            :style="tagStyle"
             :fade="false"
             closable
-            @on-close="removeOne(tag)">
+            @on-close="removeOne(tag, value[index])">
             <span
               :class="[prefixCls + '-labels-tags-text']"
               :title="tag">
@@ -68,6 +70,8 @@
           <!-- 根节点面板 -->
           <div :class="[prefixCls + '-ground-pos']">
             <multi-cascader-list
+              :tooltip-key="tooltipKey"
+              :show-empty-wrap-by-not-synced="showEmptyWrapByNotSynced"
               :sync="sync"
               :list="root.childNodes"
               :level="1"
@@ -77,7 +81,7 @@
               :use-max="useMax"
               :label-key="labelKey"
               :expand-trigger="expandTrigger"
-              @handle-showEmptyWrap="handleShowEmptyWrap"
+              @handle-show-empty-wrap="handleShowEmptyWrap"
               @handle-click="handleClick"
               @handle-check="handleCheck"
               @handle-checkAll="handleCheckAll"></multi-cascader-list>
@@ -90,6 +94,8 @@
               :key="item.id"
               :class="[prefixCls + '-ground-pos']">
               <multi-cascader-list
+                :tooltip-key="tooltipKey"
+                :show-empty-wrap-by-not-synced="showEmptyWrapByNotSynced"
                 :sync="sync"
                 :list="showData[item.id]"
                 :level="item.id + 1"
@@ -99,7 +105,7 @@
                 :use-max="useMax"
                 :label-key="labelKey"
                 :expand-trigger="expandTrigger"
-                @handle-showEmptyWrap="handleShowEmptyWrap"
+                @handle-show-empty-wrap="handleShowEmptyWrap"
                 @handle-click="handleClick"
                 @handle-check="handleCheck"
                 @handle-checkAll="handleCheckAll"></multi-cascader-list>
@@ -133,6 +139,11 @@ export default {
     multiCascaderList
   },
   props: {
+    // tag的最大显示宽度，单位：px。传入 0 不限制；默认最大值为88
+    tagMaxWidth: {
+      type: [String, Number],
+      default: 88
+    },
     // 多选时最多显示多少个 tag
     // eslint-disable-next-line vue/require-default-prop
     maxTagCount: {
@@ -251,20 +262,26 @@ export default {
       type: String,
       default: prefixCls + '-select'
     },
-    // 作为 value 唯一标识的键名，绑定值为对象类型时必填
+    // 作为 value 唯一标识的键名
     valueKey: {
       type: String,
       default: 'value'
     },
-    // 作为 label 唯一标识的键名，绑定值为对象类型时必填
+    // 作为 label 唯一标识的键名
     labelKey: {
       type: String,
       default: 'label'
     },
-    // 作为 children 唯一标识的键名，绑定值为对象类型时必填
+    // 作为 children 唯一标识的键名
     childrenKey: {
       type: String,
       default: 'children'
+    },
+    // 作为 tooltip 唯一标识的键名
+    // 面板选项的tooltip字段key
+    tooltipKey: {
+      type: String,
+      default: 'tooltip'
     },
     // 下级展开方式
     expandTrigger: {
@@ -273,6 +290,13 @@ export default {
     },
     // 是否允许父子联动
     selectChildren: {
+      type: Boolean,
+      default: true
+    },
+    // 当传入全量数据时，将可主动控制是否显示"暂无数据"面板项
+    // 使用该属性时，sync需要关闭
+    // 默认展示
+    showEmptyWrapByNotSynced: {
       type: Boolean,
       default: true
     }
@@ -316,6 +340,15 @@ export default {
     }
   },
   computed: {
+    // 标签的样式
+    tagStyle() {
+      if (!this.tagMaxWidth || this.tagMaxWidth === '0') {
+        return {}
+      }
+      return {
+        maxWidth: this.tagMaxWidth + 'px'
+      }
+    },
     // 显示的选择的label
     newSelectedLabels() {
       const { selectedLabels, maxTagCount } = this
@@ -384,6 +417,7 @@ export default {
     value: {
       deep: true,
       handler(n, o) {
+        this.updateDropPosition()
         const JS = JSON.stringify
         if (!n || !o || JS(n) === JS(o)) {
           return
@@ -414,6 +448,14 @@ export default {
     this.init()
   },
   methods: {
+    // 更新位置
+    updateDropPosition() {
+      this.$nextTick(() => {
+        const ref = this.$refs['Dropdown']
+        const dropRef = ref.$refs.drop
+        dropRef && dropRef.update()
+      })
+    },
     // watch selectedNodes handler
     selectedNodesWatch: _debounce(function () {
       const selected = this.selectedNodes.map(o => o[this.valueKey])
@@ -624,11 +666,11 @@ export default {
     },
     // 获取value
     getValue() {
-      let result = this.selectedNodes.map(o => {
+      let result = this.selectedNodes.map(oNode => {
         if (!this.onlyShowChecked) {
-          let level = o.level
+          let level = oNode.level
           let valueKey = ''
-          let node = _cloneDeep(o)
+          let node = oNode
           while (level !== 0) {
             valueKey = node[this.valueKey] + (valueKey ? this.separator : '') + valueKey
             node = node.parent
@@ -636,7 +678,7 @@ export default {
           }
           return valueKey
         }
-        return o[this.valueKey]
+        return oNode[this.valueKey]
       })
       // 有不存在的id 小于0的
       let hasEmptyIndex = _findIndex(this.selectedIds, v => +v < 0)
@@ -667,57 +709,65 @@ export default {
       this.$emit('input', result)
     },
     // 标签单个删除
-    removeOne(label) {
+    removeOne(label, value) {
       // 删除传入的数据
       let { label: echoName, value: echoVal } = this.storeEchoData
-      if (echoName.includes(label)) {
-        let index = _findIndex(echoName, name => name === label)
+      if (echoVal.includes(value)) {
+        let index = _findIndex(echoVal, { value })
         echoName.splice(index, 1)
         echoVal.splice(index, 1)
         this.store.selectedIds.splice(index, 1)
         this.updateSelect(this.store.selectedIds)
         const result = this.getValue()
         this.$emit('input', result)
-        this.$emit('remove-tag', label)
+        this.$emit('remove-tag', label, value)
         return
       }
-      let targetNode = _find(this.selectedNodes, { showLabel: label })
+      let targetNode = _find(this.selectedNodes, { value })
+      // 不是只显示选中的
       if (!this.onlyShowChecked) {
-        let str = label.substring(label.lastIndexOf(this.separator) + 1)
-        targetNode = _find(this.selectedNodes, { showLabel: str })
+        let vArr = value.split(this.separator) || []
+        // 最后一个值
+        let vLast = vArr.at(-1) || ''
+        if (vLast) {
+          targetNode = _find(this.selectedNodes, { value: vLast })
+        }
       }
-      targetNode.checked = false
+      targetNode && (targetNode.checked = false)
       this.handleCheck(targetNode)
-      this.$emit('remove-tag', label)
+      this.$emit('remove-tag', label, value)
     },
     // 选中数据更新转态
     updateSelect(data, needCheckNode = false, setValue = false) {
-      let tempSelectedNodes = []
+      const { value: echoVal, label: echoName } = this.storeEchoData
 
+      let tempSelectedNodes = []
       // 不存在的id 设置为小于0
       let newId = 0
-      const { value: echoVal, label: echoName } = this.storeEchoData
-      const ids = echoVal.map(v => --newId)
+      const ids = echoVal.map(() => --newId)
 
       let tempSelectedLabels = echoName.length === 0 ? [] : _cloneDeep(echoName)
       let tempSelectedIds = ids.length === 0 ? [] : ids
 
-      data.forEach(o => {
-        let targetNode
+      for (let index = 0; index < data.length; index++) {
+        const o = data[index]
+
+        let targetNode = null
         if (setValue) {
           targetNode = _find(this.store.nodeList, v => `${v.id}` === `${o}`)
-          // tempSelectedIds.push(targetNode.id);
-          targetNode && !tempSelectedIds.includes(o) && tempSelectedIds.push(o)
         } else {
           targetNode = this.store.nodesMap[o]
-          targetNode && !tempSelectedIds.includes(o) && tempSelectedIds.push(o)
         }
+
+        // 有目标节点
         if (targetNode) {
+          !tempSelectedIds.includes(o) && tempSelectedIds.push(o)
           needCheckNode && targetNode.check(true)
+
           let label = ''
           if (!this.onlyShowChecked) {
             let level = targetNode.level
-            let node = _cloneDeep(targetNode)
+            let node = targetNode
             while (level !== 0) {
               label = node.showLabel + (label ? this.separator : '') + label
               node = node.parent
@@ -726,15 +776,17 @@ export default {
           } else {
             label = targetNode.showLabel
           }
+
           // 显示最后一层
           if (this.labelLv === 'last') {
             const labelArr = label.split(this.separator)
             label = labelArr[labelArr.length - 1]
           }
+
           tempSelectedNodes.push(targetNode)
           tempSelectedLabels.push(label)
         }
-      })
+      }
       this.selectedNodes = tempSelectedNodes
       this.selectedLabels = tempSelectedLabels
       this.selectedIds = tempSelectedIds

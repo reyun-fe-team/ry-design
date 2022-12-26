@@ -16,10 +16,14 @@ import Ellipsis from './components/basics/ellipsis'
 import TableMultiInputs from './components/basics/table-multi-inputs'
 import TextEmojInput from './components/basics/text-emoj-input'
 import Icon from './components/basics/icon'
-import TextInputList from './components/basics/text-input-list'
+// import TextInputList from './components/basics/text-input-list'
+import { TextInputList, VirtualList } from './components/basics/text-input-list'
 import Wildcard from './components/basics/wildcard'
 import CascaderTransfer from './components/basics/cascader-transfer'
 import Exception from './components/basics/exception'
+import Button from './components/basics/custom-button'
+import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
+import Page from './components/basics/page'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -31,11 +35,19 @@ import { LayoutModuleConfig, LayoutModuleView } from './components/business/layo
 import TextItemShow from './components/business/text-item-show'
 import DeleteModals from './components/business/delete-modals'
 import AccountSelect from './components/business/account-select'
+import ProductSelect from './components/business/product-select'
+import SubmissionRule from './components/business/submission-rule'
+import BatchModifyBids from './components/business/batch-modify-bids'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
 import 'view-design/dist/styles/iview.css'
 import './style/index.less'
+
+// umy-ui u-table
+import { UTable, UTableColumn } from 'umy-ui'
+Vue.use(UTable)
+Vue.use(UTableColumn)
 
 // directives
 import lineClamp from './directives/line-clamp'
@@ -78,10 +90,17 @@ const components = {
   RdTextEmojInput: TextEmojInput,
   RdIcon: Icon,
   RdTextInputList: TextInputList,
+  RdVirtualList: VirtualList,
   RdWildcard: Wildcard,
   RdAccountSelect: AccountSelect,
   RdCascaderTransfer: CascaderTransfer,
-  RdException: Exception
+  RdException: Exception,
+  RdProductSelect: ProductSelect,
+  RdSubmissionRule: SubmissionRule,
+  RdButton: Button,
+  RdBatchModifyBids: BatchModifyBids,
+  RdDigitalDetailsTooltip: DigitalDetailsTooltip,
+  Page: Page
 }
 const directives = {
   'line-clamp': lineClamp,
@@ -129,5 +148,12 @@ export default {
   TextInputList,
   AccountSelect,
   CascaderTransfer,
-  Exception
+  Exception,
+  ProductSelect,
+  SubmissionRule,
+  Button,
+  BatchModifyBids,
+  VirtualList,
+  DigitalDetailsTooltip,
+  Page
 }

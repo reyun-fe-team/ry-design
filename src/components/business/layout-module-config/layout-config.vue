@@ -1,8 +1,8 @@
 <!--
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-05-22 16:50:21
- * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-06-24 19:34:45
+ * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
+ * @LastEditTime: 2022-12-19 18:26:08
  * @FilePath: /ry-design/src/components/basics/layout-module-config/layout-module-config.vue
  * @Description: 极速创建第一步模块布局组件
  * @Tips 提示
@@ -14,33 +14,23 @@
     :class="[prefixCls]"
     :style="wrapStyle">
     <div
-      v-for="(row, rowIndex) in newSlotList"
-      :key="rowIndex"
-      :class="[
-        prefixCls + '-row',
-        { [prefixCls + '-row-line']: rowIndex !== newSlotList.length - 1 }
-      ]"
-      :style="getRowStyle(rowIndex)">
+      v-for="slotName in flattenSlots"
+      :key="slotName"
+      :style="getItemStyle(slotName)">
+      <template v-if="getRenderSlot(slotName)">
+        <!-- slot -->
+        <Render
+          v-if="getRenderSlot(slotName).type === 'slot'"
+          :render="() => getRenderSlot(slotName).slotVNode"></Render>
+        <!-- function -->
+        <Render
+          v-if="getRenderSlot(slotName).type === 'function'"
+          :render="getRenderSlot(slotName).render"></Render>
+      </template>
       <div
-        v-for="(col, colIndex) in row"
-        :key="col"
-        :class="[prefixCls + '-col', { [prefixCls + '-col-line']: colIndex !== row.length - 1 }]"
-        :style="getColStyle(row.length)">
-        <template v-if="getRender(col).type !== 'empty'">
-          <!-- slot -->
-          <template v-if="getRender(col).type === 'slot'">
-            <Render :render="() => getRender(col).slotVNode"></Render>
-          </template>
-          <!-- function -->
-          <template v-if="getRender(col).type === 'function'">
-            <Render :render="getRender(col).render"></Render>
-          </template>
-        </template>
-        <div
-          v-if="getRender(col).type === 'empty'"
-          :class="prefixCls + '-empty-item'">
-          组件没有传入
-        </div>
+        v-if="!getRenderSlot(slotName)"
+        :class="prefixCls + '-empty-item'">
+        组件没有传入
       </div>
     </div>
   </div>
@@ -48,12 +38,16 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'layout-module-config'
-const margin = 1
+const LINE = '1px solid #e0e0e8'
 
 import { valideSlotList } from '../../../util/layout-module-config'
 import _cloneDeep from 'lodash/cloneDeep'
 import _isEqual from 'lodash/isEqual'
 import _isEmpty from 'lodash/isEmpty'
+import _flattenDeep from 'lodash/flattenDeep'
+import _intersection from 'lodash/intersection'
+import _difference from 'lodash/difference'
+import _isArray from 'lodash/isArray'
 import { typeOf } from '../../../util/assist'
 import Render from './../../base/render'
 
@@ -110,105 +104,38 @@ export default {
   data() {
     return {
       prefixCls,
-      newSlotList: []
+      currentSlots: [],
+      flattenSlots: []
     }
   },
   computed: {
-    // 是否是有效的自定义宽度
-    isValidPassCloWidth() {
-      const { widthType, cloWidthList, newSlotList } = this
-      // 不是自定义比例
-      if (widthType !== 'customScale') {
-        // console.error('无效的属性 cloWidthList :没有使用 widthType 为 customScale')
-        return false
-      }
-      // 配置数据不对
-      if (!Array.isArray(newSlotList) || !newSlotList.length) {
-        console.error('无效的属性 cloWidthList : slotList 配置数据不对')
-        return false
-      }
-      // 不是一样的长度
-      if (newSlotList.length !== cloWidthList.length) {
-        console.error('无效的属性 cloWidthList : 与 slotList 不是一样的长度')
-        return false
-      }
-      // 存在不是数字的项
-      let nums = 0
-      for (let index = 0; index < newSlotList.length; index++) {
-        const ele = cloWidthList[index]
-        if (typeOf(ele) !== 'number') {
-          console.error('无效的属性 cloWidthList : 存在不是数字的项')
-          return false
-        } else {
-          nums += +ele
-        }
-      }
-      // 比例之和不等于100
-      if (nums !== 100) {
-        console.error('无效的属性 cloWidthList : 比例之和不等于100')
-        return false
-      }
-      return true
-    },
     // 最小宽度
     minWidth() {
-      const counts = this.newSlotList.length
-      return counts * +this.itemMinWidth
-    },
-    // 每一项的宽度
-    itemWidth() {
-      const { minWidth, width, newSlotList } = this
-      // 一共几个列数
-      const counts = newSlotList.length
-      // 需要增加的 margin-right:1px 的个数
-      const marginRights = (counts - 1) * margin
-      let iw = ''
-      if (+width > 0) {
-        // 最小宽度设置
-        let newWidth = +width < +minWidth ? +minWidth : +width
-        newWidth -= marginRights
-        iw = newWidth / counts + 'px'
-      } else {
-        iw = 100 / counts + '%'
-      }
-      return iw
+      return this.currentSlots.length * +this.itemMinWidth
     },
     // wrap样式
     wrapStyle() {
-      const { width } = this
-      const styleObj = {}
+      const { width, height, widthType, currentSlots, cloWidthList } = this
+
+      let templateColumns = ''
+      // 等分
+      if (widthType === 'equalDivision') {
+        templateColumns = `repeat(${currentSlots.length}, ${100 / currentSlots.length}%)`
+      }
+      // 使用自定义比例
+      if (widthType === 'customScale') {
+        templateColumns = cloWidthList.map(val => `${val}%`).join(' ')
+      }
+
+      const styleObj = {
+        'grid-template-columns': templateColumns,
+        'grid-template-rows': `repeat(2, ${height / 2}px)`
+      }
       if (+width > 0) {
         styleObj.width = width + 'px'
       }
+
       return styleObj
-    },
-    // 配置的可以渲染的插槽的熏染行数(插槽和渲染函数混合用，渲染函数覆盖插槽)
-    renderSlots() {
-      let newObj = {}
-      for (let ri = 0; ri < this.newSlotList.length; ri++) {
-        const row = this.newSlotList[ri]
-        for (let ci = 0; ci < row.length; ci++) {
-          const slotName = row[ci]
-          // 插槽转成渲染函数
-          const slots = this.$slots[slotName]
-          const slotVNode = slots[0]
-          if (!_isEmpty(slotVNode)) {
-            newObj[slotName] = {
-              type: 'slot',
-              slotVNode
-            }
-          }
-          // 传入的渲染函数覆盖插槽
-          const renderFunc = this.slotRenders[slotName]
-          if (renderFunc && typeOf(renderFunc) === 'function') {
-            newObj[slotName] = {
-              type: 'function',
-              render: renderFunc
-            }
-          }
-        }
-      }
-      return newObj
     }
   },
   watch: {
@@ -216,67 +143,86 @@ export default {
     slotList: {
       deep: true,
       immediate: true,
-      handler(newVal, oldVal) {
-        if (_isEmpty(newVal) || !Array.isArray(newVal) || _isEqual(newVal, oldVal)) {
+      handler(newSlots, oldSlots) {
+        if (_isEmpty(newSlots) || !_isArray(newSlots) || _isEqual(newSlots, oldSlots)) {
           return
         }
-        this.newSlotList = _cloneDeep(newVal)
+        let flattenSlots = []
+        const oldList = _flattenDeep(oldSlots)
+        const newList = _flattenDeep(newSlots)
+        // 一样的，拿到没有变化的列，放到最前面
+        const intersection = _intersection(oldList, newList)
+        // 将新增的列在放到后面
+        const difference = _difference(newList, intersection)
+        // 合并后v-for只渲染新增的
+        flattenSlots = intersection.concat(difference)
+
+        this.currentSlots = _cloneDeep(newSlots)
+        this.flattenSlots = flattenSlots
       }
     }
   },
   methods: {
-    // 获取render
-    getRender(slotName) {
+    // 每一个格子的样式
+    getItemStyle(slotName) {
+      // 位置
+      let columnStart = 0
+      let rowStart = 0
+      let rowEnd = 0
+      // 边框线
+      let borderBottom = ''
+      let borderRight = ''
+      for (let col = 0; col < this.currentSlots.length; col++) {
+        const rows = this.currentSlots[col]
+        const isOnRow = rows.length === 1
+
+        for (let row = 0; row < rows.length; row++) {
+          const name = rows[row]
+          if (name === slotName) {
+            columnStart = col + 1
+            rowStart = row + 1
+            rowEnd = isOnRow ? rowStart + 2 : rowStart
+            if (!isOnRow && row === 0) {
+              borderBottom = LINE
+            }
+            if (col < this.currentSlots.length - 1) {
+              borderRight = LINE
+            }
+            break
+          }
+        }
+      }
+
+      return {
+        'border-bottom': borderBottom,
+        'border-right': borderRight,
+        'min-width': this.itemMinWidth + 'px',
+        'grid-column-start': columnStart,
+        'grid-row-start': rowStart,
+        'grid-row-end': rowEnd
+      }
+    },
+    // 配置的可以渲染的插槽的熏染行数(插槽和渲染函数混合用，渲染函数覆盖插槽)
+    getRenderSlot(slotName) {
+      let arr = []
       // render function
-      const renderFunc = this.slotRenders[slotName]
-      if (typeOf(renderFunc) === 'function') {
-        return {
-          type: 'function',
-          render: renderFunc
+      for (const slotName in this.slotRenders) {
+        const renderFunc = this.slotRenders[slotName]
+        if (typeOf(renderFunc) === 'function') {
+          arr.push({ slotName, type: 'function', render: renderFunc })
         }
       }
+
       // slot
-      const slots = this.$slots[slotName]
-      const slotVNode = slots[0]
-      if (!_isEmpty(slotVNode)) {
-        return {
-          type: 'slot',
-          slotVNode
+      for (const slotName in this.$slots) {
+        const slots = this.$slots[slotName]
+        const slotVNode = slots[0]
+        if (!_isEmpty(slotVNode)) {
+          arr.push({ slotName, type: 'slot', slotVNode })
         }
       }
-      return { type: 'empty' }
-    },
-    // 获取行的样式
-    getColStyle(closNum) {
-      const { height } = this
-      // 需要增加的 margin-bottom:1px 的个数
-      const marginBottoms = (closNum - 1) * margin
-      const newHeight = +height - marginBottoms
-      const itemHeight = newHeight / closNum + 'px'
-      const obj = { height: itemHeight }
-      return obj
-    },
-    // 每一行的样式
-    getRowStyle(rowIndex) {
-      const { itemWidth, itemMinWidth, cloWidthList, widthType, isValidPassCloWidth } = this
-      let width = ''
 
-      // 自定义输入每一项的宽度
-      let customWidth = cloWidthList[rowIndex]
-      if (typeOf(customWidth) !== 'number' || customWidth <= 0) {
-        customWidth = ''
-      }
-
-      // 等分
-      if (widthType === 'equalDivision') {
-        width = itemWidth
-      }
-      // 使用自定义比例
-      if (widthType === 'customScale') {
-        width = customWidth && isValidPassCloWidth ? customWidth + '%' : ''
-      }
-      const obj = { width, minWidth: itemMinWidth + 'px' }
-      return obj
+      return arr.find(val => slotName === val.slotName)
     }
   }
 }

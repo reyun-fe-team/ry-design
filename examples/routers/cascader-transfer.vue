@@ -10,6 +10,8 @@
       v-model="region2"
       title="区域2"
       :datas="cityList2"
+      is-selected-search
+      is-export
       selected-label-name="labelAll"></rd-cascader-transfer>
   </main>
 </template>

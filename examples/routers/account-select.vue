@@ -1,11 +1,31 @@
 <template>
   <div>
-    {{ data }}---{{ dataGroup }}
+    普通select
+    <Select
+      v-model="model"
+      multiple
+      style="width: 260px"
+      filterable>
+      <Option
+        v-for="item in cityList"
+        :key="item.value"
+        :value="item.value">
+        {{ item.label }}
+      </Option>
+    </Select>
+    data:{{ data }}---dataGroup:{{ dataGroup }}
     <h2>prefix-container</h2>
     <rd-prefix-container>
-      <span slot="prepend">投放账户</span>
+      <span slot="prepend">投放账户-单选</span>
       <rd-account-select
         v-model="data"
+        :data="accountList"></rd-account-select>
+    </rd-prefix-container>
+    <rd-prefix-container>
+      <span slot="prepend">投放账户-单选</span>
+      <rd-account-select
+        v-model="data"
+        style="width: 400px"
         :data="accountList"></rd-account-select>
     </rd-prefix-container>
     <h2>没有组的概念</h2>
@@ -15,13 +35,16 @@
     <h2>组</h2>
     <rd-account-select
       v-model="dataGroup"
+      :multiple="false"
       grouping
       :data="accountListGroup"></rd-account-select>
     <h2>跨主体</h2>
     <rd-account-select
       v-model="crossSubjectData"
+      multiple
       grouping
       :data="accountListGroup"
+      style="width: 400px"
       cross-subject></rd-account-select>
     <h2>form</h2>
     <Form
@@ -34,6 +57,7 @@
         label="选择账户">
         <rd-account-select
           v-model="formInline.campaignName"
+          multiple
           :data="accountList"></rd-account-select>
       </FormItem>
       <h2>form-组</h2>
@@ -42,6 +66,7 @@
         label="选择账户">
         <rd-account-select
           v-model="formInline.campaignName1"
+          multiple
           grouping
           :data="accountListGroup"></rd-account-select>
       </FormItem>
@@ -71,8 +96,35 @@
 export default {
   data() {
     return {
-      data: ['204822'],
-      dataGroup: ['42855'],
+      cityList: [
+        {
+          value: 'New York',
+          label: 'New York'
+        },
+        {
+          value: 'London',
+          label: 'London'
+        },
+        {
+          value: 'Sydney',
+          label: 'Sydney'
+        },
+        {
+          value: 'Ottawa',
+          label: 'Ottawa'
+        },
+        {
+          value: 'Paris',
+          label: 'Paris'
+        },
+        {
+          value: 'Canberra',
+          label: 'Canberra'
+        }
+      ],
+      model: [],
+      data: '204822', //['204822', '19858972'],
+      dataGroup: [], //，['42855'],
       crossSubjectData: ['42855'],
       accountListGroup: [],
       accountListGroup1: [
@@ -81,7 +133,8 @@ export default {
           disabled: false,
           children: [
             {
-              label: '直播推广',
+              label:
+                '直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广',
               value: '204813'
             }
           ]
@@ -101,11 +154,12 @@ export default {
           disabled: false,
           children: [
             {
-              label: '广州四三九九01',
+              label:
+                '广州四三九九01广州四三九九01广州四三九九01广州四三九九01广州四三九九01广州四三九九01广州四三九九01广州四三九九01',
               value: '42855'
             },
             {
-              label: '广州四三九九02',
+              label: '广州四三九九02广州四三九九02广州四三九九02广州四三九九02',
               value: '42856'
             }
           ]
@@ -283,7 +337,8 @@ export default {
       ],
       accountList: [
         {
-          label: '热云数据01',
+          label:
+            '热云数据01热云数据01热云数据01热云数据01热云数据01热云数据01热云数据01热云数据01热云数据01',
           value: '204822'
         },
         {

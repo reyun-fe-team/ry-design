@@ -239,9 +239,12 @@ export default {
       if (!text) {
         return
       }
+
+      this.$emit('on-paste', e)
+
       // 纯文本就粘贴
-      const newText = getPlainText(text)
-      this.insertText(newText)
+      // const newText = getPlainText(text)
+      // this.insertText(newText)
     },
     // 键盘按下事件
     handlerKeydown(e) {
@@ -399,8 +402,8 @@ export default {
         return
       }
       let copyDom = document.createElement('div')
-      // copyDom.innerHTML = this.richEditRef.innerHTML.replaceAll('&nbsp;', '')
-      copyDom.innerHTML = this.richEditRef.innerHTML
+      // 需要匹配换行符替换为空
+      copyDom.innerHTML = this.richEditRef.innerHTML.replaceAll('&nbsp;', '')
       // 计算文本长度
       let textLn = 0
       const textStr = copyDom.innerText.replace(/[\r\n]/g, '')
@@ -453,12 +456,23 @@ export default {
       oiginalText = oiginalText.replaceAll('<br>&nbsp;', '').replaceAll('<br>', '')
       return oiginalText
     },
+    // 获取已插入表情图片的个数
+    getEmojiNum() {
+      let copyDom = document.createElement('div')
+      copyDom.innerHTML = this.richEditRef.innerHTML.replaceAll('&nbsp;', '')
+      const imgs = copyDom.getElementsByTagName('img')
+      const emojLn = [...imgs].reduce(
+        (pre, cur) => (cur.getAttribute('data-type') === 'emoj' ? pre + 1 : pre),
+        0
+      )
+      return emojLn
+    },
     // 获取已插入换行符个数
     getEnters() {
       if (!this.richEditRef) {
         return 0
       }
-      const brs = this.richEditRef.innerHTML.match(/<br>/g)
+      const brs = this.richEditRef.innerHTML.match(/<br>&nbsp;/g)
       return brs ? brs.length : 0
     },
     //清除

@@ -1,0 +1,171 @@
+@product-select: ~'@{css-prefix}product-select';
+
+.@{product-select} {
+    &-wrapper {
+        display: flex;
+        box-sizing: content-box;
+        &-selected-box {
+          margin-left: 10px;
+        }
+        &-selected-empty-box {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: @text-color-gray;
+        }
+        &-table {
+          box-sizing: content-box;
+          height: 310px;
+          border: 1px solid @border-color-base;
+          border-top: none;
+          font-size: 12px;
+          position: relative;
+          &-border-left-none {
+            border-left: none;
+          }
+          .el-table__header {
+            padding-bottom: 4px;
+          }
+          .plTableBox .el-table .cell {
+            line-height: unset;
+            font-size: 12px;
+            font-weight: normal;
+          }
+          .el-table-column--selection .cell {
+            text-overflow: unset !important;
+            padding-left: 14px !important;
+          }
+          .plTableBox .el-table thead {
+            color: @text-color;
+            font-size: 12px;
+          }
+          .plTableBox .el-table {
+            color: @text-color !important;
+            font-weight: unset !important;
+          }
+          .plTableBox .el-table td, .plTableBox .el-table th {
+            padding: 0;
+          }
+          .plTableBox .el-table td, .plTableBox .el-table th.is-leaf {
+            border-bottom: none;
+          }
+          .plTableBox .el-table__empty-block {
+            height: 100%;
+          }
+          .plTableBox .el-table__body tr.current-row>td {
+            background-color: #F1F3F5;
+          }
+        }
+        &-selected-box-panel-content {
+          box-sizing: content-box;
+          height: 310px;
+          border: 1px solid @border-color-base;
+          border-top: none;
+          .el-table__header {
+            padding-bottom: 4px;
+          }
+          .plTableBox .el-table .cell {
+            line-height: unset;
+            font-size: 12px;
+            font-weight: normal;
+            padding-right: 8px;
+          }
+          .el-table-column--selection .cell {
+            text-overflow: unset !important;
+            padding-left: 14px !important;
+          }
+          .plTableBox .el-table thead {
+            color: @text-color;
+            font-size: 12px;
+          }
+          .plTableBox .el-table {
+            color: @text-color !important;
+            font-weight: unset !important;
+          }
+          .plTableBox .el-table td, .plTableBox .el-table th {
+            padding: 0;
+          }
+          .plTableBox .el-table td, .plTableBox .el-table th.is-leaf {
+            border-bottom: none;
+          }
+          .plTableBox .el-table__empty-block {
+            height: 100%;
+          }
+          .plTableBox .el-table__body tr.current-row>td {
+            background-color: @white;
+          }
+          .plTableBox .el-table__body tr td:hover{
+            background-color: @white!important;
+          }
+        }
+        &-title {
+          align-content: center;
+          height: 40px;
+          padding: 0 10px;
+          color: @text-color;
+          font-size: 12px;
+          font-weight: bold;
+          background: @head-bg;
+          border: 1px solid @border-color-base;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          &-border-left-none {
+            border-left: none;
+          }
+        }
+    }
+    &-row-first-title {
+      color: @text-color;
+    }
+    &-row-second-title {
+      color: @text-color-gray;
+    }
+    &-table-empty-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      img {
+        width: 64px;
+      }
+    }
+    &-table-empty-text {
+      font-size: 12px;
+      line-height: 20px;
+    }
+    &-spin-container {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+    }
+    &-m-t-10 {
+      margin-top: 10px;
+    }
+    &-cursor-pointer {
+      cursor: pointer;
+    }
+}
+.el-tooltip__popper {
+  border: none !important;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2) !important;
+  max-width: 300px !important;
+  line-height: 18px !important;
+}
+.el-tooltip__popper .popper__arrow {
+  border-width: 0 7px 7px;
+  border-top-color: hsla(0,0%,85%,.5) !important;
+  border-right-color: transparent !important;
+  border-left-color: transparent !important;
+  border-bottom-color:transparent !important;;
+}
+.el-tooltip__popper .popper__arrow::after {
+  border-top-color:#fff !important;
+  border-right-color:transparent !important;
+  border-left-color:transparent !important;
+  border-bottom-color:transparent !important;
+}
+
