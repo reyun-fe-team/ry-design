@@ -10,6 +10,7 @@
       :max-tag-placeholder="maxTagPlaceholder"
       :disabled="disabled"
       :clearable="clearable"
+      :transfer="transfer"
       @on-select="handleSelect"
       @on-open-change="handleOpenChange"
       @on-query-change="handleQueryChange"
@@ -42,6 +43,7 @@
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'account-select'
 import _cloneDeep from 'lodash/cloneDeep'
+const maxTagCount = 1
 export default {
   name: prefixCls,
   props: {
@@ -59,10 +61,6 @@ export default {
     grouping: {
       type: Boolean,
       default: false
-    },
-    maxTagCount: {
-      type: Number,
-      default: 1
     },
     // 跨主体
     crossSubject: {
@@ -108,7 +106,8 @@ export default {
       accountList,
       accountListClone: _cloneDeep(accountList),
       current: this.value,
-      prefixCls
+      prefixCls,
+      maxTagCount
     }
   },
   computed: {
