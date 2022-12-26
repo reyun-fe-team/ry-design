@@ -233,6 +233,9 @@ export default {
     },
     onClear() {
       this.$emit('on-clear')
+    },
+    deleteSelectMenu() {
+      this.$refs['select'].toggleMenu(null, false)
     }
   }
 }
