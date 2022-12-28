@@ -6,21 +6,12 @@
     <br />
     <rd-schedule
       ref="schedule"
-      v-model="sheetStates"
-      :colspan="colspan"></rd-schedule>
-    <div
-      v-if="false"
-      style="display: flex; justify-content: space-around">
-      <rd-schedule
-        ref="schedule"
-        v-model="sheetStates"
-        :colspan="colspan"></rd-schedule>
-
-      <!-- <rd-schedule
-        ref="schedule"
-        v-model="sheetStates2"
-        :colspan="1"></rd-schedule> -->
-    </div>
+      v-model="sheetStates"></rd-schedule>
+    <br />
+    <rd-schedule
+      ref="schedule"
+      v-model="sheetStates2"
+      :colspan="2"></rd-schedule>
   </div>
 </template>
 

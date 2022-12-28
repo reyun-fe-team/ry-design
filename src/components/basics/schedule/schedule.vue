@@ -1,5 +1,7 @@
 <template>
-  <div :class="prefixCls">
+  <div
+    :id="componentId"
+    :class="prefixCls">
     <div
       :class="[
         prefixCls + '-cover',
@@ -78,7 +80,13 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'schedule'
-import { createArr, createWeekData, splicing, createSheetStates } from './utils'
+import {
+  createArr,
+  createWeekData,
+  splicing,
+  createSheetStates
+} from '../../../util/rd-schedule-utils.js'
+import { getKey } from '../../../util/assist.js'
 
 export default {
   name: prefixCls,
@@ -99,6 +107,7 @@ export default {
   data() {
     return {
       prefixCls,
+      componentId: '',
       theadArr: [],
       weekData: [],
       sheetStates: '',
@@ -135,6 +144,7 @@ export default {
   },
   created() {
     this.init()
+    this.componentId = `rd-schedule-${getKey()}`
     window.addEventListener('mouseup', this.windowMouseup)
     window.addEventListener('mousedown', this.windowMousedown)
   },
@@ -152,7 +162,9 @@ export default {
       this.getSheetStates()
     },
     cellEnter(item) {
-      const ele = document.querySelector(`td[data-week='${item.row}'][data-time='${item.col}']`)
+      const ele = document.querySelector(
+        `#${this.componentId} td[data-week='${item.row}'][data-time='${item.col}']`
+      )
       if (ele && !this.mode) {
         this.left = ele.offsetLeft
         this.top = ele.offsetTop
@@ -182,7 +194,9 @@ export default {
       this.last = item
     },
     cellDown(item) {
-      const ele = document.querySelector(`td[data-week='${item.row}'][data-time='${item.col}']`)
+      const ele = document.querySelector(
+        `#${this.componentId} td[data-week='${item.row}'][data-time='${item.col}']`
+      )
       this.check = Boolean(item.check)
       this.mode = 1
       if (ele) {
