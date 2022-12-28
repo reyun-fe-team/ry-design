@@ -93,7 +93,7 @@ export default {
     },
     colspan: {
       type: Number,
-      default: 2
+      default: 1
     }
   },
   data() {
@@ -254,6 +254,7 @@ export default {
       let whiteBlock = this.getWhiteBlockData(sheetStates)
       this.sheetStates = sheetStates.flat().join('')
       this.$emit('input', this.sheetStates)
+      this.$emit('on-change', this.sheetStates)
       this.$emit('on-white-block', whiteBlock)
     },
     // 刷新表格选择状态
