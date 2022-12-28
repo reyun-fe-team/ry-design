@@ -1,6 +1,6 @@
 <!--
  * @Date: 2022-12-09 10:43:53
- * @LastEditTime: 2022-12-21 15:11:28
+ * @LastEditTime: 2022-12-23 18:15:42
  * @Description: 数字详情
 -->
 <template>
@@ -18,11 +18,13 @@
       :disabled="disabled"
       :transfer-class-name="prefixCls + '-transfer'">
       <!-- 图标 -->
-      <div :class="[prefixCls + '-icon']">
-        <ryIcon
-          type="ry-icon-more"
-          size="16" />
-      </div>
+      <slot>
+        <div :class="[prefixCls + '-icon']">
+          <ryIcon
+            type="ry-icon-more"
+            size="16" />
+        </div>
+      </slot>
       <!-- 内容 -->
       <template #content>
         <!-- 列表详情 -->

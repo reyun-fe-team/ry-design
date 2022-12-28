@@ -19,6 +19,18 @@
         type="table"
         :columns="columns"
         :table-detail-data="tableData"></rd-digital-details-tooltip>
+      <br />
+      <br />
+      <b style="margin-right: 10px">表格展示-自定义插槽</b>
+      <rd-digital-details-tooltip
+        type="table"
+        :columns="columns"
+        :table-detail-data="tableData">
+        <div>
+          <span style="color: red">输入详情</span>
+          <Input style="width: 80px" />
+        </div>
+      </rd-digital-details-tooltip>
     </div>
   </div>
 </template>
