@@ -95,7 +95,7 @@ export default {
       type: [String, Boolean],
       default: '账户'
     },
-    dataList: {
+    data: {
       type: Array,
       default: () => [],
       require: true
@@ -114,11 +114,11 @@ export default {
     },
     itemName: {
       type: String,
-      default: 'adsMediaAccountName'
+      default: 'mediaAccountName'
     },
     itemId: {
       type: String,
-      default: 'adsMediaAccountId'
+      default: 'mediaAccountId'
     },
     itemNum: {
       type: String,
@@ -165,7 +165,7 @@ export default {
   },
   computed: {
     list() {
-      return this.dataList.map(p => {
+      return this.data.map(p => {
         let children = p.children.map(c => {
           return {
             ...c,
@@ -188,7 +188,7 @@ export default {
       ]
     },
     init() {
-      if (!this.dataList.length) {
+      if (!this.data.length) {
         return
       }
       this.$nextTick(() => {

@@ -2,7 +2,7 @@
   <div class="dis-flex">
     <rd-account-group-list
       id="accountId"
-      :data-list="dataList"
+      :data="dataList"
       :icon-size="18"
       item-id="accountId"
       item-name="accountName"
