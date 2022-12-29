@@ -100,7 +100,7 @@ const components = {
   RdButton: Button,
   RdBatchModifyBids: BatchModifyBids,
   RdDigitalDetailsTooltip: DigitalDetailsTooltip,
-  Page: Page
+  RdPage: Page
 }
 const directives = {
   'line-clamp': lineClamp,
