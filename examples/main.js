@@ -155,6 +155,10 @@ const router = new VueRouter({
       component: resolve => require(['./routers/digital-details-tooltip'], resolve)
     },
     {
+      path: '/page',
+      component: resolve => require(['./routers/page'], resolve)
+    },
+    {
       path: '/account-group-list',
       component: resolve => require(['./routers/account-group-list'], resolve)
     }

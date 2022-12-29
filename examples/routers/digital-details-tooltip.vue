@@ -5,13 +5,13 @@
       <rd-digital-details-tooltip
         :count="10"
         type="list"
-        :list-detail-data="listData"></rd-digital-details-tooltip>
+        :data="listData"></rd-digital-details-tooltip>
       <br />
       <br />
       <b style="margin-right: 10px">列表展示-单组-无组名称-无序号</b>
       <rd-digital-details-tooltip
         type="list"
-        :list-detail-data="listData2"></rd-digital-details-tooltip>
+        :data="listData2"></rd-digital-details-tooltip>
       <br />
       <br />
       <b style="margin-right: 10px">表格展示</b>
@@ -19,6 +19,18 @@
         type="table"
         :columns="columns"
         :table-detail-data="tableData"></rd-digital-details-tooltip>
+      <br />
+      <br />
+      <b style="margin-right: 10px">表格展示-自定义插槽</b>
+      <rd-digital-details-tooltip
+        type="table"
+        :columns="columns"
+        :table-detail-data="tableData">
+        <div>
+          <span style="color: red">输入详情</span>
+          <Input style="width: 80px" />
+        </div>
+      </rd-digital-details-tooltip>
     </div>
   </div>
 </template>
@@ -159,7 +171,9 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style
+  lang="less"
+  scoped>
 .show-data {
   display: flex;
   .before,

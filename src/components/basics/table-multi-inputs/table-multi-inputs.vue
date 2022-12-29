@@ -6,6 +6,7 @@
       :max-height="400"
       :columns="columns"
       :data="tableData"
+      :show-header="showHeader"
       :row-class-name="rowClassName">
       <template
         v-for="item in columns"

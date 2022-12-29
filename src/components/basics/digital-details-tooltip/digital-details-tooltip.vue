@@ -1,6 +1,6 @@
 <!--
  * @Date: 2022-12-09 10:43:53
- * @LastEditTime: 2022-12-09 15:30:38
+ * @LastEditTime: 2022-12-23 18:15:42
  * @Description: 数字详情
 -->
 <template>
@@ -18,17 +18,19 @@
       :disabled="disabled"
       :transfer-class-name="prefixCls + '-transfer'">
       <!-- 图标 -->
-      <div :class="[prefixCls + '-icon']">
-        <ryIcon
-          type="ry-icon-more"
-          size="16" />
-      </div>
+      <slot>
+        <div :class="[prefixCls + '-icon']">
+          <ryIcon
+            type="ry-icon-more"
+            size="16" />
+        </div>
+      </slot>
       <!-- 内容 -->
       <template #content>
         <!-- 列表详情 -->
         <list-digital-details
           v-if="type === 'list'"
-          :data="listDetailData"></list-digital-details>
+          :data="data"></list-digital-details>
         <!-- 表格详情 -->
         <table-digital-details
           v-if="type === 'table'"
@@ -75,7 +77,7 @@ export default {
       default: 'list'
     },
     // 列表展示数据
-    listDetailData: {
+    data: {
       type: Array,
       default: () => []
     },

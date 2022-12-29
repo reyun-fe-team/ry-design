@@ -5,11 +5,16 @@
 .@{digital-details-tooltip} {
   color: #575b65;
   user-select: none;
-  &:hover {
+  &:hover &-count,
+  &:hover &-icon {
     color: #338afe;
+  }
+  &-count {
+    color: #151b39;
   }
   &-icon {
     cursor: pointer;
+    color: #575b65;
   }
   &-transfer {
     .ivu-poptip-body {
@@ -25,7 +30,7 @@
   max-width: 320px;
   max-height: 240px;
   overflow: auto;
-  padding: 16px;
+  padding: 12px 16px;
   .title-group {
     font-size: 12px;
     margin-bottom: 16px;
@@ -44,8 +49,8 @@
       display: flex;
       justify-content: flex-start;
       align-items: flex-start;
-      min-height: 24px;
-      line-height: 24px;
+      min-height: 20px;
+      line-height: 20px;
       .title-text {
         flex: 1;
         white-space: pre-wrap;

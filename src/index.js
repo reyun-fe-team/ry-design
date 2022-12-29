@@ -23,6 +23,7 @@ import CascaderTransfer from './components/basics/cascader-transfer'
 import Exception from './components/basics/exception'
 import Button from './components/basics/custom-button'
 import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
+import Page from './components/basics/page'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -100,6 +101,7 @@ const components = [
   Button,
   BatchModifyBids,
   DigitalDetailsTooltip,
+  Page,
   AccountGroupList
 ]
 const directives = {
@@ -155,5 +157,6 @@ export default {
   BatchModifyBids,
   VirtualList,
   DigitalDetailsTooltip,
-  AccountGroupList
+  Page,
+  AccountGroupList,
 }

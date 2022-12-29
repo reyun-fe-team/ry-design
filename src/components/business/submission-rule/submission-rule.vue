@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@mobvista.com
  * @Date: 2022-12-13 16:50:46
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2022-12-16 14:35:02
+ * @LastEditTime: 2022-12-21 15:22:03
  * @FilePath: /ry-design/src/components/business/submission-rule/submission-rule.vue
  * @Description: 提交规则
 -->
@@ -10,7 +10,7 @@
   <div :class="[prefixCls]">
     <Form
       ref="formData"
-      label-width="60"
+      :label-width="60"
       :class="[prefixCls + '-form']"
       :model="formData">
       <!-- 提交方式 -->
@@ -35,7 +35,7 @@
             :content="ruleTipsList[formData.submitRule]"
             theme="light"
             max-width="240"
-            placement="left-top">
+            placement="left-start">
             <Icon
               type="ios-help-circle-outline"
               size="16"
