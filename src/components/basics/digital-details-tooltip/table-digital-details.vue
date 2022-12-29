@@ -11,7 +11,7 @@
         {{ col.title }}
       </div>
     </div>
-    <div :class="[prefixScrollCls, 'tbody']">
+    <div class="small-scroll-y tbody">
       <div
         v-for="(item, index) in data"
         :key="index"
@@ -32,7 +32,6 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'digital-details-table'
-const prefixScrollCls = prefix + 'mini-scroll-y'
 
 export default {
   name: 'TableDigitalDetails',
@@ -49,8 +48,7 @@ export default {
   },
   data() {
     return {
-      prefixCls,
-      prefixScrollCls
+      prefixCls
     }
   }
 }
