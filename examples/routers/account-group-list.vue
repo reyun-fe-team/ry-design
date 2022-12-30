@@ -9,13 +9,13 @@
       width="800px"
       @on-change="getActiveAccount">
       我是右边的插槽盒子
+      <div>
+        公司:
+        <strong>{{ parent }}</strong>
+        账户:
+        <strong>{{ active }}</strong>
+      </div>
     </rd-account-group-list>
-    <div>
-      公司:
-      <strong>{{ parent }}</strong>
-      账户:
-      <strong>{{ active }}</strong>
-    </div>
   </div>
 </template>
 
@@ -47,7 +47,7 @@ export default {
             {
               accountName: '多账号统一配置定向包{账户别名}提升应用安装070011:57:1602_N1',
               accountId: 'ggz322',
-              iconIview: 'ios-checkmark-circle-outline'
+              iconCustom: 'icon-Success-Small'
             }
           ]
         },
@@ -76,8 +76,5 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.dis-flex {
-  display: flex;
-  justify-content: space-around;
-}
+
 </style>

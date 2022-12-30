@@ -15,6 +15,7 @@
             :max-width="maxWidth"
             transfer
             :delay="delay"
+            placement="right"
             theme="light">
             <div :class="prefixCls + '-body-left-box-content-title'">
               账户：{{ item[groupName] }}
@@ -30,9 +31,10 @@
               :class="itemClasses(el)"
               @click="choose(el, false)">
               <Tooltip
-                max-width="200"
+                :max-width="maxWidth"
                 transfer
                 :delay="delay"
+                placement="right"
                 theme="light">
                 <div
                   :class="prefixCls + '-body-left-box-content-item-name'"
@@ -142,7 +144,7 @@ export default {
     },
     maxWidth: {
       type: [Number, String],
-      default: 200
+      default: 320
     },
     delay: {
       type: Number,
@@ -199,13 +201,13 @@ export default {
           newList = [...m.children, ...newList]
         })
         let activeData = newList.find(f => f[this.itemId] === this.active)
-        this.choose(activeData)
+        this.choose(activeData, true)
       })
     },
-    choose(item) {
+    choose(item, isFirst = true) {
       const { itemId, groupId } = this
       // 当前已经选中的 不在返回
-      if (item[itemId] === this.active) {
+      if (item[itemId] === this.active && !isFirst) {
         return
       }
       const active = item[itemId]
