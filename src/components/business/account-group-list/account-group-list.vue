@@ -136,7 +136,7 @@ export default {
     },
     iconSize: {
       type: Number,
-      default: 12
+      default: 16
     },
     iconColor: {
       type: String,
