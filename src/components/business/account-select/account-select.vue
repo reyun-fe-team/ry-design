@@ -24,8 +24,20 @@
             v-for="el in item[childrenKey]"
             :key="el.value"
             :disabled="item.disabled || el.disabled"
-            :value="el.value"
-            :label="el.label"></Option>
+            :value="el.value">
+            {{ el.label }}
+            <Tooltip
+              v-if="el.tooltip"
+              transfer
+              placement="top"
+              max-width="280"
+              theme="light"
+              :content="el.tooltip">
+              <Icon
+                :type="el.icon || 'ios-help-circle-outline'"
+                style="font-size: 14px"></Icon>
+            </Tooltip>
+          </Option>
         </OptionGroup>
       </template>
       <template v-else>
@@ -33,8 +45,20 @@
           v-for="el in accountList"
           :key="el.value"
           :disabled="el.disabled"
-          :value="el.value"
-          :label="el.label"></Option>
+          :value="el.value">
+          {{ el.label }}
+          <Tooltip
+            v-if="el.tooltip"
+            transfer
+            placement="top"
+            max-width="280"
+            theme="light"
+            :content="el.tooltip">
+            <Icon
+              :type="el.icon || 'ios-help-circle-outline'"
+              style="font-size: 14px"></Icon>
+          </Tooltip>
+        </Option>
       </template>
     </Select>
   </div>
