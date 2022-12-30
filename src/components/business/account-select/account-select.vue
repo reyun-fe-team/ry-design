@@ -24,8 +24,14 @@
             v-for="el in item[childrenKey]"
             :key="el.value"
             :disabled="item.disabled || el.disabled"
-            :value="el.value">
-            {{ el.label }}
+            :value="el.value"
+            :label="el.label">
+            <div
+              class="overflow-ellipsis"
+              :title="el.label"
+              :style="contentStyle">
+              {{ el.label }}
+            </div>
             <Tooltip
               v-if="el.tooltip"
               transfer
@@ -45,8 +51,14 @@
           v-for="el in accountList"
           :key="el.value"
           :disabled="el.disabled"
-          :value="el.value">
-          {{ el.label }}
+          :value="el.value"
+          :label="el.label">
+          <div
+            class="overflow-ellipsis"
+            :title="el.label"
+            :style="contentStyle">
+            {{ el.label }}
+          </div>
           <Tooltip
             v-if="el.tooltip"
             transfer
@@ -118,6 +130,10 @@ export default {
     childrenKey: {
       type: String,
       default: 'children'
+    },
+    maxWidth: {
+      type: Number,
+      default: 480
     }
   },
   data() {
@@ -141,6 +157,11 @@ export default {
         { [`${prefixCls}-multiple`]: this.multiple },
         { [`${prefixCls}-multiple-input`]: this.multiple && !!this.current.length }
       ]
+    },
+    contentStyle() {
+      return {
+        //maxWidth: this.maxWidth + 'px'
+      }
     }
   },
   watch: {
