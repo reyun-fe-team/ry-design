@@ -92,14 +92,20 @@
                   </template>
                   <!-- 名称 -->
                   <Tooltip
+                    v-if="item.tooltip"
                     theme="light"
                     placement="top"
                     :max-width="200"
-                    :content="item.tooltip || item.title">
+                    :content="item.tooltip">
                     <span :class="prefixCls + '-view-list-content-item-title'">
                       {{ item.title }}
                     </span>
                   </Tooltip>
+                  <span
+                    v-else
+                    :class="prefixCls + '-view-list-content-item-title'">
+                    {{ item.title }}
+                  </span>
                   <!-- 后缀 -->
                   <template v-if="item.suffix">
                     <Tooltip
