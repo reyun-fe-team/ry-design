@@ -1,8 +1,8 @@
 @table-columns: ~"@{css-prefix}table-columns";
 
 .@{table-columns} {
-    width: 630px;
-
+    // width: 630px;
+    width: 750px;
     &-header {
         display: flex;
         justify-content: space-between;
@@ -69,25 +69,27 @@
     }
 
     &-view {
-        width: 472px;
-        padding: 24px;
+        flex: 1;
+      
+        padding: 0 24px;
         border-right: 1px solid #DCDEE2;
         border-left: 1px solid #DCDEE2;
         border-bottom: 1px solid #DCDEE2;
         overflow-y: auto;
 
         &-list {
-            margin-bottom: 30px;
+            border-top: 1px dashed #ddd;
+            padding-top:24px;
+            margin-top: 24px;
             .ivu-checkbox {
                 margin-right: 4px;
                 border-radius: 3px;
             }
 
             &-checked-all {
-                border-bottom: 1px solid #DCDEE2;
+                font-weight: 600;
                 color: #151B39;
-                padding-bottom: 6px;
-               
+                line-height: 32px;
             }
 
             &-content {
@@ -95,7 +97,7 @@
                 flex-wrap: wrap;
 
                 &-item {
-                    width: 188px;
+                    width: 240px;
                     display: flex;
                     align-items: center;
                     min-height: 32px;
