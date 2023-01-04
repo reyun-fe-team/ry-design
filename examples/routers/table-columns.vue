@@ -17,7 +17,7 @@ export default {
   props: {},
   data() {
     return {
-      value: ['media'],
+      value: ['media', 'asdasdaszdxc'],
       list: [
         {
           key: 'a',

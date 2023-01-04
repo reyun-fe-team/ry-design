@@ -24,6 +24,7 @@ import Exception from './components/basics/exception'
 import Button from './components/basics/custom-button'
 import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
 import Page from './components/basics/page'
+import Schedule from './components/basics/schedule'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -100,7 +101,8 @@ const components = [
   Button,
   BatchModifyBids,
   DigitalDetailsTooltip,
-  Page
+  Page,
+  Schedule
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -155,5 +157,6 @@ export default {
   BatchModifyBids,
   VirtualList,
   DigitalDetailsTooltip,
-  Page
+  Page,
+  Schedule
 }

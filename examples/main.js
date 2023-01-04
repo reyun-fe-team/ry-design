@@ -157,6 +157,10 @@ const router = new VueRouter({
     {
       path: '/page',
       component: resolve => require(['./routers/page'], resolve)
+    },
+    {
+      path: '/schedule',
+      component: resolve => require(['./routers/schedule'], resolve)
     }
   ]
 })
