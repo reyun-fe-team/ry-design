@@ -37,7 +37,7 @@ export default {
                   slot: 'aaa1',
                   check: true,
                   fixed: 'left',
-                  tooltip: '可选提示',
+                  tooltip: '即将下线！',
                   title: '广告组名称',
                   disabled: true,
                   unlock: true,
@@ -45,12 +45,14 @@ export default {
                   sortable: 'custom',
                   // 前缀
                   prefix: {
-                    icon: 'ios-unlock',
+                    icon: 'ry-icon-suo',
+                    type: 'ios-appstore',
                     content: ''
                   },
                   // 后缀
                   suffix: {
                     icon: 'ios-information-circle',
+                    type: 'ios-appstore',
                     content: ''
                   }
                 },
