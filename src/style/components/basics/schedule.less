@@ -3,18 +3,18 @@
 .@{multi-schedule} {
   position: relative;
   display: inline-block;
-  min-width: 246px;
   max-width: 705px;
+  min-width: 246px;
   
 
   &-cover {
     position: absolute;
+    z-index: 120;
     width: 0;
     height: 0;
     pointer-events: none;
     background: #598fe6;
     opacity: 0.6;
-    z-index: 120;
 
     &-notransi {
       transition:
@@ -51,7 +51,9 @@
       font-size: 12px;
     
       &-week-td {
-        width: 80px !important;
+        width: 80px;
+        max-width: 80px;
+        min-width: 80px;
       }
     }
     
@@ -65,10 +67,12 @@
       &-td-selected {
         background-color: #3989fa !important;
       }
+
       td[data-time] {
         &:hover {
           background-color: #edeff1;
         }
+
         &::after {
           position: absolute;
           top: -45px;
@@ -85,7 +89,8 @@
           visibility: hidden;
           box-shadow: 0 2px 6px 0 rgba(20, 28, 40, 20%);
         }
-        &:before {
+
+        &::before {
           position: absolute;
           top: -8px;
           left: 50%;
@@ -97,7 +102,9 @@
           border-style: solid;
           border-color: #fff transparent transparent;
         }
-        &:hover::after,&:hover::before {
+
+        &:hover::after,
+        &:hover::before {
           visibility: visible;
           transition: visibility 0s 1s;
         }
