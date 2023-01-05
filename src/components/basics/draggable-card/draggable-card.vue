@@ -13,7 +13,7 @@
       <transition-group
         name="drag"
         tag="ul"
-        :class="prefixCls + '-draggable-ui'"
+        :class="[[prefixCls + '-draggable-ui'], 'small-scroll-y']"
         :style="{ height: `${height}px` }">
         <li
           v-for="(item, index) in list"
@@ -130,7 +130,7 @@ export default {
   },
   computed: {
     classes() {
-      return [`${prefixCls}`, 'small-scroll-y']
+      return [`${prefixCls}`]
     },
     headerTxt() {
       return `已选${this.list.length}列`
