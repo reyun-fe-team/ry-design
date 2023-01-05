@@ -130,7 +130,7 @@ export default {
   },
   computed: {
     classes() {
-      return [`${prefixCls}`, 'mini-scroll-y']
+      return [`${prefixCls}`, 'small-scroll-y']
     },
     headerTxt() {
       return `已选${this.list.length}列`
