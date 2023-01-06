@@ -7,8 +7,7 @@
         :label-width="mergeOptions.labelWidth">
         <label
           v-if="mergeOptions.tooltip"
-          slot="label"
-          :style="{ width: mergeOptions.labelWidth + 'px' }">
+          slot="label">
           {{ mergeOptions.label }}
           <Tooltip
             placement="top"
