@@ -70,17 +70,25 @@
 
     &-view {
         flex: 1;
-      
-        padding: 0 24px;
+        padding: 24px;
         border-right: 1px solid #DCDEE2;
         border-left: 1px solid #DCDEE2;
         border-bottom: 1px solid #DCDEE2;
         overflow-y: auto;
 
+        div:last-child  {
+            .rd-table-columns-view-list:last-child {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: 0;
+            }
+        } 
+          
         &-list {
-            border-top: 1px dashed #ddd;
-            padding-top:24px;
-            margin-top: 24px;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom:24px;
+            margin-bottom: 24px;
+
             .ivu-checkbox {
                 margin-right: 4px;
                 border-radius: 3px;
@@ -121,8 +129,6 @@
                 }
             }
         }
-
-      
     }
       // 没有检索到数据
       &-not-data {
