@@ -39,6 +39,7 @@ import AccountSelect from './components/business/account-select'
 import ProductSelect from './components/business/product-select'
 import SubmissionRule from './components/business/submission-rule'
 import BatchModifyBids from './components/business/batch-modify-bids'
+import AccountGroupList from './components/business/account-group-list'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -102,7 +103,8 @@ const components = [
   BatchModifyBids,
   DigitalDetailsTooltip,
   Page,
-  Schedule
+  Schedule,
+  AccountGroupList
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -158,5 +160,6 @@ export default {
   VirtualList,
   DigitalDetailsTooltip,
   Page,
-  Schedule
+  Schedule,
+  AccountGroupList
 }
