@@ -172,7 +172,6 @@ export default {
       this.$emit('on-tab-click', e)
       if (this.newIsRoute) {
         this.newActiveValue = e
-        console.log('点击跳转路由 -> ' + e)
         this.$router.push({ name: e })
       }
     }
