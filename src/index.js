@@ -16,10 +16,15 @@ import Ellipsis from './components/basics/ellipsis'
 import TableMultiInputs from './components/basics/table-multi-inputs'
 import TextEmojInput from './components/basics/text-emoj-input'
 import Icon from './components/basics/icon'
-import TextInputList from './components/basics/text-input-list'
+// import TextInputList from './components/basics/text-input-list'
+import { TextInputList, VirtualList } from './components/basics/text-input-list'
 import Wildcard from './components/basics/wildcard'
 import CascaderTransfer from './components/basics/cascader-transfer'
 import Exception from './components/basics/exception'
+import Button from './components/basics/custom-button'
+import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
+import Page from './components/basics/page'
+import Schedule from './components/basics/schedule'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -32,6 +37,9 @@ import TextItemShow from './components/business/text-item-show'
 import DeleteModals from './components/business/delete-modals'
 import AccountSelect from './components/business/account-select'
 import ProductSelect from './components/business/product-select'
+import SubmissionRule from './components/business/submission-rule'
+import BatchModifyBids from './components/business/batch-modify-bids'
+import AccountGroupList from './components/business/account-group-list'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -84,11 +92,19 @@ const components = [
   TextEmojInput,
   Icon,
   TextInputList,
+  VirtualList,
   Wildcard,
   AccountSelect,
   CascaderTransfer,
   Exception,
-  ProductSelect
+  ProductSelect,
+  SubmissionRule,
+  Button,
+  BatchModifyBids,
+  DigitalDetailsTooltip,
+  Page,
+  Schedule,
+  AccountGroupList
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -137,5 +153,13 @@ export default {
   AccountSelect,
   CascaderTransfer,
   Exception,
-  ProductSelect
+  ProductSelect,
+  SubmissionRule,
+  Button,
+  BatchModifyBids,
+  VirtualList,
+  DigitalDetailsTooltip,
+  Page,
+  Schedule,
+  AccountGroupList
 }

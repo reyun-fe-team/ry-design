@@ -1,10 +1,11 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
   },
   "eslint.format.enable": true,
   "[vue]": {
-      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+      "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
-  "vueStyle.formatOnSave": true,
+  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"]
 }

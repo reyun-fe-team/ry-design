@@ -9,22 +9,24 @@
       <div :class="prefixCls + '-content-slot'">
         <slot name="content"></slot>
       </div>
-      <div
-        v-if="showBtnGroup"
-        :class="prefixCls + '-content-button-group'">
-        <Button
-          :class="prefixCls + '-content-button'"
-          @click="handleReset">
-          {{ resetText }}
-        </Button>
-        <Button
-          :class="prefixCls + '-content-button'"
-          :loading="loading"
-          type="primary"
-          @click="handleQuery">
-          {{ queryText }}
-        </Button>
-      </div>
+      <slot name="btns">
+        <div
+          v-if="showBtnGroup"
+          :class="prefixCls + '-content-button-group'">
+          <Button
+            :class="prefixCls + '-content-button'"
+            @click="handleReset">
+            {{ resetText }}
+          </Button>
+          <Button
+            :class="prefixCls + '-content-button'"
+            :loading="loading"
+            type="primary"
+            @click="handleQuery">
+            {{ queryText }}
+          </Button>
+        </div>
+      </slot>
     </div>
   </div>
 </template>

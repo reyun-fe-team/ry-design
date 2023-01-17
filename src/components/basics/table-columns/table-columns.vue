@@ -17,7 +17,7 @@
         v-if="loading"
         fix></Spin>
       <ul
-        class="mini-scroll-y"
+        class="small-scroll-y"
         :class="prefixCls + '-nav-area-wrap'">
         <li
           v-for="indicatType in data"
@@ -38,7 +38,7 @@
         </li>
       </ul>
       <div
-        class="mini-scroll-y"
+        class="small-scroll-y"
         :class="prefixCls + '-view'">
         <template v-if="hasSearchResult">
           <div
@@ -66,7 +66,10 @@
                   :key="item.key"
                   v-model="item.check"
                   :disabled="item.disabled"
-                  :class="[[prefixCls + '-view-list-content-item'], { hide: item.hide }]"
+                  :class="[
+                    [prefixCls + '-view-list-content-item'],
+                    { [prefixCls + '-hide']: item.hide }
+                  ]"
                   @on-change="handleCheck(item)">
                   <!-- 前缀 -->
                   <template v-if="item.prefix">
@@ -89,14 +92,20 @@
                   </template>
                   <!-- 名称 -->
                   <Tooltip
+                    v-if="item.tooltip"
                     theme="light"
                     placement="top"
                     :max-width="200"
-                    :content="item.tooltip || item.title">
+                    :content="item.tooltip">
                     <span :class="prefixCls + '-view-list-content-item-title'">
                       {{ item.title }}
                     </span>
                   </Tooltip>
+                  <span
+                    v-else
+                    :class="prefixCls + '-view-list-content-item-title'">
+                    {{ item.title }}
+                  </span>
                   <!-- 后缀 -->
                   <template v-if="item.suffix">
                     <Tooltip
@@ -178,7 +187,7 @@ export default {
   computed: {
     // 类名class集合
     classes() {
-      const classList = [`${prefixCls}`, 'mini-scroll-y']
+      const classList = [`${prefixCls}`, 'small-scroll-y']
       return classList
     },
     // 包含搜索数据
@@ -208,15 +217,14 @@ export default {
     // #用户交互
     keywordChange() {
       clearTimeout(this.timer)
-      this.timer = setTimeout(() => {
-        this.hookMap(this.data, item => {
-          if (item.children && item.children.length) {
-            item['hide'] = item.children.filter(f => f.hide).length === item.children.length
-          } else {
-            item['hide'] = !item.title.includes(this.keyword)
-          }
-        })
-      }, 500)
+      this.timer = setTimeout(() => {}, 500)
+      this.hookMap(this.data, item => {
+        if (item.children && item.children.length) {
+          item['hide'] = item.children.filter(f => f.hide).length === item.children.length
+        } else {
+          item['hide'] = !item.title.includes(this.keyword)
+        }
+      })
     },
     keywordClear() {
       this.keyword = ''

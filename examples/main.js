@@ -3,7 +3,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './app.vue'
 import ryDesign from '../src/index'
-
+// import iView from 'view-design'
+// import ryDesign from '../dist/ry-design.min.js'
+// import '../dist/styles/main.css'
+// Vue.use(iView)
 Vue.use(VueRouter)
 Vue.use(ryDesign)
 
@@ -134,6 +137,34 @@ const router = new VueRouter({
     {
       path: '/product-select',
       component: resolve => require(['./routers/product-select'], resolve)
+    },
+    {
+      path: '/submission-rule',
+      component: resolve => require(['./routers/submission-rule'], resolve)
+    },
+    {
+      path: '/custom-button',
+      component: resolve => require(['./routers/custom-button'], resolve)
+    },
+    {
+      path: '/batch-modify-bids',
+      component: resolve => require(['./routers/batch-modify-bids'], resolve)
+    },
+    {
+      path: '/digital-details-tooltip',
+      component: resolve => require(['./routers/digital-details-tooltip'], resolve)
+    },
+    {
+      path: '/page',
+      component: resolve => require(['./routers/page'], resolve)
+    },
+    {
+      path: '/schedule',
+      component: resolve => require(['./routers/schedule'], resolve)
+    },
+    {
+      path: '/account-group-list',
+      component: resolve => require(['./routers/account-group-list'], resolve)
     }
   ]
 })

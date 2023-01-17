@@ -1,8 +1,8 @@
 <!--
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:34:14
- * @LastEditors: 杨玉峰 yangyufeng@reyun.com
- * @LastEditTime: 2022-07-04 13:52:41
+ * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
+ * @LastEditTime: 2022-12-21 15:29:42
  * @FilePath: /ry-design/examples/routers/text-emoj-input.vue
  * @Description: 文本-表情输入组件-示例
 -->
@@ -15,6 +15,7 @@
     <rd-text-emoj-input
       ref="emojInput"
       v-model="value"
+      is-edit
       style="width: 500px"
       :transform-html2-text="transformHtml2Text"
       :transform-text2-html="transformText2Html"></rd-text-emoj-input>
@@ -70,7 +71,9 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style
+  lang="less"
+  scoped>
 /deep/ .rd-text-emoj-input-rich {
   font-size: 20px;
 }

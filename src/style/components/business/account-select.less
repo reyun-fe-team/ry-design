@@ -11,12 +11,18 @@
     position: relative;
     padding: 7px 20px;
     color: #151b39;
+    display:flex;
   }
   
   .ivu-select-item-disabled,
   .ivu-select-item-disabled:hover {
     color: #c0c4cc;
   }
+
+  // .ivu-select-dropdown{
+  //   min-width: inherit!important;
+  //   max-width: 480px;
+  // }
   
   .ivu-tag-text {
     color: #151b39;
@@ -27,6 +33,13 @@
   }
 }
 .@{account-select}-multiple{
+  // .ivu-select-dropdown-list{
+  //   min-width: inherit;
+  //   max-width: 480px;
+  // }
+  .ivu-select-item {
+    padding: 7px 30px 7px 20px;
+  }
   .ivu-select-selection {
     &>div{
       display:flex;
@@ -37,13 +50,17 @@
         min-width: 24px;
       }
       .ivu-tag:first-child{
-        max-width:60%
+        max-width:70%
       }
-      .ivu-select-input{
-        max-width: 15%;
-        width: inherit!important;
-      }
+    
     }
+  }
+ 
+}
+.@{account-select}-multiple-input{
+ .ivu-select-input{
+    max-width: 15%!important;
+    width: inherit!important;
   }
 }
 

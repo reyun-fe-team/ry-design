@@ -36,6 +36,7 @@
     <rd-account-select
       v-model="dataGroup"
       :multiple="false"
+      children-key="child"
       grouping
       :data="accountListGroup"></rd-account-select>
     <h2>跨主体</h2>
@@ -43,7 +44,9 @@
       v-model="crossSubjectData"
       multiple
       grouping
+      children-key="child"
       :data="accountListGroup"
+      style="width: 400px"
       cross-subject></rd-account-select>
     <h2>form</h2>
     <Form
@@ -67,6 +70,7 @@
           v-model="formInline.campaignName1"
           multiple
           grouping
+          children-key="child"
           :data="accountListGroup"></rd-account-select>
       </FormItem>
     </Form>
@@ -98,7 +102,9 @@ export default {
       cityList: [
         {
           value: 'New York',
-          label: 'New York'
+          label: 'New York',
+          tooltip:
+            '直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广'
         },
         {
           value: 'London',
@@ -130,17 +136,20 @@ export default {
         {
           label: '深圳市飞鸟与鱼科技开发有限公司',
           disabled: false,
-          children: [
+          child: [
             {
-              label: '直播推广',
-              value: '204813'
+              label:
+                '直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广',
+              value: '204813',
+              tooltip:
+                '直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广'
             }
           ]
         },
         {
           label: '乐凡互娱（深圳）科技有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '乐凡互娱01',
               value: '163635'
@@ -150,13 +159,14 @@ export default {
         {
           label: '广州四三九九信息科技有限公司',
           disabled: false,
-          children: [
+          child: [
             {
-              label: '广州四三九九01',
+              label:
+                '广州四三九九01广州四三九九01广州四三九九01广州四三九九01广州四三九九01广州四三九九01广州四三九九01广州四三九九01',
               value: '42855'
             },
             {
-              label: '广州四三九九02',
+              label: '广州四三九九02广州四三九九02广州四三九九02广州四三九九02',
               value: '42856'
             }
           ]
@@ -164,7 +174,7 @@ export default {
         {
           label: '河南中原消费金融股份有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '客户账号，勿动',
               value: '163642'
@@ -174,7 +184,7 @@ export default {
         {
           label: '深圳市有量科技有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '游戏礼包测试',
               value: '204823'
@@ -184,7 +194,7 @@ export default {
         {
           label: '淘宝（中国）软件有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '淘宝01',
               value: '204824'
@@ -194,7 +204,7 @@ export default {
         {
           label: '江西萌菲信息技术有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '游戏礼包测试-1',
               value: '19783808'
@@ -204,7 +214,7 @@ export default {
         {
           label: '海南掌昆网络科技有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '礼包码专用-其他勿动',
               value: '19858964'
@@ -214,7 +224,7 @@ export default {
         {
           label: '北京阅见未来网络科技有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '快应用账户',
               value: '204811'
@@ -224,7 +234,7 @@ export default {
         {
           label: '北京米花互动科技有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '北京米花01',
               value: '42853'
@@ -234,7 +244,7 @@ export default {
         {
           label: '北京热云科技有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '热云-1',
               value: '1154'
@@ -252,7 +262,7 @@ export default {
         {
           label: '广州名药汇医药有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '名药汇医01',
               value: '163645'
@@ -262,7 +272,7 @@ export default {
         {
           label: '汕头市添翼互娱网络科技有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '汕头市添翼01',
               value: '1104'
@@ -272,7 +282,7 @@ export default {
         {
           label: '北京球球趣玩科技有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '球球-A1',
               value: '1157'
@@ -282,7 +292,7 @@ export default {
         {
           label: '厦门极致互动网络技术股份有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '预约测试账号',
               value: '204814'
@@ -296,7 +306,7 @@ export default {
         {
           label: '广州精灵计算机系统有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '精灵02',
               value: '19858972'
@@ -314,7 +324,7 @@ export default {
         {
           label: '南京欣网互联信息技术有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '欣网01',
               value: '204822'
@@ -324,7 +334,7 @@ export default {
         {
           label: '成都掌沃无限科技有限公司',
           disabled: false,
-          children: [
+          child: [
             {
               label: '掌沃06',
               value: '9946'
@@ -336,7 +346,10 @@ export default {
         {
           label:
             '热云数据01热云数据01热云数据01热云数据01热云数据01热云数据01热云数据01热云数据01热云数据01',
-          value: '204822'
+          value: '204822',
+          tooltip:
+            '直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广直播推广',
+          icon: 'ios-add-circle'
         },
         {
           label: '热云数据02',

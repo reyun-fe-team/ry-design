@@ -1,8 +1,8 @@
 @table-columns: ~"@{css-prefix}table-columns";
 
 .@{table-columns} {
-    width: 630px;
-
+    // width: 630px;
+    width: 750px;
     &-header {
         display: flex;
         justify-content: space-between;
@@ -69,25 +69,35 @@
     }
 
     &-view {
-        width: 472px;
+        flex: 1;
         padding: 24px;
         border-right: 1px solid #DCDEE2;
         border-left: 1px solid #DCDEE2;
         border-bottom: 1px solid #DCDEE2;
         overflow-y: auto;
 
+        div:last-child  {
+            .rd-table-columns-view-list:last-child {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: 0;
+            }
+        } 
+          
         &-list {
-            margin-bottom: 30px;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom:24px;
+            margin-bottom: 24px;
+
             .ivu-checkbox {
                 margin-right: 4px;
                 border-radius: 3px;
             }
 
             &-checked-all {
-                border-bottom: 1px solid #DCDEE2;
+                font-weight: 600;
                 color: #151B39;
-                padding-bottom: 6px;
-               
+                line-height: 32px;
             }
 
             &-content {
@@ -95,7 +105,7 @@
                 flex-wrap: wrap;
 
                 &-item {
-                    width: 188px;
+                    width: 240px;
                     display: flex;
                     align-items: center;
                     min-height: 32px;
@@ -119,8 +129,6 @@
                 }
             }
         }
-
-      
     }
       // 没有检索到数据
       &-not-data {
