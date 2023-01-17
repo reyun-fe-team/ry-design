@@ -391,6 +391,16 @@ export default {
     isShowSelectedParent: {
       type: Boolean,
       default: true
+    },
+    // 清空一级搜索框内容
+    clearFirstKeyword: {
+      type: Boolean,
+      default: false
+    },
+    // 清空二级搜索框内容
+    clearSecondKeyword: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -475,6 +485,16 @@ export default {
     deleteRow: {
       handler(val) {
         this.handleCancelRow(val)
+      }
+    },
+    clearFirstKeyword: {
+      handler() {
+        this.firstSearch = ''
+      }
+    },
+    clearSecondKeyword: {
+      handler() {
+        this.secondSearch = ''
       }
     }
   },
@@ -603,8 +623,8 @@ export default {
     },
     // 获取选中行
     getCurrentRecord(row) {
-      this.activeFirstId = row[this.firstRowId]
-      this.activeFirstName = row[this.firstTableTitleField]
+      this.activeFirstId = row && row[this.firstRowId]
+      this.activeFirstName = row && row[this.firstTableTitleField]
       this.$emit('on-change-row', row)
     },
     // 设置复选

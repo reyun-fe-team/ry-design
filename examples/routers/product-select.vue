@@ -168,7 +168,6 @@ export default {
       )
     },
     handleSecondSearch(val) {
-      console.log('val: ', val, this.activeSecondTableDataAll)
       this.paramsInfo.secondKeyword = val
       this.table.secondListData = this.activeSecondTableDataAll.filter(item =>
         item[this.table.secondTableTitleField].includes(val)

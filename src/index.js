@@ -48,9 +48,6 @@ import './style/index.less'
 
 // umy-ui u-table
 import { UTable, UTableColumn } from 'umy-ui'
-Vue.use(UTable)
-Vue.use(UTableColumn)
-
 // directives
 import lineClamp from './directives/line-clamp'
 import clickOutside from './directives/click-out-side'
@@ -104,7 +101,9 @@ const components = [
   DigitalDetailsTooltip,
   Page,
   Schedule,
-  AccountGroupList
+  AccountGroupList,
+  UTable,
+  UTableColumn
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -161,5 +160,7 @@ export default {
   DigitalDetailsTooltip,
   Page,
   Schedule,
-  AccountGroupList
+  AccountGroupList,
+  UTable,
+  UTableColumn
 }
