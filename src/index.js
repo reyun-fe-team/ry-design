@@ -16,7 +16,6 @@ import Ellipsis from './components/basics/ellipsis'
 import TableMultiInputs from './components/basics/table-multi-inputs'
 import TextEmojInput from './components/basics/text-emoj-input'
 import Icon from './components/basics/icon'
-// import TextInputList from './components/basics/text-input-list'
 import { TextInputList, VirtualList } from './components/basics/text-input-list'
 import Wildcard from './components/basics/wildcard'
 import CascaderTransfer from './components/basics/cascader-transfer'
@@ -42,18 +41,18 @@ import BatchModifyBids from './components/business/batch-modify-bids'
 import AccountGroupList from './components/business/account-group-list'
 
 import ViewUI from 'view-design'
+
 import Package from '../package.json'
 import 'view-design/dist/styles/iview.css'
 import './style/index.less'
 
 // umy-ui u-table
 import { UTable, UTableColumn } from 'umy-ui'
-Vue.use(UTable)
-Vue.use(UTableColumn)
-
 // directives
 import lineClamp from './directives/line-clamp'
 import clickOutside from './directives/click-out-side'
+// util
+import { setIviewMessage } from './util/message'
 
 Vue.use(ViewUI)
 const consoleLogVersion = () => {
@@ -104,7 +103,9 @@ const components = [
   DigitalDetailsTooltip,
   Page,
   Schedule,
-  AccountGroupList
+  AccountGroupList,
+  UTable,
+  UTableColumn
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -118,6 +119,8 @@ const install = function (Vue) {
   Object.keys(directives).forEach(key => {
     Vue.directive(key, directives[key])
   })
+
+  setIviewMessage(Vue)
 }
 
 if (typeof window !== 'undefined' && window.Vue) {
@@ -161,5 +164,7 @@ export default {
   DigitalDetailsTooltip,
   Page,
   Schedule,
-  AccountGroupList
+  AccountGroupList,
+  UTable,
+  UTableColumn
 }

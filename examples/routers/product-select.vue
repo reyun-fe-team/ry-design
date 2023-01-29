@@ -13,9 +13,9 @@
       :first-table-row-height="32"
       second-title="广告"
       second-search-placeholder="请输入广告名称搜索"
-      second-table-title-field="adPlanName"
-      second-row-id="adPlanId"
-      :is-show-selected-parent="false"
+      :second-table-title-field="table.secondTableTitleField"
+      :second-row-id="table.secondRowId"
+      :is-show-selected-parent="true"
       @on-first-search="handleFirstSearch"
       @on-second-search="handleSecondSearch"
       @on-clear="handleClear"
@@ -52,10 +52,12 @@
 export default {
   data() {
     return {
-      level: 'second',
+      level: 'first',
       table: {
         firstRowId: 'advertiserId',
         firstTableTitleField: 'mediaAccountName',
+        secondRowId: 'adPlanId',
+        secondTableTitleField: 'adPlanName',
         deleteRow: null,
         firstTableData: [],
         secondLoading: false,
@@ -92,7 +94,9 @@ export default {
         firstKeyword: '',
         secondKeyword: '',
         activeMediaAccountId: ''
-      }
+      },
+      data: [],
+      activeSecondTableDataAll: []
     }
   },
   created() {
@@ -131,7 +135,7 @@ export default {
   methods: {
     getFristList() {
       const arr = []
-      for (let i = 0; i < 10000; i++) {
+      for (let i = 0; i < 30000; i++) {
         const obj = {
           advertiserId: i,
           mediaAccountName: '账号' + i
@@ -139,6 +143,7 @@ export default {
         arr.push(obj)
       }
       this.table.firstTableData = arr
+      this.data = arr
     },
     getSecondList() {
       this.table.secondLoading = true
@@ -153,13 +158,20 @@ export default {
         }
         this.table.secondListData = arr
         this.table.secondLoading = false
+        this.activeSecondTableDataAll = arr
       }, 500)
     },
     handleFirstSearch(val) {
       this.paramsInfo.firstKeyword = val
+      this.table.firstTableData = this.data.filter(item =>
+        item[this.table.firstTableTitleField].includes(val)
+      )
     },
     handleSecondSearch(val) {
       this.paramsInfo.secondKeyword = val
+      this.table.secondListData = this.activeSecondTableDataAll.filter(item =>
+        item[this.table.secondTableTitleField].includes(val)
+      )
     },
     handleClear() {
       if (this.level === 'second') {
