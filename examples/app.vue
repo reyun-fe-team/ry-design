@@ -3,6 +3,11 @@
     <div class="coms">
       <p>点击按钮查看组件示例</p>
       <Button
+        class="com-btn"
+        @click="onClick">
+        提示
+      </Button>
+      <Button
         v-for="(item, i) in comsList"
         :key="i"
         class="com-btn"
@@ -42,6 +47,13 @@ export default {
       const name = path.slice(1)
       return { name, path }
     })
+  },
+  methods: {
+    onClick() {
+      this.$Message.info({
+        content: '错误'
+      })
+    }
   }
 }
 </script>
