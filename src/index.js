@@ -64,8 +64,6 @@ const consoleLogVersion = () => {
 }
 consoleLogVersion()
 
-setIviewMessage(Vue)
-
 const components = [
   Transfer,
   PrefixContainer,
@@ -121,6 +119,8 @@ const install = function (Vue) {
   Object.keys(directives).forEach(key => {
     Vue.directive(key, directives[key])
   })
+
+  setIviewMessage(Vue)
 }
 
 if (typeof window !== 'undefined' && window.Vue) {
