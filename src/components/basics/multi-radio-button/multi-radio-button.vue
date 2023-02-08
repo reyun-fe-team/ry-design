@@ -60,6 +60,11 @@ export default {
     tooltipPlacement: {
       type: String,
       default: 'top'
+    },
+    // 多选是否可以置空，默认不可置空（定向使用场景，多选只剩下最后一个选中的，不可取消）
+    multiAbleReset: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -82,9 +87,13 @@ export default {
         valueArr.length && this.buttonList.find(list => list.value === valueArr[0]).isMulti
       // 点击取消
       if (this.value.includes(item.value)) {
-        // 如果只剩下一个选中，无法取消
+        // 如果只剩下一个选中，multiAbleReset = false 无法取消；multiAbleReset = true && 多选，可以取消
         if (valueArr.length > 1) {
           valueArr = valueArr.filter(list => list !== item.value)
+        } else {
+          if (this.multiAbleReset && item.isMulti) {
+            valueArr = valueArr.filter(list => list !== item.value)
+          }
         }
       } else {
         // 点击选中

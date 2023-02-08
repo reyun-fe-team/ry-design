@@ -2,6 +2,7 @@
   <div>
     <rd-multi-radio-button
       v-model="value"
+      multi-able-reset
       :button-list="buttonList"
       :disabled="handleDisabled"></rd-multi-radio-button>
   </div>
