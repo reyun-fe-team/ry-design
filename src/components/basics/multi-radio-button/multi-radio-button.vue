@@ -88,12 +88,9 @@ export default {
       // 点击取消
       if (this.value.includes(item.value)) {
         // 如果只剩下一个选中，multiAbleReset = false 无法取消；multiAbleReset = true && 多选，可以取消
-        if (valueArr.length > 1) {
+        const isDelete = valueArr.length > 1 || (this.multiAbleReset && item.isMulti)
+        if (isDelete) {
           valueArr = valueArr.filter(list => list !== item.value)
-        } else {
-          if (this.multiAbleReset && item.isMulti) {
-            valueArr = valueArr.filter(list => list !== item.value)
-          }
         }
       } else {
         // 点击选中

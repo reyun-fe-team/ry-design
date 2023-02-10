@@ -132,16 +132,17 @@ export default {
           if (defaultList.map(e => e.value).includes(n)) {
             this.newValue = n
           } else {
-            if (defaultList && defaultList.length) {
-              let f = defaultList.find(e => !e.disabled)
-              if (f) {
-                this.newValue = f.value || null
-              } else {
-                this.newValue = null
-              }
-            } else {
-              this.newValue = null
-            }
+            // if (defaultList && defaultList.length) {
+            //   let f = defaultList.find(e => !e.disabled)
+            //   if (f) {
+            //     this.newValue = f.value || null
+            //   } else {
+            //     this.newValue = null
+            //   }
+            // } else {
+            //   this.newValue = null
+            // }
+            this.newValue = null
           }
         }
       },
