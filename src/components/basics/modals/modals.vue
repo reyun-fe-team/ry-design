@@ -209,7 +209,12 @@ export default {
     },
     iViewModalVisibleEventRewrite({ val, scrollable = false }) {
       const style = 'overflow: hidden;'
-      document.body.style.cssText = !val ? '' : scrollable ? '' : style
+      // this.closeScroll 为true 则 overflow: hidden;
+      if (this.closeScroll) {
+        document.body.style.cssText = style
+      } else {
+        document.body.style.cssText = !val ? '' : scrollable ? '' : style
+      }
     }
   }
 }
