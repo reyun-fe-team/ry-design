@@ -1,0 +1,64 @@
+@sort: ~"@{css-prefix}sort";
+
+.@{sort} {
+     min-width: 102px;
+
+    &-button {
+        .ivu-select-selection {
+            padding-left: 16px;
+            padding-right: 16px;
+            text-align: center;
+        }
+    }
+
+    &-label {
+        .ivu-select-selection {
+            text-align: left;
+            border: none;
+        }
+    }
+
+    .ivu-select-prefix{
+        padding: 0 !important;
+    }
+
+    .ivu-select-visible .ivu-select-selection{
+        box-shadow: none !important;
+    }
+
+    .ivu-select-selection:hover {
+        color: #3989fa !important;
+    }
+
+    .ivu-select-selection-focused {
+        color: #3989fa !important;
+    }
+
+    .ivu-select-selected-value {
+        padding: 0 !important;
+        
+    }
+
+    .ivu-select-arrow {
+        display: none !important;
+    }
+
+    .ivu-select-dropdown {
+        min-width: 200px !important;
+        max-height: 240px;
+    }
+
+    .sort-type {
+        display: none;
+        color: #999;
+        float: right;
+    }
+
+    .ivu-select-item:hover .sort-type {
+        display: inline-block;
+    }
+
+    .ivu-select-item-selected .sort-type {
+        display: inline-block;
+    }
+}

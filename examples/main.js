@@ -165,6 +165,10 @@ const router = new VueRouter({
     {
       path: '/account-group-list',
       component: resolve => require(['./routers/account-group-list'], resolve)
+    },
+    {
+      path: '/sort',
+      component: resolve => require(['./routers/sort'], resolve)
     }
   ]
 })
