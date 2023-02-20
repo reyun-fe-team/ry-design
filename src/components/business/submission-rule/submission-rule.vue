@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@mobvista.com
  * @Date: 2022-12-13 16:50:46
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2022-12-21 15:22:03
+ * @LastEditTime: 2023-02-20 16:59:00
  * @FilePath: /ry-design/src/components/business/submission-rule/submission-rule.vue
  * @Description: 提交规则
 -->
@@ -35,8 +35,9 @@
             :content="ruleTipsList[formData.submitRule]"
             theme="light"
             max-width="240"
-            placement="left-start">
+            placement="top-start">
             <Icon
+              :class="[prefixCls + '-setting-icon']"
               type="ios-help-circle-outline"
               size="16"
               color="#575865"></Icon>
