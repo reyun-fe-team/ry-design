@@ -11,7 +11,7 @@
             :corner-marker="{
               offset: [14, -8],
               placement: 'right-top',
-              src: 'http://test2.adsdesk.cn/toutiao-app/static/img/create-recommend.f55345e8.svg'
+              src: createRecommend
             }">
             正常状态
           </rd-button>
@@ -61,7 +61,7 @@
             :corner-marker="{
               offset: [14, -8],
               placement: 'right-top',
-              src: 'http://test2.adsdesk.cn/toutiao-app/static/img/create-recommend.f55345e8.svg'
+              src: createRecommend
             }"
             type="dashed"
             loading>
@@ -106,7 +106,7 @@
             :corner-marker="{
               offset: [14, -8],
               placement: 'right-top',
-              src: 'http://test2.adsdesk.cn/toutiao-app/static/img/create-recommend.f55345e8.svg'
+              src: createRecommend
             }"
             type="illustration"
             is-drop-down
@@ -151,9 +151,11 @@
 </template>
 
 <script>
+import createRecommend from '@exp/routers/imgs/create-recommend.svg'
 export default {
   data() {
     return {
+      createRecommend,
       dropDownItems: [
         {
           name: '1',

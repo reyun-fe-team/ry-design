@@ -1,6 +1,6 @@
 <!--
  * @Date: 2022-12-07 18:30:20
- * @LastEditTime: 2022-12-08 17:20:59
+ * @LastEditTime: 2023-02-20 15:17:58
  * @Description: 纯图标按钮
 -->
 <template>
@@ -8,7 +8,7 @@
     :class="[prefixCls, { [prefixCls + '-selected']: isSelected }]"
     :style="btnSizeStyle">
     <rd-icon
-      size="20"
+      size="12"
       :type="icon"
       class="icon"></rd-icon>
   </div>

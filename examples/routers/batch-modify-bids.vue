@@ -3,8 +3,8 @@
     <Button @click="batchAction">批量操作</Button>
     <rd-batch-modify-bids
       :show="show"
-      width="500"
-      title="修改出价"
+      width="640"
+      title="批量修改出价"
       @on-ok="ok"
       @on-cancel="cancel"></rd-batch-modify-bids>
   </div>
@@ -20,8 +20,7 @@ export default {
     batchAction() {
       this.show = true
     },
-    ok(data) {
-      console.log('data: ', data)
+    ok() {
       this.cancel()
     },
     cancel() {
