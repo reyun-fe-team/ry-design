@@ -11,7 +11,8 @@
       @handlerKeydown="handlerKeydown"
       @middle="middleChange"
       @on-error="onInputError"
-      @itemClick="itemClick" />
+      @itemClick="itemClick"
+      @on-change="handlerChange" />
   </div>
 </template>
 <script>
@@ -92,6 +93,9 @@ export default {
         emojInput.$el.click()
         emojInput.focus('end')
       })
+    },
+    handlerChange(val) {
+      this.$emit('on-change', val)
     },
     getItem() {
       return this.itemChild || (this.$children[0] && this.$children[0].$children[0].$children[0])
