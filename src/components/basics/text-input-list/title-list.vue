@@ -206,6 +206,7 @@ export default {
       const copyValue = JSON.parse(JSON.stringify(this.value))
       copyValue.splice(index, 1)
       this.dispatch('input', copyValue)
+      this.dispatch('on-change', copyValue)
       this.$nextTick(() => {
         this.curEmojInput.formatValue()
         this.curEmojInput.focus('end')
@@ -266,6 +267,7 @@ export default {
       const copyValue = [...this.value]
       copyValue[index] = value || ''
       this.dispatch('input', copyValue)
+      this.dispatch('on-change', copyValue)
     },
     // 粘贴
     handlerPaste(event, index) {
@@ -290,6 +292,7 @@ export default {
             })
             this.$refs.emojInput.blur()
             this.dispatch('input', copyValue)
+            this.dispatch('on-change', copyValue)
           })
         }
       }
