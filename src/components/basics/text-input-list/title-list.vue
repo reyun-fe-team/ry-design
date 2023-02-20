@@ -25,6 +25,7 @@
             middle.activeClass === index ? prefixCls + '-right-list-active' : '',
             isHaveError(index) ? prefixCls + '-is-error' : ''
           ]"
+          :placeholder="placeholder"
           :transform-html2-text="transformHtml2Text"
           :transform-text2-html="transformText2Html"
           :calc-text-fn="calcTextFn"
@@ -149,6 +150,10 @@ export default {
         const copyText = text.replaceAll(/[^\x00-\xff]/g, '**')
         return copyText.length
       }
+    },
+    placeholder: {
+      type: String,
+      default: '请输入或粘贴创意标题，每行一标题，敲击回车换行'
     },
     // 错误校验方法
     propsValidFn: {
