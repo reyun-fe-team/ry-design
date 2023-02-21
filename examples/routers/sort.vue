@@ -2,7 +2,7 @@
   <div>
     <br />
     <p>
-      type:button
+      type:default
       <rd-sort
         v-model="sortValue"
         :data="list"></rd-sort>
@@ -12,7 +12,15 @@
       type:label
       <rd-sort
         v-model="sortValue"
-        type="label"
+        type="text"
+        :data="list"></rd-sort>
+    </p>
+     <br />
+    <p>
+      renderFormat
+      <rd-sort
+        v-model="sortValue"
+        :renderFormat="formatterText"
         :data="list"></rd-sort>
     </p>
   </div>
@@ -63,6 +71,11 @@ export default {
           sort: 'asc'
         }
       ]
+    }
+  },
+  methods:{
+    formatterText(item){
+      return `render-${item.text}`
     }
   }
 }

@@ -24,8 +24,8 @@
         :value="item.value"
         :label="item.label"
         :style="{ width: `${panelWidth}px` }">
-        <span class="sort-label">{{ item.label }}</span>
-        <span class="sort-type">{{ item.text }}</span>
+        <span :class="`${prefixCls}-text`" >{{ item.label}}</span>
+        <span :class="`${prefixCls}-type`" >{{ formatterText(item) }}</span>
       </Option>
     </Select>
   </div>
@@ -45,10 +45,10 @@ export default {
       type: Array,
       default: () => []
     },
-    // button|label
+    // default|text
     type: {
       type: String,
-      default: 'button'
+      default: 'default'
     },
     disabled: {
       type: Boolean,
@@ -61,7 +61,13 @@ export default {
     panelWidth: {
       type: Number,
       default: 200
-    }
+    },
+    renderFormat: {
+      type: Function,
+      default(item) {
+        return item.text || ''
+      }
+    },
   },
   data() {
     return {
@@ -85,6 +91,9 @@ export default {
   methods: {
     handleSelect(option) {
       this.$emit('on-change', option)
+    },
+    formatterText(item){
+      return this.renderFormat(item)
     }
   }
 }

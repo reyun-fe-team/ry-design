@@ -11,7 +11,7 @@
     color: #575b65 !important;
   }
 
-  &-button {
+  &-default {
     .ivu-select-selection {
       padding-right: 16px;
       padding-left: 16px;
@@ -19,7 +19,7 @@
     }
   }
 
-  &-label {
+  &-text {
     .ivu-select-selection {
       text-align: left;
       border: none;
@@ -73,21 +73,21 @@
     min-width: 200px !important;
   }
 
-  .sort-label {
+  &-text {
     color: #151b39 !important;
   }
 
-  .sort-type {
+  &-type {
     display: none;
     float: right;
     color: #999;
   }
 
-  .ivu-select-item:hover .sort-type {
+  .ivu-select-item:hover &-type {
     display: inline-block;
   }
 
-  .ivu-select-item-selected .sort-type {
+  .ivu-select-item-selected &-type {
     display: inline-block;
   }
 }
