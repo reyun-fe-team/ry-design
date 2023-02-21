@@ -25,6 +25,7 @@
             middle.activeClass === index ? prefixCls + '-right-list-active' : '',
             isHaveError(index) ? prefixCls + '-is-error' : ''
           ]"
+          :placeholder="placeholder"
           :transform-html2-text="transformHtml2Text"
           :transform-text2-html="transformText2Html"
           :calc-text-fn="calcTextFn"
@@ -150,6 +151,10 @@ export default {
         return copyText.length
       }
     },
+    placeholder: {
+      type: String,
+      default: '请输入或粘贴创意标题，每行一标题，敲击回车换行'
+    },
     // 错误校验方法
     propsValidFn: {
       type: Function
@@ -199,6 +204,8 @@ export default {
         disableInputFn()
         const curIndex = index + 1
         if (curIndex >= this.maxLine) {
+          // 回车后超出可编辑的长度
+          this.dispatch('enter-over-length', curIndex)
           return
         }
         this.$refs.emojInput.blur()
@@ -277,6 +284,8 @@ export default {
     // 粘贴
     handlerPaste(event, index) {
       let itemList = event.clipboardData.items
+      // 超出可编辑的列表长度
+      let overLength = []
       for (let i = 0; i < itemList.length; i++) {
         let item = itemList[i]
         if (item.kind === 'string' && item.type.match('text/plain')) {
@@ -300,6 +309,9 @@ export default {
               } else if (index + i < this.maxLine) {
                 copyValue[index + i] = o
                 o && this.dispatch('on-error', index + i, this.validFn(this.calcInputLength(o), o))
+              } else {
+                overLength.push(o)
+                this.dispatch('paste-over-length', overLength)
               }
             })
             this.$refs.emojInput.blur()
@@ -347,7 +359,7 @@ export default {
         errors.push('lengthError')
       }
       if (typeof this.propsValidFn === 'function') {
-        const allErrors = this.propsValidFn(value)
+        const allErrors = this.propsValidFn(value, this.index)
         errors = [...errors, ...allErrors]
       }
       return errors
