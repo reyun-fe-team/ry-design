@@ -1,14 +1,14 @@
 <template>
   <div>
     <br />
-    <p class="group-text">
+    <p>
       type:button
       <rd-sort
         v-model="sortValue"
         :data="list"></rd-sort>
     </p>
     <br />
-    <p class="group-text">
+    <p>
       type:label
       <rd-sort
         v-model="sortValue"
@@ -67,12 +67,4 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-.group-text {
-  font-weight: bold;
-  span {
-    color: gray;
-    font-size: 12px !important;
-  }
-}
-</style>
+ 

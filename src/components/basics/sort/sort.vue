@@ -24,7 +24,7 @@
         :value="item.value"
         :label="item.label"
         :style="{ width: `${panelWidth}px` }">
-        <span>{{ item.label }}</span>
+        <span class="sort-label">{{ item.label }}</span>
         <span class="sort-type">{{ item.text }}</span>
       </Option>
     </Select>
