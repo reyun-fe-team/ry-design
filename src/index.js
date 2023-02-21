@@ -39,6 +39,7 @@ import ProductSelect from './components/business/product-select'
 import SubmissionRule from './components/business/submission-rule'
 import BatchModifyBids from './components/business/batch-modify-bids'
 import AccountGroupList from './components/business/account-group-list'
+import DatePicker from './components/basics/date-picker'
 
 import ViewUI from 'view-design'
 
@@ -105,7 +106,8 @@ const components = [
   Schedule,
   AccountGroupList,
   UTable,
-  UTableColumn
+  UTableColumn,
+  DatePicker
 ]
 const directives = {
   'line-clamp': lineClamp,
