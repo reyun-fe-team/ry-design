@@ -359,7 +359,7 @@ export default {
         errors.push('lengthError')
       }
       if (typeof this.propsValidFn === 'function') {
-        const allErrors = this.propsValidFn(value)
+        const allErrors = this.propsValidFn(value, this.index)
         errors = [...errors, ...allErrors]
       }
       return errors
