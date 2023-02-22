@@ -167,12 +167,12 @@ const router = new VueRouter({
       component: resolve => require(['./routers/account-group-list'], resolve)
     },
     {
-      path: '/sort',
-      component: resolve => require(['./routers/sort'], resolve)
-    },
-    {
       path: '/dropdown-search',
       component: resolve => require(['./routers/dropdown-search'], resolve)
+    },
+    {
+      path: '/sort',
+      component: resolve => require(['./routers/sort'], resolve)
     }
   ]
 })

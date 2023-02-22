@@ -24,8 +24,8 @@ import Button from './components/basics/custom-button'
 import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
 import Page from './components/basics/page'
 import Schedule from './components/basics/schedule'
-import Sort from './components/basics/sort'
 import DropdownSearch from './components/basics/dropdown-search'
+import Sort from './components/basics/sort'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -108,8 +108,8 @@ const components = [
   AccountGroupList,
   UTable,
   UTableColumn,
-  Sort,
-  DropdownSearch
+  DropdownSearch,
+  Sort
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -171,6 +171,6 @@ export default {
   AccountGroupList,
   UTable,
   UTableColumn,
-  Sort,
-  DropdownSearch
+  DropdownSearch,
+  Sort
 }
