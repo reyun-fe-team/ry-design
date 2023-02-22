@@ -37,37 +37,37 @@ export default {
         {
           value: '1',
           label: '创建时间',
-          text: '近>远',
+          subtitle: '近>远',
           sort: 'desc'
         },
         {
           value: '2',
           label: '创建时间',
-          text: '远>近',
+          subtitle: '远>近',
           sort: 'asc'
         },
         {
           value: '3',
           label: '修改时间',
-          text: '近>远',
+          subtitle: '近>远',
           sort: 'desc'
         },
         {
           value: '4',
           label: '修改时间',
-          text: '远>近',
+          subtitle: '远>近',
           sort: 'asc'
         },
         {
           value: '18',
           label: '名称',
-          text: 'A-Z',
+          subtitle: 'A-Z',
           sort: 'desc'
         },
         {
           value: '19',
           label: '名称',
-          text: 'Z-A',
+          subtitle: 'Z-A',
           sort: 'asc'
         }
       ]
@@ -75,7 +75,7 @@ export default {
   },
   methods:{
     formatterText(item){
-      return `render-${item.text}`
+      return `render-${item.subtitle}`
     }
   }
 }

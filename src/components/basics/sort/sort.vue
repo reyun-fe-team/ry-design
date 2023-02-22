@@ -25,7 +25,7 @@
         :label="item.label"
         :style="{ width: `${panelWidth}px` }">
         <span :class="`${prefixCls}-text`" >{{ item.label}}</span>
-        <span :class="`${prefixCls}-type`" >{{ formatterText(item) }}</span>
+        <span :class="`${prefixCls}-type`" >{{ formatterSubtitle(item) }}</span>
       </Option>
     </Select>
   </div>
@@ -65,7 +65,7 @@ export default {
     renderFormat: {
       type: Function,
       default(item) {
-        return item.text || ''
+        return item.subtitle || ''
       }
     },
   },
@@ -92,7 +92,7 @@ export default {
     handleSelect(option) {
       this.$emit('on-change', option)
     },
-    formatterText(item){
+    formatterSubtitle(item){
       return this.renderFormat(item)
     }
   }
