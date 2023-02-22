@@ -1,0 +1,93 @@
+@sort: ~"@{css-prefix}sort";
+
+.@{sort} {
+  min-width: 102px;
+
+  .ivu-select {
+    color: #151b39 !important;
+  }
+
+  .ivu-icon {
+    color: #575b65 !important;
+  }
+
+  &-default {
+    .ivu-select-selection {
+      padding-right: 16px;
+      padding-left: 16px;
+      text-align: center;
+    }
+  }
+
+  &-text {
+    .ivu-select-selection {
+      text-align: left;
+      border: none;
+    }
+  }
+
+  .ivu-select-prefix {
+    padding: 0 !important;
+  }
+
+  .ivu-select-visible .ivu-select-selection {
+    box-shadow: none !important;
+    color: #3989fa !important;
+
+    .ivu-icon {
+      color: #3989fa !important;
+    }
+  }
+
+  .ivu-select-selection:hover {
+    color: #3989fa !important;
+
+    .ivu-icon {
+      color: #3989fa !important;
+    }
+  }
+
+  .ivu-select-disabled .ivu-select-selection {
+    color: #999 !important
+  }
+
+  .ivu-select-selection-focused {
+    color: #3989fa !important;
+
+    .ivu-icon {
+      color: #3989fa !important;
+    }
+  }
+
+  .ivu-select-selected-value {
+    padding: 0 !important;
+    line-height: 32px !important;
+  }
+
+  .ivu-select-arrow {
+    display: none !important;
+  }
+
+  .ivu-select-dropdown {
+    max-height: 240px;
+    min-width: 200px !important;
+  }
+
+  &-text {
+    color: #151b39 !important;
+  }
+
+  &-type {
+    display: none;
+    float: right;
+    color: #999;
+  }
+
+  .ivu-select-item:hover &-type {
+    display: inline-block;
+  }
+
+  .ivu-select-item-selected &-type {
+    display: inline-block;
+  }
+}
