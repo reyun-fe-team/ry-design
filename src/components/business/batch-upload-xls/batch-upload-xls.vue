@@ -41,7 +41,7 @@
             <slot name="iconFont">
               <span
                 style="font-size: 32px"
-                class="icon iconfont icon-xingzhuang1"></span>
+                class="icon iconfont ry-icon-excel"></span>
             </slot>
           </div>
           <div :class="prefixCls + '-upload-file-content'">

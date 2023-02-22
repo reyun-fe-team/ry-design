@@ -5,7 +5,7 @@
   },
   "eslint.format.enable": true,
   "[vue]": {
-      "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"]
 }
