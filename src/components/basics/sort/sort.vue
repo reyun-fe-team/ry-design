@@ -11,21 +11,21 @@
         v-if="sort === 'asc'"
         slot="prefix"
         size="16"
-        custom="iconfont icon-shengxu"></Icon>
+        custom="iconfont ry-icon-shengxu"></Icon>
       <!--desc-->
       <Icon
         v-else
         slot="prefix"
         size="16"
-        custom="iconfont icon-jiangxu"></Icon>
+        custom="iconfont ry-icon-jiangxu"></Icon>
       <Option
         v-for="(item, index) in data"
         :key="index"
         :value="item.value"
         :label="item.label"
         :style="panelStyles">
-        <span :class="`${prefixCls}-text`" >{{ item.label}}</span>
-        <span :class="`${prefixCls}-type`" >{{ formatterSubtitle(item) }}</span>
+        <span :class="`${prefixCls}-text`">{{ item.label }}</span>
+        <span :class="`${prefixCls}-type`">{{ formatterSubtitle(item) }}</span>
       </Option>
     </Select>
   </div>
@@ -55,11 +55,11 @@ export default {
       default: false
     },
     width: {
-      type: [Number,String],
+      type: [Number, String],
       default: 102
     },
     panelWidth: {
-      type: [Number,String],
+      type: [Number, String],
       default: 200
     },
     renderFormat: {
@@ -67,7 +67,7 @@ export default {
       default(item) {
         return item.subtitle || ''
       }
-    },
+    }
   },
   data() {
     return {
@@ -76,15 +76,15 @@ export default {
       sort: 'desc'
     }
   },
-  computed:{
-    selectStyles(){
+  computed: {
+    selectStyles() {
       return {
-         width: typeof this.width ==='number' ?`${this.width}px`:this.width
+        width: typeof this.width === 'number' ? `${this.width}px` : this.width
       }
     },
-    panelStyles(){
+    panelStyles() {
       return {
-        width: typeof this.panelWidth ==='number' ?`${this.panelWidth}px`:this.panelWidth
+        width: typeof this.panelWidth === 'number' ? `${this.panelWidth}px` : this.panelWidth
       }
     }
   },
@@ -104,7 +104,7 @@ export default {
     handleSelect(option) {
       this.$emit('on-change', option)
     },
-    formatterSubtitle(item){
+    formatterSubtitle(item) {
       return this.renderFormat(item)
     }
   }

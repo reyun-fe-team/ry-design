@@ -9,6 +9,7 @@
       <rd-modals
         v-model="modalVisible1"
         is-slot-default-header
+        isCreate
         footer-border-none
         :header-obj="headerObj"
         :width="600"
