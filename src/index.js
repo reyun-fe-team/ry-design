@@ -25,6 +25,7 @@ import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
 import Page from './components/basics/page'
 import Schedule from './components/basics/schedule'
 import Sort from './components/basics/sort'
+import ImagePreview from './components/basics/image-preview'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -107,7 +108,8 @@ const components = [
   AccountGroupList,
   UTable,
   UTableColumn,
-  Sort
+  Sort,
+  ImagePreview
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -169,5 +171,6 @@ export default {
   AccountGroupList,
   UTable,
   UTableColumn,
-  Sort
+  Sort,
+  ImagePreview
 }
