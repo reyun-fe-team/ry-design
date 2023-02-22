@@ -169,6 +169,10 @@ const router = new VueRouter({
     {
       path: '/dropdown-search',
       component: resolve => require(['./routers/dropdown-search'], resolve)
+    },
+    {
+      path: '/sort',
+      component: resolve => require(['./routers/sort'], resolve)
     }
   ]
 })
