@@ -10,7 +10,7 @@
   .ivu-select-item {
     position: relative;
     padding: 7px 20px;
-    color: #151b39;
+    color: @title-color;
     display:flex;
   }
   
@@ -25,11 +25,17 @@
   // }
   
   .ivu-tag-text {
-    color: #151b39;
+    color: @title-color;
   }
   
   .ivu-select-input {
-    color: #151b39;
+    color: @title-color;
+  }
+  .ivu-select-item-selected{
+    color:@link-color;
+    i{
+      color: @title-color;
+    }
   }
 }
 .@{account-select}-multiple{
