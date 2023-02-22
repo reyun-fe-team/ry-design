@@ -4,7 +4,7 @@
       v-model="option"
       :disabled="disabled"
       :class="`${prefixCls}-${type}`"
-      :style="{ width: `${width}px` }"
+      :style="selectStyles"
       @on-change="handleSelect">
       <!--asc-->
       <Icon
@@ -23,7 +23,7 @@
         :key="index"
         :value="item.value"
         :label="item.label"
-        :style="{ width: `${panelWidth}px` }">
+        :style="panelStyles">
         <span :class="`${prefixCls}-text`" >{{ item.label}}</span>
         <span :class="`${prefixCls}-type`" >{{ formatterSubtitle(item) }}</span>
       </Option>
@@ -55,11 +55,11 @@ export default {
       default: false
     },
     width: {
-      type: Number,
+      type: [Number,String],
       default: 102
     },
     panelWidth: {
-      type: Number,
+      type: [Number,String],
       default: 200
     },
     renderFormat: {
@@ -74,6 +74,18 @@ export default {
       prefixCls,
       option: this.value,
       sort: 'desc'
+    }
+  },
+  computed:{
+    selectStyles(){
+      return {
+         width: typeof this.width ==='number' ?`${this.width}px`:this.width
+      }
+    },
+    panelStyles(){
+      return {
+        width: typeof this.panelWidth ==='number' ?`${this.panelWidth}px`:this.panelWidth
+      }
     }
   },
   watch: {
