@@ -24,6 +24,7 @@ import Button from './components/basics/custom-button'
 import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
 import Page from './components/basics/page'
 import Schedule from './components/basics/schedule'
+import DropdownSearch from './components/basics/dropdown-search'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -105,7 +106,8 @@ const components = [
   Schedule,
   AccountGroupList,
   UTable,
-  UTableColumn
+  UTableColumn,
+  DropdownSearch
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -166,5 +168,6 @@ export default {
   Schedule,
   AccountGroupList,
   UTable,
-  UTableColumn
+  UTableColumn,
+  DropdownSearch
 }
