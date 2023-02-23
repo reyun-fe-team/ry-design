@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3538835 */
-  src: url('iconfont.woff2?t=1677064883970') format('woff2'),
-       url('iconfont.woff?t=1677064883970') format('woff'),
-       url('iconfont.ttf?t=1677064883970') format('truetype');
+  src: url('iconfont.woff2?t=1677143308456') format('woff2'),
+       url('iconfont.woff?t=1677143308456') format('woff'),
+       url('iconfont.ttf?t=1677143308456') format('truetype');
 }
 
 .iconfont {
@@ -14,91 +14,83 @@
 }
 
 .ry-icon-excel:before {
-  content: "\e65e";
+  content: "\de65e";
 }
 
 .ry-icon-jiangxu:before {
-  content: "\e784";
+  content: "\de784";
 }
 
 .ry-icon-shengxu:before {
-  content: "\e78a";
+  content: "\de78a";
 }
 
 .ry-icon-moban:before {
-  content: "\e63d";
+  content: "\de63d";
 }
 
 .ry-icon-xinjian:before {
-  content: "\e63e";
+  content: "\de63e";
 }
 
 .ry-icon-xuanz:before {
-  content: "\e63f";
+  content: "\de63f";
 }
 
 .ry-icon-lieb:before {
-  content: "\e640";
+  content: "\de640";
 }
 
 .ry-icon-tongb:before {
-  content: "\e641";
+  content: "\de641";
 }
 
 .ry-icon-shux:before {
-  content: "\e642";
+  content: "\de642";
 }
 
 .ry-icon-bingt:before {
-  content: "\e643";
+  content: "\de643";
 }
 
 .ry-icon-tulie:before {
-  content: "\e644";
+  content: "\de644";
 }
 
 .ry-icon-qust:before {
-  content: "\e645";
+  content: "\de645";
 }
 
 .ry-icon-zhuzt:before {
-  content: "\e646";
+  content: "\de646";
 }
 
 .ry-icon-ship:before {
-  content: "\e647";
+  content: "\de647";
 }
 
 .ry-icon-tup:before {
-  content: "\e648";
+  content: "\de648";
 }
 
 .ry-icon-shangch:before {
-  content: "\e649";
-}
-
-.ry-icon-bili:before {
-  content: "\e63c";
+  content: "\de649";
 }
 
 .ry-icon-huaban:before {
-  content: "\e63a";
+  content: "\de63a";
 }
 
 .ry-icon-more:before {
-  content: "\e686";
+  content: "\de686";
 }
 
 .ry-icon-ellipsis:before {
-  content: "\ae78b";
-}
-
-.ry-icon-jisu-delete:before {
-  content: "\e68c";
+  content: "\de78b";
 }
 
 .ry-icon-jisu-edit:before {
-  content: "\e68d";
+  content: "\de68d";
 }
 
 .ry-icon-sousuo:before {
@@ -106,7 +98,7 @@
 }
 
 .ry-icon-modal-close:before {
-  content: "\e62e";
+  content: "\de62e";
 }
 
 .ry-icon-suo:before {
