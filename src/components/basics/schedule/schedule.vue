@@ -102,7 +102,13 @@ export default {
     colspan: {
       type: Number,
       default: 1
-    }
+    },
+    // 是否获取白色的块数据-百度独有
+    whiteData: {
+      type: Boolean,
+      default: false
+    },
+    
   },
   data() {
     return {
@@ -265,11 +271,15 @@ export default {
       let sheetStates = []
       this.weekData.forEach(item => sheetStates.push(item.child.map(e => Number(e.check))))
       // sheetStates = [7 * [24]]
-      let whiteBlock = this.getWhiteBlockData(sheetStates)
       this.sheetStates = sheetStates.flat().join('')
       this.$emit('input', this.sheetStates)
       this.$emit('on-change', this.sheetStates)
-      this.$emit('on-white-block', whiteBlock)
+      if(this.whiteData) {
+        let whiteBlock = this.getWhiteBlockData(sheetStates)
+        this.$emit('on-white-block', whiteBlock)
+      }
+    
+      this.$emit('on-')
     },
     // 刷新表格选择状态
     updateSheetStates(value) {
