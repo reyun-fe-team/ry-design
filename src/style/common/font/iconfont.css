@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3538835 */
-  src: url('iconfont.woff2?t=1677143308456') format('woff2'),
-       url('iconfont.woff?t=1677143308456') format('woff'),
-       url('iconfont.ttf?t=1677143308456') format('truetype');
+  src: url('iconfont.woff2?t=1677144003245') format('woff2'),
+       url('iconfont.woff?t=1677144003245') format('woff'),
+       url('iconfont.ttf?t=1677144003245') format('truetype');
 }
 
 .iconfont {
@@ -83,10 +83,6 @@
 
 .ry-icon-more:before {
   content: "\de686";
-}
-
-.ry-icon-ellipsis:before {
-  content: "\de78b";
 }
 
 .ry-icon-jisu-edit:before {
