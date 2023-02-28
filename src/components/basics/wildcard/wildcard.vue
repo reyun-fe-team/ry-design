@@ -228,7 +228,6 @@ export default {
       const startPosVal = elInput.value.slice(0, startPos)
       const endPosVal = elInput.value.slice(startPos, elInput.value.length)
 
-  
       if (keyCode === 39 && endPosVal) {
         let endNum = endPosVal.indexOf('}')
         let char = endPosVal.substring(0, endNum + 1)
@@ -244,19 +243,19 @@ export default {
         if (titleList.includes(char)) {
           elInput.selectionStart = frontNum + 1
           elInput.selectionEnd = frontNum + 1
-        } 
+        }
       }
-      if (keyCode === 8) {   
+      if (keyCode === 8) {
         // 新增判断：如果光标位置相等(没有选中文本)，那么执行删除通配符
-        if(elInput.selectionStart === elInput.selectionEnd) {
+        if (elInput.selectionStart === elInput.selectionEnd) {
           let lastChar = startPosVal.charAt(startPosVal.length - 1)
           let frontNum = startPosVal.lastIndexOf('{')
           if (lastChar === '}') {
             let delChar = startPosVal.substring(frontNum)
-            if( titleList.includes(delChar)) {
-            elInput.selectionStart = startPosVal.length - delChar.length
-            elInput.selectionEnd = startPosVal.length
-          }
+            if (titleList.includes(delChar)) {
+              elInput.selectionStart = startPosVal.length - delChar.length
+              elInput.selectionEnd = startPosVal.length
+            }
           }
         }
       }
