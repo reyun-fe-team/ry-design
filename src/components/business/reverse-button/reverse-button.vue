@@ -56,7 +56,7 @@ export default {
     },
     customIcon: {
       type: String,
-      default: 'icon-xinjian'
+      default: 'ry-icon-xinjian'
     },
     disabled: {
       type: Boolean,

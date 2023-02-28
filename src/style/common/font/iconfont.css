@@ -1,45 +1,115 @@
 @font-face {
-  font-family:"iconfont";
-  /* Project id 3538835 */
-  src: url('iconfont.woff2?t=1670566593734') format('woff2'), url('iconfont.woff?t=1670566593734') format('woff'), url('iconfont.ttf?t=1670566593734') format('truetype');
+  font-family: "iconfont"; /* Project id 3538835 */
+  src: url('iconfont.woff2?t=1677145696835') format('woff2'),
+       url('iconfont.woff?t=1677145696835') format('woff'),
+       url('iconfont.ttf?t=1677145696835') format('truetype');
 }
+
 .iconfont {
-  font-family:"iconfont" !important;
+  font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.ry-icon-excel:before {
+  content: "\de65e";
+}
+
+.ry-icon-jiangxu:before {
+  content: "\de784";
+}
+
+.ry-icon-shengxu:before {
+  content: "\de78a";
+}
+
+.ry-icon-moban:before {
+  content: "\de63d";
+}
+
+.ry-icon-xinjian:before {
+  content: "\de63e";
+}
+
+.ry-icon-xuanz:before {
+  content: "\de63f";
+}
+
+.ry-icon-lieb:before {
+  content: "\de640";
+}
+
+.ry-icon-tongb:before {
+  content: "\de641";
+}
+
+.ry-icon-shux:before {
+  content: "\de642";
+}
+
+.ry-icon-bingt:before {
+  content: "\de643";
+}
+
+.ry-icon-tulie:before {
+  content: "\de644";
+}
+
+.ry-icon-qust:before {
+  content: "\de645";
+}
+
+.ry-icon-zhuzt:before {
+  content: "\de646";
+}
+
+.ry-icon-ship:before {
+  content: "\de647";
+}
+
+.ry-icon-tup:before {
+  content: "\de648";
+}
+
+.ry-icon-shangch:before {
+  content: "\de649";
+}
+
+.ry-icon-huaban:before {
+  content: "\de63a";
+}
+
 .ry-icon-more:before {
-  content:"\e686";
+  content: "\de686";
 }
-.ry-icon-ellipsis:before {
-  content:"\ae78b";
-}
-.ry-icon-jisu-delete:before {
-  content:"\e68c";
-}
+
 .ry-icon-jisu-edit:before {
-  content:"\e68d";
+  content: "\de68d";
 }
-.ry-icon-delete2:before {
-  content:"\e672";
-}
+
 .ry-icon-sousuo:before {
-  content:"\e66b";
+  content: "\de66b";
 }
-.ry-icon-close-tanch:before {
-  content:"\e62e";
+
+.ry-icon-modal-close:before {
+  content: "\de62e";
 }
+
 .ry-icon-suo:before {
-  content:"\ff001";
+  content: "\df001";
 }
+
 .ry-icon-tuodong:before {
-  content:"\ff002";
+  content: "\df002";
 }
-.ry-icon-shanchu:before {
-  content:"\ff003";
+
+.ry-icon-text-delete:before {
+  content: "\df003";
 }
+
 .ry-icon-zhiding:before {
-  content:"\ff004";
+  content: "\df004";
 }
+

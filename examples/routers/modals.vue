@@ -4,10 +4,12 @@
     <Button @click="onClick2">普通弹框</Button>
     <Button @click="onClickDelete1">删除弹框普通</Button>
     <Button @click="onClickDelete2">删除弹框slot可替换</Button>
+    <Button @click="onClickDeep">嵌套弹窗</Button>
     <div v-if="modalVisible1">
       <rd-modals
         v-model="modalVisible1"
         is-slot-default-header
+        isCreate
         footer-border-none
         :header-obj="headerObj"
         :width="600"
@@ -119,6 +121,38 @@
         </div>
       </rd-modals>
     </div>
+    <div v-if="deepVisible">
+      <rd-modals
+        v-model="deepVisible"
+        :width="400"
+        class-name="center-modal mini-scroll-y"
+        @on-cancel="onClickDeepCancel"
+        @on-ok="onClickDeepCancel">
+        <div slot="content">
+          <Button @click="onClickDeep1">弹窗</Button>
+          <div v-if="deepVisible1">
+            <rd-modals
+              v-model="deepVisible1"
+              close-scroll
+              :width="400"
+              class-name="center-modal mini-scroll-y"
+              @on-cancel="onClickDeepCancel1"
+              @on-ok="onClickDeepCancel1">
+              <div slot="content">
+                <rd-delete-modals :delete-has-close="deleteHasClose">
+                  <span slot="delete-modal-content">这是一段利用slot插入内容的事例</span>
+                  <span slot="delete-modal-img">
+                    <img
+                      :src="require('@src/images/batch-upload-xls/batch-upload-xls.png')"
+                      alt="" />
+                  </span>
+                </rd-delete-modals>
+              </div>
+            </rd-modals>
+          </div>
+        </div>
+      </rd-modals>
+    </div>
   </div>
 </template>
 
@@ -130,6 +164,8 @@ export default {
       modalVisible2: false,
       deleteVisible: false,
       deleteHasClose: false,
+      deepVisible: false,
+      deepVisible1: false,
       headerObj: {
         title: '带副标题的弹框',
         subTitle: '个广告计划',
@@ -219,6 +255,18 @@ export default {
     },
     onClickDelete2() {
       this.deleteVisible = true
+    },
+    onClickDeep() {
+      this.deepVisible = true
+    },
+    onClickDeepCancel() {
+      this.deepVisible = false
+    },
+    onClickDeep1() {
+      this.deepVisible1 = true
+    },
+    onClickDeepCancel1() {
+      this.deepVisible1 = false
     }
   }
 }
@@ -241,17 +289,17 @@ export default {
 
   /* 滚动槽 */
   & ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, .08);
+    background: rgba(0, 0, 0, 0.08);
     border-radius: 0;
 
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, .25);
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
   }
 
   & ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, .08);
+    background: rgba(0, 0, 0, 0.08);
     border-radius: 10px;
 
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, .25);
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
   }
 }
 </style>
