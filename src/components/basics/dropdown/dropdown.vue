@@ -1,7 +1,5 @@
 <template>
   <div :class="classes">
-    {{ $apis }}
-    {{ classes }}
     <Dropdown v-bind="$apis">
       <Button>
         <span>批量操作</span>
@@ -10,11 +8,11 @@
       <template #list>
         <dropdown-list
           v-if="type === 'list'"
-          :data="list"></dropdown-list>
+          :data="data"></dropdown-list>
 
         <dropdown-group
           v-if="type === 'group'"
-          :data="list"></dropdown-group>
+          :data="data"></dropdown-group>
       </template>
     </Dropdown>
   </div>
@@ -40,28 +38,15 @@ export default {
     placement: {
       type: String,
       default: 'bottom-start'
+    },
+    data: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
     return {
-      prefixCls,
-      list: [
-        { label: 'label1', value: 'value1', disabled: false },
-        { label: 'label2', value: 'value2', disabled: false },
-        { label: 'label3', value: 'value3', disabled: true, tooltip: '123123123123123123' },
-        { label: 'label4', value: 'value4', disabled: false, tooltip: '222222222222222222' },
-        { label: 'label5', value: 'value5', disabled: false },
-        { label: 'label6', value: 'value6', disabled: false },
-        { label: 'label7', value: 'value7', disabled: false },
-        { label: 'label8', value: 'value8', disabled: false },
-        { label: 'label9', value: 'value9', disabled: false },
-        {
-          label:
-            'label10label10label10label10label10label10label10label10label10label10label10label10',
-          value: 'value10',
-          disabled: false
-        }
-      ]
+      prefixCls
     }
   },
   computed: {
@@ -69,7 +54,6 @@ export default {
       return Object.assign({}, this.$attrs, {
         placement: this.placement
       })
-      // return  On
     },
     classes() {
       return [

@@ -1,7 +1,7 @@
 <template>
   <DropdownMenu>
     <div
-      v-for="(group, index) in list"
+      v-for="(group, index) in data"
       :key="index"
       :class="prefixCls">
       <div :class="prefixCls + '-title'">
@@ -22,6 +22,7 @@
                 transfer
                 theme="light"
                 placement="top"
+                :max-width="300"
                 :content="item.tooltip">
                 {{ item.label }}
               </Tooltip>
@@ -45,125 +46,7 @@ export default {
   },
   data() {
     return {
-      prefixCls,
-      list: [
-        {
-          title: '我是分类一',
-          items: [
-            {
-              label: '1111',
-              value: '1111',
-              disabled: false,
-              tooltip: '1111111111111111111111111111'
-            },
-            {
-              label: '2222',
-              value: '2222',
-              disabled: true,
-              tooltip: '222222222222222222222222'
-            },
-            {
-              label: '3333',
-              value: '3333'
-            },
-            {
-              label: '444',
-              value: '4444'
-            },
-            {
-              label: '5555',
-              value: '5555'
-            }
-          ]
-        },
-        {
-          title: '我是分类一',
-          items: [
-            {
-              label: '11111111111111111111111111111111111111111111111111111111',
-              value: '1111',
-              disabled: false,
-              tooltip: '1111111111111111111111111111'
-            },
-            {
-              label: '222222222222222222222222222222222222222222222222',
-              value: '2222',
-              disabled: true,
-              tooltip: '222222222222222222222222'
-            },
-            {
-              label: '333333333333333333333333',
-              value: '3333'
-            },
-            {
-              label: '444',
-              value: '4444'
-            },
-            {
-              label: '5555',
-              value: '5555'
-            }
-          ]
-        },
-        {
-          title: '我是分类一',
-          items: [
-            {
-              label: '1111',
-              value: '1111',
-              disabled: false,
-              tooltip: '1111111111111111111111111111'
-            },
-            {
-              label: '2222',
-              value: '2222',
-              disabled: true,
-              tooltip: '222222222222222222222222'
-            },
-            {
-              label: '3333',
-              value: '3333'
-            },
-            {
-              label: '444',
-              value: '4444'
-            },
-            {
-              label: '5555',
-              value: '5555'
-            }
-          ]
-        },
-        {
-          title: '我是分类一',
-          items: [
-            {
-              label: '1111',
-              value: '1111',
-              disabled: false,
-              tooltip: '1111111111111111111111111111'
-            },
-            {
-              label: '2222',
-              value: '2222',
-              disabled: true,
-              tooltip: '222222222222222222222222'
-            },
-            {
-              label: '3333',
-              value: '3333'
-            },
-            {
-              label: '444',
-              value: '4444'
-            },
-            {
-              label: '5555',
-              value: '5555'
-            }
-          ]
-        }
-      ]
+      prefixCls
     }
   },
   methods: {

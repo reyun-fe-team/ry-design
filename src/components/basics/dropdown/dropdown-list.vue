@@ -11,7 +11,8 @@
             transfer
             theme="light"
             placement="top"
-            :content="item.tooltip">
+            :content="item.tooltip"
+            :max-width="300">
             {{ item.label }}
           </Tooltip>
         </template>
