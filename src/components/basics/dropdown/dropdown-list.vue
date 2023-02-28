@@ -5,19 +5,17 @@
       :key="item.value"
       :divided="item.divided"
       :disabled="item.disabled">
-      <slot name="item">
-        <template v-if="item.tooltip">
-          <Tooltip
-            transfer
-            theme="light"
-            placement="top"
-            :content="item.tooltip"
-            :max-width="300">
-            {{ item.label }}
-          </Tooltip>
-        </template>
-        <template v-else>{{ item.label }}</template>
-      </slot>
+      <template v-if="item.tooltip">
+        <Tooltip
+          transfer
+          theme="light"
+          placement="top"
+          :content="item.tooltip"
+          :max-width="300">
+          {{ item.label }}
+        </Tooltip>
+      </template>
+      <template v-else>{{ item.label }}</template>
     </DropdownItem>
   </DropdownMenu>
 </template>

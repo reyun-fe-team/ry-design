@@ -9,7 +9,6 @@
         <dropdown-list
           v-if="type === 'list'"
           :data="data"></dropdown-list>
-
         <dropdown-group
           v-if="type === 'group'"
           :data="data"></dropdown-group>

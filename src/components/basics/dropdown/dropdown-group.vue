@@ -16,19 +16,17 @@
           v-for="item in group.items"
           :key="item.value"
           :class="itemsClass(item)">
-          <slot name="item">
-            <template v-if="item.tooltip">
-              <Tooltip
-                transfer
-                theme="light"
-                placement="top"
-                :max-width="300"
-                :content="item.tooltip">
-                {{ item.label }}
-              </Tooltip>
-            </template>
-            <template v-else>{{ item.label }}</template>
-          </slot>
+          <template v-if="item.tooltip">
+            <Tooltip
+              transfer
+              theme="light"
+              placement="top"
+              :max-width="300"
+              :content="item.tooltip">
+              {{ item.label }}
+            </Tooltip>
+          </template>
+          <template v-else>{{ item.label }}</template>
         </div>
       </div>
     </div>
