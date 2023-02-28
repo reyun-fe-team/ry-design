@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@mobvista.com
  * @Date: 2023-02-23 13:57:53
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2023-02-28 16:02:07
+ * @LastEditTime: 2023-02-28 18:17:29
  * @FilePath: /ry-design/src/components/basics/image-preview/image-preview.vue
  * @Description: 预览图片
 -->
@@ -16,33 +16,37 @@
       transfer="true"
       :class="[prefixCls + '-body']">
       <!-- 内容展示区 -->
-      <div
-        v-if="value"
-        :class="[prefixCls + '-body-content']">
-        <!-- 关闭按钮 -->
-        <Icon
-          type="md-close"
-          :class="[prefixCls + '-close']"
-          @click="handleClose"></Icon>
-        <!-- 图片 -->
+      <transition name="fade">
         <div
-          v-if="type === 'IMAGE'"
-          :class="[prefixCls + '-image']">
-          <img
-            :src="src"
-            :onerror="onerrorImgSrc" />
+          v-if="value"
+          :class="[prefixCls + '-body-content']">
+          <!-- 关闭按钮 -->
+          <Icon
+            type="md-close"
+            :class="[prefixCls + '-close']"
+            @click="handleClose"></Icon>
+          <!-- 图片 -->
+          <div
+            v-if="type === 'IMAGE'"
+            :class="[prefixCls + '-image']">
+            <img
+              :class="[isImageError ? prefixCls + '-image-error' : '']"
+              :src="src"
+              @error="handleImgError" />
+          </div>
+          <!-- 视频 -->
+          <preview-video
+            v-if="type === 'VIDEO'"
+            :class="[prefixCls + '-video']"
+            :poster="poster"
+            :src="src"></preview-video>
         </div>
-        <!-- 视频 -->
-        <preview-video
-          v-if="type === 'VIDEO'"
-          :class="[prefixCls + '-video']"
-          :poster="poster"
-          :src="src"></preview-video>
-      </div>
+      </transition>
     </div>
   </div>
 </template>
 <script>
+import imageError from '@src/images/image-preview/image-error.png'
 import previewVideo from './preview-video'
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'image-preview'
@@ -77,10 +81,16 @@ export default {
   },
   data() {
     return {
-      prefixCls
+      prefixCls,
+      isImageError: false
     }
   },
   methods: {
+    // 图片加载失败
+    handleImgError(e) {
+      this.isImageError = true
+      e.target.src = imageError
+    },
     // 关闭
     handleClose() {
       this.$emit('input', false)

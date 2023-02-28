@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@mobvista.com
  * @Date: 2023-02-28 14:51:20
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2023-02-28 15:53:11
+ * @LastEditTime: 2023-02-28 18:06:05
  * @FilePath: /ry-design/src/components/basics/image-preview/video-play.vue
  * @Description: 视频播放
 -->
@@ -41,7 +41,7 @@
         :class="[prefixCls + '-voice']">
         <Icon
           :type="isOpenVoice ? 'md-volume-up' : 'md-volume-off'"
-          @click.stop="isOpenVoice ? handleOnMuted : handleOffMuted"></Icon>
+          @click.stop="isOpenVoice ? handleOnMuted() : handleOffMuted()"></Icon>
       </div>
     </template>
   </div>
