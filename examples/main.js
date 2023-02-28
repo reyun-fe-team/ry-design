@@ -169,15 +169,15 @@ const router = new VueRouter({
     {
       path: '/sort',
       component: resolve => require(['./routers/sort'], resolve)
+    },
+    {
+      path: '/image',
+      component: resolve => require(['./routers/image'], resolve)
     }
   ]
 })
 
-router.afterEach(_ => {
-  window.scrollTo(0, 0)
-})
-
-const app = new Vue({
+new Vue({
   router: router,
   render: h => h(App)
 }).$mount('#app')

@@ -40,6 +40,7 @@ import ProductSelect from './components/business/product-select'
 import SubmissionRule from './components/business/submission-rule'
 import BatchModifyBids from './components/business/batch-modify-bids'
 import AccountGroupList from './components/business/account-group-list'
+import Image from './components/business/image'
 
 import ViewUI from 'view-design'
 
@@ -107,7 +108,8 @@ const components = [
   AccountGroupList,
   UTable,
   UTableColumn,
-  Sort
+  Sort,
+  Image
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -169,5 +171,6 @@ export default {
   AccountGroupList,
   UTable,
   UTableColumn,
-  Sort
+  Sort,
+  Image
 }
