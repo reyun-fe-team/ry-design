@@ -107,8 +107,7 @@ export default {
     whiteData: {
       type: Boolean,
       default: false
-    },
-    
+    }
   },
   data() {
     return {
@@ -274,12 +273,10 @@ export default {
       this.sheetStates = sheetStates.flat().join('')
       this.$emit('input', this.sheetStates)
       this.$emit('on-change', this.sheetStates)
-      if(this.whiteData) {
+      if (this.whiteData) {
         let whiteBlock = this.getWhiteBlockData(sheetStates)
         this.$emit('on-white-block', whiteBlock)
       }
-    
-      this.$emit('on-')
     },
     // 刷新表格选择状态
     updateSheetStates(value) {
