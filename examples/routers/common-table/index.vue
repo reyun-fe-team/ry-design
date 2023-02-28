@@ -91,17 +91,17 @@
           <Icon
             v-if="row.deliveryStatus.value === 'success'"
             color="#2FD7AB"
-            custom="iconfont icon-Underreview"
+            custom="iconfont ry-icon-qust"
             size="16"></Icon>
           <Icon
             v-else-if="row.deliveryStatus.value === 'fail'"
             color="#F01C36"
-            custom="iconfont icon-prompt1"
+            custom="iconfont ry-icon-qust"
             size="16"></Icon>
           <Icon
             v-else
             color="#777A8C"
-            custom="iconfont icon-Review"
+            custom="iconfont ry-icon-qust"
             size="16"></Icon>
           <span class="icon-desc">{{ row.deliveryStatus.name }}</span>
         </div>

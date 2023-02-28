@@ -54,7 +54,7 @@
         style="float: left"
         @click="handleCreate">
         <Icon
-          custom="iconfont icon-xinjian"
+          custom="iconfont ry-icon-xinjian"
           style="vertical-align: inherit"
           size="12"></Icon>
         {{ createText }}

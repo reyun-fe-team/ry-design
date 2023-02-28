@@ -16,7 +16,7 @@
         }"
         :wildcard-label-config="{ label: 'asd', width: 68, tooltip: '123' }"
         :data="data"
-        join-symbol="_"
+        join-symbol=""
         :save-rule="true"
         :show-word-limit="false"
         :show-save-rule="false"
@@ -105,7 +105,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

@@ -50,7 +50,7 @@
               @click.native="setMoveTop(index)"></ry-icon>
             <ry-icon
               :class="prefixCls + '-draggable-li-icon-cursor'"
-              type="ry-icon-shanchu"
+              type="ry-icon-text-delete"
               size="15"
               @click.native="onRemove(index, item)"></ry-icon>
           </span>
