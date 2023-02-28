@@ -26,6 +26,7 @@ import Page from './components/basics/page'
 import Schedule from './components/basics/schedule'
 import DropdownSearch from './components/basics/dropdown-search'
 import Sort from './components/basics/sort'
+import Dropdown from './components/basics/dropdown'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -109,7 +110,8 @@ const components = [
   UTable,
   UTableColumn,
   DropdownSearch,
-  Sort
+  Sort,
+  Dropdown
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -172,5 +174,6 @@ export default {
   UTable,
   UTableColumn,
   DropdownSearch,
-  Sort
+  Sort,
+  Dropdown
 }
