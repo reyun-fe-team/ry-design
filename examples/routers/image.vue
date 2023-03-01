@@ -1,6 +1,20 @@
 <template>
   <div>
-    <rd-image-group></rd-image-group>
+    <rd-image-group
+      :size="2"
+      :data="urlList"
+      :width="800"
+      :height="400"></rd-image-group>
+    <hr />
+    <!-- <rd-image
+      :src="urlList[0]"
+      :fit="fit"
+      width="100"
+      height="100"
+      preview
+      scroll-container=".demo-image"
+      :alt="fit"></rd-image> -->
+    横版
     <div class="demo-image">
       <div style="width: 1000px; height: 300px">
         <div
@@ -11,20 +25,109 @@
             :src="url"
             :fit="fit"
             :preview-list="srcList"
-            width="100"
-            height="100"
+            :width="100"
+            :height="100"
             preview
-            scroll-container=".demo-image"
+            scroll-container=".demo-rd-image"
             :alt="fit">
-            <!-- <template #placeholder>
-						<Spin size="large" fix />
+            <template #placeholder>
+              <Spin
+                size="large"
+                fix />
+            </template>
+            <!-- <template #error>
+						<div>失败</div>
 					</template> -->
           </rd-image>
           <p>{{ fit }}</p>
         </div>
       </div>
     </div>
-    <h2 style="margin-top: 40px">竖向LazyLoad</h2>
+    竖版
+    <div class="demo-image">
+      <div style="width: 1000px; height: 300px">
+        <div
+          v-for="(fit, index) in fitList"
+          :key="index"
+          class="demo-image-item">
+          <rd-image
+            :src="urlshuban"
+            :fit="fit"
+            :preview-list="srcList"
+            :width="100"
+            :height="100"
+            preview
+            scroll-container=".demo-rd-image"
+            :alt="fit">
+            <template #placeholder>
+              <Spin
+                size="large"
+                fix />
+            </template>
+            <!-- <template #error>
+						<div>失败</div>
+					</template> -->
+          </rd-image>
+          <p>{{ fit }}</p>
+        </div>
+      </div>
+    </div>
+    gif
+    <div class="demo-image">
+      <div style="width: 1000px; height: 300px">
+        <div
+          v-for="(fit, index) in fitList"
+          :key="index"
+          class="demo-image-item">
+          <rd-image
+            src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/0e2/6ef/25d/0e26ef25db160b95e8e32e71f5baa759.gif"
+            :fit="fit"
+            :preview-list="srcList"
+            :width="100"
+            :height="100"
+            preview
+            scroll-container=".demo-rd-image"
+            :alt="fit">
+            <template #placeholder>
+              <Spin
+                size="large"
+                fix />
+            </template>
+          </rd-image>
+          <p>{{ fit }}</p>
+        </div>
+      </div>
+    </div>
+    方图
+    <div class="demo-image">
+      <div style="width: 1000px; height: 300px">
+        <div
+          v-for="(fit, index) in fitList"
+          :key="index"
+          class="demo-image-item">
+          <rd-image
+            src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/911/d51/ed6/911d51ed6d12b173a166635d24989df4-small.jpg"
+            :fit="fit"
+            :preview-list="srcList"
+            :width="100"
+            :height="100"
+            preview
+            scroll-container=".demo-rd-image"
+            :alt="fit">
+            <template #placeholder>
+              <Spin
+                size="large"
+                fix />
+            </template>
+            <!-- <template #error>
+						<div>失败</div>
+					</template> -->
+          </rd-image>
+          <p>{{ fit }}</p>
+        </div>
+      </div>
+    </div>
+    <!-- <h2 style="margin-top: 40px">竖向LazyLoad</h2>
     <div
       class="demo-image2"
       style="width: 300px; height: 200px; overflow: hidden; overflow-y: scroll">
@@ -79,7 +182,7 @@
           </rd-image>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- <rd-imagePreview
     v-model="showPreview"
@@ -106,13 +209,14 @@
 </template>
 
 <script>
-// const fitList = ["fill", "contain", "cover", "none", "scale-down"];
-const fitList = ['fill']
+const fitList = ['fill', 'contain', 'cover', 'none', 'scale-down']
+// const fitList = ['fill']
 // const fitList = ['fill']
 export default {
   data() {
     return {
       urlList: [
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1d3/06c/7af/1d306c7afd6243687172409fec4b43e5-small.jpg',
         'https://file.iviewui.com/images/image-demo-10.jpg',
         'https://file.iviewui.com/images/image-demo-11.jpg',
         'https://file.iviewui.com/images/image-demo-12.jpg',
@@ -126,7 +230,9 @@ export default {
         'https://file.iviewui.com/images/image-demo-20.jpg'
       ],
       fitList,
-      url: 'https://dev-file.iviewui.com/j9IanwNpbTPM4aXv2fKyPTX1omREAaGG/large',
+      url: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1d3/06c/7af/1d306c7afd6243687172409fec4b43e5-small.jpg',
+      urlshuban:
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/119/636/a33/119636a330213818bf16362274d39da2-small.jpg',
       showPreview: false,
       srcList: [
         'https://dev-file.iviewui.com/ll7neXYI7fzKv1SjjOl77vpfkDbJpbDB/large',

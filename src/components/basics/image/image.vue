@@ -1,42 +1,44 @@
 <template>
-  <div
-    ref="image"
-    :class="prefixCls + '-image'"
-    :style="imageStyles">
+  <div>
     <div
-      v-if="loading"
-      :class="prefixCls + '-placeholder'">
-      <slot name="placeholder">
-        <span>{{ loadingLang }}</span>
-      </slot>
-    </div>
-    <div
-      v-else-if="imageError"
-      :class="prefixCls + '-error'">
-      <slot name="error">
-        <span>{{ failLang }}</span>
-      </slot>
-    </div>
-    <div
-      v-if="loadingImage"
-      :class="innerClasses"
-      @click="handlePreview">
-      <img
-        :class="imgClasses"
-        :style="[fitStyle]"
-        :alt="alt"
-        :src="src"
-        :loading="loadingType"
-        :referrerPolicy="referrerPolicy"
-        @load="handleImageLoad"
-        @error="handleImageError" />
-      <slot
-        v-if="preview && previewTip"
-        name="preview">
-        <div :class="prefixCls + 'image-mark'">
-          <span>{{ previewLang }}</span>
-        </div>
-      </slot>
+      ref="image"
+      :class="prefixCls"
+      :style="imageStyles">
+      <div
+        v-if="loading"
+        :class="prefixCls + '-placeholder'">
+        <slot name="placeholder">
+          <span>{{ loadingLang }}</span>
+        </slot>
+      </div>
+      <div
+        v-else-if="imageError"
+        :class="prefixCls + '-error'">
+        <slot name="error">
+          <span>{{ failLang }}</span>
+        </slot>
+      </div>
+      <div
+        v-if="loadingImage"
+        :class="innerClasses"
+        @click="handlePreview">
+        <img
+          :class="imgClasses"
+          :style="fitStyle"
+          :alt="alt"
+          :src="src"
+          :loading="loadingType"
+          :referrerPolicy="referrerPolicy"
+          @load="handleImageLoad"
+          @error="handleImageError" />
+        <slot
+          v-if="preview && previewTip"
+          name="preview">
+          <div :class="prefixCls + 'image-mark'">
+            <span>{{ previewLang }}</span>
+          </div>
+        </slot>
+      </div>
     </div>
   </div>
 </template>
@@ -107,7 +109,7 @@ export default {
   computed: {
     innerClasses() {
       return [
-        `${this.prefixCls}'-inner'`,
+        `${this.prefixCls}-inner`,
         {
           [prefixCls + '--cursor']: this.preview
         }
@@ -124,6 +126,7 @@ export default {
     fitStyle() {
       const fitContains = ['fill', 'contain', 'cover', 'none', 'scale-down']
       const { fit } = this
+      console.log(fitContains.includes(fit), 'fit')
       return fitContains.includes(fit) ? `object-fit:${fit};` : ''
     },
     imageStyles() {

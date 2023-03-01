@@ -1,0 +1,115 @@
+@image-prefix-cls: ~"@{css-prefix}image-group";
+
+.@{image-prefix-cls} {
+        overflow: hidden;
+        padding: 2px;
+        border:1px solid red;
+        .rd-image{
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.1s;
+          }
+        &-pic {
+          float: left;
+          overflow: hidden;
+          text-align: center;
+          position: relative;
+          
+      
+        //   &-img {
+        //     //添加高度100%，会导致创意模块下的视频和封面的图，以及预览里面创意的图都被拉伸，所以在这里去掉。
+        //     //height        : 100%;
+        //     max-height: 100%;
+        //     max-width: 100%;
+        //     vertical-align: middle;
+        //     position: relative;
+        //     top: 50%;
+        //     transform: translateY(-50%);
+        //     transition: all 0.1s;
+        //   }
+      
+        //   .num {
+        //     position: absolute;
+        //     right: 0;
+        //     top: 0;
+        //     width: 20px;
+        //     line-height: 20px;
+        //     border-radius: 50%;
+        //     color: #fff;
+        //     background: #1b7ef8;
+        //   }
+        }
+      
+        // &-preview {
+        //   width: 12px;
+        //   position: absolute;
+        //   left: 0;
+        //   right: 0;
+        //   top: 0;
+        //   bottom: 0;
+        //   margin: auto;
+        //   transition: all 0.1s;
+        // }
+     
+      
+      .pointer {
+        cursor: pointer;
+      }
+      
+      &-pic-1{
+        width: 100%;
+        height: 100%;
+      }
+      
+      &-pic-2{
+        height: 100%;
+      
+        &:nth-of-type(1) {
+          width: calc(~'50% - 2px');
+          float: left;
+          margin-right: 4px;
+        }
+      
+        &:nth-of-type(2) {
+          width: calc(~'50% - 2px');
+          float: left;
+        }
+      }
+      
+      &-pic-3{
+        height: calc(~'50% - 2px');
+      
+        &:nth-of-type(1) {
+          width: 100%;
+          margin-bottom: 4px;
+        }
+      
+        &:nth-of-type(2) {
+          width: calc(~'50% - 2px');
+          margin-right: 4px;
+        }
+      
+        &:nth-of-type(3) {
+          width: calc(~'50% - 2px'); 
+        }
+      }
+      
+      &-pic-4{
+        height: calc(~'50% - 2px');
+        width: calc(~'50% - 2px');
+      
+        &:nth-of-type(1) {
+          margin-right: 4px;
+          margin-bottom: 4px;
+        }
+      
+        &:nth-of-type(2) {
+          margin-bottom: 4px;
+        }
+      
+        &:nth-of-type(3) {
+          margin-right: 4px;
+        }
+      }
+      
+}
