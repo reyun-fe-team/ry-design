@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@mobvista.com
  * @Date: 2023-02-23 13:57:53
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2023-02-28 18:17:29
+ * @LastEditTime: 2023-03-01 12:19:49
  * @FilePath: /ry-design/src/components/basics/image-preview/image-preview.vue
  * @Description: 预览图片
 -->
@@ -12,13 +12,13 @@
     <div
       v-show="value"
       v-transfer-dom
-      data-transfer="true"
-      transfer="true"
+      :data-transfer="transfer"
+      :transfer="transfer"
       :class="[prefixCls + '-body']">
       <!-- 内容展示区 -->
       <transition name="fade">
         <div
-          v-if="value"
+          v-if="!transfer && value"
           :class="[prefixCls + '-body-content']">
           <!-- 关闭按钮 -->
           <Icon
@@ -56,6 +56,11 @@ export default {
     previewVideo
   },
   props: {
+    // 是否将弹层放置于 body 内
+    transfer: {
+      type: Boolean,
+      default: false
+    },
     // 是否显示弹出层
     value: {
       required: true,
