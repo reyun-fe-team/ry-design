@@ -26,6 +26,7 @@ import Page from './components/basics/page'
 import Schedule from './components/basics/schedule'
 import Sort from './components/basics/sort'
 import Image from './components/basics/image'
+import ImageGroup from './components/basics/image-group/image-group'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -109,7 +110,8 @@ const components = [
   UTable,
   UTableColumn,
   Sort,
-  Image
+  Image,
+  ImageGroup
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -172,5 +174,6 @@ export default {
   UTable,
   UTableColumn,
   Sort,
-  Image
+  Image,
+  ImageGroup
 }

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <rd-image-group></rd-image-group>
     <div class="demo-image">
       <div style="width: 1000px; height: 300px">
         <div
@@ -79,6 +80,7 @@
         </div>
       </div>
     </div>
+
     <!-- <rd-imagePreview
     v-model="showPreview"
     :preview-list="srcList"
@@ -92,14 +94,14 @@
       'download'
     ]"></rd-imagePreview> -->
 
-    <Button
+    <!-- <Button
       type="primary"
       @click="showPreview = !showPreview">
       Switch Preview
     </Button>
 
     <Button @click="showImagePreview1">$ImagePreview1</Button>
-    <Button @click="showImagePreview2">$ImagePreview2</Button>
+    <Button @click="showImagePreview2">$ImagePreview2</Button> -->
   </div>
 </template>
 
