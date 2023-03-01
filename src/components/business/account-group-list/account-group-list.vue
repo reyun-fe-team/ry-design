@@ -7,9 +7,7 @@
         <div :class="prefixCls + '-body-left-box-title'">
           {{ leftTitle }}
         </div>
-        <div
-          :class="prefixCls + '-body-left-box-content'"
-          class="small-scroll-y">
+        <div :class="prefixCls + '-body-left-box-content'">
           <div
             v-for="item in list"
             :key="item[groupName]">
@@ -94,7 +92,7 @@ export default {
     },
     height: {
       type: String,
-      default: '520px'
+      default: '438px'
     },
     leftTitle: {
       type: [String, Boolean],
