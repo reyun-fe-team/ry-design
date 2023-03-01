@@ -56,6 +56,7 @@ import { UTable, UTableColumn } from 'umy-ui'
 import lineClamp from './directives/line-clamp'
 import clickOutside from './directives/click-out-side'
 import transferDom from './directives/transfer-dom'
+import tips from './directives/tips'
 
 // util
 import { setIviewMessage } from './util/message'
@@ -120,7 +121,8 @@ const components = [
 const directives = {
   'line-clamp': lineClamp,
   'click-outside': clickOutside,
-  'transfer-dom': transferDom
+  'transfer-dom': transferDom,
+  tooltip: tips
 }
 
 const install = function (Vue) {
