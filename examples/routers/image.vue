@@ -33,7 +33,6 @@
           :key="index"
           class="demo-image-item"
           style="float: none">
-          >
           <rd-image
             style="width: 100px; height: 100px"
             :src="url"
@@ -42,7 +41,6 @@
             :infinite="false"
             preview
             alt="fill">
-            >
             <template #placeholder>
               <Spin
                 size="large"

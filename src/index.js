@@ -25,6 +25,7 @@ import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
 import Page from './components/basics/page'
 import Schedule from './components/basics/schedule'
 import Sort from './components/basics/sort'
+import Image from './components/basics/image'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -40,7 +41,6 @@ import ProductSelect from './components/business/product-select'
 import SubmissionRule from './components/business/submission-rule'
 import BatchModifyBids from './components/business/batch-modify-bids'
 import AccountGroupList from './components/business/account-group-list'
-import Image from './components/business/image'
 
 import ViewUI from 'view-design'
 

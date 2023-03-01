@@ -38,23 +38,10 @@
         </div>
       </slot>
     </div>
-    <!-- <template v-if="preview">
-      <ImagePreview
-        v-model="imagePreviewModal"
-        :preview-list="previewList"
-        :initial-index="initialIndex"
-        :infinite="infinite"
-        :mask-closable="maskClosable"
-        :transfer="transfer"
-        :toolbar="toolbar"
-        @on-close="handleClose"
-        @on-switch="handleSwitch" />
-    </template> -->
   </div>
 </template>
 <script>
 import { isClient } from '@src/util/assist.js'
-console.log(isClient, 'isClient')
 
 // is Element
 const isElement = el => {
@@ -102,22 +89,6 @@ export default {
       type: [String],
       default: ''
     },
-    maskClosable: {
-      type: Boolean,
-      default: true
-    },
-    // preview list
-    previewList: {
-      type: Array
-    },
-    infinite: {
-      type: Boolean,
-      default: true
-    },
-    initialIndex: {
-      type: Number,
-      default: 0
-    },
     previewTip: {
       type: Boolean,
       default: true
@@ -130,7 +101,6 @@ export default {
       imageError: false,
       scrollElement: null,
       observer: null,
-      imagePreviewModal: false,
       prefixCls
     }
   },
@@ -182,10 +152,9 @@ export default {
     this.offObserver()
   },
   methods: {
-    // todo it can create new Observe to privide the function to use  in the future
     handleLazy() {
       const $el = this.$refs.image
-      console.log('root', this.scrollElement)
+      // console.log('root', this.scrollElement)
       const observer = (this.observer = new IntersectionObserver(this.handlerObserveImage, {
         root: this.scrollElement,
         rootMargin: '0px',
@@ -194,7 +163,7 @@ export default {
       observer.observe($el)
     },
     handlerObserveImage(entries) {
-      console.log('callback', entries)
+      // console.log('callback', entries)
       for (let entry of entries) {
         if (entry.isIntersecting) {
           // destory new IntersectionObserver
@@ -212,7 +181,7 @@ export default {
       } else if (scrollContainer && typeof scrollContainer === 'string') {
         this.scrollElement = document.querySelector(scrollContainer)
       }
-      console.log('有lazy')
+      // console.log('有lazy')
       // on scrollElement scroll
       this.handleLazy()
     },
@@ -240,20 +209,7 @@ export default {
       const { observer } = this
       observer && observer.disconnect()
     },
-    handlePreview() {
-      const { preview, initialIndex } = this
-      if (preview) {
-        this.imagePreviewModal = true
-        // reslove click image get the currentIndex to do other thing
-        this.$emit('on-click', { initialIndex })
-      }
-    },
-    handleClose() {
-      this.$emit('on-close')
-    },
-    handleSwitch(params) {
-      this.$emit('on-switch', params)
-    }
+    handlePreview() {}
   }
 }
 </script>
