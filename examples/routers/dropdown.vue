@@ -1,14 +1,55 @@
 <template>
-  <div style="text-align: center">
-    <h1>type = list</h1>
+  <div>
+    <h3>自定义按钮文案</h3>
+    <h4>content 参数</h4>
+    <rd-dropdown
+      :data="list"
+      content="自定义"></rd-dropdown>
+    <h4>使用slot=content</h4>
+    <rd-dropdown
+      :data="list"
+      content="自定义">
+      <template #content>自定义插槽</template>
+    </rd-dropdown>
+    <br />
+    <br />
+    <br />
+    <h3>展示形式</h3>
+    <h4>默认方式</h4>
     <rd-dropdown
       type="list"
       :data="listData"></rd-dropdown>
-    <h1>type = group</h1>
+    <h4>分类样式</h4>
     <rd-dropdown
       trigger="click"
       type="group"
       :data="groupData"></rd-dropdown>
+    <br />
+    <br />
+    <br />
+    <h3>返回更多数据</h3>
+    <h4>默认只返回value</h4>
+    <rd-dropdown
+      :data="list"
+      @on-click="onClick"></rd-dropdown>
+    <h4>label-value</h4>
+    <rd-dropdown
+      :data="list"
+      label-value
+      @on-click="onClick"></rd-dropdown>
+    <br />
+    <br />
+    <br />
+    <h3>使用插槽</h3>
+    <h4>slot=item</h4>
+    <rd-dropdown :data="list">
+      <template #item="{ data }">{{ data.label }} + {{ data.value }}</template>
+    </rd-dropdown>
+    <rd-dropdown
+      type="group"
+      :data="groupData">
+      <template #groupItem="{ data }">自定义插槽 {{ data.value }}</template>
+    </rd-dropdown>
   </div>
 </template>
 
@@ -16,6 +57,11 @@
 export default {
   data() {
     return {
+      list: [
+        { label: 'label1', value: 'value1', disabled: false },
+        { label: 'label2', value: 'value2', disabled: false },
+        { label: 'label3', value: 'value3', disabled: true, tooltip: '一个提示内容333' }
+      ],
       listData: [
         { label: 'label1', value: 'value1', disabled: false },
         { label: 'label2', value: 'value2', disabled: false },
@@ -35,6 +81,8 @@ export default {
       groupData: [
         {
           title: '我是分类一',
+          icon: 'ry-icon-chanpinx',
+          tooltip: '????',
           items: [
             {
               label: 'label1',
@@ -152,6 +200,10 @@ export default {
       ]
     }
   },
-  methods: {}
+  methods: {
+    onClick(value) {
+      console.log(value)
+    }
+  }
 }
 </script>

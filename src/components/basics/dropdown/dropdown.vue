@@ -1,17 +1,35 @@
 <template>
   <div :class="classes">
-    <Dropdown v-bind="$apis">
-      <Button>
-        <span>批量操作</span>
-        <Icon type="ios-arrow-down"></Icon>
-      </Button>
+    <Dropdown
+      v-bind="$apis"
+      @on-click="onClick"
+      @on-visible-change="onVisibleChange"
+      @on-clickoutside="onClickoutside">
+      <slot name="content">
+        <Button>
+          <span>{{ content }}</span>
+          <Icon type="ios-arrow-down"></Icon>
+        </Button>
+      </slot>
       <template #list>
         <dropdown-list
           v-if="type === 'list'"
-          :data="data"></dropdown-list>
+          :data="data">
+          <template #item="{ data }">
+            <slot
+              name="item"
+              :data="data"></slot>
+          </template>
+        </dropdown-list>
         <dropdown-group
           v-if="type === 'group'"
-          :data="data"></dropdown-group>
+          :data="data">
+          <template #groupItem="{ data }">
+            <slot
+              name="groupItem"
+              :data="data"></slot>
+          </template>
+        </dropdown-group>
       </template>
     </Dropdown>
   </div>
@@ -41,11 +59,20 @@ export default {
     data: {
       type: Array,
       default: () => []
+    },
+    content: {
+      type: String,
+      default: '批量操作'
+    },
+    labelValue: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      prefixCls
+      prefixCls,
+      isOpen: false
     }
   },
   computed: {
@@ -58,13 +85,27 @@ export default {
       return [
         `${prefixCls}`,
         {
-          [`${prefixCls}-${this.type}-wrap`]: this.type
+          [`${prefixCls}-${this.type}-wrap`]: this.type,
+          [`${prefixCls}-open`]: this.isOpen
         }
       ]
     }
   },
   watch: {},
+  created() {},
   mounted() {},
-  methods: {}
+  methods: {
+    onClick(name) {
+      let result = this.labelValue ? this.data.find(e => e.value === name) : name
+      this.$emit('on-click', result)
+    },
+    onVisibleChange(visible) {
+      this.isOpen = visible
+      this.$emit('on-visible-change', visible)
+    },
+    onClickoutside(event) {
+      this.$emit('on-clickoutside', event)
+    }
+  }
 }
 </script>
