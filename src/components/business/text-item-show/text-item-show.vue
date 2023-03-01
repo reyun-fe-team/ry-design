@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:43:38
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2022-10-28 16:09:31
+ * @LastEditTime: 2023-03-01 11:24:34
  * @FilePath: /ry-design/src/components/business/text-item-show/text-item-show.vue
  * @Description: 极速创建基础信息，单项显示控件
 -->
@@ -11,21 +11,20 @@
     <!-- basic -->
     <div
       v-if="type === 'basic'"
-      :class="[
-        prefixCls + '-basic',
-        { 'two-lines': twoLineDisplay, 'single-line': !twoLineDisplay }
-      ]">
+      :class="[prefixCls + '-basic', twoLineDisplay ? 'two-lines' : 'single-line']">
       <div
         :class="[
+          'show-text',
           prefixCls + '-basic-text',
-          { 'two-line-text': twoLineDisplay, 'single-line-text': !twoLineDisplay },
-          'show-text'
+          twoLineDisplay ? 'two-line-text' : 'single-line-text'
         ]">
         <Tooltip
           v-if="tooltip"
           theme="light"
-          max-width="300"
-          transfer
+          :transfer="true"
+          :placement="tooltipOptions.placement"
+          :max-width="tooltipOptions.maxWidth || 300"
+          :delay="tooltipOptions.delay"
           :transfer-class-name="prefixCls + '-tooltip'"
           :content="tooltip">
           {{ data.text }}
@@ -106,16 +105,21 @@ export default {
       type: Boolean,
       default: false
     },
+    // 数据项
     data: {
       type: Object,
       default: () => ({})
     },
+    // 提示文案
     tooltip: {
       type: String,
       default: ''
+    },
+    // 提示文案配置项 => placement 方向  maxWidth 最大宽度 delay 延迟时间（ms）
+    tooltipOptions: {
+      type: Object,
+      default: () => ({})
     }
-    // 按钮组 slot
-    // btnGroup
   },
   data() {
     return {
