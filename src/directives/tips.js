@@ -1,3 +1,11 @@
+/*
+ * @Author: 杨玉峰 yangyufeng@mobvista.com
+ * @Date: 2023-03-01 13:58:21
+ * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
+ * @LastEditTime: 2023-03-01 17:50:47
+ * @FilePath: /ry-design/src/directives/tips.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import Vue from 'vue'
 import { Tooltip } from 'view-design'
 
@@ -5,7 +13,7 @@ import { Tooltip } from 'view-design'
 let tooltipDomId = ''
 
 function createTooltip(target, options = {}) {
-  tooltipDomId = 'v-rtooltip_' + +new Date()
+  tooltipDomId = 'v-tooltip-' + +new Date()
   const MyTooltip = { props: { reference: null }, extends: Tooltip }
   const props = {
     ...options,
@@ -21,7 +29,7 @@ function createTooltip(target, options = {}) {
       // 传入了自定义渲染函数
       if (typeof contentRender === 'function') {
         let renderDom = props.contentRender(h, options)
-        contentChild = h('div', { slot: 'content', class: 'rtooltip-content-slot' }, [renderDom])
+        contentChild = h('div', { slot: 'content', class: 'v-tooltip-content-slot' }, [renderDom])
       }
       return h(MyTooltip, { props, id: tooltipDomId }, [contentChild])
     }
