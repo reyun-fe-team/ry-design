@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Button v-rtips="rtipsOptions">测试rtips</Button>
     <Button @click="show = true">预览视频</Button>
     <Button @click="showImg = true">预览图片</Button>
     <rd-image-preview
@@ -16,6 +17,14 @@
 export default {
   data() {
     return {
+      rtipsOptions: {
+        maxWidth: '200',
+        contentRender: (h, opt) => {
+          return h('span', { style: 'color: red' }, opt.content)
+        },
+        content:
+          'Steven Paul Jobs was an American entrepreneur and business magnate. He was the chairman, chief executive officer, and a co-founder of Apple Inc.'
+      },
       show: false,
       showImg: false,
       imgSrc:
