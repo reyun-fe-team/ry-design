@@ -177,6 +177,10 @@ const router = new VueRouter({
     {
       path: '/dropdown',
       component: resolve => require(['./routers/dropdown'], resolve)
+    },
+    {
+      path: '/image-preview',
+      component: resolve => require(['./routers/image-preview'], resolve)
     }
   ]
 })

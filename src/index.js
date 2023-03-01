@@ -27,6 +27,7 @@ import Schedule from './components/basics/schedule'
 import DropdownSearch from './components/basics/dropdown-search'
 import Sort from './components/basics/sort'
 import Dropdown from './components/basics/dropdown'
+import ImagePreview from './components/basics/image-preview'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -54,6 +55,8 @@ import { UTable, UTableColumn } from 'umy-ui'
 // directives
 import lineClamp from './directives/line-clamp'
 import clickOutside from './directives/click-out-side'
+import transferDom from './directives/transfer-dom'
+
 // util
 import { setIviewMessage } from './util/message'
 
@@ -111,11 +114,13 @@ const components = [
   UTableColumn,
   DropdownSearch,
   Sort,
-  Dropdown
+  Dropdown,
+  ImagePreview
 ]
 const directives = {
   'line-clamp': lineClamp,
-  'click-outside': clickOutside
+  'click-outside': clickOutside,
+  'transfer-dom': transferDom
 }
 
 const install = function (Vue) {
@@ -175,5 +180,6 @@ export default {
   UTableColumn,
   DropdownSearch,
   Sort,
-  Dropdown
+  Dropdown,
+  ImagePreview
 }
