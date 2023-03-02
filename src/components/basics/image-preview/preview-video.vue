@@ -10,8 +10,8 @@
   <div
     :class="[prefixCls]"
     @click.stop
-    @mouseleave="handleMouseLeave"
-    @mouseenter="handlemouseEnter">
+    @mouseleave.stop="handleMouseLeave"
+    @mouseenter.stop="handlemouseEnter">
     <!-- 视频加载错误 -->
     <img
       v-if="isVideoLoadError"
@@ -26,18 +26,26 @@
         muted
         preload="none"
         :poster="poster"
+        @click.stop="handleClickPlay"
         @error="handleError"
         @ended="handleEnded"></video>
       <!-- 播放按钮 -->
       <div
-        v-if="isPlay"
-        :class="iconClassName"
+        v-if="!isPlay"
+        :class="[prefixCls + '-icon']"
         @click.stop="handleClickPlay">
-        <img :src="isPlayIcon ? videoPlay : videoPause" />
+        <img :src="videoPlay" />
+      </div>
+      <!-- 暂停按钮 -->
+      <div
+        v-if="isPlay && isEnter"
+        :class="[prefixCls + '-icon']"
+        @click.stop="handleClickPlay">
+        <img :src="videoPause" />
       </div>
       <!-- 静音 -->
       <div
-        v-if="!isPlayIcon"
+        v-if="isPlay"
         :class="[prefixCls + '-voice']">
         <Icon
           :type="isOpenVoice ? 'md-volume-up' : 'md-volume-off'"
@@ -56,6 +64,10 @@ import videoPause from '@src/images/image-preview/video-pause.svg'
 
 export default {
   props: {
+    value: {
+      type: Boolean,
+      debugger: false
+    },
     src: {
       required: true,
       type: String,
@@ -73,43 +85,53 @@ export default {
       videoPlay,
       videoPause,
       // 是否在播放
-      isPlay: true,
-      // 播放按钮图标
-      isPlayIcon: true,
+      isPlay: false,
+      // 是否进入画面
+      isEnter: false,
       // 是否开启音量
       isOpenVoice: false,
       // 视频加载错误
       isVideoLoadError: false
     }
   },
-  computed: {
-    iconClassName() {
-      let list = [
-        this.prefixCls + '-icon',
-        this.isPlayIcon ? this.prefixCls + '-icon-play' : this.prefixCls + '-icon-pause'
-      ]
-      return list
+  watch: {
+    value: async function () {
+      await this.$nextTick()
+      this.isEnter = false
+      this.handleOnMuted()
+      if (this.value) {
+        this.playVideo()
+        this.isPlay = true
+      } else {
+        this.pauseVideo()
+        this.isPlay = false
+      }
     }
   },
-  async mounted() {
-    // 监听事件
-    await this.$nextTick()
+  mounted() {
     this.init()
   },
   methods: {
-    init() {
-      this.isPlay = false
+    async init() {
+      await this.$nextTick()
+      if (!this.value) {
+        return
+      }
+      this.handleOnMuted()
       this.playVideo()
     },
     // 视频播放
     playVideo() {
-      this.isPlayIcon = false
+      if (!this.value) {
+        return
+      }
       this.$refs['VIDEO'].play()
+      this.isPlay = true
     },
     // 视频暂停
     pauseVideo() {
-      this.isPlayIcon = true
       this.$refs['VIDEO'].pause()
+      this.isPlay = false
     },
     // 加载失败
     handleError() {
@@ -118,20 +140,19 @@ export default {
     },
     // 播放完毕
     handleEnded() {
-      this.isPlay = true
+      this.isPlay = false
     },
     // 离开播放区域
     handleMouseLeave() {
-      this.isPlay = true
+      this.isEnter = false
     },
     // 进入播放区域
     handlemouseEnter() {
-      this.isPlay = true
+      this.isEnter = true
     },
     // 点击播放按钮
     handleClickPlay() {
-      this.handleOnMuted()
-      this.isPlayIcon ? this.playVideo() : this.pauseVideo()
+      !this.isPlay ? this.playVideo() : this.pauseVideo()
     },
     // 关闭静音
     handleOffMuted() {

@@ -35,6 +35,7 @@
           <!-- 视频 -->
           <preview-video
             v-if="type === 'VIDEO'"
+            :value="value"
             :class="[prefixCls + '-video']"
             :poster="poster"
             :src="src"></preview-video>
