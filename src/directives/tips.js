@@ -15,23 +15,29 @@ let tooltipDomId = ''
 function createTooltip(target, options = {}) {
   tooltipDomId = 'v-tooltip-' + +new Date()
   const MyTooltip = { props: { reference: null }, extends: Tooltip }
-  const props = {
-    ...options,
-    transfer: true,
-    theme: 'light',
-    reference: target
-  }
   const tooltip = new Vue({
     el: document.createElement('div'),
     render(h) {
       let contentChild = null
-      let { contentRender } = props
+      let { contentRender } = options
       // 传入了自定义渲染函数
       if (typeof contentRender === 'function') {
-        let renderDom = props.contentRender(h, options)
+        let renderDom = options.contentRender(h, options)
         contentChild = h('div', { slot: 'content', class: 'v-tooltip-content-slot' }, [renderDom])
       }
-      return h(MyTooltip, { props, id: tooltipDomId }, [contentChild])
+      return h(
+        MyTooltip,
+        {
+          id: tooltipDomId,
+          props: {
+            ...options,
+            transfer: true,
+            theme: 'light',
+            reference: target
+          }
+        },
+        [contentChild]
+      )
     }
   })
   return tooltip.$children[0]
