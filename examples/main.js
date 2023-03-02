@@ -169,6 +169,10 @@ const router = new VueRouter({
     {
       path: '/sort',
       component: resolve => require(['./routers/sort'], resolve)
+    },
+    {
+      path: '/image-preview',
+      component: resolve => require(['./routers/image-preview'], resolve)
     }
   ]
 })
