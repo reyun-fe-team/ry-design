@@ -4,6 +4,7 @@
     <h4>content 参数</h4>
     <rd-dropdown
       :data="list"
+      trigger="click"
       content="自定义"></rd-dropdown>
     <h4>使用slot=content</h4>
     <rd-dropdown
@@ -21,7 +22,6 @@
       :data="listData"></rd-dropdown>
     <h4>分类样式</h4>
     <rd-dropdown
-      trigger="click"
       type="group"
       :data="groupData"></rd-dropdown>
     <br />
