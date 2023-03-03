@@ -7,7 +7,7 @@
         @click="handleClose">
         <span
           style="font-size: 12px"
-          class="icon iconfont icon-delete1"></span>
+          class="icon iconfont ry-icon-modal-close"></span>
       </div>
       <div :class="prefixCls + '-modal-content-icon'">
         <slot name="delete-modal-img">

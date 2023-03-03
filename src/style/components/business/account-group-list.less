@@ -11,6 +11,8 @@
     &-left-box {
       width: @left-box-width;
       border-right: 1px solid @border-color-base;
+      display: flex;
+      flex-direction: column;
 
       &-title {
         background: #F9F9F9;
@@ -18,14 +20,13 @@
         height: 32px;
         line-height: 32px;
         padding: 0 10px;
-        margin-bottom: 10px;
         color: #151B39;
         font-weight: bold;
       }
 
       &-content {
-        width: 100%;
-        cursor: pointer;
+        overflow-y: auto;
+        .small-scroll-y();
 
         ul {
           list-style-type: none;
@@ -43,15 +44,10 @@
           white-space: nowrap;
         }
 
-        &::-webkit-scrollbar {
-          -webkit-appearance: none;
-          width: 7px;
-        }
-
         &-item {
-          height: 32px;
+          height: 48px;
           width: 100%;
-          padding: 0px 10px;
+          padding: 8px 10px;
           cursor: pointer;
           display: flex;
           justify-content: space-between;

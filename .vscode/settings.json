@@ -3,9 +3,5 @@
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
-  "eslint.format.enable": true,
-  "[vue]": {
-      "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-  },
   "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"]
 }

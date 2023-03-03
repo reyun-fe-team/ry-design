@@ -6,7 +6,8 @@
     <br />
     <rd-schedule
       ref="schedule"
-      v-model="sheetStates"></rd-schedule>
+      v-model="sheetStates" 
+      @on-white-block="onWhite"></rd-schedule>
     <br />
     <rd-schedule
       ref="schedule"
@@ -28,6 +29,9 @@ export default {
   },
   computed: {},
   methods: {
+    onWhite(v) {
+      console.log(v)
+    },
     changeColspan() {
       this.colspan = this.colspan === 1 ? 2 : 1
       this.$nextTick(() => {

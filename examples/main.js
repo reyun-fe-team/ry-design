@@ -167,6 +167,14 @@ const router = new VueRouter({
       component: resolve => require(['./routers/account-group-list'], resolve)
     },
     {
+      path: '/sort',
+      component: resolve => require(['./routers/sort'], resolve)
+    },
+    {
+      path: '/image-preview',
+      component: resolve => require(['./routers/image-preview'], resolve)
+    },
+    {
       path: '/date-picker',
       component: resolve => require(['./routers/date-picker'], resolve)
     }

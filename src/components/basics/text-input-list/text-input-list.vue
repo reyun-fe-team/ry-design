@@ -8,10 +8,13 @@
       :extra-props="{ ...$attrs, middle, maxLine, errorList, value }"
       :data-component="itemComponent"
       v-on="$listeners"
+      @enter-over-length="enterOverLength"
+      @paste-over-length="pasteOverLength"
       @handlerKeydown="handlerKeydown"
       @middle="middleChange"
       @on-error="onInputError"
-      @itemClick="itemClick" />
+      @itemClick="itemClick"
+      @on-change="handlerChange" />
   </div>
 </template>
 <script>
@@ -92,6 +95,17 @@ export default {
         emojInput.$el.click()
         emojInput.focus('end')
       })
+    },
+    // 回车超出可编辑的列表长度
+    enterOverLength(index) {
+      this.$emit('enter-over-length', index)
+    },
+    // 复制粘贴超出可编辑的列表返回超出的内容
+    pasteOverLength(data) {
+      this.$emit('paste-over-length', data)
+    },
+    handlerChange(val) {
+      this.$emit('on-change', val)
     },
     getItem() {
       return this.itemChild || (this.$children[0] && this.$children[0].$children[0].$children[0])

@@ -24,6 +24,8 @@ import Button from './components/basics/custom-button'
 import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
 import Page from './components/basics/page'
 import Schedule from './components/basics/schedule'
+import Sort from './components/basics/sort'
+import ImagePreview from './components/basics/image-preview'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -52,6 +54,9 @@ import { UTable, UTableColumn } from 'umy-ui'
 // directives
 import lineClamp from './directives/line-clamp'
 import clickOutside from './directives/click-out-side'
+import transferDom from './directives/transfer-dom'
+import tips from './directives/tips'
+
 // util
 import { setIviewMessage } from './util/message'
 
@@ -107,11 +112,15 @@ const components = [
   AccountGroupList,
   UTable,
   UTableColumn,
+  Sort,
+  ImagePreview,
   DatePicker
 ]
 const directives = {
   'line-clamp': lineClamp,
-  'click-outside': clickOutside
+  'click-outside': clickOutside,
+  'transfer-dom': transferDom,
+  tooltip: tips
 }
 
 const install = function (Vue) {
@@ -168,5 +177,7 @@ export default {
   Schedule,
   AccountGroupList,
   UTable,
-  UTableColumn
+  UTableColumn,
+  Sort,
+  ImagePreview
 }

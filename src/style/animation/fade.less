@@ -1,0 +1,35 @@
+.fade-motion(@className, @keyframeName) {
+  .make-motion(@className, @keyframeName, @animation-time-quick);
+
+  .@{className}-enter-active,
+  .@{className}-appear {
+    opacity: 0;
+    animation-timing-function: linear;
+  }
+
+  .@{className}-leave-active {
+    animation-timing-function: linear;
+  }
+}
+
+.fade-motion(fade, rdFade);
+
+@keyframes rdFadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes rdFadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
