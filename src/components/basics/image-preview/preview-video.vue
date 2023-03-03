@@ -19,13 +19,13 @@
       :src="videoError" />
     <!-- 视频加载成功 -->
     <template v-if="!isVideoLoadError">
+      <!-- 视频播放区域 -->
       <video
-        v-if="!isVideoLoadError"
-        ref="VIDEO"
+        ref="video"
         :src="src"
-        muted
-        preload="none"
+        :muted="true"
         :poster="poster"
+        preload="auto"
         @click.stop="handleClickPlay"
         @error="handleError"
         @ended="handleEnded"></video>
@@ -125,12 +125,12 @@ export default {
       if (!this.value) {
         return
       }
-      this.$refs['VIDEO'].play()
+      this.$refs.video.play()
       this.isPlay = true
     },
     // 视频暂停
     pauseVideo() {
-      this.$refs['VIDEO'].pause()
+      this.$refs.video.pause()
       this.isPlay = false
     },
     // 加载失败
@@ -138,9 +138,9 @@ export default {
       this.isVideoLoadError = true
       this.$emit('on-error')
     },
-    // 播放完毕
+    // 播放完毕,继续播放
     handleEnded() {
-      this.isPlay = false
+      this.playVideo()
     },
     // 离开播放区域
     handleMouseLeave() {
@@ -157,12 +157,12 @@ export default {
     // 关闭静音
     handleOffMuted() {
       this.isOpenVoice = true
-      this.$refs['VIDEO'].muted = false
+      this.$refs.video.muted = false
     },
     // 开启静音
     handleOnMuted() {
       this.isOpenVoice = false
-      this.$refs['VIDEO'].muted = true
+      this.$refs.video.muted = true
     }
   }
 }
