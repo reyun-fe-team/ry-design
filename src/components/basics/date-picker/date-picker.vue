@@ -25,6 +25,7 @@
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'date-picker'
 import { getShortcutsOptionsList, shortcutsList } from './data'
+import util from '@src/util'
 export default {
   name: prefixCls,
   props: {
@@ -158,14 +159,14 @@ export default {
   },
   methods: {
     injection() {
-      if (this.$refs['ry-date-picker-com']) {
-        this.$refs['ry-date-picker-com'].$refs.pickerPanel.$on('on-pick-click', this.onPick)
+      if (this.$refs['rd-date-picker-inner']) {
+        this.$refs['rd-date-picker-inner'].$refs.pickerPanel.$on('on-pick-click', this.onPick)
       }
     },
     // 设置日期跨度
     onPick() {
       if (this.startRange || this.endRange) {
-        const rangeState = this.$refs['ry-date-picker-com'].$refs.pickerPanel.rangeState
+        const rangeState = this.$refs['rd-date-picker-inner'].$refs.pickerPanel.rangeState
         if (rangeState.from && rangeState.selecting) {
           let star = new Date(rangeState.from)
           let starRange = 0
@@ -183,9 +184,11 @@ export default {
             endRange = Math.floor((new Date(this.end).getTime() - end.getTime()) / 86400000)
           }
           end.setDate(end.getDate() + endRange)
-          this.selStart = $_moment(star)
+          this.selStart = util.$_moment(star)
           this.selEnd =
-            new Date(end).getTime() > new Date().getTime() ? $_moment(new Date()) : $_moment(end)
+            new Date(end).getTime() > new Date().getTime()
+              ? util.$_moment(new Date())
+              : util.$_moment(end)
         } else {
           this.selStart = this.start
           this.selEnd = this.end
@@ -312,7 +315,7 @@ export default {
         return false
       }
       if (this.format === 'yyyy-MM-dd') {
-        this.selDate = [$_moment(this.selDate[0]), $_moment(this.selDate[1])]
+        this.selDate = [util.$_moment(this.selDate[0]), util.$_moment(this.selDate[1])]
       }
       this.$emit('input', this.selDate)
       this.$emit('on-ok', this.selDate)
