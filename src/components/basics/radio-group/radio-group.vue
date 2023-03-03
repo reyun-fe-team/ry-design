@@ -116,6 +116,10 @@ export default {
     delay: {
       type: Number,
       default: 1000
+    },
+    isCustom: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -132,17 +136,20 @@ export default {
           if (defaultList.map(e => e.value).includes(n)) {
             this.newValue = n
           } else {
-            // if (defaultList && defaultList.length) {
-            //   let f = defaultList.find(e => !e.disabled)
-            //   if (f) {
-            //     this.newValue = f.value || null
-            //   } else {
-            //     this.newValue = null
-            //   }
-            // } else {
-            //   this.newValue = null
-            // }
-            this.newValue = null
+            if (!this.isCustom) {
+              if (defaultList && defaultList.length) {
+                let f = defaultList.find(e => !e.disabled)
+                if (f) {
+                  this.newValue = f.value || null
+                } else {
+                  this.newValue = null
+                }
+              } else {
+                this.newValue = null
+              }
+            } else {
+              this.newValue = null
+            }
           }
         }
       },
