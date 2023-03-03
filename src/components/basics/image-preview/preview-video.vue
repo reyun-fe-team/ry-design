@@ -37,12 +37,14 @@
         <img :src="videoPlay" />
       </div>
       <!-- 暂停按钮 -->
-      <div
-        v-if="isPlay && isEnter"
-        :class="[prefixCls + '-icon']"
-        @click.stop="handleClickPlay">
-        <img :src="videoPause" />
-      </div>
+      <transition name="fade">
+        <div
+          v-if="isPlay && isEnter"
+          :class="[prefixCls + '-icon']"
+          @click.stop="handleClickPlay">
+          <img :src="videoPause" />
+        </div>
+      </transition>
       <!-- 静音 -->
       <div
         v-if="isPlay"
