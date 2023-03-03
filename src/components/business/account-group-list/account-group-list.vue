@@ -18,10 +18,10 @@
               placement="right"
               theme="light">
               <div :class="prefixCls + '-body-left-box-content-title'">
-                账户：{{ item[groupName] }}
+                {{ item[groupName] }}
               </div>
               <div slot="content">
-                <p>账户：{{ item[groupName] }}</p>
+                <p>{{ item[groupName] }}</p>
               </div>
             </Tooltip>
             <ul>
@@ -172,7 +172,7 @@ export default {
         let children = p.children.map(c => {
           return {
             ...c,
-            [this.groupId]: p[this.groupId]
+            parentId: p[this.groupId]
           }
         })
         return { ...p, children }
@@ -185,10 +185,14 @@ export default {
   methods: {
     itemClasses(item) {
       let { prefixCls, itemId, active } = this
-      return [
+      let className = [
         `${prefixCls}-body-left-box-content-item`,
         { [`${prefixCls}-body-left-box-content-item-active`]: item[itemId] === active }
       ]
+      if (item.className) {
+        className.push(item.className)
+      }
+      return className
     },
     init() {
       if (!this.data.length) {
@@ -206,14 +210,14 @@ export default {
       })
     },
     choose(item, isFirst = true) {
-      const { itemId, groupId } = this
+      const { itemId } = this
       // 当前已经选中的 不在返回
       if (item[itemId] === this.active && !isFirst) {
         return
       }
       const active = item[itemId]
       this.active = active
-      this.$emit('on-change', active, item[groupId])
+      this.$emit('on-change', active, item['parentId'])
     }
   }
 }
