@@ -1,8 +1,10 @@
 <template>
   <div :class="[prefixCls]">
     <DatePicker
+      :key="ids"
       ref="rd-date-picker-inner"
       v-model="selDate"
+      :style="`width: ${width}`"
       type="daterange"
       :transfer="transfer"
       :confirm="confirm"
@@ -72,10 +74,17 @@ export default {
       type: String
     },
     start: {
-      type: String
+      type: String,
+      default: () => {
+        return util.$_GetYearStr(-1)
+      }
     },
     end: {
-      type: String
+      type: String,
+      request: true,
+      default: () => {
+        return util.$_moment(new Date())
+      }
     },
     limit: {
       type: String
@@ -97,40 +106,53 @@ export default {
     endRange: {
       type: Number,
       default: null
+    },
+    width: {
+      type: [String, Number],
+      default: null
     }
   },
   data() {
     return {
       prefixCls: prefixCls,
-      selDate: this.$props.value
+      selDate: this.$props.value,
+      selStart: this.start,
+      selEnd: this.end,
+      ids: new Date().getTime()
     }
   },
   computed: {
     // 获取基础配置
     getDateOptions({ options }) {
       let self = this
-      let { selStart } = self
+      let { selStart, startRange, endRange } = self
 
       let shortcuts = []
 
       // 是否开启快捷操作
       if (this.showShortcuts) {
         const optionsList = getShortcutsOptionsList(selStart, self)
-
         // 左侧快速选择功能，传入参数优先级高于默认操作列
         let _shortcuts = this.shortcuts && this.shortcuts.length ? this.shortcuts : shortcutsList
-
         optionsList.forEach(item => {
           let { id } = item
           if (_shortcuts.indexOf(id) !== -1) {
-            shortcuts.push(item)
+            if (startRange && endRange) {
+              if (item.value) {
+                let values = item.value().map(val => val.getTime())
+                if (values[1] - values[0] <= (endRange + 1 + startRange) * 86400000) {
+                  shortcuts.push(item)
+                }
+              }
+            } else {
+              shortcuts.push(item)
+            }
           }
         })
       }
-
       // 禁选按钮
       let disabledDate = date => {
-        var config = false
+        let config = false
         if (this.limit) {
           config = config || date < new Date(this.limit)
         }
@@ -210,11 +232,11 @@ export default {
     // 获得该月的天数
     getMonthDays(year, month) {
       // 本月第一天 1-31
-      var relativeDate = new Date(year, month, 1)
+      let relativeDate = new Date(year, month, 1)
       // 获得当前月份0-11
-      var relativeMonth = relativeDate.getMonth()
+      let relativeMonth = relativeDate.getMonth()
       // 获得当前年份4位年
-      var relativeYear = relativeDate.getFullYear()
+      let relativeYear = relativeDate.getFullYear()
       // 当为12月的时候年份需要加1
       // 月份需要更新为0 也就是下一年的第一个月
       if (relativeMonth === 11) {
@@ -225,22 +247,22 @@ export default {
         relativeMonth++
       }
       // 一天的毫秒数
-      var millisecond = 1000 * 60 * 60 * 24
+      let millisecond = 1000 * 60 * 60 * 24
       // 下月的第一天
-      var nextMonthDayOne = new Date(relativeYear, relativeMonth, 1)
+      let nextMonthDayOne = new Date(relativeYear, relativeMonth, 1)
       // 返回得到上月的最后一天,也就是本月总天数
       return new Date(nextMonthDayOne.getTime() - millisecond).getDate()
     },
     // 得到上季度的起始日期
     getPriorSeasonFirstDay(year, month) {
       // 春
-      var spring = 0
+      let spring = 0
       // 夏
-      var summer = 3
+      let summer = 3
       // 秋
-      var fall = 6
+      let fall = 6
       // 冬
-      var winter = 9
+      let winter = 9
       // 月份从0-11
       // 季度的其实月份
       switch (month) {
@@ -264,13 +286,13 @@ export default {
     // 得到本季度开始的月份
     getQuarterSeasonStartMonth(month) {
       // 春
-      var spring = 0
+      let spring = 0
       // 夏
-      var summer = 3
+      let summer = 3
       // 秋
-      var fall = 6
+      let fall = 6
       // 冬
-      var winter = 9
+      let winter = 9
       // 月份从0-11
       if (month < 3) {
         return spring
@@ -284,9 +306,13 @@ export default {
       return winter
     },
     // 弹出日历和关闭日历时触发
-    handleOpenChange() {},
+    handleOpenChange() {
+      this.$emit('on-open-change')
+    },
     // 日期发生变化时触发
     handleChange(date) {
+      this.selStart = this.start
+      this.selEnd = this.end
       if (new Date(this.start) > new Date(date[0]) || new Date(this.end) < new Date(date[1])) {
         this.$Message.info('时间范围超出，请确认')
         return false
@@ -328,6 +354,9 @@ export default {
     },
     // 点击外部关闭下拉菜单时触发
     handleClickoutside() {
+      if (this.confirm) {
+        this.selDate = this.value
+      }
       this.ids = new Date().getTime()
       this.selStart = this.start
       this.selEnd = this.end

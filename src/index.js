@@ -60,7 +60,12 @@ import tips from './directives/tips'
 // util
 import { setIviewMessage } from './util/message'
 
-Vue.use(ViewUI)
+Vue.use(ViewUI, {
+  datePicker: {
+    customIcon: 'icon iconfont ry-icon-data',
+    iconSize: 14
+  }
+})
 const consoleLogVersion = () => {
   window.console.log(
     '%c%s',
