@@ -3,7 +3,7 @@
     <DatePicker
       ref="rd-date-picker-inner"
       v-model="selDate"
-`      type="daterange"
+      type="daterange"
       :transfer="transfer"
       :confirm="confirm"
       :clearable="clearable"
