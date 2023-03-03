@@ -11,27 +11,13 @@
     <!-- basic -->
     <div
       v-if="type === 'basic'"
-      :class="[prefixCls + '-basic', twoLineDisplay ? 'two-lines' : 'single-line']">
+      :class="[prefixCls + '-basic']">
       <div
-        :class="[
-          'show-text',
-          prefixCls + '-basic-text',
-          twoLineDisplay ? 'two-line-text' : 'single-line-text'
-        ]">
-        <Tooltip
-          v-if="tooltip"
-          theme="light"
-          :transfer="true"
-          :placement="tooltipOptions.placement"
-          :max-width="tooltipOptions.maxWidth || 300"
-          :delay="tooltipOptions.delay"
-          :transfer-class-name="prefixCls + '-tooltip'"
-          :content="tooltip">
-          {{ data.text }}
-        </Tooltip>
-        <template v-else>{{ data.text }}</template>
+        v-line-clamp="twoLineDisplay ? 2 : 1"
+        v-tooltip="tooltipOption"
+        :class="[prefixCls + '-basic-text', prefixCls + '-text']">
+        {{ data.text }}
       </div>
-      <!-- btnGroup -->
       <div :class="[prefixCls + '-btns']">
         <slot name="btnGroup"></slot>
       </div>
@@ -44,17 +30,26 @@
       :style="{ height: titleThumbnail.show ? '56px' : '' }">
       <div
         v-if="titleThumbnail.show"
-        class="title-thumbnail">
+        :class="prefixCls + '-title-thumbnail'">
         <img
           :style="titleThumbnail.style"
           :src="titleThumbnail.src"
           :onerror="onerrorImgSrc" />
       </div>
-      <div :class="[prefixCls + '-title-text', 'show-text']">
-        <div class="main-title">{{ data.title }}</div>
-        <div class="sub-title">{{ data.subTitle }}</div>
+      <div
+        v-tooltip="tooltipOption"
+        :class="[prefixCls + '-title-text', prefixCls + '-text']">
+        <div
+          v-line-clamp="1"
+          :class="prefixCls + '-title-text-main'">
+          {{ data.title }}
+        </div>
+        <div
+          v-line-clamp="1"
+          :class="prefixCls + '-title-text-sub'">
+          {{ data.subTitle }}
+        </div>
       </div>
-      <!-- btnGroup -->
       <div :class="[prefixCls + '-btns']">
         <slot name="btnGroup"></slot>
       </div>
@@ -64,24 +59,33 @@
     <div
       v-if="type === 'classify'"
       :class="[prefixCls + '-classify']">
-      <div :class="[prefixCls + '-classify-text', 'show-text']">
-        <div class="classify-thumbnail">
+      <div :class="[prefixCls + '-classify-text', prefixCls + '-text']">
+        <div :class="prefixCls + '-classify-thumbnail'">
           <img
             :src="data.thumbnail"
             :onerror="onerrorImgSrc" />
         </div>
-        <div class="classify-infos">
-          <div class="classify-info-item">
-            <span class="classify-item-name">{{ data.classify.name }}</span>
+        <div
+          v-tooltip="tooltipOption"
+          :class="prefixCls + '-classify-infos'">
+          <div
+            v-line-clamp="1"
+            class="classify-info-item">
+            <span class="classify-item-name">
+              {{ data.classify.name }}
+            </span>
             <span class="classify-item-id">（ID：{{ data.classify.id }}）</span>
           </div>
-          <div class="classify-info-item">
-            <span class="classify-item-name">{{ data.info.name }}</span>
+          <div
+            v-line-clamp="1"
+            class="classify-info-item">
+            <span class="classify-item-name">
+              {{ data.info.name }}
+            </span>
             <span class="classify-item-id">（ID：{{ data.info.id }}）</span>
           </div>
         </div>
       </div>
-      <!-- btnGroup -->
       <div :class="[prefixCls + '-btns']">
         <slot name="btnGroup"></slot>
       </div>
@@ -127,6 +131,16 @@ export default {
     }
   },
   computed: {
+    tooltipOption() {
+      if (!this.tooltip) {
+        return null
+      }
+      return {
+        maxWidth: 300,
+        transferClassName: this.prefixCls + '-tooltip',
+        content: this.tooltip
+      }
+    },
     // 默认图地址
     onerrorImgSrc() {
       return 'this.src="' + require('./error.jpg') + '"'

@@ -11,7 +11,17 @@
     <p style="margin: 10px 0">双行-Tooltip</p>
     <rd-text-item-show
       :tooltip="basic.text"
+      :data="basic">
+      <template #btnGroup>
+        <Icon
+          style="width: 50px"
+          type="md-create" />
+      </template>
+    </rd-text-item-show>
+
+    <rd-text-item-show
       two-line-display
+      :tooltip="basic.text"
       :data="basic">
       <template #btnGroup>
         <Icon
@@ -29,6 +39,7 @@
     </rd-text-item-show>
     <p style="margin: 10px 0">带图文-标题与子标题</p>
     <rd-text-item-show
+      :tooltip="basic.text"
       type="title"
       :data="title">
       <template #btnGroup>
@@ -64,7 +75,7 @@ export default {
   data() {
     return {
       basic: {
-        text: '极速创建基础信息，单项显示控件 示例极速创建基础信息，单项显示控件 示例极速创建基础信息，单项显示控件 示例'
+        text: '极速创建基础信息，单项显示控件 示例极速创建基础信息，单项显示控件 示例极速创建基础信息，单项显示控件 示例,极速创建基础信息，单项显示控件 示例极速创建基础信息，单项显示控件 示例极速创建基础信息，单项显示控件 示例,极速创建基础信息，单项显示控件 示例极速创建基础信息，单项显示控件 示例极速创建基础信息，单项显示控件 示例'
       },
       title: {
         title: '极速创建基础信息',

@@ -1,15 +1,6 @@
 @text-item-show: ~'@{css-prefix}text-item-show';
 
 .@{text-item-show} {
-  display: block;
-  user-select: none;
-
-  // 省略号
-  .ellipsis-single-line {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
 
   // btnGroup
   &-btns {
@@ -32,78 +23,30 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 24px;
+    line-height: 24px;
     background: #f3f3f4;
     border-radius: 3px;
     margin-top: 8px;
     padding: 0 8px;
-
-    // 悬浮
-    &:hover {
-      background: rgba(57, 137, 250, 0.1);
-
-      .show-text {
-        color: #3989fa !important;
-      }
-
-      .ivu-icon {
-        color: #3989fa;
-      }
-    }
-
-    // 双行
-    &.two-lines {
-      height: auto;
-
-      .two-line-text {
-        font-size: 12px;
-        color: #151b39;
-        line-height: 24px;
-        flex: 1;
-        word-break: break-all;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow: hidden;
-      }
-
-      .ivu-tooltip-rel {
-        overflow: hidden;
-        word-break: break-all;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-      }
-
-    }
-
-    // 单行
-    &.single-line {
-
-      .single-line-text {
-        .ellipsis-single-line;
-      }
-
-      .ivu-tooltip-rel {
-        display: block;
-        .ellipsis-single-line;
-      }
-
-    }
 
     &-text {
       font-size: 12px;
       color: #151b39;
       line-height: 24px;
       flex: 1;
+    }
 
-      .ivu-tooltip {
-        width: 100%;
-        display: block;
+    // 悬浮
+    &:hover {
+      background: rgba(57, 137, 250, 0.1);
+
+      .@{text-item-show}-text {
+        color: #3989fa !important;
       }
 
+      .ivu-icon {
+        color: #3989fa;
+      }
     }
   }
 
@@ -117,7 +60,19 @@
     margin-top: 8px;
     padding: 0 8px;
 
-    .title-thumbnail {
+    &-text {
+      font-size: 12px;
+      color: #151b39;
+      line-height: 24px;
+      flex: 1;
+      overflow: hidden;
+
+      &-sub {
+        color: #999999;
+      }
+    }
+
+    &-thumbnail {
       width: 40px;
       height: 40px;
       margin-right: 8px;
@@ -132,30 +87,13 @@
     &:hover {
       background: rgba(57, 137, 250, 0.1);
 
-      .sub-title,
-      .main-title {
+      .@{text-item-show}-title-text-main,
+      .@{text-item-show}-title-text-sub {
         color: #3989fa !important;
       }
 
       .ivu-icon {
         color: #3989fa;
-      }
-    }
-
-    &-text {
-      font-size: 12px;
-      color: #151b39;
-      line-height: 24px;
-      flex: 1;
-      overflow: hidden;
-
-      .main-title {
-        .ellipsis-single-line;
-      }
-
-      .sub-title {
-        color: #999999;
-        .ellipsis-single-line;
       }
     }
   }
@@ -171,6 +109,46 @@
     margin-top: 8px;
     padding: 0 8px;
 
+    &-text {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-size: 12px;
+      color: #151b39;
+      line-height: 24px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    &-thumbnail {
+      width: 40px;
+      height: 40px;
+      margin-right: 8px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    &-infos {
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+
+      .classify-info-item {
+        height: 24px;
+        font-size: 12px;
+        color: #151b39;
+        line-height: 24px;
+
+        .classify-item-id {
+          color: #999999;
+        }
+      }
+    }
+
     &:hover {
       background: rgba(57, 137, 250, 0.1);
 
@@ -181,47 +159,6 @@
 
       .ivu-icon {
         color: #3989fa;
-      }
-    }
-
-    &-text {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      font-size: 12px;
-      color: #151b39;
-      line-height: 24px;
-      flex: 1;
-      overflow: hidden;
-
-      .classify-thumbnail {
-        width: 40px;
-        height: 40px;
-        margin-right: 8px;
-
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-        }
-      }
-
-      .classify-infos {
-        height: 100%;
-        flex: 1;
-        overflow: hidden;
-
-        .classify-info-item {
-          height: 24px;
-          font-size: 12px;
-          color: #151b39;
-          line-height: 24px;
-          .ellipsis-single-line;
-
-          .classify-item-id {
-            color: #999999;
-          }
-        }
       }
     }
   }
