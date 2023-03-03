@@ -3,6 +3,7 @@
     <rd-radio-group
       v-model="value"
       :default-list="list"
+      is-custom
       :is-disabled-item-fun="isDisabledItemFun"
       @on-change="onChange"></rd-radio-group>
   </div>
