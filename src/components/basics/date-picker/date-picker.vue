@@ -3,9 +3,9 @@
     <DatePicker
       ref="rd-date-picker-inner"
       v-model="selDate"
+`      type="daterange"
       :transfer="transfer"
       :confirm="confirm"
-      :type="type"
       :clearable="clearable"
       :options="getDateOptions"
       :format="format"
@@ -35,6 +35,9 @@ export default {
       type: Boolean,
       default: false
     },
+    clearable: {
+      default: true
+    },
     confirm: {
       type: Boolean,
       default: true
@@ -44,12 +47,10 @@ export default {
       type: Array,
       default: () => []
     },
-    type: {
-      type: String,
-      default: 'date'
-    },
-    clearable: {
-      default: true
+    // 禁止选择日期
+    disabledDate: {
+      type: Function,
+      default: () => {}
     },
     // 格式化日期展现形式
     format: {
@@ -87,8 +88,14 @@ export default {
       type: Object,
       default: () => {}
     },
-    startDate: {
-      type: Date
+    // 前置范围
+    startRange: {
+      type: Number,
+      default: null
+    },
+    endRange: {
+      type: Number,
+      default: null
     }
   },
   data() {
@@ -101,13 +108,13 @@ export default {
     // 获取基础配置
     getDateOptions({ options }) {
       let self = this
-      let { start } = self
+      let { selStart } = self
 
       let shortcuts = []
 
       // 是否开启快捷操作
       if (this.showShortcuts) {
-        const optionsList = getShortcutsOptionsList(start, self)
+        const optionsList = getShortcutsOptionsList(selStart, self)
 
         // 左侧快速选择功能，传入参数优先级高于默认操作列
         let _shortcuts = this.shortcuts && this.shortcuts.length ? this.shortcuts : shortcutsList
@@ -126,11 +133,11 @@ export default {
         if (this.limit) {
           config = config || date < new Date(this.limit)
         }
-        if (this.start) {
-          config = new Date(this.start) > date
+        if (this.selStart) {
+          config = new Date(this.selStart) > date
         }
-        if (this.end) {
-          config = config || date > new Date(this.end)
+        if (this.selEnd) {
+          config = config || date > new Date(this.selEnd)
         }
         return config
       }
@@ -146,7 +153,45 @@ export default {
       this.selDate = value
     }
   },
+  mounted() {
+    this.injection()
+  },
   methods: {
+    injection() {
+      if (this.$refs['ry-date-picker-com']) {
+        this.$refs['ry-date-picker-com'].$refs.pickerPanel.$on('on-pick-click', this.onPick)
+      }
+    },
+    // 设置日期跨度
+    onPick() {
+      if (this.startRange || this.endRange) {
+        const rangeState = this.$refs['ry-date-picker-com'].$refs.pickerPanel.rangeState
+        if (rangeState.from && rangeState.selecting) {
+          let star = new Date(rangeState.from)
+          let starRange = 0
+          if (this.startRange) {
+            starRange = this.startRange
+          } else {
+            starRange = Math.floor((star.getTime() - new Date(this.start).getTime()) / 86400000)
+          }
+          star.setDate(star.getDate() - (starRange + 1))
+          let end = new Date(rangeState.from)
+          let endRange = 0
+          if (this.endRange) {
+            endRange = this.endRange
+          } else {
+            endRange = Math.floor((new Date(this.end).getTime() - end.getTime()) / 86400000)
+          }
+          end.setDate(end.getDate() + endRange)
+          this.selStart = $_moment(star)
+          this.selEnd =
+            new Date(end).getTime() > new Date().getTime() ? $_moment(new Date()) : $_moment(end)
+        } else {
+          this.selStart = this.start
+          this.selEnd = this.end
+        }
+      }
+    },
     // 返回上一个月的第一天Date类型
     getPriorMonthFirstDay(year, month) {
       // 年份为0代表,是本年的第一月,所以不能减
@@ -279,7 +324,15 @@ export default {
       this.$emit('on-clear', date)
     },
     // 点击外部关闭下拉菜单时触发
-    handleClickoutside() {},
+    handleClickoutside() {
+      this.ids = new Date().getTime()
+      this.selStart = this.start
+      this.selEnd = this.end
+      this.$nextTick(() => {
+        this.injection()
+      })
+      this.$emit('on-clickoutside')
+    },
     // 点击
     nativeClick() {
       const target = this.$refs['rd-date-picker-inner'].$refs['pickerPanel']
