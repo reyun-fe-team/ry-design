@@ -20,7 +20,10 @@
       <!-- 搜索输入框 -->
       <div :class="prefixCls + '-search-input'">
         <Input
+          ref="SearchInput"
           v-model="searchText"
+          v-click-outside:true="handleClickInputOutside"
+          :class="newVisible ? prefixCls + '-input-focus' : ''"
           :style="{ width: width + 'px' }"
           :placeholder="placeholder"
           @on-focus="handleFocus"
@@ -60,6 +63,8 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'dropdown-search'
+import _debounce from 'lodash/debounce'
+
 export default {
   name: prefixCls,
   props: {
@@ -113,6 +118,22 @@ export default {
     }
   },
   methods: {
+    // 点击输入框的外部
+    handleClickInputOutside(event) {
+      if (!this.newVisible) {
+        return
+      }
+      let targetArea = this.$refs.Results
+      // 在组件内
+      if (targetArea.contains(event.target) || targetArea === event.target) {
+        this.setFocus()
+      }
+    },
+    // 设置输入框聚焦
+    setFocus: _debounce(function () {
+      const input = this.$refs.SearchInput
+      input.focus()
+    }, 250),
     // 面板数据更新 -> 更新位置
     updateDropPosition() {
       this.$nextTick(() => {
