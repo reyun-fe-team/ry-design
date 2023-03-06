@@ -173,6 +173,10 @@ const router = new VueRouter({
     {
       path: '/image-preview',
       component: resolve => require(['./routers/image-preview'], resolve)
+    },
+    {
+      path: '/indicator',
+      component: resolve => require(['./routers/indicator'], resolve)
     }
   ]
 })
