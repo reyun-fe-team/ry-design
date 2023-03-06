@@ -19,7 +19,7 @@
       @on-change="handleChange"
       @on-ok="handleOk"
       @on-clear="handleClear"
-      @on-clickoutside="handleClickoutside"></DatePicker>
+      @on-clickoutside="handleClickOutside"></DatePicker>
   </div>
 </template>
 
@@ -180,7 +180,7 @@ export default {
     }
   },
   watch: {
-    value: function (value) {
+    value(value) {
       this.selDate = value
     }
   },
@@ -361,7 +361,7 @@ export default {
       this.$emit('on-clear', date)
     },
     // 点击外部关闭下拉菜单时触发
-    handleClickoutside() {
+    handleClickOutside() {
       if (this.confirm) {
         this.selDate = this.value
       }
@@ -371,7 +371,7 @@ export default {
       this.$nextTick(() => {
         this.injection()
       })
-      this.$emit('on-clickoutside')
+      this.$emit('on-click-outside')
     },
     // 点击
     nativeClick() {
