@@ -126,9 +126,7 @@ export default {
     getDateOptions({ options }) {
       let self = this
       let { selStart, startRange, endRange } = self
-
       let shortcuts = []
-
       // 是否开启快捷操作
       if (this.showShortcuts) {
         const optionsList = getShortcutsOptionsList(selStart, self)
