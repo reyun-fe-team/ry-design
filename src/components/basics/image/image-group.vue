@@ -8,6 +8,7 @@
       :key="index"
       :src="url"
       fit="contain"
+      :style="imageStyles"
       :class="classImage"
       :alt="url"></rd-image>
   </div>
@@ -87,12 +88,26 @@ export default {
       ]
     },
     classImage() {
-      return [`${prefixCls}-pic`, `${prefixCls}-pic-${this.currenData.length}`]
+      return [`${prefixCls}-pic`]
     },
     imageGroupStyles() {
       return {
         width: typeof this.width === 'number' ? `${this.width}px` : this.width,
         height: typeof this.height === 'number' ? `${this.height}px` : this.height
+      }
+    },
+    imageStyles() {
+      let { size } = this
+      let width = 100
+      let height = [1, 2].includes(size) ? 100 : 50
+      if ([2, 3].includes(size)) {
+        width = 100 / size
+      } else if ([4, 6].includes(size)) {
+        width = 100 / (size / 2)
+      }
+      return {
+        width: width + '%',
+        height: height + '%'
       }
     }
   },

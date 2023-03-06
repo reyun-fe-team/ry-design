@@ -2,6 +2,12 @@
   <div>
     <rd-image-group
       style="margin: 24px 0"
+      :size="1"
+      :data="urlList"
+      :width="216"
+      :height="120"></rd-image-group>
+    <rd-image-group
+      style="margin: 24px 0"
       :size="2"
       :data="urlList"
       :width="216"
@@ -21,8 +27,8 @@
     <rd-image-group
       style="margin: 24px 0"
       :size="6"
-      :data="urlList"
-      :width="216"
+      :data="shuList"
+      :width="256"
       :height="120"></rd-image-group>
     <hr />
     <!-- <rd-image
@@ -244,6 +250,14 @@ export default {
         'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/10025/image/2023/01/06/202301061741498632-small.jpg',
         'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/c70/72b/d8f/c7072bd8fa42104a5a9dabfb1c080649-small.jpg',
         'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1e9/389/1a8/1e93891a80c42eb5c4efe5ac1d98ca90-small.jpg'
+      ],
+      shuList: [
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg',
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg',
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg',
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg',
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg',
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg'
       ],
       fitList,
       url: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1d3/06c/7af/1d306c7afd6243687172409fec4b43e5-small.jpg',
