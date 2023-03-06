@@ -14,7 +14,7 @@ let tooltipDomId = ''
 
 function createTooltip(target, options = {}) {
   tooltipDomId = 'v-tooltip-' + +new Date()
-  const MyTooltip = { props: { reference: null }, extends: Tooltip }
+  // const MyTooltip = { props: { reference: null }, extends: Tooltip }
   const tooltip = new Vue({
     el: document.createElement('div'),
     render(h) {
@@ -26,7 +26,7 @@ function createTooltip(target, options = {}) {
         contentChild = h('div', { slot: 'content', class: 'v-tooltip-content-slot' }, [renderDom])
       }
       return h(
-        MyTooltip,
+        Tooltip,
         {
           id: tooltipDomId,
           props: {
@@ -55,7 +55,9 @@ function showTooltip(event) {
     }
 
     // 展示浮层
-    tooltipRef.handleShowPopper()
+    tooltipRef.$nextTick(() => {
+      tooltipRef.handleShowPopper()
+    })
   }
 }
 
@@ -76,13 +78,15 @@ const directive = {
   unbind(el) {
     // 销毁组件
     const tooltipRef = el._tooltipRef
-    if (tooltipRef) {
-      tooltipRef.handleClosePopper()
+    tooltipRef &&
       tooltipRef.$nextTick(() => {
+        tooltipRef.handleClosePopper()
         tooltipRef.$destroy()
-        document.body.removeChild(document.body.getElementById('#' + tooltipDomId))
+        if (document) {
+          const dom = document.getElementById('#' + tooltipDomId)
+          dom && document.removeChild(dom)
+        }
       })
-    }
     // 删除属性
     delete el._tooltipOption
     delete el._tooltipRef
