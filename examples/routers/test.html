@@ -3,6 +3,7 @@
 <head>
     <style>
         .flex {
+          width: 230px;
             display: flex;
             flex-direction: row;
             flex-flow:row wrap;
@@ -10,12 +11,13 @@
             border: 1px solid #CCC;
             height: 150px;
 
-            /* justify-content:center; */
+            justify-content:center;
         }
         .flex div {
             width: 60px;
             height: 60px;
             border: 1px solid black;
+            margin-right:4px;
             
         }
         .flex div:nth-child(4) {
@@ -25,7 +27,7 @@
 </head>
 <body>
     <div class="flex">
-        <div>A</div><div>B</div><div>C</div><div>D</div><div>E</div>
+        <div>A</div><div>B</div><div>C</div><div>D</div><div>E</div><div>f</div>
     </div>
 </body>
 </html>
