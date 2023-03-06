@@ -1,49 +1,53 @@
-import Vue from 'vue'
 // basics
-import Transfer from './components/basics/transfer'
-import MultiCascader from './components/basics/multi-cascader'
-import PrefixContainer from './components/basics/prefix-container'
-import SingleHeader from './components/basics/single-header'
-import PageHeader from './components/basics/page-header'
-import Breadcrumb from './components/basics/breadcrumb'
-import MultiRadioButton from './components/basics/multi-radio-button'
-import Modals from './components/basics/modals'
-import RadioGroup from './components/basics/radio-group'
-import TableColumns from './components/basics/table-columns/index.js'
-import DraggableCard from './components/basics/draggable-card'
-import WordLimit from './components/basics/word-limit'
-import Ellipsis from './components/basics/ellipsis'
-import TableMultiInputs from './components/basics/table-multi-inputs'
-import TextEmojInput from './components/basics/text-emoj-input'
-import Icon from './components/basics/icon'
-import { TextInputList, VirtualList } from './components/basics/text-input-list'
-import Wildcard from './components/basics/wildcard'
-import CascaderTransfer from './components/basics/cascader-transfer'
-import Exception from './components/basics/exception'
-import Button from './components/basics/custom-button'
-import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
-import Page from './components/basics/page'
-import Schedule from './components/basics/schedule'
-import Sort from './components/basics/sort'
-import ImagePreview from './components/basics/image-preview'
+import RdTransfer from './components/basics/transfer'
+import RdMultiCascader from './components/basics/multi-cascader'
+import RdPrefixContainer from './components/basics/prefix-container'
+import RdSingleHeader from './components/basics/single-header'
+import RdPageHeader from './components/basics/page-header'
+import RdBreadcrumb from './components/basics/breadcrumb'
+import RdMultiRadioButton from './components/basics/multi-radio-button'
+import RdModals from './components/basics/modals'
+import RdRadioGroup from './components/basics/radio-group'
+import RdTableColumns from './components/basics/table-columns/index.js'
+import RdDraggableCard from './components/basics/draggable-card'
+import RdWordLimit from './components/basics/word-limit'
+import RdEllipsis from './components/basics/ellipsis'
+import RdTableMultiInputs from './components/basics/table-multi-inputs'
+import RdTextEmojInput from './components/basics/text-emoj-input'
+import RdIcon from './components/basics/icon'
+import {
+  TextInputList as RdTextInputList,
+  VirtualList as RdVirtualList
+} from './components/basics/text-input-list'
+import RdWildcard from './components/basics/wildcard'
+import RdCascaderTransfer from './components/basics/cascader-transfer'
+import RdException from './components/basics/exception'
+import RdButton from './components/basics/custom-button'
+import RdDigitalDetailsTooltip from './components/basics/digital-details-tooltip'
+import RdPage from './components/basics/page'
+import RdSchedule from './components/basics/schedule'
+import RdSort from './components/basics/sort'
+import RdImagePreview from './components/basics/image-preview'
 
 // business
-import BatchUploadXls from './components/business/batch-upload-xls'
-import PageHeaderModule from './components/business/page-header-module'
-import AccountList from './components/business/account-list'
-import EditRowBid from './components/business/edit-row-bid'
-import ReverseButton from './components/business/reverse-button'
-import { LayoutModuleConfig, LayoutModuleView } from './components/business/layout-module-config'
-import TextItemShow from './components/business/text-item-show'
-import DeleteModals from './components/business/delete-modals'
-import AccountSelect from './components/business/account-select'
-import ProductSelect from './components/business/product-select'
-import SubmissionRule from './components/business/submission-rule'
-import BatchModifyBids from './components/business/batch-modify-bids'
-import AccountGroupList from './components/business/account-group-list'
+import RdBatchUploadXls from './components/business/batch-upload-xls'
+import RdPageHeaderModule from './components/business/page-header-module'
+import RdAccountList from './components/business/account-list'
+import RdEditRowBid from './components/business/edit-row-bid'
+import RdReverseButton from './components/business/reverse-button'
+import {
+  LayoutModuleConfig as RdLayoutModuleConfig,
+  LayoutModuleView as RdLayoutModuleView
+} from './components/business/layout-module-config'
+import RdTextItemShow from './components/business/text-item-show'
+import RdDeleteModals from './components/business/delete-modals'
+import RdAccountSelect from './components/business/account-select'
+import RdProductSelect from './components/business/product-select'
+import RdSubmissionRule from './components/business/submission-rule'
+import RdBatchModifyBids from './components/business/batch-modify-bids'
+import RdAccountGroupList from './components/business/account-group-list'
 
 import ViewUI from 'view-design'
-
 import Package from '../package.json'
 import 'view-design/dist/styles/iview.css'
 import './style/index.less'
@@ -59,60 +63,59 @@ import tips from './directives/tips'
 // util
 import { setIviewMessage } from './util/message'
 
-Vue.use(ViewUI)
 const consoleLogVersion = () => {
   window.console.log(
     '%c%s',
     'padding:0 20px; color: #4688f1; background: #fff; font-size: 18px;',
-    'welcome ryDesign v' + Package.version + ' 🔥'
+    'welcome ryDesign v' + Package.version + '，view-design' + ViewUI.version + ' 🔥'
   )
 }
 consoleLogVersion()
 
 const components = [
-  Transfer,
-  PrefixContainer,
-  MultiCascader,
-  SingleHeader,
-  PageHeader,
-  Breadcrumb,
-  MultiRadioButton,
-  AccountList,
-  PageHeaderModule,
-  RadioGroup,
-  Modals,
-  EditRowBid,
-  TableColumns,
-  ReverseButton,
-  LayoutModuleConfig,
-  LayoutModuleView,
-  DraggableCard,
-  DeleteModals,
-  TableMultiInputs,
-  TextItemShow,
-  WordLimit,
-  BatchUploadXls,
-  Ellipsis,
-  TextEmojInput,
-  Icon,
-  TextInputList,
-  VirtualList,
-  Wildcard,
-  AccountSelect,
-  CascaderTransfer,
-  Exception,
-  ProductSelect,
-  SubmissionRule,
-  Button,
-  BatchModifyBids,
-  DigitalDetailsTooltip,
-  Page,
-  Schedule,
-  AccountGroupList,
+  RdTransfer,
+  RdPrefixContainer,
+  RdMultiCascader,
+  RdSingleHeader,
+  RdPageHeader,
+  RdBreadcrumb,
+  RdMultiRadioButton,
+  RdAccountList,
+  RdPageHeaderModule,
+  RdRadioGroup,
+  RdModals,
+  RdEditRowBid,
+  RdTableColumns,
+  RdReverseButton,
+  RdLayoutModuleConfig,
+  RdLayoutModuleView,
+  RdDraggableCard,
+  RdDeleteModals,
+  RdTableMultiInputs,
+  RdTextItemShow,
+  RdWordLimit,
+  RdBatchUploadXls,
+  RdEllipsis,
+  RdTextEmojInput,
+  RdIcon,
+  RdTextInputList,
+  RdVirtualList,
+  RdWildcard,
+  RdAccountSelect,
+  RdCascaderTransfer,
+  RdException,
+  RdProductSelect,
+  RdSubmissionRule,
+  RdButton,
+  RdBatchModifyBids,
+  RdDigitalDetailsTooltip,
+  RdPage,
+  RdSchedule,
+  RdAccountGroupList,
   UTable,
   UTableColumn,
-  Sort,
-  ImagePreview
+  RdSort,
+  RdImagePreview
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -122,9 +125,12 @@ const directives = {
 }
 
 const install = function (Vue) {
+  Vue.use(ViewUI)
+
   components.forEach(component => {
     Vue.component(component.name, component)
   })
+
   Object.keys(directives).forEach(key => {
     Vue.directive(key, directives[key])
   })
@@ -132,50 +138,49 @@ const install = function (Vue) {
   setIviewMessage(Vue)
 }
 
-if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue)
-}
-
-export default {
-  version: process.env.VERSION,
+const API = {
+  ViewUI,
+  version: Package.version,
   install,
-  Transfer,
-  MultiCascader,
-  PrefixContainer,
-  SingleHeader,
-  PageHeader,
-  Breadcrumb,
-  MultiRadioButton,
-  PageHeaderModule,
-  Modals,
-  EditRowBid,
-  TableColumns,
-  ReverseButton,
-  LayoutModuleConfig,
-  LayoutModuleView,
-  WordLimit,
-  BatchUploadXls,
-  Ellipsis,
-  DraggableCard,
-  TableMultiInputs,
-  TextItemShow,
-  DeleteModals,
-  TextEmojInput,
-  TextInputList,
-  AccountSelect,
-  CascaderTransfer,
-  Exception,
-  ProductSelect,
-  SubmissionRule,
-  Button,
-  BatchModifyBids,
-  VirtualList,
-  DigitalDetailsTooltip,
-  Page,
-  Schedule,
-  AccountGroupList,
+  RdTransfer,
+  RdMultiCascader,
+  RdPrefixContainer,
+  RdSingleHeader,
+  RdPageHeader,
+  RdBreadcrumb,
+  RdMultiRadioButton,
+  RdPageHeaderModule,
+  RdModals,
+  RdEditRowBid,
+  RdTableColumns,
+  RdReverseButton,
+  RdLayoutModuleConfig,
+  RdLayoutModuleView,
+  RdWordLimit,
+  RdBatchUploadXls,
+  RdEllipsis,
+  RdDraggableCard,
+  RdTableMultiInputs,
+  RdTextItemShow,
+  RdDeleteModals,
+  RdTextEmojInput,
+  RdTextInputList,
+  RdAccountSelect,
+  RdCascaderTransfer,
+  RdException,
+  RdProductSelect,
+  RdSubmissionRule,
+  RdButton,
+  RdBatchModifyBids,
+  RdVirtualList,
+  RdDigitalDetailsTooltip,
+  RdPage,
+  RdSchedule,
+  RdAccountGroupList,
   UTable,
   UTableColumn,
-  Sort,
-  ImagePreview
+  RdSort,
+  RdImagePreview
 }
+
+module.exports.default = module.exports = API // eslint-disable-line no-undef
