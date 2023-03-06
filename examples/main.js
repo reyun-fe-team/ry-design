@@ -3,6 +3,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './app.vue'
 import ryDesign from '../src/index'
+// 调试打包后的dist文件
 // import ryDesign from '../dist/ry-design.min.js'
 // import '../dist/styles/main.css'
 Vue.use(VueRouter)

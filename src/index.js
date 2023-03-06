@@ -138,6 +138,11 @@ const install = function (Vue) {
   setIviewMessage(Vue)
 }
 
+// auto install
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue)
+}
+
 const API = {
   ViewUI,
   version: Package.version,
