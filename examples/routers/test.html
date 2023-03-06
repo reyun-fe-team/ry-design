@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .flex {
+            display: flex;
+            flex-direction: row;
+            flex-flow:row wrap;
+            /* align-items: flex-end; */
+            border: 1px solid #CCC;
+            height: 150px;
+
+            /* justify-content:center; */
+        }
+        .flex div {
+            width: 60px;
+            height: 60px;
+            border: 1px solid black;
+            
+        }
+        .flex div:nth-child(4) {
+            align-self: flex-start;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex">
+        <div>A</div><div>B</div><div>C</div><div>D</div><div>E</div>
+    </div>
+</body>
+</html>

@@ -87,7 +87,7 @@ export default {
       ]
     },
     classImage() {
-      return [`${prefixCls}-pic-${this.currenData.length}`]
+      return [`${prefixCls}-pic`, `${prefixCls}-pic-${this.currenData.length}`]
     },
     imageGroupStyles() {
       return {

@@ -1,10 +1,29 @@
 <template>
   <div>
     <rd-image-group
+      style="margin: 24px 0"
       :size="2"
       :data="urlList"
-      :width="800"
-      :height="400"></rd-image-group>
+      :width="216"
+      :height="120"></rd-image-group>
+    <rd-image-group
+      style="margin: 24px 0"
+      :size="3"
+      :data="urlList"
+      :width="216"
+      :height="120"></rd-image-group>
+    <rd-image-group
+      style="margin: 24px 0"
+      :size="4"
+      :data="urlList"
+      :width="216"
+      :height="120"></rd-image-group>
+    <rd-image-group
+      style="margin: 24px 0"
+      :size="6"
+      :data="urlList"
+      :width="216"
+      :height="120"></rd-image-group>
     <hr />
     <!-- <rd-image
       :src="urlList[0]"
@@ -16,7 +35,7 @@
       :alt="fit"></rd-image> -->
     横版
     <div class="demo-image">
-      <div style="width: 1000px; height: 300px">
+      <div style="width: 72px; height: 40px">
         <div
           v-for="(fit, index) in fitList"
           :key="index"
@@ -215,19 +234,16 @@ const fitList = ['fill', 'contain', 'cover', 'none', 'scale-down']
 export default {
   data() {
     return {
+      // 横版图片
       urlList: [
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/b26/620/bc4/b26620bc4875aa139ede4421a109707e-small.jpg',
         'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1d3/06c/7af/1d306c7afd6243687172409fec4b43e5-small.jpg',
-        'https://file.iviewui.com/images/image-demo-10.jpg',
-        'https://file.iviewui.com/images/image-demo-11.jpg',
-        'https://file.iviewui.com/images/image-demo-12.jpg',
-        'https://file.iviewui.com/images/image-demo-13.jpg',
-        'https://file.iviewui.com/images/image-demo-14.jpg',
-        'https://file.iviewui.com/images/image-demo-15.jpg',
-        'https://file.iviewui.com/images/image-demo-16.jpg',
-        'https://file.iviewui.com/images/image-demo-17.jpg',
-        'https://file.iviewui.com/images/image-demo-18.jpg',
-        'https://file.iviewui.com/images/image-demo-19.jpg',
-        'https://file.iviewui.com/images/image-demo-20.jpg'
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/8a1/67f/1fa/8a167f1fae164d685578b96a76130ec3-small.jpg',
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cover/2022/11/9/77068a83cdc7819866842f6e197cf837_0-small.jpg',
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cover/2022/11/4/fc86f3f7e50f7d6229469f3cfcfa99c4_0-small.jpg',
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/10025/image/2023/01/06/202301061741498632-small.jpg',
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/c70/72b/d8f/c7072bd8fa42104a5a9dabfb1c080649-small.jpg',
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1e9/389/1a8/1e93891a80c42eb5c4efe5ac1d98ca90-small.jpg'
       ],
       fitList,
       url: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1d3/06c/7af/1d306c7afd6243687172409fec4b43e5-small.jpg',
