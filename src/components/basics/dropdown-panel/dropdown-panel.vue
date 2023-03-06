@@ -12,7 +12,7 @@
         </Button>
       </slot>
       <template #list>
-        <dropdown-list
+        <dropdown-panel-list
           v-if="type === 'list'"
           :data="data">
           <template #item="{ data }">
@@ -20,8 +20,8 @@
               name="item"
               :data="data"></slot>
           </template>
-        </dropdown-list>
-        <dropdown-group
+        </dropdown-panel-list>
+        <dropdown-panel-group
           v-if="type === 'group'"
           :data="data">
           <template #groupItem="{ data }">
@@ -29,7 +29,7 @@
               name="groupItem"
               :data="data"></slot>
           </template>
-        </dropdown-group>
+        </dropdown-panel-group>
       </template>
     </Dropdown>
   </div>
@@ -37,15 +37,15 @@
 
 <script>
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'dropdown'
-import dropdownList from './dropdown-list'
-import dropdownGroup from './dropdown-group'
+const prefixCls = prefix + 'dropdown-panel'
+import dropdownPanelList from './dropdown-panel-list'
+import dropdownPanelGroup from './dropdown-panel-group'
 
 export default {
   name: prefixCls,
   components: {
-    dropdownList,
-    dropdownGroup
+    dropdownPanelList,
+    dropdownPanelGroup
   },
   props: {
     type: {
@@ -86,7 +86,7 @@ export default {
         `${prefixCls}`,
         {
           [`${prefixCls}-${this.type}-wrap`]: this.type,
-          [`${prefixCls}-open`]: this.isOpen
+          [`${prefixCls}-panel-open`]: this.isOpen
         }
       ]
     }

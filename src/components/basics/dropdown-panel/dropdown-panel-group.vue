@@ -51,7 +51,7 @@
 </template>
 <script>
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'dropdown-group'
+const prefixCls = prefix + 'dropdown-panel-group'
 import ryIcon from '../icon/icon.vue'
 export default {
   components: {

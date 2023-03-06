@@ -25,7 +25,7 @@ import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
 import Page from './components/basics/page'
 import Schedule from './components/basics/schedule'
 import Sort from './components/basics/sort'
-import Dropdown from './components/basics/dropdown'
+import DropdownPanel from './components/basics/dropdown-panel'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -109,7 +109,7 @@ const components = [
   UTable,
   UTableColumn,
   Sort,
-  Dropdown
+  DropdownPanel
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -172,5 +172,5 @@ export default {
   UTable,
   UTableColumn,
   Sort,
-  Dropdown
+  DropdownPanel
 }
