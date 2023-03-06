@@ -1,10 +1,10 @@
 <template>
   <div :class="[prefixCls]">
     <DatePicker
-      :key="ids"
+      :key="uid"
       ref="rd-date-picker-inner"
       v-model="selDate"
-      :style="`width: ${width}`"
+      :style="styles"
       type="daterange"
       :transfer="transfer"
       :confirm="confirm"
@@ -27,11 +27,13 @@
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'date-picker'
 import { getShortcutsOptionsList, shortcutsList } from './data'
-import util from '@src/util'
+import date from '@src/util/date'
+import { getKey } from '@src/util/assist'
 export default {
   name: prefixCls,
   props: {
     value: {
+      type: Array,
       default: () => []
     },
     transfer: {
@@ -39,6 +41,7 @@ export default {
       default: false
     },
     clearable: {
+      type: Boolean,
       default: true
     },
     confirm: {
@@ -71,23 +74,25 @@ export default {
       default: '选择日期'
     },
     size: {
-      type: String
+      type: String,
+      default: null
     },
     start: {
       type: String,
       default: () => {
-        return util.$_GetYearStr(-1)
+        return date.getYearStr(-1)
       }
     },
     end: {
       type: String,
       request: true,
       default: () => {
-        return util.$_moment(new Date())
+        return date.getMoment(new Date())
       }
     },
     limit: {
-      type: String
+      type: String,
+      default: null
     },
     // 是否显示快捷操作项
     showShortcuts: {
@@ -115,13 +120,18 @@ export default {
   data() {
     return {
       prefixCls: prefixCls,
-      selDate: this.$props.value,
+      selDate: this.value,
       selStart: this.start,
       selEnd: this.end,
-      ids: new Date().getTime()
+      uid: getKey()
     }
   },
   computed: {
+    styles() {
+      return {
+        width: typeof this.width === 'number' ? `${this.width}px` : this.width
+      }
+    },
     // 获取基础配置
     getDateOptions({ options }) {
       let self = this
@@ -204,11 +214,11 @@ export default {
             endRange = Math.floor((new Date(this.end).getTime() - end.getTime()) / 86400000)
           }
           end.setDate(end.getDate() + endRange)
-          this.selStart = util.$_moment(star)
+          this.selStart = date.getMoment(star)
           this.selEnd =
             new Date(end).getTime() > new Date().getTime()
-              ? util.$_moment(new Date())
-              : util.$_moment(end)
+              ? date.getMoment(new Date())
+              : date.getMoment(end)
         } else {
           this.selStart = this.start
           this.selEnd = this.end
@@ -339,7 +349,7 @@ export default {
         return false
       }
       if (this.format === 'yyyy-MM-dd') {
-        this.selDate = [util.$_moment(this.selDate[0]), util.$_moment(this.selDate[1])]
+        this.selDate = [date.getMoment(this.selDate[0]), date.getMoment(this.selDate[1])]
       }
       this.$emit('input', this.selDate)
       this.$emit('on-ok', this.selDate)
@@ -355,7 +365,7 @@ export default {
       if (this.confirm) {
         this.selDate = this.value
       }
-      this.ids = new Date().getTime()
+      this.uid = getKey()
       this.selStart = this.start
       this.selEnd = this.end
       this.$nextTick(() => {
