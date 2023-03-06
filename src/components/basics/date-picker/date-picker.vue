@@ -135,11 +135,11 @@ export default {
     // 获取基础配置
     getDateOptions({ options }) {
       let self = this
-      let { selStart, startRange, endRange } = self
+      let { start, startRange, endRange } = self
       let shortcuts = []
       // 是否开启快捷操作
       if (this.showShortcuts) {
-        const optionsList = getShortcutsOptionsList(selStart, self)
+        const optionsList = getShortcutsOptionsList(start, self)
         // 左侧快速选择功能，传入参数优先级高于默认操作列
         let _shortcuts = this.shortcuts && this.shortcuts.length ? this.shortcuts : shortcutsList
         optionsList.forEach(item => {
