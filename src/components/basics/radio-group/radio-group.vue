@@ -151,6 +151,7 @@ export default {
               this.newValue = null
             }
           }
+          this.onChange(this.newValue)
         }
       },
       deep: true,
