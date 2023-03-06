@@ -74,8 +74,8 @@ export default {
     },
     classes() {
       return [
-        `${prefixCls}`
-
+        `${prefixCls}`,
+        { [`${prefixCls}-flex`]: true }
         // {
         //   [`${prefixCls}-${this.size}`]: !!this.size,
         //   [`ivu-radio-${this.size}`]: !!this.size,

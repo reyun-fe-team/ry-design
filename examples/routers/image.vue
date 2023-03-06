@@ -6,12 +6,12 @@
       :data="urlList"
       :width="216"
       :height="120"></rd-image-group>
-    <rd-image-group
+    <!-- <rd-image-group
       style="margin: 24px 0"
       :size="3"
       :data="urlList"
       :width="216"
-      :height="120"></rd-image-group>
+      :height="120"></rd-image-group> -->
     <rd-image-group
       style="margin: 24px 0"
       :size="4"
