@@ -3,10 +3,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './app.vue'
 import ryDesign from '../src/index'
-// import iView from 'view-design'
+// 调试打包后的dist文件
 // import ryDesign from '../dist/ry-design.min.js'
 // import '../dist/styles/main.css'
-// Vue.use(iView)
 Vue.use(VueRouter)
 Vue.use(ryDesign)
 
@@ -189,11 +188,11 @@ const router = new VueRouter({
   ]
 })
 
-router.afterEach(_ => {
+router.afterEach(() => {
   window.scrollTo(0, 0)
 })
 
-const app = new Vue({
+new Vue({
   router: router,
   render: h => h(App)
 }).$mount('#app')
