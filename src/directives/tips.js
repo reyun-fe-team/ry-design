@@ -1,11 +1,3 @@
-/*
- * @Author: 杨玉峰 yangyufeng@mobvista.com
- * @Date: 2023-03-01 13:58:21
- * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2023-03-01 17:50:47
- * @FilePath: /ry-design/src/directives/tips.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 import Vue from 'vue'
 import { Tooltip } from 'view-design'
 
@@ -14,7 +6,7 @@ let tooltipDomId = ''
 
 function createTooltip(target, options = {}) {
   tooltipDomId = 'v-tooltip-' + +new Date()
-  // const MyTooltip = { props: { reference: null }, extends: Tooltip }
+  const MyTooltip = { props: { reference: null }, extends: Tooltip }
   const tooltip = new Vue({
     el: document.createElement('div'),
     render(h) {
@@ -26,7 +18,7 @@ function createTooltip(target, options = {}) {
         contentChild = h('div', { slot: 'content', class: 'v-tooltip-content-slot' }, [renderDom])
       }
       return h(
-        Tooltip,
+        MyTooltip,
         {
           id: tooltipDomId,
           props: {
@@ -54,7 +46,7 @@ function showTooltip(event) {
       el._tooltipRef = tooltipRef
     }
 
-    // 展示浮层
+    // 打开浮层
     tooltipRef.$nextTick(() => {
       tooltipRef.handleShowPopper()
     })
@@ -65,7 +57,10 @@ function hideTooltip(event) {
   const el = event.target
   const tooltipRef = el._tooltipRef
   if (tooltipRef) {
-    tooltipRef.handleClosePopper()
+    // 关闭浮层
+    tooltipRef.$nextTick(() => {
+      tooltipRef.handleClosePopper()
+    })
   }
 }
 
@@ -78,15 +73,16 @@ const directive = {
   unbind(el) {
     // 销毁组件
     const tooltipRef = el._tooltipRef
-    tooltipRef &&
+    if (tooltipRef) {
       tooltipRef.$nextTick(() => {
         tooltipRef.handleClosePopper()
         tooltipRef.$destroy()
-        if (document) {
-          const dom = document.getElementById('#' + tooltipDomId)
-          dom && document.removeChild(dom)
+        if (typeof window !== 'undefined' && 'document' in window) {
+          const dom = document.getElementById(tooltipDomId)
+          dom && document.body.removeChild(dom)
         }
       })
+    }
     // 删除属性
     delete el._tooltipOption
     delete el._tooltipRef
