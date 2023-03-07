@@ -1,6 +1,6 @@
-@multi-dropdown: ~'@{css-prefix}dropdown';
+@multi-dropdown-panel: ~'@{css-prefix}dropdown-panel';
 
-.@{multi-dropdown} {
+.@{multi-dropdown-panel} {
   .ivu-btn {
     min-width: 88px;
     color: #151b39;
@@ -33,24 +33,26 @@
   }
 }
 
-.@{multi-dropdown}-list-wrap {
+.@{multi-dropdown-panel}-list-wrap {
   .ivu-select-dropdown {
     max-height: 240px;
     min-width: 120px;
   }
 
   .ivu-dropdown-item {
+    height: 32px;
+    padding: 8px 16px;
     text-align: left;
   }
 }
-.@{multi-dropdown}-group-wrap {
+.@{multi-dropdown-panel}-group-wrap {
   
-  .@{multi-dropdown}-group {
+  .@{multi-dropdown-panel}-group {
     padding-bottom: 8px;
     margin-bottom: 16px;
     border-bottom: 1px dashed #e3e3e8;
   }
-  .@{multi-dropdown}-group:last-child {
+  .@{multi-dropdown-panel}-group:last-child {
     padding-bottom: 0;
     margin-bottom: 0;
     border-bottom: none;
@@ -65,7 +67,7 @@
     padding: 18px 16px;
   }
 
-  .@{multi-dropdown}-group-title {
+  .@{multi-dropdown-panel}-group-title {
     display: flex;
     margin-bottom: 8px;
     color: #151b39;
@@ -76,11 +78,11 @@
       color: #3989fa;
     }
   }
-  .@{multi-dropdown}-group-content {
+  .@{multi-dropdown-panel}-group-content {
     display: flex;
     flex-wrap: wrap;
   }
-  .@{multi-dropdown}-group-item {
+  .@{multi-dropdown-panel}-group-item {
     height: 28px;
     min-width: 100px;
     padding: 0 10px;

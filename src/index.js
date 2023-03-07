@@ -29,7 +29,7 @@ import RdSchedule from './components/basics/schedule'
 import RdSort from './components/basics/sort'
 import RdImagePreview from './components/basics/image-preview'
 import RdDropdownSearch from './components/basics/dropdown-search'
-import RdDropdown from './components/basics/dropdown'
+import DropdownPanel from './components/basics/dropdown-panel'
 
 // business
 import RdBatchUploadXls from './components/business/batch-upload-xls'
@@ -120,7 +120,7 @@ const components = [
   RdSort,
   RdImagePreview,
   RdDropdownSearch,
-  RdDropdown,
+  DropdownPanel,
   RdDatePicker
 ]
 const directives = {
@@ -198,7 +198,7 @@ const API = {
   RdSort,
   RdImagePreview,
   RdDropdownSearch,
-  RdDropdown,
+  DropdownPanel,
   RdDatePicker
 }
 
