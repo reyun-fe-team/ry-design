@@ -11,7 +11,7 @@
     <Dropdown
       ref="Dropdown"
       transfer
-      :transfer-class-name="prefixCls + '-transfer'"
+      :transfer-class-name="`${prefixCls}-transfer small-scroll-y`"
       trigger="custom"
       :visible="newVisible"
       stop-propagation
@@ -41,7 +41,7 @@
       <template #list>
         <div
           ref="Results"
-          :style="{ minWidth: width + 'px' }"
+          :style="{ width: width + 'px', maxHeight: maxHeight + 'px' }"
           :class="[prefixCls + '-search-list']">
           <!-- 暂无数据 -->
           <div
@@ -85,8 +85,13 @@ export default {
     },
     // 组件宽度
     width: {
-      type: Number,
+      type: [Number, String],
       default: 360
+    },
+    // 内容区域的最大高度
+    maxHeight: {
+      type: [Number, String],
+      default: 200
     },
     // 搜索框的占位内容
     placeholder: {
