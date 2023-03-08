@@ -30,7 +30,7 @@ import RdSchedule from './components/basics/schedule'
 import RdSort from './components/basics/sort'
 import RdImagePreview from './components/basics/image-preview'
 import RdDropdownSearch from './components/basics/dropdown-search'
-import DropdownPanel from './components/basics/dropdown-panel'
+import RdDropdownPanel from './components/basics/dropdown-panel'
 
 // business
 import RdBatchUploadXls from './components/business/batch-upload-xls'
@@ -122,7 +122,7 @@ const components = [
   RdSort,
   RdImagePreview,
   RdDropdownSearch,
-  DropdownPanel,
+  RdDropdownPanel,
   RdDatePicker
 ]
 const directives = {
@@ -199,7 +199,7 @@ const API = {
   RdSort,
   RdImagePreview,
   RdDropdownSearch,
-  DropdownPanel,
+  RdDropdownPanel,
   RdDatePicker
 }
 module.exports.default = module.exports = API // eslint-disable-line no-undef
