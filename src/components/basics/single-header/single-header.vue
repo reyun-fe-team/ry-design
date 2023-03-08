@@ -4,6 +4,7 @@
       v-if="isShowTitle"
       :class="prefixCls + '-title'">
       {{ titleName }}
+      <slot name="subtitle"></slot>
     </div>
     <div :class="prefixCls + '-content'">
       <div :class="prefixCls + '-content-slot'">
