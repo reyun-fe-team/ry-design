@@ -4,8 +4,8 @@
 |---------------|----------------------------------------------------------------------------|---------------|-----------------------------------------------------------------------------------------------------------|------------|
 | value         | v-model                                                                    | array         | -                                                                                                         | []         |
 | transfer      | 是否将弹层放置于 body 内，在 Tabs、带有 fixed 的 Table 列内使用时，建议添加此属性，它将不受父级样式影响，从而达到更好的效果 | boolean       | -                                                                                                         | false      |
-| clearable     | 是否显示清除按钮	                                                                  | boolean       | -                                                                                                         | false      |
-| confirm       | 是否显示底部控制栏，开启后，选择完日期，选择器不会主动关闭，需用户确认后才可关闭                                   | boolean       | -                                                                                                         | false      |
+| clearable     | 是否显示清除按钮                                                                   | boolean       | -                                                                                                         | true       |
+| confirm       | 是否显示底部控制栏，开启后，选择完日期，选择器不会主动关闭，需用户确认后才可关闭                                   | boolean       | -                                                                                                         | true       |
 | shortcuts     | 左侧快捷方式                                                                     | array         | -                                                                                                         | []         |
 | showShortcuts | 是否展示左侧快捷方式                                                                 | boolean       | -                                                                                                         | true       |
 | disabledDate  | 禁止选择日期                                                                     | function      | -                                                                                                         | -          |
@@ -39,5 +39,5 @@
 | on-ok            | 在 confirm 模式下有效，点击确定按钮时触发                   | -          |
 | on-clear         | 在 confirm 模式或 clearable = true 时有效，在清空日期时触发 | -          |
 | on-click-outside | 点击外部关闭下拉菜单时触发                               | -          |
-| on-open-change   | 弹出日历和关闭日历时触发	                               | true、false |
+| on-open-change   | 弹出日历和关闭日历时触发                                | true、false |
 
