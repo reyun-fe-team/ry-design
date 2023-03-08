@@ -314,8 +314,8 @@ export default {
       return winter
     },
     // 弹出日历和关闭日历时触发
-    handleOpenChange() {
-      this.$emit('on-open-change')
+    handleOpenChange(e) {
+      this.$emit('on-open-change', e)
     },
     // 日期发生变化时触发
     handleChange(date) {
