@@ -1,3 +1,4 @@
+import Vue from 'vue'
 // basics
 import RdTransfer from './components/basics/transfer'
 import RdMultiCascader from './components/basics/multi-cascader'
@@ -51,6 +52,7 @@ import RdAccountGroupList from './components/business/account-group-list'
 import RdDatePicker from './components/basics/date-picker'
 
 import ViewUI from 'view-design'
+
 import Package from '../package.json'
 import 'view-design/dist/styles/iview.css'
 import './style/index.less'
@@ -70,7 +72,7 @@ const consoleLogVersion = () => {
   window.console.log(
     '%c%s',
     'padding:0 20px; color: #4688f1; background: #fff; font-size: 18px;',
-    'welcome ryDesign v' + Package.version + '，view-design' + ViewUI.version + ' 🔥'
+    'welcome ryDesign v' + Package.version + '，view-design' + ' 🔥'
   )
 }
 consoleLogVersion()
@@ -130,14 +132,14 @@ const directives = {
   tooltip: tips
 }
 
-const install = function (Vue) {
-  Vue.use(ViewUI, {
-    datePicker: {
-      customIcon: 'icon iconfont ry-icon-data',
-      iconSize: 14
-    }
-  })
+Vue.use(ViewUI, {
+  datePicker: {
+    customIcon: 'icon iconfont ry-icon-data',
+    iconSize: 14
+  }
+})
 
+const install = function (Vue) {
   components.forEach(component => {
     Vue.component(component.name, component)
   })
@@ -149,13 +151,12 @@ const install = function (Vue) {
   setIviewMessage(Vue)
 }
 
-// auto install
+//auto install
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue)
 }
 
 const API = {
-  ViewUI,
   version: Package.version,
   install,
   RdTransfer,
@@ -201,5 +202,4 @@ const API = {
   DropdownPanel,
   RdDatePicker
 }
-
 module.exports.default = module.exports = API // eslint-disable-line no-undef
