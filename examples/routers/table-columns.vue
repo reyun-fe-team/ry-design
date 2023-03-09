@@ -37,7 +37,7 @@ export default {
                   slot: 'aaa1',
                   check: true,
                   fixed: 'left',
-                  tooltip: '即将下线！',
+                  tooltip: '即将下线！即将下线！即将下线！即将下线！即将下线！即将下线！即将下线！即将下线！即将下线！即将下线！即将下线！即将下线！',
                   title: '广告组名称',
                   disabled: true,
                   unlock: true,
@@ -134,6 +134,7 @@ export default {
                   hide: false,
                   check: false,
                   title: '千次展示均价',
+                  tooltip: '千次展示均价千次展示均价千次展示均价千次展示均价千次展示均价千次展示均价千次展示均价千次展示均价',
                   minWidth: 130,
                   sortable: 'custom'
                 },
@@ -205,6 +206,7 @@ export default {
                   hide: false,
                   check: false,
                   title: '深度转化成本',
+                  tooltip: '深度转化成本深度转化成本深度转化成本深度转化成本深度转化成本深度转化成本深度转化成本',
                   minWidth: 120
                 },
                 {

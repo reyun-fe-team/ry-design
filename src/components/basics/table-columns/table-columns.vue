@@ -76,7 +76,6 @@
                     <Tooltip
                       v-if="item.prefix.content"
                       theme="light"
-                      placement="top"
                       :max-width="200"
                       :content="item.prefix.content">
                       <!-- ali-icon 暂时不能上传，先使用图片 -->
@@ -94,7 +93,6 @@
                   <Tooltip
                     v-if="item.tooltip"
                     theme="light"
-                    placement="top"
                     :max-width="200"
                     :content="item.tooltip">
                     <span :class="prefixCls + '-view-list-content-item-title'">
@@ -111,7 +109,6 @@
                     <Tooltip
                       v-if="item.suffix.content"
                       theme="light"
-                      placement="top"
                       :max-width="200"
                       :content="item.suffix.content">
                       <ry-icon
