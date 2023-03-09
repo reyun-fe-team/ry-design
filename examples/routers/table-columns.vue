@@ -213,7 +213,8 @@ export default {
                   key: 'b2-6',
                   hide: false,
                   check: false,
-                  title: '深度转化数率',
+                  title: '深度转化数率-深度转化数率-深度转化数率-深度转化数率',
+                  tooltip: '深度转化成本深度转化成本深度转化成本深度转化成本深度转化成本深度转化成本深度转化成本',
                   minWidth: 120
                 }
               ]
