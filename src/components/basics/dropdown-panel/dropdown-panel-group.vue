@@ -5,9 +5,10 @@
       :key="index"
       :class="prefixCls">
       <div :class="prefixCls + '-title'">
-        <ry-icon
+        <rd-icon
           :type="group.icon ? group.icon : 'ry-icon-chanpinx'"
-          size="12"></ry-icon>
+          size="12"
+          :class="prefixCls + '-title-icon'"></rd-icon>
         <span>{{ group.title }}</span>
         <template v-if="group.tooltip">
           <Tooltip
@@ -52,11 +53,7 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'dropdown-panel-group'
-import ryIcon from '../icon/icon.vue'
 export default {
-  components: {
-    ryIcon
-  },
   props: {
     data: {
       type: Array,
