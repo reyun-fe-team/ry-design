@@ -86,7 +86,7 @@ export default {
         `${prefixCls}`,
         {
           [`${prefixCls}-${this.type}-wrap`]: this.type,
-          [`${prefixCls}-panel-open`]: this.isOpen
+          [`${prefixCls}-open`]: this.isOpen
         }
       ]
     }

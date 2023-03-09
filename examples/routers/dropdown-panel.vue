@@ -23,6 +23,7 @@
     <h4>分类样式</h4>
     <rd-dropdown-panel
       type="group"
+      trigger="click"
       :data="groupData"></rd-dropdown-panel>
     <br />
     <br />
