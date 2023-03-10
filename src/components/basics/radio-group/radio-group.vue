@@ -130,27 +130,22 @@ export default {
   },
   watch: {
     value: {
-      handler(n, o) {
-        if (!_isEqual(n, o)) {
-          let { defaultList } = this
-          if (defaultList.map(e => e.value).includes(n)) {
-            this.newValue = n
-          } else {
-            if (!this.isCustom) {
-              if (defaultList && defaultList.length) {
-                let f = defaultList.find(e => !e.disabled)
-                if (f) {
-                  this.newValue = f.value || null
-                } else {
-                  this.newValue = null
-                }
-              } else {
-                this.newValue = null
-              }
+      handler(n) {
+        if (!_isEqual(n, this.newValue)) {
+          let newValue = null
+          if (!this.isCustom) {
+            let { defaultList } = this
+            let values = defaultList.map(e => e.value)
+            if (values.includes(n)) {
+              newValue = n
             } else {
-              this.newValue = null
+              let f = defaultList.find(e => !e.disabled) || {}
+              newValue = f.value || null
             }
+          } else {
+            newValue = n
           }
+          this.newValue = newValue
           this.onChange(this.newValue)
         }
       },
