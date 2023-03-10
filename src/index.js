@@ -26,6 +26,7 @@ import Page from './components/basics/page'
 import Schedule from './components/basics/schedule'
 import Sort from './components/basics/sort'
 import ImagePreview from './components/basics/image-preview'
+import DropdownPanel from './components/basics/dropdown-panel'
 import Indicator from './components/basics/indicator'
 
 // business
@@ -114,6 +115,7 @@ const components = [
   UTableColumn,
   Sort,
   ImagePreview,
+  DropdownPanel,
   Indicator
 ]
 const directives = {
@@ -180,5 +182,6 @@ export default {
   UTableColumn,
   Sort,
   ImagePreview,
+  DropdownPanel,
   Indicator
 }

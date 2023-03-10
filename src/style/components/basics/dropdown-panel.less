@@ -1,0 +1,104 @@
+@multi-dropdown-panel: ~'@{css-prefix}dropdown-panel';
+
+.@{multi-dropdown-panel} {
+  .ivu-btn {
+    min-width: 88px;
+    color: #151b39;
+    border: 1px solid #dcdee2;
+
+    &:hover {
+      color: #3989fa;
+      border: 1px solid #3989fa;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .ivu-select-dropdown {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 3px;
+    margin-bottom: 0;
+    box-shadow: 0 2px 6px 0 rgba(20, 28, 40, 20%);
+    overflow-y: auto;
+  }
+
+  &-open {
+    .ivu-btn {
+      color: #3989fa;
+      border: 1px solid #3989fa;
+    }
+  }
+}
+
+.@{multi-dropdown-panel}-list-wrap {
+  .ivu-select-dropdown {
+    max-height: 240px;
+    min-width: 120px;
+  }
+
+  .ivu-dropdown-item {
+    height: 32px;
+    padding: 8px 16px;
+    text-align: left;
+  }
+}
+.@{multi-dropdown-panel}-group-wrap {
+  
+  .@{multi-dropdown-panel}-group {
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px dashed #e3e3e8;
+  }
+  .@{multi-dropdown-panel}-group:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+
+  .ivu-select-dropdown {
+    max-width: 436px;
+    max-height: 320px;
+  }
+
+  .ivu-dropdown-menu {
+    padding: 18px 16px;
+  }
+
+  .@{multi-dropdown-panel}-group-title {
+    display: flex;
+    margin-bottom: 8px;
+    color: #151b39;
+    align-items: center;
+
+    .ivu-icon {
+      margin-right: 4px;
+      color: #3989fa;
+    }
+  }
+  .@{multi-dropdown-panel}-group-content {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .@{multi-dropdown-panel}-group-item {
+    height: 28px;
+    min-width: 100px;
+    padding: 0 10px;
+    line-height: 28px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 3px;
+
+    &:hover:not(&-disabled) {
+      color: #3989fa;
+      background-color: rgba(57, 137, 250, 11%);
+    }
+
+    &-disabled {
+      color: #c0c4cc;
+      cursor: not-allowed;
+    }
+  }
+} 

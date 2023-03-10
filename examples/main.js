@@ -175,17 +175,21 @@ const router = new VueRouter({
       component: resolve => require(['./routers/image-preview'], resolve)
     },
     {
+      path: '/dropdown-panel',
+      component: resolve => require(['./routers/dropdown-panel'], resolve)
+    },
+    {
       path: '/indicator',
       component: resolve => require(['./routers/indicator'], resolve)
     }
   ]
 })
 
-router.afterEach(_ => {
+router.afterEach(() => {
   window.scrollTo(0, 0)
 })
 
-const app = new Vue({
+new Vue({
   router: router,
   render: h => h(App)
 }).$mount('#app')
