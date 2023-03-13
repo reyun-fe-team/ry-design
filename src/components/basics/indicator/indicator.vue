@@ -1,12 +1,17 @@
 <template>
-  <div
-    :class="prefixCls"
-    style="display: inline-block; position: relative">
+  <Dropdown
+    trigger="custom"
+    :visible="visible"
+    :transfer="transfer"
+    :transfer-class-name="prefixCls + '-transfer'"
+    :placement="placement"
+    @on-clickoutside="clickOutside">
     <div
       ref="indicator-select"
       class="indicator-select"
       :class="[prefixCls + '-select', { active: visible }]"
       :style="{ width: width + 'px' }"
+      @click="handlerClick"
       @mouseenter="hasMouseHoverHead = true"
       @mouseleave="hasMouseHoverHead = false">
       <span
@@ -32,22 +37,24 @@
         class="ivu-select-arrow"
         :class="{ visble: visible }"></Icon>
     </div>
-    <div
-      v-show="visible"
-      ref="indicator-select-group"
-      :class="[prefixCls + '-select-group']">
-      <indicator-group
-        v-if="visible"
-        :data="formData"
-        :min="min"
-        :max="max"
-        :step="step"
-        :unit="unit"
-        :precision="precision"
-        :indicator-rule="indicatorRule"
-        @on-ok="onOk"></indicator-group>
-    </div>
-  </div>
+    <DropdownMenu slot="list">
+      <div
+        v-show="visible"
+        ref="indicator-select-group"
+        :class="[prefixCls + '-select-group']">
+        <indicator-group
+          v-if="visible"
+          :data="formData"
+          :min="min"
+          :max="max"
+          :step="step"
+          :unit="unit"
+          :precision="precision"
+          :indicator-rule="indicatorRule"
+          @on-ok="onOk"></indicator-group>
+      </div>
+    </DropdownMenu>
+  </Dropdown>
 </template>
 
 <script>
@@ -61,6 +68,16 @@ export default {
     indicatorGroup
   },
   props: {
+    // 是否将弹出层放置于 body 内
+    transfer: {
+      type: Boolean,
+      default: false
+    },
+    // 下拉菜单出现的位置
+    placement: {
+      type: String,
+      default: 'bottom-start'
+    },
     value: {
       type: Object,
       default: () => {
@@ -71,10 +88,7 @@ export default {
       type: String,
       default: '请选择'
     },
-    clearable: {
-      type: Boolean,
-      default: true
-    },
+    // 宽度
     width: {
       type: [String, Number],
       default: '184'
@@ -102,44 +116,11 @@ export default {
     // 输入框最大值
     max: {
       type: Number,
-      default: 100
+      default: 999999999999.99
     },
     // 指标规则
     indicatorRule: {
       type: Array,
-      default: () => {
-        return [
-          {
-            value: '=',
-            label: '等于'
-          },
-          {
-            value: '!=',
-            label: '不等于'
-          },
-          {
-            value: '<',
-            label: '小于'
-          },
-          {
-            value: '>',
-            label: '大于'
-          },
-          {
-            value: '>=',
-            label: '大于等于'
-          },
-          {
-            value: '<=',
-            label: '小于等于'
-          },
-          {
-            value: 'BETWEEN',
-            label: '介于',
-            ruleType: 'number-input-between'
-          }
-        ]
-      },
       require: true
     }
   },
@@ -156,7 +137,7 @@ export default {
       return this.getIndicatorName(this.formData)
     },
     isShowClear() {
-      return this.selectName.length && this.clearable && this.hasMouseHoverHead
+      return this.selectName.length && this.hasMouseHoverHead
     }
   },
   watch: {
@@ -167,25 +148,7 @@ export default {
       deep: true
     }
   },
-  mounted() {
-    document.addEventListener('click', this.isVisible)
-  },
-  beforeDestroy() {
-    document.removeEventListener('click', this.isVisible)
-  },
   methods: {
-    // 判断是否点击了其他区域
-    isVisible(e) {
-      if (this.$refs['indicator-select-group'] || this.$refs['indicator-select']) {
-        if (this.$refs['indicator-select-group'].contains(e.target)) {
-          this.visible = true
-        } else if (this.$refs['indicator-select'].contains(e.target)) {
-          this.visible = !this.visible
-        } else {
-          this.visible = false
-        }
-      }
-    },
     onClear() {
       this.formData.value = this.min || 0
       this.formData.startValue = this.min || 0
@@ -193,6 +156,12 @@ export default {
       this.formData.symbol = ''
       this.$emit('input', this.formData)
       this.$emit('on-change', this.formData)
+    },
+    clickOutside() {
+      this.visible = false
+    },
+    handlerClick() {
+      this.visible = !this.visible
     },
     onOk(val) {
       let params = Object.assign({}, this.formData, val)
@@ -207,7 +176,7 @@ export default {
         return ''
       }
       const filterValue = cur => {
-        return `${cur}${this.unit}`
+        return `${this.precision ? cur.toFixed(this.precision) : cur}${this.unit}`
       }
       if (ruleType === 'number-input-between') {
         return symbolLabel + filterValue(startValue) + '-' + filterValue(endValue)

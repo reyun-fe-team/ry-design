@@ -2,6 +2,12 @@
 @indicator-group: ~'@{css-prefix}indicator-group';
 
 .@{indicator}{
+  &-transfer {
+    max-height: 240px;
+    margin: 3px 0;
+    padding: 0;
+  }
+
   &-select {
     position: relative;
     display: flex;
@@ -47,17 +53,6 @@
       }
     }
   }
-
-  &-select-group {
-    position: absolute;
-    z-index: 900;
-    width: 342px;
-    margin: 3px 0;
-    background-color: #fff;
-    border-radius: 4px;
-    box-sizing: border-box;
-    box-shadow: 0 2px 6px 0 rgba(20, 28, 40, 20%);
-  }
 }
 
 .@{indicator-group} {
@@ -93,12 +88,10 @@
   }
 
   &-right {
-    flex: 1;
+    position: relative;
+    width: 220px;
     padding: 16px;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 
     &-body {
       display: flex;
@@ -118,11 +111,7 @@
       }
 
       .unit {
-        margin-left: 7px;
-      }
-
-      .input-number-width {
-        width: 70px;
+        margin-left: 8px;
       }
 
       &-line {
@@ -133,11 +122,17 @@
 
     &-footer {
       width: 100%;
-      margin-top: 30px;
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
       &-btn {
         width: 64px;
         float: right;
       }
     }
+  }
+
+  &-input-number-width {
+    width: 68px;
   }
 }

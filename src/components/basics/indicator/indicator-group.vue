@@ -24,7 +24,7 @@
             <FormItem>
               <InputNumber
                 v-model="formData.startValue"
-                class="input-number-width"
+                :class="[prefixCls + '-input-number-width']"
                 :precision="precision"
                 :active-change="false"
                 placeholder="请输入"
@@ -32,11 +32,11 @@
                 :min="min"
                 :max="max"></InputNumber>
             </FormItem>
-            <span :class="[prefixCls + '-right-body-line']">—</span>
+            <span :class="[prefixCls + '-right-body-line']">-</span>
             <FormItem>
               <InputNumber
                 v-model="formData.endValue"
-                class="input-number-width"
+                :class="[prefixCls + '-input-number-width']"
                 :precision="precision"
                 :active-change="false"
                 placeholder="请输入"
@@ -96,9 +96,6 @@ export default {
     // 指标规则
     indicatorRule: {
       type: Array,
-      default: () => {
-        return []
-      },
       require: true
     },
     // 步长
@@ -124,7 +121,7 @@ export default {
     // 输入框最大值
     max: {
       type: Number,
-      default: 100
+      default: 999999999999.99
     }
   },
   data() {
