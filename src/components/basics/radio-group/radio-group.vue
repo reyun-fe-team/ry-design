@@ -146,7 +146,7 @@ export default {
             newValue = n
           }
           this.newValue = newValue
-          this.onChange(this.newValue)
+          this.$emit('input', newValue)
         }
       },
       deep: true,
