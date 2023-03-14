@@ -137,10 +137,6 @@ export default {
       type: String,
       default: '#277ff3'
     },
-    isEvent: {
-      type: Boolean,
-      default: true
-    },
     leftTitle: {
       type: [String, Boolean],
       default: '账户'
@@ -156,6 +152,12 @@ export default {
     rightBoxStyle: {
       type: [Object, String],
       default: null
+    },
+    beforeCheck: {
+      type: Function,
+      default: () => {
+        return Promise.resolve()
+      }
     }
   },
   data() {
@@ -197,16 +199,19 @@ export default {
       })
     },
     choose(item, isFirst = true) {
-      if (!this.showLeft) {
-        return
+      const before = this.beforeCheck()
+      if (before && before.then) {
+        if (!this.showLeft) {
+          return
+        }
+        const { itemId } = this
+        if (item[itemId] === this.active && !isFirst) {
+          return
+        }
+        const active = item[itemId]
+        this.active = active
+        this.$emit('on-change', active, isFirst)
       }
-      const { itemId } = this
-      if (item[itemId] === this.active && !isFirst) {
-        return
-      }
-      const active = this.isEvent ? item[itemId] : this.active
-      this.active = active
-      this.$emit('on-change', active, isFirst)
     },
     reset() {
       this.init()

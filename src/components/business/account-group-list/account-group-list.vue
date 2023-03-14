@@ -158,6 +158,12 @@ export default {
     rightBoxStyle: {
       type: [Object, String],
       default: null
+    },
+    beforeCheck: {
+      type: Function,
+      default: () => {
+        return Promise.resolve()
+      }
     }
   },
   data() {
@@ -210,14 +216,17 @@ export default {
       })
     },
     choose(item, isFirst = true) {
-      const { itemId } = this
-      // 当前已经选中的 不在返回
-      if (item[itemId] === this.active && !isFirst) {
-        return
+      const before = this.beforeCheck()
+      if (before && before.then) {
+        const { itemId } = this
+        // 当前已经选中的 不在返回
+        if (item[itemId] === this.active && !isFirst) {
+          return
+        }
+        const active = item[itemId]
+        this.active = active
+        this.$emit('on-change', active, item['parentId'])
       }
-      const active = item[itemId]
-      this.active = active
-      this.$emit('on-change', active, item['parentId'])
     }
   }
 }
