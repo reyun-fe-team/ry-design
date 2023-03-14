@@ -116,7 +116,7 @@ export default {
     // 输入框最小值
     min: {
       type: Number,
-      default: 0
+      default: -Infinity
     },
     // 输入框最大值
     max: {
@@ -128,8 +128,8 @@ export default {
     return {
       prefixCls,
       formData: {
-        value: this.data.value || this.min || 0,
-        startValue: this.data.startValue || this.min || 0,
+        value: this.data.value || 0,
+        startValue: this.data.startValue || 0,
         endValue: this.data.endValue || 100
       },
       rules: {
@@ -138,7 +138,12 @@ export default {
             validator: (rule, value, callback) => {
               this.$nextTick(() => {
                 if (value === null) {
-                  callback(new Error(`需大于等于${this.min},不大于${this.max}`))
+                  const { min, max } = this
+                  if (max !== Infinity) {
+                    callback(new Error(`需大于等于${this.min},不大于${this.max}`))
+                  } else if (min !== -Infinity) {
+                    callback(new Error(`需大于等于${this.min}`))
+                  }
                 } else {
                   callback()
                 }
@@ -158,6 +163,10 @@ export default {
         return !(startValue >= 0 && endValue > 0 && endValue > startValue)
       } else {
         const { value } = this.formData
+        const { min } = this
+        if (min !== -Infinity) {
+          return !(value !== null && value >= min)
+        }
         return !(value !== null && value >= 0)
       }
     },
@@ -185,9 +194,9 @@ export default {
   },
   methods: {
     onChange({ value: symbol }) {
-      this.formData.value = this.min || 0
-      this.formData.startValue = this.min || 0
-      this.formData.endValue = 100
+      this.formData.value = 0
+      this.formData.startValue = 0
+      this.formData.endValue = 0
       this.symbol = symbol
       this.$refs['form'].validate()
     },

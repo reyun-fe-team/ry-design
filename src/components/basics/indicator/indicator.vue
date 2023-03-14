@@ -111,7 +111,7 @@ export default {
     // 输入框最小值
     min: {
       type: Number,
-      default: 0
+      default: -Infinity
     },
     // 输入框最大值
     max: {
@@ -150,9 +150,9 @@ export default {
   },
   methods: {
     onClear() {
-      this.formData.value = this.min || 0
-      this.formData.startValue = this.min || 0
-      this.formData.endValue = this.max || 0
+      this.formData.value = 0
+      this.formData.startValue = 0
+      this.formData.endValue = 0
       this.formData.symbol = ''
       this.$emit('input', this.formData)
       this.$emit('on-change', this.formData)
