@@ -39,6 +39,10 @@ export default {
       type: [String, Number],
       default: ''
     },
+    imageWidth: {
+      type: [String, Number],
+      default: ''
+    },
     height: {
       type: [String, Number],
       default: ''
@@ -88,7 +92,8 @@ export default {
       ]
     },
     classImage() {
-      return [`${prefixCls}-pic`]
+      let { size } = this
+      return [`${prefixCls}-pic`, `${prefixCls}-pic-${size}`]
     },
     imageGroupStyles() {
       return {
@@ -97,17 +102,17 @@ export default {
       }
     },
     imageStyles() {
-      let { size } = this
-      let width = 100
-      let height = [1, 2].includes(size) ? 100 : 50
-      if ([2, 3].includes(size)) {
-        width = 100 / size
-      } else if ([4, 6].includes(size)) {
-        width = 100 / (size / 2)
-      }
+      //let { size } = this
+      // let width = 100
+      //let height = [1, 2].includes(size) ? 100 : 50
+      // if ([2, 3].includes(size)) {
+      //   width = 100 / size
+      // } else if ([4, 6].includes(size)) {
+      //   width = 100 / (size / 2)
+      // }
       return {
-        width: width + '%',
-        height: height + '%'
+        // width: width + '%',
+        //height: height + '%'
       }
     }
   },

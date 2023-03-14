@@ -1,36 +1,73 @@
 <template>
   <div>
-    <rd-image-group
-      style="margin: 24px 0"
-      :size="1"
-      :data="urlList"
-      :width="216"
-      :height="120"></rd-image-group>
-    <rd-image-group
-      style="margin: 24px 0"
-      :size="2"
-      :data="urlList"
-      :width="216"
-      :height="120"></rd-image-group>
-    <!-- <rd-image-group
-      style="margin: 24px 0"
+    <h2>横版视频</h2>
+    <section style="display: flex">
+      <rd-image-group
+        style="margin: 24px 24px 0 0"
+        :size="1"
+        :data="urlList"
+        :width="216"
+        :height="120"></rd-image-group>
+      <rd-image-group
+        style="margin: 24px 24px 0 0"
+        :size="2"
+        :data="urlList"
+        :width="216"
+        :height="120"></rd-image-group>
+      <!-- <rd-image-group
+      style="margin: 24px 24px 0 0"
       :size="3"
       :data="urlList"
       :width="216"
       :height="120"></rd-image-group> -->
-    <rd-image-group
-      style="margin: 24px 0"
-      :size="4"
-      :data="urlList"
-      :width="216"
-      :height="120"></rd-image-group>
-    <rd-image-group
-      style="margin: 24px 0"
-      :size="6"
+      <rd-image-group
+        style="margin: 24px 24px 0 0"
+        :size="4"
+        :data="urlList"
+        :width="216"
+        :height="120"></rd-image-group>
+      <rd-image-group
+        style="margin: 24px 24px 0 0"
+        :size="6"
+        :data="urlList"
+        :width="256"
+        :height="120"></rd-image-group>
+    </section>
+    <h2>竖版视频</h2>
+    <section style="display: flex">
+      <rd-image-group
+        style="margin: 24px 24px 0 0"
+        :size="1"
+        :data="shuList"
+        :width="216"
+        :height="120"></rd-image-group>
+      <rd-image-group
+        style="margin: 24px 24px 0 0"
+        :size="2"
+        :data="shuList"
+        :width="216"
+        :height="120"></rd-image-group>
+      <!-- <rd-image-group
+      style="margin: 24px 24px 0 0"
+      :size="3"
       :data="shuList"
-      :width="256"
-      :height="120"></rd-image-group>
-    <hr />
+      :width="216"
+      :height="120"></rd-image-group> -->
+      <rd-image-group
+        style="margin: 24px 24px 0 0"
+        :size="4"
+        :data="shuList"
+        :width="216"
+        :height="120"></rd-image-group>
+      <rd-image-group
+        style="margin: 24px 24px 0 0"
+        :size="6"
+        :data="shuList"
+        :width="256"
+        :height="120"></rd-image-group>
+    </section>
+
+    <hr style="margin-top: 24px" />
     <!-- <rd-image
       :src="urlList[0]"
       :fit="fit"
@@ -152,84 +189,6 @@
         </div>
       </div>
     </div>
-    <!-- <h2 style="margin-top: 40px">竖向LazyLoad</h2>
-    <div
-      class="demo-image2"
-      style="width: 300px; height: 200px; overflow: hidden; overflow-y: scroll">
-      <div>
-        <div
-          v-for="(url, index) in urlList"
-          :key="index"
-          class="demo-image-item"
-          style="float: none">
-          <rd-image
-            style="width: 100px; height: 100px"
-            :src="url"
-            fit="fill"
-            :lazy="true"
-            :infinite="false"
-            preview
-            alt="fill">
-            <template #placeholder>
-              <Spin
-                size="large"
-                fix />
-            </template>
-          </rd-image>
-        </div>
-      </div>
-    </div>
-    <h2 style="margin-top: 40px">横向LazyLoad</h2>
-    <div
-      class="demo-image3"
-      style="width: 300px; height: 200px; overflow: hidden; overflow-x: scroll">
-      <div style="width: 1000px; height: 300px">
-        <div
-          v-for="(url, index) in urlList"
-          :key="index"
-          class="demo-image-item"
-          style="float: left">
-          <rd-image
-            style="width: 100px; height: 100px"
-            :src="url"
-            fit="fill"
-            :lazy="true"
-            :infinite="true"
-            :initial-index="index"
-            preview
-            scroll-container=".demo-image3"
-            :alt="url">
-            <template #placeholder>
-              <Spin
-                size="large"
-                fix />
-            </template>
-          </rd-image>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- <rd-imagePreview
-    v-model="showPreview"
-    :preview-list="srcList"
-    :infinite="false"
-    :toolbar="[
-      'zoomOut',
-      'original',
-      'rotateRight',
-      'rotateLeft',
-      'zoomIn',
-      'download'
-    ]"></rd-imagePreview> -->
-
-    <!-- <Button
-      type="primary"
-      @click="showPreview = !showPreview">
-      Switch Preview
-    </Button>
-
-    <Button @click="showImagePreview1">$ImagePreview1</Button>
-    <Button @click="showImagePreview2">$ImagePreview2</Button> -->
   </div>
 </template>
 
@@ -296,9 +255,9 @@ export default {
 <style lang="less">
 .demo-image {
   &-item {
+    float: left;
     width: 100px;
     height: 100px;
-    float: left;
     margin: 10px;
     text-align: center;
 
