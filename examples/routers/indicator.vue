@@ -16,7 +16,6 @@
         <div slot="content">
           <Form
             :label-width="60"
-            class="form-content data-filtering-new"
             inline
             @submit.native.prevent>
             <FormItem label="数据指标">

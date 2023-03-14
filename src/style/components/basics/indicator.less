@@ -14,7 +14,7 @@
     height: 32px;
     padding: 0 10px;
     cursor: pointer;
-    background: #fff;
+    background: @white;
     border: 1px solid #ddd;
     border-radius: 3px;
     box-sizing: border-box;
@@ -26,7 +26,7 @@
     }
 
     &.active {
-      border-color: #3989fa;
+      border-color: @link-color;
       outline: 0;
     }
 
@@ -69,7 +69,7 @@
     &-item {
       width: 120px;
       height: 32px;
-      background: #ffffff;
+      background: @white;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -77,12 +77,12 @@
       box-sizing: border-box;
 
       &:hover {
-        background: #f3f3f3;
+        background: @input-disabled-bg;
       }
 
       &.active {
-        background: #f3f3f3;
-        color: #3989fa;
+        background: @input-disabled-bg;
+        color: @link-color;
       }
     }
   }
@@ -102,7 +102,7 @@
           margin-bottom: 0;
         }
         .error-tips {
-          color: #ed4014;
+          color: @error-color;
         }
       }
 

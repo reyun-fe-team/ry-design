@@ -116,7 +116,7 @@ export default {
     // 输入框最大值
     max: {
       type: Number,
-      default: 999999999999.99
+      default: Infinity
     },
     // 指标规则
     indicatorRule: {

@@ -121,7 +121,7 @@ export default {
     // 输入框最大值
     max: {
       type: Number,
-      default: 999999999999.99
+      default: Infinity
     }
   },
   data() {
@@ -130,7 +130,7 @@ export default {
       formData: {
         value: this.data.value || this.min || 0,
         startValue: this.data.startValue || this.min || 0,
-        endValue: this.data.endValue || this.max || 0
+        endValue: this.data.endValue || 100
       },
       rules: {
         value: [
@@ -176,8 +176,9 @@ export default {
       if (!this.symbol) {
         return ''
       }
-      if (this.indicatorRule.find(item => item.value === this.symbol)) {
-        return this.indicatorRule.find(item => item.value === this.symbol).ruleType
+      const matchingRule = this.indicatorRule.find(item => item.value === this.symbol)
+      if (matchingRule) {
+        return matchingRule.ruleType
       }
       return ''
     }
@@ -186,7 +187,7 @@ export default {
     onChange({ value: symbol }) {
       this.formData.value = this.min || 0
       this.formData.startValue = this.min || 0
-      this.formData.endValue = this.max || 0
+      this.formData.endValue = 100
       this.symbol = symbol
       this.$refs['form'].validate()
     },
