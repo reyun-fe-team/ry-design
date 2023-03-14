@@ -1,56 +1,53 @@
 @date-picker: ~"@{css-prefix}date-picker";
 
-.@{date-picker} {
+.ivu-date-picker-header {
+  height: 40px;
+  line-height: 40px;
+  background: #F9F9F9;
+  border-bottom: 1px solid #ededed;
 
-  .ivu-date-picker-header {
-    height: 40px;
-    line-height: 40px;
-    background: #F9F9F9;
-    border-bottom: 1px solid #ededed;
-
-    .ivu-date-picker-header-label {
-      font-weight: 500;
-    }
-
-    .ivu-picker-panel-icon-btn {
-      margin-top: 6px;
-      color: #575b76;
-    }
+  .ivu-date-picker-header-label {
+    font-weight: 500;
   }
 
-  .ivu-picker-confirm {
-    border-top: 1px solid #ededed;
-
-    .ivu-btn {
-      padding: 0px 20px;
-      box-sizing: border-box;
-      height: 28px;
-      line-height: 28px;
-      margin-right: 8px;
-    }
+  .ivu-picker-panel-icon-btn {
+    margin-top: 6px;
+    color: #575b76;
   }
+}
 
-  .ivu-date-picker-cells-header {
-    span {
-      color: #151b39;
-    }
-  }
+.ivu-picker-confirm {
+  border-top: 1px solid #ededed;
 
-  .ivu-picker-panel-sidebar {
-    width: 96px;
-    background: #FFFFFF !important;
-    overflow-y: auto;
-    .small-scroll-y();
-    border-right: 1px solid #ededed;
-  }
-
-  .ivu-picker-panel-shortcut {
-    padding: 7px 16px;
+  .ivu-btn {
+    padding: 0px 20px;
     box-sizing: border-box;
+    height: 28px;
+    line-height: 28px;
+    margin-right: 8px;
+  }
+}
 
-    &:hover {
-      background: #fff;
-      color: @link-color;
-    }
+.ivu-date-picker-cells-header {
+  span {
+    color: #151b39;
+  }
+}
+
+.ivu-picker-panel-sidebar {
+  width: 96px;
+  background: #FFFFFF !important;
+  overflow-y: auto;
+  .small-scroll-y();
+  border-right: 1px solid #ededed;
+}
+
+.ivu-picker-panel-shortcut {
+  padding: 7px 16px;
+  box-sizing: border-box;
+
+  &:hover {
+    background: #fff;
+    color: @link-color;
   }
 }
