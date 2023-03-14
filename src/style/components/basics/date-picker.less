@@ -6,6 +6,7 @@
     height: 40px;
     line-height: 40px;
     background: #F9F9F9;
+    border-bottom: 1px solid #ededed;
 
     .ivu-date-picker-header-label {
       font-weight: 500;
@@ -18,7 +19,7 @@
   }
 
   .ivu-picker-confirm {
-    border-top: 1px solid #d8d8d8;
+    border-top: 1px solid #ededed;
 
     .ivu-btn {
       padding: 0px 20px;
@@ -40,7 +41,7 @@
     background: #FFFFFF !important;
     overflow-y: auto;
     .small-scroll-y();
-    border-right: 1px solid #d8d8d8;
+    border-right: 1px solid #ededed;
   }
 
   .ivu-picker-panel-shortcut {
@@ -49,7 +50,15 @@
 
     &:hover {
       background: #fff;
-      color: #3989FAFF;
+      color: @link-color;
+    }
+  }
+
+  .ivu-date-picker-cells-cell {
+    em {
+      &:hover {
+        background: #e5f2ff;
+      }
     }
   }
 }
