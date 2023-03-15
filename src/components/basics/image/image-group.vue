@@ -46,12 +46,18 @@ export default {
     height: {
       type: [String, Number],
       default: ''
+    },
+    isPadding: {
+      type: Boolean,
+      default: false
+    },
+    type: {
+      type: String,
+      default: 'horizontal',
+      validator(value) {
+        return oneOf(value, ['horizontal', 'vertical'])
+      }
     }
-    // type: {
-    //   validator(value) {
-    //     return oneOf(value, ['button'])
-    //   }
-    // },
     // vertical: {
     //   type: Boolean,
     //   default: false
@@ -78,22 +84,12 @@ export default {
       return this.data.slice(0, this.size)
     },
     classes() {
-      return [
-        `${prefixCls}`,
-        { [`${prefixCls}-flex`]: true }
-        // {
-        //   [`${prefixCls}-${this.size}`]: !!this.size,
-        //   [`ivu-radio-${this.size}`]: !!this.size,
-        //   [`${prefixCls}-${this.type}`]: !!this.type,
-        //   [`${prefixCls}-button-${this.buttonStyle}`]:
-        //     this.type === 'button' && this.buttonStyle !== 'default',
-        //   [`${prefixCls}-vertical`]: this.vertical
-        // }
-      ]
+      return [`${prefixCls}`, { [`${prefixCls}-padding`]: this.isPadding }, `${prefixCls}-flex`]
     },
     classImage() {
       let { size } = this
-      return [`${prefixCls}-pic`, `${prefixCls}-pic-${size}`]
+      const groupSize = size === 3 ? `${this.type}-3` : size
+      return [`${prefixCls}-pic`, `${prefixCls}-pic-${groupSize}`]
     },
     imageGroupStyles() {
       return {
@@ -102,18 +98,19 @@ export default {
       }
     },
     imageStyles() {
-      //let { size } = this
+      return {}
+      // let { size } = this
       // let width = 100
-      //let height = [1, 2].includes(size) ? 100 : 50
+      // let height = [1, 2].includes(size) ? 100 : 50
       // if ([2, 3].includes(size)) {
       //   width = 100 / size
       // } else if ([4, 6].includes(size)) {
       //   width = 100 / (size / 2)
       // }
-      return {
-        // width: width + '%',
-        //height: height + '%'
-      }
+      // return {
+      //   width: width + '%',
+      //   height: height + '%'
+      // }
     }
   },
   watch: {

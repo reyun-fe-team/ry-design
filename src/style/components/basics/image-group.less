@@ -1,12 +1,17 @@
-@image-prefix-cls: ~"@{css-prefix}image-group";
+@image-group: ~"@{css-prefix}image-group";
+@image: ~"@{css-prefix}image";
 
-.@{image-prefix-cls} {
-  padding: 4px;
+@padding-item : 2px;
+.@{image-group} {
   overflow: hidden;
   background-color: #eef0f3ff;
   border: 1px solid #666;
 
-  .rd-image {
+  &-padding {
+    padding: @padding-item;
+  }
+
+  .@{image} {
     top: 50%;
     height: 100%;
     transform: translateY(-50%);
@@ -15,34 +20,8 @@
 
   &-pic {
     position: relative;
-    display: inline-block;
     overflow: hidden;
     text-align: center;
-    // text-align: center;
-         
-      
-    //   &-img {
-    //     //添加高度100%，会导致创意模块下的视频和封面的图，以及预览里面创意的图都被拉伸，所以在这里去掉。
-    //     //height        : 100%;
-    //     max-height: 100%;
-    //     max-width: 100%;
-    //     vertical-align: middle;
-    //     position: relative;
-    //     top: 50%;
-    //     transform: translateY(-50%);
-    //     transition: all 0.1s;
-    //   }
-      
-    //   .num {
-    //     position: absolute;
-    //     right: 0;
-    //     top: 0;
-    //     width: 20px;
-    //     line-height: 20px;
-    //     border-radius: 50%;
-    //     color: #fff;
-    //     background: #1b7ef8;
-    //   }
   }
 
   &-flex {
@@ -51,18 +30,6 @@
     flex-flow: row wrap;
     justify-content: center;
   }
-      
-  // &-preview {
-  //   width: 12px;
-  //   position: absolute;
-  //   left: 0;
-  //   right: 0;
-  //   top: 0;
-  //   bottom: 0;
-  //   margin: auto;
-  //   transition: all 0.1s;
-  // }
-     
       
   .pointer {
     cursor: pointer;
@@ -77,68 +44,114 @@
     height: 100%;
       
     &:nth-of-type(1) {
-      float: left;
-      width: calc(~'50% - 2px');
-      margin-right: 4px;
+      width: calc(~'50% - 1px');
+      margin-right: 2px;
+      text-align: right;
     }
       
     &:nth-of-type(2) {
-      float: left;
-      width: calc(~'50% - 2px');
+      width: calc(~'50% - 1px');
+      text-align: left;
     }
   }
       
-  &-pic-3 {
-    height: calc(~'50% - 2px');
+  &-pic-horizontal-3 {
+    height: calc(~'(100% - 2px)/2');
       
     &:nth-of-type(1) {
       width: 100%;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
+      text-align: center;
     }
       
     &:nth-of-type(2) {
-      width: calc(~'50% - 2px');
-      margin-right: 4px;
+      width: calc(~'(100% - 2px)/2');
+      margin-right: 2px;
+      text-align: right;
     }
       
     &:nth-of-type(3) {
-      width: calc(~'50% - 2px');
+      width: calc(~'(100% - 2px)/2');
+      text-align: left;
+    }
+  }
+
+  &-pic-vertical-3 {
+    height: 100%;
+      
+    &:nth-of-type(1) {
+      width: calc(~'(100% - 4px)/3');
+      margin-right: 2px;
+      text-align: right;
+    }
+      
+    &:nth-of-type(2) {
+      width: calc(~'(100% - 4px)/3');
+      margin-right: 2px;
+    }
+      
+    &:nth-of-type(3) {
+      width: calc(~'(100% - 4px)/3');
+      text-align: left;
     }
   }
       
   &-pic-4 {
-    width: calc(~'50% - 2px');
-    height: calc(~'50% - 2px');
+    width: calc(~'(100% - 2px)/2');
+    height: calc(~'(100% - 2px)/2');
       
     &:nth-of-type(1) {
-      margin-right: 4px;
-      margin-bottom: 4px;
+      margin-right: 2px;
+      margin-bottom: 2px;
+      text-align: right;
     }
       
     &:nth-of-type(2) {
-      margin-bottom: 4px;
+      margin-bottom: 2px;
+      text-align: left;
     }
       
     &:nth-of-type(3) {
-      margin-right: 4px;
+      margin-right: 2px;
+      text-align: right;
+    }
+
+    &:nth-of-type(4) {
+      text-align: left;
     }
   }
 
   &-pic-6 {
-    width: calc(~'50% - 2px');
+    width: calc(~'(100% - 4px) / 3');
     height: calc(~'50% - 2px');
       
     &:nth-of-type(1) {
-      margin-right: 4px;
-      margin-bottom: 4px;
+      margin-right: 2px;
+      margin-bottom: 2px;
+      text-align: right;
     }
       
     &:nth-of-type(2) {
-      margin-bottom: 4px;
+      margin-right: 2px;
+      margin-bottom: 2px;
     }
       
     &:nth-of-type(3) {
-      margin-right: 4px;
+      margin-bottom: 2px;
+      text-align: left;
+    }
+
+    &:nth-of-type(4) {
+      margin-right: 2px;
+      text-align: right;
+    }
+
+    &:nth-of-type(5) {
+      margin-right: 2px;
+    }
+
+    &:nth-of-type(6) {
+      text-align: left;
     }
   }
 }
