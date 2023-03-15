@@ -5,9 +5,10 @@
       :key="index"
       :class="prefixCls">
       <div :class="prefixCls + '-title'">
-        <ry-icon
+        <rd-icon
           :type="group.icon ? group.icon : 'ry-icon-chanpinx'"
-          size="12"></ry-icon>
+          size="12"
+          :class="prefixCls + '-title-icon'"></rd-icon>
         <span>{{ group.title }}</span>
         <template v-if="group.tooltip">
           <Tooltip
@@ -28,7 +29,8 @@
         <div
           v-for="item in group.items"
           :key="item.value"
-          :class="itemsClass(item)">
+          :class="itemsClass(item)"
+          @click="onClick(item)">
           <slot
             name="groupItem"
             :data="item">
@@ -52,15 +54,15 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'dropdown-panel-group'
-import ryIcon from '../icon/icon.vue'
 export default {
-  components: {
-    ryIcon
-  },
   props: {
     data: {
       type: Array,
       default: () => []
+    },
+    labelValue: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -76,7 +78,10 @@ export default {
           [`${prefixCls}-item-disabled`]: item.disabled
         }
       ]
-      // return
+    },
+    onClick(item) {
+      let result = this.labelValue ? this.data.find(e => e.value === item.value) : item.value
+      this.$emit('on-click',result)
     }
   }
 }

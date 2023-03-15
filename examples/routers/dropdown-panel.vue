@@ -4,8 +4,8 @@
     <h4>content 参数</h4>
     <rd-dropdown-panel
       :data="list"
-      trigger="click"
-      content="自定义"></rd-dropdown-panel>
+      content="自定义"
+      @on-click="onClick"></rd-dropdown-panel>
     <h4>使用slot=content</h4>
     <rd-dropdown-panel
       :data="list"
@@ -23,7 +23,9 @@
     <h4>分类样式</h4>
     <rd-dropdown-panel
       type="group"
-      :data="groupData"></rd-dropdown-panel>
+      trigger="click"
+      :data="groupData"
+      @on-click="onClick"></rd-dropdown-panel>
     <br />
     <br />
     <br />
