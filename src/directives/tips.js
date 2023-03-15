@@ -1,11 +1,3 @@
-/*
- * @Author: 杨玉峰 yangyufeng@mobvista.com
- * @Date: 2023-03-01 13:58:21
- * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2023-03-01 17:50:47
- * @FilePath: /ry-design/src/directives/tips.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 import Vue from 'vue'
 import { Tooltip } from 'view-design'
 
@@ -15,23 +7,29 @@ let tooltipDomId = ''
 function createTooltip(target, options = {}) {
   tooltipDomId = 'v-tooltip-' + +new Date()
   const MyTooltip = { props: { reference: null }, extends: Tooltip }
-  const props = {
-    ...options,
-    transfer: true,
-    theme: 'light',
-    reference: target
-  }
   const tooltip = new Vue({
     el: document.createElement('div'),
     render(h) {
       let contentChild = null
-      let { contentRender } = props
+      let { contentRender } = options
       // 传入了自定义渲染函数
       if (typeof contentRender === 'function') {
-        let renderDom = props.contentRender(h, options)
+        let renderDom = options.contentRender(h, options)
         contentChild = h('div', { slot: 'content', class: 'v-tooltip-content-slot' }, [renderDom])
       }
-      return h(MyTooltip, { props, id: tooltipDomId }, [contentChild])
+      return h(
+        MyTooltip,
+        {
+          id: tooltipDomId,
+          props: {
+            ...options,
+            transfer: true,
+            theme: 'light',
+            reference: target
+          }
+        },
+        [contentChild]
+      )
     }
   })
   return tooltip.$children[0]
@@ -48,8 +46,10 @@ function showTooltip(event) {
       el._tooltipRef = tooltipRef
     }
 
-    // 展示浮层
-    tooltipRef.handleShowPopper()
+    // 打开浮层
+    tooltipRef.$nextTick(() => {
+      tooltipRef.handleShowPopper()
+    })
   }
 }
 
@@ -57,7 +57,10 @@ function hideTooltip(event) {
   const el = event.target
   const tooltipRef = el._tooltipRef
   if (tooltipRef) {
-    tooltipRef.handleClosePopper()
+    // 关闭浮层
+    tooltipRef.$nextTick(() => {
+      tooltipRef.handleClosePopper()
+    })
   }
 }
 
@@ -71,10 +74,13 @@ const directive = {
     // 销毁组件
     const tooltipRef = el._tooltipRef
     if (tooltipRef) {
-      tooltipRef.handleClosePopper()
       tooltipRef.$nextTick(() => {
+        tooltipRef.handleClosePopper()
         tooltipRef.$destroy()
-        document.body.removeChild(document.body.getElementById('#' + tooltipDomId))
+        if (typeof window !== 'undefined' && 'document' in window) {
+          const dom = document.getElementById(tooltipDomId)
+          dom && document.body.removeChild(dom)
+        }
       })
     }
     // 删除属性

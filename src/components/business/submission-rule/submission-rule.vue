@@ -29,20 +29,20 @@
         v-if="['DELAY', 'BATCH', 'REPEAT'].includes(formData.submitRule)"
         :class="[prefixCls + '-setting']">
         <!-- 提示 -->
-        <span slot="label">
-          设置
-          <Tooltip
-            :content="ruleTipsList[formData.submitRule]"
-            theme="light"
-            max-width="240"
-            placement="top-start">
-            <Icon
-              :class="[prefixCls + '-setting-icon']"
-              type="ios-help-circle-outline"
-              size="16"
-              color="#575865"></Icon>
-          </Tooltip>
-        </span>
+        <div
+          slot="label"
+          :class="prefixCls + '-setting-label'">
+          <span>设置</span>
+          <Icon
+            v-tooltip="{
+              content: ruleTipsList[formData.submitRule],
+              maxWidth: 240,
+              placement: 'top-start',
+              'transfer-class-name': prefixCls + '-setting-tooltip-transfer'
+            }"
+            :class="[prefixCls + '-setting-icon']"
+            type="ios-help-circle-outline"></Icon>
+        </div>
 
         <!-- 开始时间 -->
         <div :class="[prefixCls + '-setting-item']">

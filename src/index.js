@@ -24,6 +24,7 @@ import Button from './components/basics/custom-button'
 import DigitalDetailsTooltip from './components/basics/digital-details-tooltip'
 import Page from './components/basics/page'
 import Schedule from './components/basics/schedule'
+import DropdownSearch from './components/basics/dropdown-search'
 import Sort from './components/basics/sort'
 import ImagePreview from './components/basics/image-preview'
 import DropdownPanel from './components/basics/dropdown-panel'
@@ -112,6 +113,7 @@ const components = [
   AccountGroupList,
   UTable,
   UTableColumn,
+  DropdownSearch,
   Sort,
   ImagePreview,
   DropdownPanel
@@ -178,6 +180,7 @@ export default {
   AccountGroupList,
   UTable,
   UTableColumn,
+  DropdownSearch,
   Sort,
   ImagePreview,
   DropdownPanel

@@ -11,6 +11,7 @@
   <div :class="prefixCls">
     <div
       v-show="value"
+      ref="transfer-body"
       v-transfer-dom
       :data-transfer="transfer"
       :transfer="transfer"
@@ -35,6 +36,7 @@
           <!-- 视频 -->
           <preview-video
             v-if="type === 'VIDEO'"
+            :value="value"
             :class="[prefixCls + '-video']"
             :poster="poster"
             :src="src"></preview-video>
@@ -88,7 +90,21 @@ export default {
       isImageError: false
     }
   },
+  watch: {
+    // 开启后，动态设置层级
+    value: async function () {
+      await this.$nextTick()
+      let zIndex = this.getMaxZIndex()
+      this.$refs['transfer-body'].style.zIndex = this.value ? zIndex : ''
+    }
+  },
   methods: {
+    // 获取最大的z-index， 记住要在页面渲染完毕执行
+    getMaxZIndex() {
+      let allEles = document.getElementsByTagName('*')
+      let arr = [...allEles].map(e => +window.getComputedStyle(e).zIndex || 0)
+      return arr.length ? Math.max(...arr) + 1 : 0
+    },
     // 图片加载失败
     handleImgError(e) {
       this.isImageError = true
