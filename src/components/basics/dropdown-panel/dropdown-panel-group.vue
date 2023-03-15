@@ -29,7 +29,8 @@
         <div
           v-for="item in group.items"
           :key="item.value"
-          :class="itemsClass(item)">
+          :class="itemsClass(item)"
+          @click="onClick(item)">
           <slot
             name="groupItem"
             :data="item">
@@ -58,6 +59,10 @@ export default {
     data: {
       type: Array,
       default: () => []
+    },
+    labelValue: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -73,7 +78,10 @@ export default {
           [`${prefixCls}-item-disabled`]: item.disabled
         }
       ]
-      // return
+    },
+    onClick(item) {
+      let result = this.labelValue ? this.data.find(e => e.value === item.value) : item.value
+      this.$emit('on-click',result)
     }
   }
 }

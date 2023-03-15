@@ -23,7 +23,8 @@
         </dropdown-panel-list>
         <dropdown-panel-group
           v-if="type === 'group'"
-          :data="data">
+          :data="data"
+          @on-click="onClick">
           <template #groupItem="{ data }">
             <slot
               name="groupItem"
