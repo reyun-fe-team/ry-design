@@ -3,6 +3,17 @@
     <rd-single-header
       @on-reset="handleReset"
       @on-query="handleQuery">
+      <div slot="subtitle">
+        <Tooltip
+          transfer
+          max-width="280"
+          theme="light"
+          content="我是slot=subtitle">
+          <Icon
+            type="ios-help-circle-outline"
+            style="margin-left: 5px; font-size: 14px"></Icon>
+        </Tooltip>
+      </div>
       <div
         slot="content"
         class="abc">
