@@ -24,7 +24,8 @@
         <dropdown-panel-group
           v-if="type === 'group'"
           :data="data"
-          @on-click="onClick">
+          :labelValue="labelValue"
+          @on-click="onGroupClick">
           <template #groupItem="{ data }">
             <slot
               name="groupItem"
@@ -79,7 +80,8 @@ export default {
   computed: {
     $apis() {
       return Object.assign({}, this.$attrs, {
-        placement: this.placement
+        placement: this.placement,
+        transferClassName: this.transferClassName
       })
     },
     classes() {
@@ -90,6 +92,17 @@ export default {
           [`${prefixCls}-open`]: this.isOpen
         }
       ]
+    },
+    transferClassName() {
+      let classs = {
+        [`${this.$attrs.transferClassName}`]: !!this.$attrs.transferClassName,
+        [`${prefixCls}-${this.type}-wrap-transfer`]:
+          this.$attrs.transfer === true || this.$attrs.transfer === ''
+      }
+      let res = Object.keys(classs)
+        .filter(k => classs[k])
+        .join(' ')
+      return res
     }
   },
   watch: {},
@@ -106,6 +119,9 @@ export default {
     },
     onClickoutside(event) {
       this.$emit('on-clickoutside', event)
+    },
+    onGroupClick(data) {
+      this.$emit('on-click', data)
     }
   }
 }
