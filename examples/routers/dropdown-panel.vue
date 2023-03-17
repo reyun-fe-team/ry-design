@@ -3,6 +3,7 @@
     <h3>自定义按钮文案</h3>
     <h4>content 参数</h4>
     <rd-dropdown-panel
+      label-value
       :data="list"
       content="自定义"
       @on-click="onClick"></rd-dropdown-panel>
@@ -20,10 +21,17 @@
     <rd-dropdown-panel
       type="list"
       trigger="click"
-      :data="listData"></rd-dropdown-panel>
+      :data="listData"
+      @on-click="onClick"></rd-dropdown-panel>
+    <rd-dropdown-panel
+      label-value
+      type="list"
+      trigger="click"
+      :data="listData"
+      @on-click="onClick"></rd-dropdown-panel>
     <h4>分类样式-transfer</h4>
     <rd-dropdown-panel
-      labelValue
+      label-value
       type="group"
       trigger="click"
       :data="groupData"
