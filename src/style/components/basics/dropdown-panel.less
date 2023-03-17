@@ -70,6 +70,7 @@
   .@{multi-dropdown-panel}-group-title {
     display: flex;
     margin-bottom: 8px;
+    font-size: 12px;
     font-weight: 600;
     color: #151b39;
     align-items: center;
@@ -87,12 +88,13 @@
     height: 28px;
     min-width: 100px;
     padding: 0 10px;
+    font-size: 12px;
     line-height: 28px;
     text-align: left;
     cursor: pointer;
     border-radius: 3px;
 
-    &:hover:not(&-disabled) {
+    &:hover:not(.@{multi-dropdown-panel}-group-item-disabled) {
       color: #3989fa;
       background-color: rgba(57, 137, 250, 11%);
     }

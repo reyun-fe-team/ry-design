@@ -19,11 +19,10 @@
     <h4>默认方式</h4>
     <rd-dropdown-panel
       type="list"
+      trigger="click"
       :data="listData"></rd-dropdown-panel>
     <h4>分类样式-transfer</h4>
     <rd-dropdown-panel
-      transfer
-      transferClassName="aaaaaaaaaaaaaaaaaa"
       labelValue
       type="group"
       trigger="click"
