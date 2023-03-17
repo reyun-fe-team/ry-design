@@ -195,22 +195,19 @@ export default {
           item => item[this.itemId] === this.defaultActive
         )
         const item = this.defaultActive ? defaultActiveData : this.dataList[0]
-        this.choose(item, true)
+        this.active = item[this.itemId]
+        this.$emit('on-change', this.active)
       })
     },
-    choose(item, isFirst = true) {
+    choose(item) {
+      let { itemId, active } = this
+      if (!this.showLeft || item[itemId] === active) {
+        return
+      }
       const before = this.beforeCheck()
-      if (before && before.then) {
-        if (!this.showLeft) {
-          return
-        }
-        const { itemId } = this
-        if (item[itemId] === this.active && !isFirst) {
-          return
-        }
-        const active = item[itemId]
-        this.active = active
-        this.$emit('on-change', active, isFirst)
+      if (before && (before || before.then)) {
+        this.active = item[itemId]
+        this.$emit('on-change', item[itemId])
       }
     },
     reset() {
