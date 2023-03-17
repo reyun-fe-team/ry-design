@@ -212,17 +212,18 @@ export default {
           newList = [...m.children, ...newList]
         })
         let activeData = newList.find(f => f[this.itemId] === this.active)
-        this.choose(activeData, true)
+        this.active = activeData[this.itemId]
+        this.$emit('on-change', this.active, activeData['parentId'])
       })
     },
-    choose(item, isFirst = true) {
+    choose(item) {
+      let { itemId, active } = this
+      // 当前已经选中的 不在返回
+      if (item[itemId] === active) {
+        return
+      }
       const before = this.beforeCheck()
-      if (before && before.then) {
-        const { itemId } = this
-        // 当前已经选中的 不在返回
-        if (item[itemId] === this.active && !isFirst) {
-          return
-        }
+      if (before && (before || before.then)) {
         const active = item[itemId]
         this.active = active
         this.$emit('on-change', active, item['parentId'])
