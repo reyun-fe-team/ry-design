@@ -80,8 +80,8 @@ export default {
       ]
     },
     onClick(item) {
-      let result = this.labelValue ? this.data.find(e => e.value === item.value) : item.value
-      this.$emit('on-click',result)
+      let result = this.labelValue ? item : item.value
+      this.$emit('on-click', result)
     }
   }
 }

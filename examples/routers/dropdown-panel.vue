@@ -20,7 +20,15 @@
     <rd-dropdown-panel
       type="list"
       :data="listData"></rd-dropdown-panel>
-    <h4>分类样式</h4>
+    <h4>分类样式-transfer</h4>
+    <rd-dropdown-panel
+      transfer
+      transferClassName="aaaaaaaaaaaaaaaaaa"
+      labelValue
+      type="group"
+      trigger="click"
+      :data="groupData"
+      @on-click="onClick"></rd-dropdown-panel>
     <rd-dropdown-panel
       type="group"
       trigger="click"
