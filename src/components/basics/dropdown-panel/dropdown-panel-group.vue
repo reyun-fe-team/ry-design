@@ -31,7 +31,7 @@
           :key="item.value"
           :disabled="item.disabled"
           :class="itemsClass(item)"
-          @click="onClick(item)">
+          :name="item.value">
           <slot
             name="groupItem"
             :data="item">
@@ -60,10 +60,6 @@ export default {
     data: {
       type: Array,
       default: () => []
-    },
-    labelValue: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -79,12 +75,6 @@ export default {
           [`${prefixCls}-item-disabled`]: item.disabled
         }
       ]
-    },
-    onClick(item) {
-      if(!item.disabled) {
-        let result = this.labelValue ? item : item.value
-        this.$emit('on-click', result)
-      }
     }
   }
 }

@@ -23,9 +23,7 @@
         </dropdown-panel-list>
         <dropdown-panel-group
           v-if="type === 'group'"
-          :data="data"
-          :labelValue="labelValue"
-          @on-click="onGroupClick">
+          :data="data">
           <template #groupItem="{ data }">
             <slot
               name="groupItem"
@@ -110,7 +108,14 @@ export default {
   mounted() {},
   methods: {
     onClick(name) {
-      let result = this.labelValue ? this.data.find(e => e.value === name) : name
+      let list = []
+      if (this.type === 'list') {
+        list = this.data
+      }
+      if (this.type === 'group') {
+        list = this.data.map(e => e.items).flat()
+      }
+      let result = this.labelValue ? list.find(e => e.value === name) : name
       this.$emit('on-click', result)
     },
     onVisibleChange(visible) {
@@ -119,9 +124,6 @@ export default {
     },
     onClickoutside(event) {
       this.$emit('on-clickoutside', event)
-    },
-    onGroupClick(data) {
-      this.$emit('on-click', data)
     }
   }
 }
