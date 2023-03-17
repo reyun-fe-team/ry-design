@@ -25,30 +25,19 @@
     visibility: hidden;
   }
 
-  &-cursor {
-    cursor: pointer;
-  }
-
-  &-error,
+  s &-error,
   &-placeholder,
-  &-mark {
+  &-icon {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
+    z-index: 1;
     display: flex;
+    cursor: pointer;
     align-items: center;
     justify-content: center;
-  }
-
-  &-mark {
-    z-index: 1;
-    color: #fff;
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 30%);
-    opacity: 0;
-    transition: opacity 0.3s;
   }
 
   &-inner:hover {

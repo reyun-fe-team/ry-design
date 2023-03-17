@@ -4,13 +4,14 @@
     :class="classes"
     :style="imageGroupStyles">
     <rd-image
-      v-for="(url, index) in currenData"
+      v-for="(option, index) in currenData"
       :key="index"
-      :src="url"
+      :src="option.src"
       fit="contain"
+      preview-icon
       :style="imageStyles"
       :class="classImage"
-      :alt="url"></rd-image>
+      :alt="option.src"></rd-image>
   </div>
 </template>
 <script>
@@ -19,11 +20,10 @@ import { oneOf } from '@src/util/assist.js'
 // import mixinsForm from '../../mixins/form'
 
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'image-group'
+const prefixCls = prefix + 'material-group'
 
 export default {
   name: prefixCls,
-  // mixins: [mixinsForm],
   props: {
     size: {
       validator(value) {
@@ -47,9 +47,9 @@ export default {
       type: [String, Number],
       default: ''
     },
-    isPadding: {
-      type: Boolean,
-      default: false
+    padding: {
+      type: Number,
+      default: 0
     },
     type: {
       type: String,
@@ -58,6 +58,7 @@ export default {
         return oneOf(value, ['horizontal', 'vertical'])
       }
     }
+
     // vertical: {
     //   type: Boolean,
     //   default: false
@@ -84,7 +85,7 @@ export default {
       return this.data.slice(0, this.size)
     },
     classes() {
-      return [`${prefixCls}`, { [`${prefixCls}-padding`]: this.isPadding }, `${prefixCls}-flex`]
+      return [`${prefixCls}`, `${prefixCls}-flex`]
     },
     classImage() {
       let { size } = this
@@ -94,7 +95,8 @@ export default {
     imageGroupStyles() {
       return {
         width: typeof this.width === 'number' ? `${this.width}px` : this.width,
-        height: typeof this.height === 'number' ? `${this.height}px` : this.height
+        height: typeof this.height === 'number' ? `${this.height}px` : this.height,
+        padding: this.padding + 'px'
       }
     },
     imageStyles() {

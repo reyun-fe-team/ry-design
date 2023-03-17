@@ -1,15 +1,10 @@
-@image-group: ~"@{css-prefix}image-group";
+@material-group: ~"@{css-prefix}material-group";
 @image: ~"@{css-prefix}image";
-
 @padding-item : 2px;
-.@{image-group} {
+.@{material-group} {
   overflow: hidden;
   background-color: #eef0f3ff;
   border: 1px solid #666;
-
-  &-padding {
-    padding: @padding-item;
-  }
 
   .@{image} {
     top: 50%;
@@ -22,6 +17,7 @@
     position: relative;
     overflow: hidden;
     text-align: center;
+    background-color: #fff;
   }
 
   &-flex {
@@ -45,7 +41,7 @@
       
     &:nth-of-type(1) {
       width: calc(~'50% - 1px');
-      margin-right: 2px;
+      margin-right: @padding-item;
       text-align: right;
     }
       
@@ -60,13 +56,13 @@
       
     &:nth-of-type(1) {
       width: 100%;
-      margin-bottom: 2px;
+      margin-bottom: @padding-item;
       text-align: center;
     }
       
     &:nth-of-type(2) {
       width: calc(~'(100% - 2px)/2');
-      margin-right: 2px;
+      margin-right: @padding-item;
       text-align: right;
     }
       
@@ -81,13 +77,13 @@
       
     &:nth-of-type(1) {
       width: calc(~'(100% - 4px)/3');
-      margin-right: 2px;
+      margin-right: @padding-item;
       text-align: right;
     }
       
     &:nth-of-type(2) {
       width: calc(~'(100% - 4px)/3');
-      margin-right: 2px;
+      margin-right: @padding-item;
     }
       
     &:nth-of-type(3) {
@@ -101,18 +97,18 @@
     height: calc(~'(100% - 2px)/2');
       
     &:nth-of-type(1) {
-      margin-right: 2px;
-      margin-bottom: 2px;
+      margin-right: @padding-item;
+      margin-bottom: @padding-item;
       text-align: right;
     }
       
     &:nth-of-type(2) {
-      margin-bottom: 2px;
+      margin-bottom: @padding-item;
       text-align: left;
     }
       
     &:nth-of-type(3) {
-      margin-right: 2px;
+      margin-right: @padding-item;
       text-align: right;
     }
 
@@ -126,32 +122,32 @@
     height: calc(~'50% - 2px');
       
     &:nth-of-type(1) {
-      margin-right: 2px;
-      margin-bottom: 2px;
-      text-align: right;
+      margin-right: @padding-item;
+      margin-bottom: @padding-item;
+      // text-align: right;
     }
       
     &:nth-of-type(2) {
-      margin-right: 2px;
-      margin-bottom: 2px;
+      margin-right: @padding-item;
+      margin-bottom: @padding-item;
     }
       
     &:nth-of-type(3) {
-      margin-bottom: 2px;
-      text-align: left;
+      margin-bottom: @padding-item;
+      // text-align: left;
     }
 
     &:nth-of-type(4) {
-      margin-right: 2px;
-      text-align: right;
+      margin-right: @padding-item;
+      // text-align: right;
     }
 
     &:nth-of-type(5) {
-      margin-right: 2px;
+      margin-right: @padding-item;
     }
 
     &:nth-of-type(6) {
-      text-align: left;
+      // text-align: left;
     }
   }
 }

@@ -31,13 +31,12 @@
           :referrerPolicy="referrerPolicy"
           @load="handleImageLoad"
           @error="handleImageError" />
-        <slot
-          v-if="preview && previewTip"
-          name="preview">
-          <div :class="prefixCls + 'image-mark'">
-            <span>{{ previewLang }}</span>
-          </div>
-        </slot>
+
+        <div
+          v-if="previewIcon"
+          :class="prefixCls + '-icon'">
+          <span>{{ previewLang }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -62,7 +61,7 @@ export default {
       type: String,
       default: ''
     },
-    preview: {
+    previewIcon: {
       type: Boolean,
       default: false
     },
@@ -90,10 +89,6 @@ export default {
     scrollContainer: {
       type: [String],
       default: ''
-    },
-    previewTip: {
-      type: Boolean,
-      default: true
     }
   },
   data() {
@@ -108,12 +103,7 @@ export default {
   },
   computed: {
     innerClasses() {
-      return [
-        `${this.prefixCls}-inner`,
-        {
-          [prefixCls + '--cursor']: this.preview
-        }
-      ]
+      return [`${this.prefixCls}-inner`]
     },
     imgClasses() {
       return [

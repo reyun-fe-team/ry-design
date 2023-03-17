@@ -2,77 +2,80 @@
   <div>
     <h2>横版视频</h2>
     <section style="display: flex">
-      <rd-image-group
+      <rd-material-group
+        :padding="16"
         style="margin: 24px 24px 0 0"
         :size="1"
         :data="urlList"
         :width="216"
-        :height="120"></rd-image-group>
-      <rd-image-group
+        :height="120"></rd-material-group>
+      <rd-material-group
         style="margin: 24px 24px 0 0"
         :size="2"
         :data="urlList"
         :width="216"
-        :height="120"></rd-image-group>
-      <rd-image-group
+        :height="120"></rd-material-group>
+      <rd-material-group
         style="margin: 24px 24px 0 0"
         :size="3"
         :data="urlList"
         :width="216"
-        :height="120"></rd-image-group>
-      <!-- <rd-image-group
-      style="margin: 24px 24px 0 0"
-      :size="3"
-      :data="urlList"
-      :width="216"
-      :height="120"></rd-image-group> -->
-      <rd-image-group
+        :height="120"></rd-material-group>
+      <rd-material-group
         style="margin: 24px 24px 0 0"
         :size="4"
         :data="urlList"
         :width="216"
-        :height="120"></rd-image-group>
-      <rd-image-group
+        :height="120"></rd-material-group>
+      <rd-material-group
         style="margin: 24px 24px 0 0"
         :size="6"
         :data="urlList"
         :width="256"
-        :height="120"></rd-image-group>
+        :height="120"></rd-material-group>
     </section>
     <h2>竖版视频</h2>
     <section style="display: flex">
-      <rd-image-group
+      <rd-material-group
         style="margin: 24px 24px 0 0"
         :size="1"
         :data="shuList"
         :width="216"
-        :height="120"></rd-image-group>
-      <rd-image-group
+        :height="120"></rd-material-group>
+      <rd-material-group
         style="margin: 24px 24px 0 0"
         :size="2"
         :data="shuList"
         :width="216"
-        :height="120"></rd-image-group>
-      <rd-image-group
+        :height="120"></rd-material-group>
+      <rd-material-group
         style="margin: 24px 24px 0 0"
         :size="3"
         type="vertical"
         :data="shuList"
         :width="216"
-        :height="120"></rd-image-group>
-      <rd-image-group
+        :height="120"></rd-material-group>
+      <rd-material-group
         style="margin: 24px 24px 0 0"
         :size="4"
         :data="shuList"
         :width="216"
-        :height="120"></rd-image-group>
-      <rd-image-group
+        :height="120"></rd-material-group>
+      <rd-material-group
         style="margin: 24px 24px 0 0"
         :size="6"
         :data="shuList"
         :width="256"
-        :height="120"></rd-image-group>
+        :height="120"></rd-material-group>
     </section>
+
+    一个视频
+    <rd-material-group
+      style="margin: 24px 24px 0 0"
+      :size="2"
+      :data="oneVideoUrlList"
+      :width="216"
+      :height="120"></rd-material-group>
 
     <hr style="margin-top: 24px" />
     <!-- <rd-image
@@ -206,9 +209,19 @@ const fitList = ['fill', 'contain', 'cover', 'none', 'scale-down']
 export default {
   data() {
     return {
+      oneVideoUrlList: [
+        {
+          s3Url:
+            'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/8a1/67f/1fa/8a167f1fae164d685578b96a76130ec3.mp4',
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1d3/06c/7af/1d306c7afd6243687172409fec4b43e5-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/8a1/67f/1fa/8a167f1fae164d685578b96a76130ec3-small.jpg'
+        }
+      ],
       // 横版图片
       urlList: [
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/b26/620/bc4/b26620bc4875aa139ede4421a109707e-small.jpg',
+        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/282/adb/1c9/282adb1c9b89cb2ec8d7384ca0cabba4-small.jpg',
         'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1d3/06c/7af/1d306c7afd6243687172409fec4b43e5-small.jpg',
         'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/8a1/67f/1fa/8a167f1fae164d685578b96a76130ec3-small.jpg',
         'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cover/2022/11/9/77068a83cdc7819866842f6e197cf837_0-small.jpg',
