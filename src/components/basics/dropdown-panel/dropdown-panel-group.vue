@@ -26,9 +26,10 @@
         </template>
       </div>
       <div :class="prefixCls + '-content'">
-        <div
+        <DropdownItem
           v-for="item in group.items"
           :key="item.value"
+          :disabled="item.disabled"
           :class="itemsClass(item)"
           @click="onClick(item)">
           <slot
@@ -46,7 +47,7 @@
             </template>
             <template v-else>{{ item.label }}</template>
           </slot>
-        </div>
+        </DropdownItem>
       </div>
     </div>
   </DropdownMenu>
@@ -80,8 +81,10 @@ export default {
       ]
     },
     onClick(item) {
-      let result = this.labelValue ? item : item.value
-      this.$emit('on-click', result)
+      if(!item.disabled) {
+        let result = this.labelValue ? item : item.value
+        this.$emit('on-click', result)
+      }
     }
   }
 }
