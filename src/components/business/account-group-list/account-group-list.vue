@@ -201,10 +201,10 @@ export default {
       return className
     },
     init() {
-      if (!this.data.length) {
-        return
-      }
       this.$nextTick(() => {
+        if (!this.data.length) {
+          return
+        }
         let { list, itemId, defaultActive } = this
         let newList = []
         this.active = defaultActive || list[0].children[0][itemId]
