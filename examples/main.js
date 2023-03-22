@@ -181,6 +181,10 @@ const router = new VueRouter({
     {
       path: '/dropdown-panel',
       component: resolve => require(['./routers/dropdown-panel'], resolve)
+    },
+    {
+      path: '/date-picker',
+      component: resolve => require(['./routers/date-picker'], resolve)
     }
   ]
 })
