@@ -23,8 +23,7 @@
         </dropdown-panel-list>
         <dropdown-panel-group
           v-if="type === 'group'"
-          :data="data"
-          @on-click="onClick">
+          :data="data">
           <template #groupItem="{ data }">
             <slot
               name="groupItem"
@@ -79,7 +78,8 @@ export default {
   computed: {
     $apis() {
       return Object.assign({}, this.$attrs, {
-        placement: this.placement
+        placement: this.placement,
+        transferClassName: this.transferClassName
       })
     },
     classes() {
@@ -90,6 +90,17 @@ export default {
           [`${prefixCls}-open`]: this.isOpen
         }
       ]
+    },
+    transferClassName() {
+      let classs = {
+        [`${this.$attrs.transferClassName}`]: !!this.$attrs.transferClassName,
+        [`${prefixCls}-${this.type}-wrap-transfer`]:
+          this.$attrs.transfer === true || this.$attrs.transfer === ''
+      }
+      let res = Object.keys(classs)
+        .filter(k => classs[k])
+        .join(' ')
+      return res
     }
   },
   watch: {},
@@ -97,7 +108,14 @@ export default {
   mounted() {},
   methods: {
     onClick(name) {
-      let result = this.labelValue ? this.data.find(e => e.value === name) : name
+      let list = []
+      if (this.type === 'list') {
+        list = this.data
+      }
+      if (this.type === 'group') {
+        list = this.data.map(e => e.items).flat()
+      }
+      let result = this.labelValue ? list.find(e => e.value === name) : name
       this.$emit('on-click', result)
     },
     onVisibleChange(visible) {
