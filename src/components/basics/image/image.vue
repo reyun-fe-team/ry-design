@@ -35,10 +35,7 @@
         <div
           v-if="previewIcon"
           :class="prefixCls + '-icon'">
-          <!-- <span>{{ previewLang }}</span> -->
-          <ryIcon
-            type="ry-icon-more"
-            size="16" />
+          <img :src="previewIconSrc" />
         </div>
       </div>
     </div>
@@ -46,6 +43,9 @@
 </template>
 <script>
 import { isClient } from '@src/util/assist.js'
+import videoPlay from '@src/images/image-preview/video-play.svg'
+import imageAmplify from '@src/images/image/amplify.png'
+import { oneOf } from '@src/util/assist.js'
 
 // is Element
 const isElement = el => {
@@ -53,9 +53,17 @@ const isElement = el => {
 }
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'image'
+
 export default {
   name: prefixCls,
   props: {
+    type: {
+      type: String,
+      validator(value) {
+        return oneOf(value, ['image', 'video'])
+      },
+      default: 'image'
+    },
     src: {
       type: String,
       default: ''
@@ -101,7 +109,9 @@ export default {
       imageError: false,
       scrollElement: null,
       observer: null,
-      prefixCls
+      prefixCls,
+      videoPlay,
+      imageAmplify
     }
   },
   computed: {
@@ -134,11 +144,11 @@ export default {
     failLang() {
       return '失败'
     },
-    previewLang() {
-      return '预览'
-    },
     loadingType() {
       return this.lazy ? 'lazy' : 'eager'
+    },
+    previewIconSrc() {
+      return this.type === 'video' ? videoPlay : imageAmplify
     }
   },
   mounted() {

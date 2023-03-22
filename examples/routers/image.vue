@@ -1,5 +1,8 @@
 <template>
   <div>
+    <rd-icon
+      type="ry-icon-video-play"
+      size="16" />
     <h2>横版视频</h2>
     <section style="display: flex">
       <rd-material-group
