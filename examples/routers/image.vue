@@ -78,6 +78,7 @@
       :size="2"
       :data="oneVideoUrlList"
       :width="216"
+      type="video"
       preview-icon
       open-cover
       :height="120"></rd-material-group>
@@ -85,6 +86,7 @@
     <rd-material-group
       style="margin: 24px 24px 0 0"
       :size="2"
+      type="video"
       :data="oneVideoUrlList"
       :width="216"
       preview-icon

@@ -35,7 +35,9 @@
         <div
           v-if="previewIcon"
           :class="prefixCls + '-icon'">
-          <img :src="previewIconSrc" />
+          <img
+            :src="previewIconSrc"
+            :style="previewIconStyle" />
         </div>
       </div>
     </div>
@@ -75,6 +77,10 @@ export default {
     previewIcon: {
       type: Boolean,
       default: false
+    },
+    previewIconWidth: {
+      type: [String, Number],
+      default: 32
     },
     referrerPolicy: {
       type: String,
@@ -136,6 +142,14 @@ export default {
       return {
         width: typeof this.width === 'number' ? `${this.width}px` : this.width,
         height: typeof this.height === 'number' ? `${this.height}px` : this.height
+      }
+    },
+    previewIconStyle() {
+      return {
+        width:
+          typeof this.previewIconWidth === 'number'
+            ? `${this.previewIconWidth}px`
+            : this.previewIconWidth
       }
     },
     loadingLang() {

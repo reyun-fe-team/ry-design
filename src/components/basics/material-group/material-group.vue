@@ -8,9 +8,10 @@
       :key="index"
       :src="option.src"
       fit="contain"
-      :preview-icon="openPreviewIcon(index)"
+      :preview-icon="previewIcon"
       :style="imageStyles"
       :class="classImage"
+      :type="currentType(index)"
       :alt="option.src"></rd-image>
   </div>
 </template>
@@ -65,8 +66,14 @@ export default {
     previewIcon: {
       type: Boolean,
       default: false
+    },
+    type: {
+      type: String,
+      validator(value) {
+        return oneOf(value, ['image', 'video'])
+      },
+      default: 'image'
     }
-
     // vertical: {
     //   type: Boolean,
     //   default: false
@@ -131,16 +138,23 @@ export default {
     // }
   },
   methods: {
-    openPreviewIcon(index) {
-      return !(
-        !this.previewIcon ||
-        (this.previewIcon && this.openCover && index == 1 && this.size === 2)
-      )
-      // if (!this.previewIcon || (this.previewIcon && this.openCover && index == 1)) {
-      //   return false
-      // }
-      // return true
+    currentType(index) {
+      if (this.openCover && index === 1) {
+        return 'image'
+      }
+      return this.type
     }
+    // openPreviewIcon() {
+    //   return this.previewIcon
+    //   // return !(
+    //   //   !this.previewIcon ||
+    //   //   (this.previewIcon && this.openCover && index == 1 && this.size === 2)
+    //   // )
+    //   // if (!this.previewIcon || (this.previewIcon && this.openCover && index == 1)) {
+    //   //   return false
+    //   // }
+    //   // return true
+    // }
     // change(data) {
     //   this.currentValue = data.value
     //   this.$emit('update:modelValue', data.value)
