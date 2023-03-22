@@ -7,67 +7,68 @@
         <div :class="prefixCls + '-body-left-box-title'">
           {{ leftTitle }}
         </div>
-        <div
-          v-for="item in list"
-          :key="item[groupName]"
-          :class="prefixCls + '-body-left-box-content'">
-          <Tooltip
-            :max-width="maxWidth"
-            transfer
-            :delay="delay"
-            placement="right"
-            theme="light">
-            <div :class="prefixCls + '-body-left-box-content-title'">
-              账户：{{ item[groupName] }}
-            </div>
-            <div slot="content">
-              <p>账户：{{ item[groupName] }}</p>
-            </div>
-          </Tooltip>
-          <ul>
-            <li
-              v-for="el in item.children"
-              :key="el[itemId]"
-              :class="itemClasses(el)"
-              @click="choose(el, false)">
-              <Tooltip
-                :max-width="maxWidth"
-                transfer
-                :delay="delay"
-                placement="right"
-                theme="light">
-                <div
-                  :class="prefixCls + '-body-left-box-content-item-name'"
-                  class="sign">
-                  {{ el[itemName] }}
-                </div>
-                <div
-                  slot="content"
-                  class="display-flex flex-direction-column">
-                  <p>{{ el[itemName] }}</p>
-                  <p v-if="id && el[id]">ID:{{ el[id] }}</p>
-                </div>
-              </Tooltip>
-              <span
-                v-if="el[itemNum] && !el[itemIconCustom] && !el[itemIconIview]"
-                :class="prefixCls + '-body-left-box-content-item-num'">
-                {{ el[itemNum] }}
-              </span>
+        <div :class="prefixCls + '-body-left-box-content'">
+          <div
+            v-for="item in list"
+            :key="item[groupName]">
+            <Tooltip
+              :max-width="maxWidth"
+              transfer
+              :delay="delay"
+              placement="right"
+              theme="light">
+              <div :class="prefixCls + '-body-left-box-content-title'">
+                {{ item[groupName] }}
+              </div>
+              <div slot="content">
+                <p>{{ item[groupName] }}</p>
+              </div>
+            </Tooltip>
+            <ul>
+              <li
+                v-for="el in item.children"
+                :key="el[itemId]"
+                :class="itemClasses(el)"
+                @click="choose(el, false)">
+                <Tooltip
+                  :max-width="maxWidth"
+                  transfer
+                  :delay="delay"
+                  placement="right"
+                  theme="light">
+                  <div
+                    :class="prefixCls + '-body-left-box-content-item-name'"
+                    class="sign">
+                    {{ el[itemName] }}
+                  </div>
+                  <div
+                    slot="content"
+                    class="display-flex flex-direction-column">
+                    <p>{{ el[itemName] }}</p>
+                    <p v-if="id && el[id]">ID:{{ el[id] }}</p>
+                  </div>
+                </Tooltip>
+                <span
+                  v-if="el[itemNum] && !el[itemIconCustom] && !el[itemIconIview]"
+                  :class="prefixCls + '-body-left-box-content-item-num'">
+                  {{ el[itemNum] }}
+                </span>
 
-              <Icon
-                v-if="itemIconCustom && el[itemIconCustom] && !el[itemIconIview] && !el[itemNum]"
-                :class="prefixCls + '-body-left-box-content-item-icon'"
-                :color="iconColor"
-                :custom="`${el[itemIconCustom]} icon iconfont`"
-                :size="iconSize"></Icon>
-              <Icon
-                v-if="itemIconIview && el[itemIconIview] && !el[itemIconCustom] && !el[itemNum]"
-                :class="prefixCls + '-body-left-box-content-item-icon'"
-                :color="iconColor"
-                :size="iconSize"
-                :type="el[itemIconIview]"></Icon>
-            </li>
-          </ul>
+                <Icon
+                  v-if="itemIconCustom && el[itemIconCustom] && !el[itemIconIview] && !el[itemNum]"
+                  :class="prefixCls + '-body-left-box-content-item-icon'"
+                  :color="iconColor"
+                  :custom="`${el[itemIconCustom]} icon iconfont`"
+                  :size="iconSize"></Icon>
+                <Icon
+                  v-if="itemIconIview && el[itemIconIview] && !el[itemIconCustom] && !el[itemNum]"
+                  :class="prefixCls + '-body-left-box-content-item-icon'"
+                  :color="iconColor"
+                  :size="iconSize"
+                  :type="el[itemIconIview]"></Icon>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <div
@@ -91,7 +92,7 @@ export default {
     },
     height: {
       type: String,
-      default: '520px'
+      default: '438px'
     },
     leftTitle: {
       type: [String, Boolean],
@@ -171,7 +172,7 @@ export default {
         let children = p.children.map(c => {
           return {
             ...c,
-            [this.groupId]: p[this.groupId]
+            parentId: p[this.groupId]
           }
         })
         return { ...p, children }
@@ -184,10 +185,14 @@ export default {
   methods: {
     itemClasses(item) {
       let { prefixCls, itemId, active } = this
-      return [
+      let className = [
         `${prefixCls}-body-left-box-content-item`,
         { [`${prefixCls}-body-left-box-content-item-active`]: item[itemId] === active }
       ]
+      if (item.className) {
+        className.push(item.className)
+      }
+      return className
     },
     init() {
       if (!this.data.length) {
@@ -205,14 +210,14 @@ export default {
       })
     },
     choose(item, isFirst = true) {
-      const { itemId, groupId } = this
+      const { itemId } = this
       // 当前已经选中的 不在返回
       if (item[itemId] === this.active && !isFirst) {
         return
       }
       const active = item[itemId]
       this.active = active
-      this.$emit('on-change', active, item[groupId])
+      this.$emit('on-change', active, item['parentId'])
     }
   }
 }

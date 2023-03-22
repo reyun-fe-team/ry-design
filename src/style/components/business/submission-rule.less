@@ -1,13 +1,17 @@
 @submission-rule: ~'@{css-prefix}submission-rule';
 
 .@{submission-rule} {
+  &-setting-tooltip-transfer {
+    margin-left: -16px;
+  }
+
   .ivu-form-item-label {
     color: #151b39;
   }
 
   &-rule-group .ivu-radio-group-item {
-    width       : 104px;
-    height      : 32px;
+    width: 104px;
+    height: 32px;
     border-color: 1px solid #dddddd;
 
     &.ivu-radio-wrapper-checked:first-child {
@@ -15,7 +19,7 @@
     }
 
     &:first-child {
-      border-left  : 1px solid #dddddd;
+      border-left: 1px solid #dddddd;
       border-radius: 3px 0 0 3px;
     }
 
@@ -25,27 +29,34 @@
   }
 
   &-setting {
-    display        : flex;
+    display: flex;
     justify-content: flex-start;
-    align-items    : center;
+    align-items: center;
+
+    &-label {
+      display: flex;
+      align-items: center;
+    }
 
     &-icon {
+      margin-top: 2px;
+      font-size: 16px;
       color: #575b56;
     }
 
     .ivu-form-item-content {
-      display        : flex;
+      display: flex;
       justify-content: flex-start;
-      align-items    : center;
-      margin-left    : 0 !important;
+      align-items: center;
+      margin-left: 0 !important;
     }
   }
 
   &-setting-item {
-    display        : flex;
+    display: flex;
     justify-content: flex-start;
-    align-items    : center;
-    margin-right   : 10px;
+    align-items: center;
+    margin-right: 10px;
   }
 
   &-date-picker {
@@ -57,32 +68,32 @@
   }
 
   &-interval-select {
-    width      : 96px;
+    width: 96px;
     margin-left: -2px;
 
     .ivu-select-selection {
-      border       : 1px solid #dddddd;
+      border: 1px solid #dddddd;
       border-radius: 0 3px 3px 0;
     }
   }
 
   &-explain {
-    width        : 76px;
-    height       : 32px;
-    line-height  : 32px;
-    text-align   : center;
-    background   : #ffffff;
-    border       : 1px solid #dddddd;
-    border-right : 0;
-    color        : #999999;
-    font-size    : 14px;
+    width: 76px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #dddddd;
+    border-right: 0;
+    color: #999999;
+    font-size: 12px;
     border-radius: 3px 0 0 3px;
   }
 
   &-adnum,
   &-repeat-times {
-    width        : 96px;
-    border       : 1px solid #dddddd;
+    width: 96px;
+    border: 1px solid #dddddd;
     border-radius: 0 3px 3px 0;
   }
 }

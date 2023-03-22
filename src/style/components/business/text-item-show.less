@@ -2,153 +2,151 @@
 
 .@{text-item-show} {
 
-
-  // 省略号
-  .ellipsis-single-line {
-    overflow     : hidden;
-    text-overflow: ellipsis;
-    white-space  : nowrap;
-  }
-
   // btnGroup
   &-btns {
-    height     : 24px;
-    display    : flex;
+    height: 24px;
+    display: flex;
     align-items: center;
 
     .btn {
-      height         : 100%;
-      cursor         : pointer;
-      width          : 24px;
-      display        : flex;
-      align-items    : center;
+      height: 100%;
+      cursor: pointer;
+      width: 24px;
+      display: flex;
+      align-items: center;
       justify-content: center;
     }
   }
 
   // basic
   &-basic {
-    display        : flex;
-    align-items    : center;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    height         : 24px;
-    background     : #f3f3f4;
-    border-radius  : 3px;
-    margin-top     : 8px;
-    padding        : 0 8px;
+    line-height: 24px;
+    background: #f3f3f4;
+    border-radius: 3px;
+    margin-top: 8px;
+    padding: 0 8px;
+
+    &-text {
+      font-size: 12px;
+      color: #151b39;
+      line-height: 24px;
+      flex: 1;
+    }
 
     &:hover {
       background: rgba(57, 137, 250, 0.1);
 
-      .show-text {
+      .@{text-item-show}-text {
         color: #3989fa !important;
       }
 
       .ivu-icon {
         color: #3989fa;
       }
-    }
-
-    // 双行
-    &.two-lines {
-      height: auto;
-
-      .two-line-text {
-        font-size         : 12px;
-        color             : #151b39;
-        line-height       : 24px;
-        flex              : 1;
-        word-break        : break-all;
-        text-overflow     : ellipsis;
-        display           : -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow          : hidden;
-      }
-    }
-
-    // 单行
-    &.single-line {
-      .single-line-text {
-        .ellipsis-single-line
-      }
-    }
-
-    &-text {
-      font-size  : 12px;
-      color      : #151b39;
-      line-height: 24px;
-      flex       : 1;
-
     }
   }
 
   // title
   &-title {
-    display        : flex;
-    align-items    : center;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    background     : #f3f3f4;
-    border-radius  : 3px;
-    margin-top     : 8px;
-    padding        : 0 8px;
+    background: #f3f3f4;
+    border-radius: 3px;
+    margin-top: 8px;
+    padding: 0 8px;
 
-    .title-thumbnail {
-      width       : 40px;
-      height      : 40px;
-      margin-right: 8px;
+    &-text {
+      font-size: 12px;
+      color: #151b39;
+      line-height: 24px;
+      flex: 1;
+      overflow: hidden;
 
-      img {
-        width     : 100%;
-        height    : 100%;
-        object-fit: contain;
-
+      &-sub {
+        color: #999999;
       }
     }
 
+    &-thumbnail {
+      width: 40px;
+      height: 40px;
+      margin-right: 8px;
 
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
 
     &:hover {
       background: rgba(57, 137, 250, 0.1);
 
-      .sub-title,
-      .main-title {
+      .@{text-item-show}-title-text-main,
+      .@{text-item-show}-title-text-sub {
         color: #3989fa !important;
       }
 
       .ivu-icon {
         color: #3989fa;
-      }
-    }
-
-    &-text {
-      font-size  : 12px;
-      color      : #151b39;
-      line-height: 24px;
-      flex       : 1;
-      overflow   : hidden;
-
-      .main-title {
-        .ellipsis-single-line;
-      }
-
-      .sub-title {
-        color: #999999;
-        .ellipsis-single-line;
       }
     }
   }
 
   // classify
   &-classify {
-    display        : flex;
-    align-items    : center;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    height         : 56px;
-    background     : #f3f3f4;
-    border-radius  : 3px;
-    margin-top     : 8px;
-    padding        : 0 8px;
+    height: 56px;
+    background: #f3f3f4;
+    border-radius: 3px;
+    margin-top: 8px;
+    padding: 0 8px;
+
+    &-text {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-size: 12px;
+      color: #151b39;
+      line-height: 24px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    &-thumbnail {
+      width: 40px;
+      height: 40px;
+      margin-right: 8px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    &-infos {
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+
+      .classify-info-item {
+        height: 24px;
+        font-size: 12px;
+        color: #151b39;
+        line-height: 24px;
+
+        .classify-item-id {
+          color: #999999;
+        }
+      }
+    }
 
     &:hover {
       background: rgba(57, 137, 250, 0.1);
@@ -160,47 +158,6 @@
 
       .ivu-icon {
         color: #3989fa;
-      }
-    }
-
-    &-text {
-      display        : flex;
-      align-items    : center;
-      justify-content: flex-start;
-      font-size      : 12px;
-      color          : #151b39;
-      line-height    : 24px;
-      flex           : 1;
-      overflow       : hidden;
-
-      .classify-thumbnail {
-        width       : 40px;
-        height      : 40px;
-        margin-right: 8px;
-
-        img {
-          width     : 100%;
-          height    : 100%;
-          object-fit: contain;
-        }
-      }
-
-      .classify-infos {
-        height  : 100%;
-        flex    : 1;
-        overflow: hidden;
-
-        .classify-info-item {
-          height     : 24px;
-          font-size  : 12px;
-          color      : #151b39;
-          line-height: 24px;
-          .ellipsis-single-line;
-
-          .classify-item-id {
-            color: #999999;
-          }
-        }
       }
     }
   }

@@ -1,0 +1,18 @@
+@dropdown-search: ~'@{css-prefix}dropdown-search';
+
+.@{dropdown-search} {
+
+  // 展示下拉的面板后，输入框一直为聚焦的状态
+  &-input-focus input {
+    border-color: #57a3f3;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 2px rgba(45, 140, 240, .2);
+    box-shadow: 0 0 0 2px rgba(45, 140, 240, .2)
+  }
+
+  // 暂无数据
+  &-search-not-data {
+    line-height: 30px;
+    text-align: center;
+  }
+}

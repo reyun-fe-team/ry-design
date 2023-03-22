@@ -167,14 +167,30 @@ const router = new VueRouter({
       component: resolve => require(['./routers/account-group-list'], resolve)
     },
     {
+      path: '/dropdown-search',
+      component: resolve => require(['./routers/dropdown-search'], resolve)
+    },
+    {
       path: '/sort',
       component: resolve => require(['./routers/sort'], resolve)
+    },
+    {
+      path: '/image-preview',
+      component: resolve => require(['./routers/image-preview'], resolve)
+    },
+    {
+      path: '/dropdown-panel',
+      component: resolve => require(['./routers/dropdown-panel'], resolve)
     },
     {
       path: '/image',
       component: resolve => require(['./routers/image'], resolve)
     }
   ]
+})
+
+router.afterEach(() => {
+  window.scrollTo(0, 0)
 })
 
 new Vue({
