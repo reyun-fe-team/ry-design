@@ -187,7 +187,7 @@ export default {
     },
     init() {
       this.$nextTick(() => {
-        if (!this.dataList.length) {
+        if (!this.dataList.length || !this.showLeft) {
           return
         }
         this.active = this.defaultActive ? this.defaultActive : this.dataList[0][this.itemId]
