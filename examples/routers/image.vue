@@ -51,7 +51,7 @@
       <rd-material-group
         style="margin: 24px 24px 0 0"
         :size="3"
-        type="vertical"
+        position-type="vertical"
         :data="shuList"
         :width="216"
         :height="120"></rd-material-group>
@@ -69,12 +69,22 @@
         :height="120"></rd-material-group>
     </section>
 
-    一个视频
+    <h2>一个视频-封面无icon</h2>
     <rd-material-group
       style="margin: 24px 24px 0 0"
       :size="2"
       :data="oneVideoUrlList"
       :width="216"
+      preview-icon
+      open-cover
+      :height="120"></rd-material-group>
+    <h2>两个视频-有icon</h2>
+    <rd-material-group
+      style="margin: 24px 24px 0 0"
+      :size="2"
+      :data="oneVideoUrlList"
+      :width="216"
+      preview-icon
       :height="120"></rd-material-group>
 
     <hr style="margin-top: 24px" />
@@ -221,22 +231,50 @@ export default {
       ],
       // 横版图片
       urlList: [
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/282/adb/1c9/282adb1c9b89cb2ec8d7384ca0cabba4-small.jpg',
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1d3/06c/7af/1d306c7afd6243687172409fec4b43e5-small.jpg',
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/8a1/67f/1fa/8a167f1fae164d685578b96a76130ec3-small.jpg',
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cover/2022/11/9/77068a83cdc7819866842f6e197cf837_0-small.jpg',
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cover/2022/11/4/fc86f3f7e50f7d6229469f3cfcfa99c4_0-small.jpg',
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/10025/image/2023/01/06/202301061741498632-small.jpg',
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/c70/72b/d8f/c7072bd8fa42104a5a9dabfb1c080649-small.jpg',
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1e9/389/1a8/1e93891a80c42eb5c4efe5ac1d98ca90-small.jpg'
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/282/adb/1c9/282adb1c9b89cb2ec8d7384ca0cabba4-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1d3/06c/7af/1d306c7afd6243687172409fec4b43e5-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/8a1/67f/1fa/8a167f1fae164d685578b96a76130ec3-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cover/2022/11/9/77068a83cdc7819866842f6e197cf837_0-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cover/2022/11/4/fc86f3f7e50f7d6229469f3cfcfa99c4_0-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/10025/image/2023/01/06/202301061741498632-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/c70/72b/d8f/c7072bd8fa42104a5a9dabfb1c080649-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1e9/389/1a8/1e93891a80c42eb5c4efe5ac1d98ca90-small.jpg'
+        }
       ],
       shuList: [
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg',
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg',
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg',
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg',
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg',
-        'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg'
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/730/108/76d/73010876da5dfc7870f10a5fc00fd9f6-small.jpg'
+        }
       ],
       fitList,
       url: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1d3/06c/7af/1d306c7afd6243687172409fec4b43e5-small.jpg',
@@ -244,10 +282,10 @@ export default {
         'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/119/636/a33/119636a330213818bf16362274d39da2-small.jpg',
       showPreview: false,
       srcList: [
-        'https://dev-file.iviewui.com/ll7neXYI7fzKv1SjjOl77vpfkDbJpbDB/large',
-        'https://dev-file.iviewui.com/ASzUrSpwJHqOi2G2jWzsVJyDV1ZF6xnK/large',
-        'https://file.iviewui.com/DSCF6873.JPG',
-        'https://dev-file.iviewui.com/YSUjM5Fx7mOjsijiI3eVDuaHGqnmT7H8/large'
+        { src: 'https://dev-file.iviewui.com/ll7neXYI7fzKv1SjjOl77vpfkDbJpbDB/large' },
+        { src: 'https://dev-file.iviewui.com/ASzUrSpwJHqOi2G2jWzsVJyDV1ZF6xnK/large' },
+        { src: 'https://file.iviewui.com/DSCF6873.JPG' },
+        { src: 'https://dev-file.iviewui.com/YSUjM5Fx7mOjsijiI3eVDuaHGqnmT7H8/large' }
       ],
       srcList2: [
         'https://file.iviewui.com/DSCF6873.JPG',

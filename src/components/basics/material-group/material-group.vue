@@ -8,7 +8,7 @@
       :key="index"
       :src="option.src"
       fit="contain"
-      preview-icon
+      :preview-icon="openPreviewIcon(index)"
       :style="imageStyles"
       :class="classImage"
       :alt="option.src"></rd-image>
@@ -51,12 +51,20 @@ export default {
       type: Number,
       default: 0
     },
-    type: {
+    positionType: {
       type: String,
       default: 'horizontal',
       validator(value) {
         return oneOf(value, ['horizontal', 'vertical'])
       }
+    },
+    openCover: {
+      type: Boolean,
+      default: false
+    },
+    previewIcon: {
+      type: Boolean,
+      default: false
     }
 
     // vertical: {
@@ -89,7 +97,7 @@ export default {
     },
     classImage() {
       let { size } = this
-      const groupSize = size === 3 ? `${this.type}-3` : size
+      const groupSize = size === 3 ? `${this.positionType}-3` : size
       return [`${prefixCls}-pic`, `${prefixCls}-pic-${groupSize}`]
     },
     imageGroupStyles() {
@@ -123,6 +131,16 @@ export default {
     // }
   },
   methods: {
+    openPreviewIcon(index) {
+      return !(
+        !this.previewIcon ||
+        (this.previewIcon && this.openCover && index == 1 && this.size === 2)
+      )
+      // if (!this.previewIcon || (this.previewIcon && this.openCover && index == 1)) {
+      //   return false
+      // }
+      // return true
+    }
     // change(data) {
     //   this.currentValue = data.value
     //   this.$emit('update:modelValue', data.value)

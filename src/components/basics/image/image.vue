@@ -35,7 +35,10 @@
         <div
           v-if="previewIcon"
           :class="prefixCls + '-icon'">
-          <span>{{ previewLang }}</span>
+          <!-- <span>{{ previewLang }}</span> -->
+          <ryIcon
+            type="ry-icon-more"
+            size="16" />
         </div>
       </div>
     </div>
