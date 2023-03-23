@@ -18,10 +18,10 @@
           <span>{{ failLang }}</span>
         </slot>
       </div>
+      <!-- 预览 -->
       <div
         v-if="loadingImage"
-        :class="innerClasses"
-        @click="handlePreview">
+        :class="innerClasses">
         <img
           :class="imgClasses"
           :style="fitStyle"
@@ -31,14 +31,20 @@
           :referrerPolicy="referrerPolicy"
           @load="handleImageLoad"
           @error="handleImageError" />
-
-        <div
-          v-if="previewIcon"
-          :class="prefixCls + '-icon'">
-          <img
-            :src="previewIconSrc"
-            :style="previewIconStyle" />
-        </div>
+        <slot
+          v-if="previewTip"
+          name="preview">
+          <div
+            :class="prefixCls + '-icon'"
+            :style="previewTipStyle"
+            @click.stop="handlePreview">
+            <img :src="previewTipSrc" />
+          </div>
+        </slot>
+      </div>
+      <!-- 脚标 -->
+      <div :class="prefixCls + '-characteristic'">
+        <img :src="characteristic" />
       </div>
     </div>
   </div>
@@ -47,6 +53,8 @@
 import { isClient } from '@src/util/assist.js'
 import videoPlay from '@src/images/image-preview/video-play.svg'
 import imageAmplify from '@src/images/image/amplify.png'
+import characteristic from '@src/images/image/characteristic.svg'
+
 import { oneOf } from '@src/util/assist.js'
 
 // is Element
@@ -74,11 +82,11 @@ export default {
       type: String,
       default: ''
     },
-    previewIcon: {
+    previewTip: {
       type: Boolean,
       default: false
     },
-    previewIconWidth: {
+    previewTipWidth: {
       type: [String, Number],
       default: 32
     },
@@ -106,6 +114,10 @@ export default {
     scrollContainer: {
       type: [String],
       default: ''
+    },
+    preview: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -117,7 +129,8 @@ export default {
       observer: null,
       prefixCls,
       videoPlay,
-      imageAmplify
+      imageAmplify,
+      characteristic
     }
   },
   computed: {
@@ -144,12 +157,16 @@ export default {
         height: typeof this.height === 'number' ? `${this.height}px` : this.height
       }
     },
-    previewIconStyle() {
+    previewTipStyle() {
       return {
         width:
-          typeof this.previewIconWidth === 'number'
-            ? `${this.previewIconWidth}px`
-            : this.previewIconWidth
+          typeof this.previewTipWidth === 'number'
+            ? `${this.previewTipWidth}px`
+            : this.previewTipWidth,
+        height:
+          typeof this.previewTipWidth === 'number'
+            ? `${this.previewTipWidth}px`
+            : this.previewTipWidth
       }
     },
     loadingLang() {
@@ -161,7 +178,7 @@ export default {
     loadingType() {
       return this.lazy ? 'lazy' : 'eager'
     },
-    previewIconSrc() {
+    previewTipSrc() {
       return this.type === 'video' ? videoPlay : imageAmplify
     }
   },
@@ -229,7 +246,15 @@ export default {
       const { observer } = this
       observer && observer.disconnect()
     },
-    handlePreview() {}
+    handlePreview() {
+      const { preview } = this
+      if (preview) {
+        // this.imagePreviewModal = true
+        // // reslove click image get the currentIndex to do other thing
+        // this.$emit('on-click', { initialIndex })
+      }
+      this.$emit('on-preview-click')
+    }
   }
 }
 </script>

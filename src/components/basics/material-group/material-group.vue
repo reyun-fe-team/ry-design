@@ -8,11 +8,17 @@
       :key="index"
       :src="option.src"
       fit="contain"
-      :preview-icon="previewIcon"
+      :preview-tip="previewTip"
       :style="imageStyles"
       :class="classImage"
       :type="currentType(index)"
-      :alt="option.src"></rd-image>
+      :alt="option.src"
+      @on-preview-click="onPreviewClick(option)"></rd-image>
+    <div :class="prefixCls + '-delete'">
+      <Icon
+        size="16"
+        type="md-close-circle" />
+    </div>
   </div>
 </template>
 <script>
@@ -63,7 +69,7 @@ export default {
       type: Boolean,
       default: false
     },
-    previewIcon: {
+    previewTip: {
       type: Boolean,
       default: false
     },
@@ -143,14 +149,17 @@ export default {
         return 'image'
       }
       return this.type
+    },
+    onPreviewClick(data) {
+      this.$emit('on-preview-click', data)
     }
     // openPreviewIcon() {
-    //   return this.previewIcon
+    //   return this.previewTip
     //   // return !(
-    //   //   !this.previewIcon ||
-    //   //   (this.previewIcon && this.openCover && index == 1 && this.size === 2)
+    //   //   !this.previewTip ||
+    //   //   (this.previewTip && this.openCover && index == 1 && this.size === 2)
     //   // )
-    //   // if (!this.previewIcon || (this.previewIcon && this.openCover && index == 1)) {
+    //   // if (!this.previewTip || (this.previewTip && this.openCover && index == 1)) {
     //   //   return false
     //   // }
     //   // return true

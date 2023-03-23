@@ -2,7 +2,7 @@
 @image: ~"@{css-prefix}image";
 @padding-item : 2px;
 .@{material-group} {
-  overflow: hidden;
+  position: relative;
   background-color: #eef0f3ff;
   border: 1px solid #666;
 
@@ -13,9 +13,36 @@
     transition: all 0.1s;
   }
 
+  &-delete {
+    position: absolute;
+    top: -8px;
+    right: 8px;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover i {
+      transform: scale(1.2);
+    }
+
+    i {
+      position: absolute;
+      z-index: 1;
+    }
+
+    &::after {
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      width: 13px;
+      height: 13px;
+      background: #fff;
+      border-radius: 50%;
+      content: '';
+    }
+  }
+
   &-pic {
     position: relative;
-    overflow: hidden;
     text-align: center;
     background-color: #fff;
   }

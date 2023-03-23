@@ -1,8 +1,5 @@
 <template>
   <div>
-    <rd-icon
-      type="ry-icon-video-play"
-      size="16" />
     <h2>横版视频</h2>
     <section style="display: flex">
       <rd-material-group
@@ -75,13 +72,15 @@
     <h2>一个视频-封面无icon</h2>
     <rd-material-group
       style="margin: 24px 24px 0 0"
+      :padding="6"
       :size="2"
       :data="oneVideoUrlList"
       :width="216"
       type="video"
-      preview-icon
+      preview-tip
       open-cover
-      :height="120"></rd-material-group>
+      :height="120"
+      @on-preview-click="onPreviewClick"></rd-material-group>
     <h2>两个视频-有icon</h2>
     <rd-material-group
       style="margin: 24px 24px 0 0"
@@ -89,8 +88,9 @@
       type="video"
       :data="oneVideoUrlList"
       :width="216"
-      preview-icon
-      :height="120"></rd-material-group>
+      preview-tip
+      :height="120"
+      @on-preview-click="onPreviewClick"></rd-material-group>
 
     <hr style="margin-top: 24px" />
     <!-- <rd-image
@@ -311,6 +311,9 @@ export default {
         previewList: this.srcList2,
         initialIndex: 2
       })
+    },
+    onPreviewClick(data) {
+      this.$Message.info('预览' + data.src)
     }
   }
 }
