@@ -1,83 +1,185 @@
 <template>
   <div>
-    <Button @click="show = true">预览视频</Button>
-    <rd-image-preview
-      v-model="show"
-      type="VIDEO"
-      src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/1d3/06c/7af/1d306c7afd6243687172409fec4b43e5-small.jpg"></rd-image-preview>
-    <h2>横版视频</h2>
+    <h2>横版图片</h2>
     <section style="display: flex">
       <rd-material-group
-        :padding="16"
-        style="margin: 24px 24px 0 0"
+        style="margin: 0 24px 0 0"
         :size="1"
         :data="urlList"
         :width="216"
         :height="120"></rd-material-group>
       <rd-material-group
-        style="margin: 24px 24px 0 0"
+        style="margin: 0 24px 0 0"
         :size="2"
         :data="urlList"
         :width="216"
         :height="120"></rd-material-group>
       <rd-material-group
-        style="margin: 24px 24px 0 0"
+        style="margin: 0 24px 0 0"
         :size="3"
         :data="urlList"
         :width="216"
         :height="120"></rd-material-group>
       <rd-material-group
-        style="margin: 24px 24px 0 0"
+        style="margin: 0 24px 0 0"
         :size="4"
         :data="urlList"
         :width="216"
         :height="120"></rd-material-group>
       <rd-material-group
-        style="margin: 24px 24px 0 0"
+        style="margin: 0 24px 0 0"
         :size="6"
         :data="urlList"
         :width="256"
         :height="120"></rd-material-group>
     </section>
-    <h2>竖版视频</h2>
+    <h2 style="margin-top: 24px">竖版图片</h2>
     <section style="display: flex">
       <rd-material-group
-        style="margin: 24px 24px 0 0"
+        style="margin: 0 24px 0 0"
         :size="1"
         :data="shuList"
         :width="216"
         :height="120"></rd-material-group>
       <rd-material-group
-        style="margin: 24px 24px 0 0"
+        style="margin: 0 24px 0 0"
         :size="2"
         :data="shuList"
         :width="216"
         :height="120"></rd-material-group>
       <rd-material-group
-        style="margin: 24px 24px 0 0"
+        style="margin: 0 24px 0 0"
         :size="3"
         position-type="vertical"
         :data="shuList"
         :width="216"
         :height="120"></rd-material-group>
       <rd-material-group
-        style="margin: 24px 24px 0 0"
+        style="margin: 0 24px 0 0"
         :size="4"
         :data="shuList"
         :width="216"
         :height="120"></rd-material-group>
       <rd-material-group
-        style="margin: 24px 24px 0 0"
+        style="margin: 0 24px 0 0"
         :size="6"
         :data="shuList"
         :width="256"
         :height="120"></rd-material-group>
     </section>
 
-    <h2>一个视频-封面无icon</h2>
+    <h2 style="margin-top: 24px">横版视频</h2>
+    <section style="display: flex">
+      <rd-material-group
+        :padding="16"
+        style="margin: 0 24px 0 0"
+        :size="1"
+        :data="urlList"
+        type="video"
+        preview-tip
+        video-sign
+        preview
+        :width="216"
+        :height="120"></rd-material-group>
+      <rd-material-group
+        style="margin: 0 24px 0 0"
+        :size="2"
+        :data="urlList"
+        type="video"
+        preview-tip
+        video-sign
+        preview
+        :width="216"
+        :height="120"></rd-material-group>
+      <rd-material-group
+        style="margin: 0 24px 0 0"
+        :size="3"
+        :data="urlList"
+        type="video"
+        preview-tip
+        video-sign
+        preview
+        :width="216"
+        :height="120"></rd-material-group>
+      <rd-material-group
+        style="margin: 0 24px 0 0"
+        :size="4"
+        :data="urlList"
+        type="video"
+        preview-tip
+        video-sign
+        preview
+        :width="216"
+        :height="120"></rd-material-group>
+      <rd-material-group
+        style="margin: 0 24px 0 0"
+        :size="6"
+        :data="urlList"
+        type="video"
+        preview-tip
+        video-sign
+        preview
+        :width="256"
+        :height="120"></rd-material-group>
+    </section>
+    <h2 style="margin-top: 24px">竖版视频</h2>
+    <section style="display: flex">
+      <rd-material-group
+        style="margin: 0 24px 0 0"
+        :size="1"
+        :data="shuList"
+        type="video"
+        preview-tip
+        video-sign
+        preview
+        :width="216"
+        :height="120"></rd-material-group>
+      <rd-material-group
+        style="margin: 0 24px 0 0"
+        :size="2"
+        :data="shuList"
+        type="video"
+        preview-tip
+        video-sign
+        preview
+        :width="216"
+        :height="120"></rd-material-group>
+      <rd-material-group
+        style="margin: 0 24px 0 0"
+        :size="3"
+        position-type="vertical"
+        :data="shuList"
+        type="video"
+        preview-tip
+        video-sign
+        preview
+        :width="216"
+        :height="120"></rd-material-group>
+      <rd-material-group
+        style="margin: 0 24px 0 0"
+        :size="4"
+        :data="shuList"
+        type="video"
+        preview-tip
+        video-sign
+        preview
+        :width="216"
+        :height="120"></rd-material-group>
+      <rd-material-group
+        style="margin: 0 24px 0 0"
+        :size="6"
+        :data="shuList"
+        type="video"
+        preview-tip
+        video-sign
+        preview
+        :width="256"
+        :height="120"></rd-material-group>
+    </section>
+
+    <h2 style="margin-top: 24px">一个视频-封面无icon</h2>
     <rd-material-group
-      style="margin: 24px 24px 0 0"
-      :padding="6"
+      style="margin: 0 0 24px"
       :size="2"
       :data="oneVideoUrlList"
       :width="216"
@@ -86,152 +188,30 @@
       preview
       open-cover
       :height="120"
-      @on-preview-click="onPreviewClick"></rd-material-group>
-    <h2>两个视频-有icon</h2>
-    <rd-material-group
-      style="margin: 24px 24px 0 0"
-      :size="2"
-      type="video"
-      :data="oneVideoUrlList"
-      :width="216"
-      preview-tip
-      preview
-      :height="120"
+      video-sign
       @on-preview-click="onPreviewClick"></rd-material-group>
 
+    <h2 style="margin-top: 24px">整体一个预览ICON</h2>
     <rd-material-group
-      style="margin: 24px 24px 0 0"
+      style="margin: 0 24px 0 0"
       :size="6"
       preview-group-tip
       type="video"
       :data="urlList"
+      show-delete
       :width="256"
       :height="120"
       @on-preview-group-click="onPreviewGroupClick"
       @on-delete="onDelete"></rd-material-group>
 
-    <hr style="margin-top: 24px" />
-    <!-- <rd-image
-      :src="urlList[0]"
-      :fit="fit"
-      width="100"
-      height="100"
-      preview
-      scroll-container=".demo-image"
-      :alt="fit"></rd-image> -->
-    横版
-    <div class="demo-image">
-      <div style="width: 72px; height: 40px">
-        <div
-          v-for="(fit, index) in fitList"
-          :key="index"
-          class="demo-image-item">
-          <rd-image
-            :src="url"
-            :fit="fit"
-            :preview-list="srcList"
-            :width="100"
-            :height="100"
-            preview
-            scroll-container=".demo-rd-image"
-            :alt="fit">
-            <template #placeholder>
-              <Spin
-                size="large"
-                fix />
-            </template>
-            <!-- <template #error>
-						<div>失败</div>
-					</template> -->
-          </rd-image>
-          <p>{{ fit }}</p>
-        </div>
-      </div>
-    </div>
-    竖版
-    <div class="demo-image">
-      <div style="width: 1000px; height: 300px">
-        <div
-          v-for="(fit, index) in fitList"
-          :key="index"
-          class="demo-image-item">
-          <rd-image
-            :src="urlshuban"
-            :fit="fit"
-            :preview-list="srcList"
-            :width="100"
-            :height="100"
-            preview
-            scroll-container=".demo-rd-image"
-            :alt="fit">
-            <template #placeholder>
-              <Spin
-                size="large"
-                fix />
-            </template>
-            <!-- <template #error>
-						<div>失败</div>
-					</template> -->
-          </rd-image>
-          <p>{{ fit }}</p>
-        </div>
-      </div>
-    </div>
-    gif
-    <div class="demo-image">
-      <div style="width: 1000px; height: 300px">
-        <div
-          v-for="(fit, index) in fitList"
-          :key="index"
-          class="demo-image-item">
-          <rd-image
-            src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/0e2/6ef/25d/0e26ef25db160b95e8e32e71f5baa759.gif"
-            :fit="fit"
-            :preview-list="srcList"
-            :width="100"
-            :height="100"
-            preview
-            scroll-container=".demo-rd-image"
-            :alt="fit">
-            <template #placeholder>
-              <Spin
-                size="large"
-                fix />
-            </template>
-          </rd-image>
-          <p>{{ fit }}</p>
-        </div>
-      </div>
-    </div>
-    方图
-    <div class="demo-image">
-      <div style="width: 1000px; height: 300px">
-        <div
-          v-for="(fit, index) in fitList"
-          :key="index"
-          class="demo-image-item">
-          <rd-image
-            src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/911/d51/ed6/911d51ed6d12b173a166635d24989df4-small.jpg"
-            :fit="fit"
-            :preview-list="srcList"
-            :width="100"
-            :height="100"
-            preview
-            scroll-container=".demo-rd-image"
-            :alt="fit">
-            <template #placeholder>
-              <Spin
-                size="large"
-                fix />
-            </template>
-            <!-- <template #error>
-						<div>失败</div>
-					</template> -->
-          </rd-image>
-          <p>{{ fit }}</p>
-        </div>
-      </div>
-    </div>
+    <h2 style="margin-top: 24px">修改padding:16px, 自定义padding</h2>
+    <rd-material-group
+      :padding="16"
+      style="margin: 0 24px 0 0"
+      :size="1"
+      :data="urlList"
+      :width="216"
+      :height="120"></rd-material-group>
   </div>
 </template>
 

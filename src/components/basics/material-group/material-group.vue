@@ -7,17 +7,32 @@
       v-for="(option, index) in currenData"
       :key="index"
       :src="option.src"
+      :preview-src="option.previewSrc"
       fit="contain"
+      :preview="preview"
       :preview-tip="previewTip"
       :style="imageStyles"
       :class="classImage"
       :type="currentType(index)"
       :alt="option.src"
+      :preview-tip-width="previewTipWidth"
+      :video-sign="videoSign"
       @on-preview-click="onPreviewClick(option)"></rd-image>
-    <div :class="prefixCls + '-delete'">
+    <div
+      v-if="showDelete"
+      :class="prefixCls + '-delete'"
+      @click="handleDelete">
       <Icon
         size="16"
         type="md-close-circle" />
+    </div>
+
+    <div
+      v-if="previewGroupTip"
+      :class="prefixCls + '-tip'"
+      :style="previewGroupTipStyle"
+      @click.stop="handlePreview">
+      <img :src="previewTipSrc" />
     </div>
   </div>
 </template>
@@ -25,7 +40,8 @@
 // import { getCurrentInstance } from 'vue'
 import { oneOf } from '@src/util/assist.js'
 // import mixinsForm from '../../mixins/form'
-
+import videoPlay from '@src/images/image-preview/video-play.svg'
+import imageAmplify from '@src/images/image/amplify.png'
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'material-group'
 
@@ -73,12 +89,36 @@ export default {
       type: Boolean,
       default: false
     },
+    previewGroupTip: {
+      type: Boolean,
+      default: false
+    },
     type: {
       type: String,
       validator(value) {
         return oneOf(value, ['image', 'video'])
       },
       default: 'image'
+    },
+    previewTipWidth: {
+      type: [String, Number],
+      default: 32
+    },
+    previewGroupTipWidth: {
+      type: [String, Number],
+      default: 32
+    },
+    preview: {
+      type: Boolean,
+      default: false
+    },
+    showDelete: {
+      type: Boolean,
+      default: false
+    },
+    videoSign: {
+      type: Boolean,
+      default: false
     }
     // vertical: {
     //   type: Boolean,
@@ -98,7 +138,9 @@ export default {
   },
   data() {
     return {
-      prefixCls
+      prefixCls,
+      videoPlay,
+      imageAmplify
     }
   },
   computed: {
@@ -134,6 +176,21 @@ export default {
       //   width: width + '%',
       //   height: height + '%'
       // }
+    },
+    previewGroupTipStyle() {
+      return {
+        width:
+          typeof this.previewGroupTipWidth === 'number'
+            ? `${this.previewGroupTipWidth}px`
+            : this.previewGroupTipWidth,
+        height:
+          typeof this.previewGroupTipWidth === 'number'
+            ? `${this.previewGroupTipWidth}px`
+            : this.previewGroupTipWidth
+      }
+    },
+    previewTipSrc() {
+      return this.type === 'video' ? videoPlay : imageAmplify
     }
   },
   watch: {
@@ -152,6 +209,12 @@ export default {
     },
     onPreviewClick(data) {
       this.$emit('on-preview-click', data)
+    },
+    handlePreview() {
+      this.$emit('on-preview-group-click', this.currenData)
+    },
+    handleDelete() {
+      this.$emit('on-delete')
     }
     // openPreviewIcon() {
     //   return this.previewTip

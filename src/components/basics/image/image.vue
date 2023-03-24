@@ -1,59 +1,66 @@
 <template>
-  <div>
+  <div
+    ref="image"
+    :class="prefixCls"
+    :style="imageStyles">
     <div
-      ref="image"
-      :class="prefixCls"
-      :style="imageStyles">
-      <div
-        v-if="loading"
-        :class="prefixCls + '-placeholder'">
-        <slot name="placeholder">
-          <span>{{ loadingLang }}</span>
-        </slot>
-      </div>
-      <div
-        v-else-if="imageError"
-        :class="prefixCls + '-error'">
-        <slot name="error">
-          <span>{{ failLang }}</span>
-        </slot>
-      </div>
-      <!-- 预览 -->
-      <div
-        v-if="loadingImage"
-        :class="innerClasses">
-        <img
-          :class="imgClasses"
-          :style="fitStyle"
-          :alt="alt"
-          :src="src"
-          :loading="loadingType"
-          :referrerPolicy="referrerPolicy"
-          @load="handleImageLoad"
-          @error="handleImageError" />
-        <slot
-          v-if="previewTip"
-          name="preview">
-          <div
-            :class="prefixCls + '-icon'"
-            :style="previewTipStyle"
-            @click.stop="handlePreview">
-            <img :src="previewTipSrc" />
-          </div>
-        </slot>
-      </div>
-      <!-- 脚标 -->
-      <div :class="prefixCls + '-characteristic'">
-        <img :src="characteristic" />
-      </div>
+      v-if="loading"
+      :class="prefixCls + '-placeholder'">
+      <slot name="placeholder">
+        <span>{{ loadingLang }}</span>
+      </slot>
     </div>
+    <div
+      v-else-if="imageError"
+      :class="prefixCls + '-error'">
+      <slot name="error">
+        <span>{{ failLang }}</span>
+      </slot>
+    </div>
+    <!-- 预览 -->
+    <div
+      v-if="loadingImage"
+      :class="innerClasses">
+      <img
+        :class="imgClasses"
+        :style="fitStyle"
+        :alt="alt"
+        :src="src"
+        :loading="loadingType"
+        :referrerPolicy="referrerPolicy"
+        @load="handleImageLoad"
+        @error="handleImageError" />
+      <slot
+        v-if="previewTip"
+        name="preview">
+        <div
+          :class="prefixCls + '-tip'"
+          :style="previewTipStyle"
+          @click.stop="handlePreview">
+          <img :src="previewTipSrc" />
+        </div>
+      </slot>
+    </div>
+    <!-- 脚标 -->
+    <div
+      v-if="currentVideoSign"
+      :class="prefixCls + '-video-sign'">
+      <img :src="videoSignImg" />
+    </div>
+
+    <template v-if="preview">
+      <rd-image-preview
+        v-model="imagePreviewModal"
+        :type="type.toUpperCase()"
+        :src="previewSrc || src"></rd-image-preview>
+    </template>
   </div>
 </template>
 <script>
 import { isClient } from '@src/util/assist.js'
 import videoPlay from '@src/images/image-preview/video-play.svg'
 import imageAmplify from '@src/images/image/amplify.png'
-import characteristic from '@src/images/image/characteristic.svg'
+import videoSignImg from '@src/images/image/video-sign.svg'
 
 import { oneOf } from '@src/util/assist.js'
 
@@ -118,6 +125,14 @@ export default {
     preview: {
       type: Boolean,
       default: false
+    },
+    previewSrc: {
+      type: String,
+      default: ''
+    },
+    videoSign: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -130,7 +145,8 @@ export default {
       prefixCls,
       videoPlay,
       imageAmplify,
-      characteristic
+      videoSignImg,
+      imagePreviewModal: false
     }
   },
   computed: {
@@ -180,6 +196,9 @@ export default {
     },
     previewTipSrc() {
       return this.type === 'video' ? videoPlay : imageAmplify
+    },
+    currentVideoSign() {
+      return this.videoSign && this.type === 'video'
     }
   },
   mounted() {
@@ -248,8 +267,9 @@ export default {
     },
     handlePreview() {
       const { preview } = this
+      debugger
       if (preview) {
-        // this.imagePreviewModal = true
+        this.imagePreviewModal = true
         // // reslove click image get the currentIndex to do other thing
         // this.$emit('on-click', { initialIndex })
       }

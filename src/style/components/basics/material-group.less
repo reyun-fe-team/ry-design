@@ -7,10 +7,10 @@
   border: 1px solid #666;
 
   .@{image} {
-    top: 50%;
-    height: 100%;
-    transform: translateY(-50%);
-    transition: all 0.1s;
+    // top: 50%;
+    // // height: 100%;
+    // transform: translateY(-50%);
+    // transition: all 0.1s;
   }
 
   &-delete {
@@ -38,6 +38,22 @@
       background: #fff;
       border-radius: 50%;
       content: '';
+    }
+  }
+
+  &-tip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    cursor: pointer;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.1s;
+
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
 
