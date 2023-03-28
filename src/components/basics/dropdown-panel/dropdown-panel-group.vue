@@ -15,8 +15,10 @@
             transfer
             theme="light"
             placement="top"
-            :max-width="300"
-            :content="group.tooltip">
+            :max-width="group.tooltipWidth ? group.tooltipWidth : 300">
+            <template #content>
+              <span v-html="group.tooltip"></span>
+            </template>
             <Icon
               type="ios-help-circle-outline"
               style="margin-left: 3px"

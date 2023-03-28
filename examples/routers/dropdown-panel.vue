@@ -100,6 +100,7 @@ export default {
           title: '我是分类一',
           icon: 'ry-icon-chanpinx',
           tooltip: '????',
+          tooltipWidth: 300,
           items: [
             {
               label: 'label1',
@@ -129,6 +130,9 @@ export default {
         },
         {
           title: '我是分类二',
+          tooltipWidth: 100,
+          tooltip:
+            '开启一键起量后，计划将会在6小时内，通过智能提价，使计划在一键起量期间可多于原计划的探索增量，并帮助模型充分探索。注:充分探索并不意味着计划一定能通过学习期，但能帮助判断计划是否优质。</br>起量期间预算需要设定在「一倍出价」到「计划日/总预算」之间。</br>起量期间产生的消耗和转化不计入赔付。</br>暂不支持同时使用计划智能调控、计划一键起量。',
           items: [
             {
               label: '一个特别长的label1，重复一个特别长的label1',
