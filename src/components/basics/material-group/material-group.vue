@@ -70,7 +70,7 @@ export default {
       default: ''
     },
     padding: {
-      type: Number,
+      type: [String, Number],
       default: 0
     },
     positionType: {
@@ -121,11 +121,19 @@ export default {
     },
     background: {
       type: String,
-      default: '#eef0f3ff'
+      default: '#EEF0F3'
     },
     selected: {
       type: Boolean,
       default: false
+    },
+    borderRadius: {
+      type: [String, Number],
+      default: 0
+    },
+    borderWidth: {
+      type: [String, Number],
+      default: 1
     }
   },
   data() {
@@ -151,8 +159,12 @@ export default {
       return {
         width: typeof this.width === 'number' ? `${this.width}px` : this.width,
         height: typeof this.height === 'number' ? `${this.height}px` : this.height,
-        padding: this.padding + 'px',
-        background: this.background
+        padding: typeof this.padding === 'number' ? `${this.padding}px` : this.padding,
+        background: this.background,
+        borderRadius:
+          typeof this.borderRadius === 'number' ? `${this.borderRadius}px` : this.borderRadius,
+        borderWidth:
+          typeof this.borderWidth === 'number' ? `${this.borderWidth}px` : this.borderWidth
       }
     },
     // imageStyles() {

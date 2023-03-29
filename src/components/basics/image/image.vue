@@ -244,10 +244,10 @@ export default {
       this.handleLazy()
     },
     handleImageLoad() {
-      // setTimeout(() => {
-      //   this.loading = false
-      // }, 3000)
-      this.loading = false
+      setTimeout(() => {
+        this.loading = false
+      }, 3000)
+      //this.loading = false
       this.imageError = false
       this.$emit('on-load')
     },
