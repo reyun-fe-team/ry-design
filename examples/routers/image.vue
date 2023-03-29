@@ -43,58 +43,81 @@
       </div>
     </div>
     preview-tip preview
-    <h2 style="margin-top: 24px">可通过 slot: placeholder 自定义加载时的占位内容。</h2>
-    <Row
-      :gutter="24"
-      class="demo-image-bg">
-      <Col flex="1">
+    <h2 style="margin-top: 24px">占位\自定义加载时的占位内容。</h2>
+    <div class="demo-image-bg display-flex">
+      <rd-image
+        width="216px"
+        height="120px"
+        fit="contain"
+        style="margin-right: 24px"
+        src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg" />
+      <button
+        style="margin-right: 24px"
+        @click="placeholderChange">
+        点击
+      </button>
+      <rd-image
+        :key="showLoading"
+        width="216px"
+        height="120px"
+        fit="contain"
+        style="margin-right: 24px"
+        src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg"></rd-image>
+      <rd-image
+        :key="showLoading"
+        width="216px"
+        height="120px"
+        fit="contain"
+        src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg">
+        <template #placeholder>加载中-自定义</template>
+      </rd-image>
+    </div>
+    <h2 style="margin-top: 24px">图片加载失败</h2>
+    <div class="demo-image-bg display-flex">
+      默认
+      <rd-image
+        width="200px"
+        fit="contain"
+        height="100px" />
+      自定义
+      <rd-image
+        width="200px"
+        fit="contain"
+        height="100px"
+        src="">
+        <template #error>失败 slot</template>
+      </rd-image>
+    </div>
+    <h2 style="margin-top: 24px">图片预览</h2>
+    <rd-image
+      width="216px"
+      preview
+      fit="contain"
+      preview-tip
+      height="120px"
+      src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg"></rd-image>
+    <h2 style="margin-top: 24px">懒加载-横向</h2>
+    <div class="demo-image-lazy-vertical">
+      <rd-image
+        v-for="url in verticalUrlList"
+        :key="url"
+        fit="contain"
+        :src="url"
+        lazy />
+    </div>
+    <h2 style="margin-top: 24px">懒加载-竖向</h2>
+    <div class="demo-image-lazy">
+      <div class="demo-image-lazy-inner">
         <rd-image
-          width="216px"
-          height="120px"
-          src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg" />
-      </Col>
-      <Col flex="1">
-        <button @click="placeholderChange">点击</button>
-        <rd-image
-          :key="showLoading"
-          width="216px"
-          height="120px"
-          src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg"></rd-image>
-      </Col>
-      <Col flex="1">
-        <rd-image
-          :key="showLoading"
-          width="216px"
-          height="120px"
-          src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg">
-          <template #placeholder>加载中-自定义</template>
-        </rd-image>
-      </Col>
-    </Row>
-    <h2 style="margin-top: 24px">可通过 slot: placeholder 自定义加载时的占位内容。</h2>
-    <Row
-      class="demo-image-bg"
-      :gutter="24">
-      <Col flex="1">
-        <rd-image
-          width="200px"
-          height="100px" />
-        默认
-      </Col>
-      <Col flex="1">
-        <rd-image
-          width="200px"
-          height="100px">
-          <template #error>
-            <Icon
-              type="ios-image-outline"
-              size="24"
-              color="#ccc" />
-          </template>
-        </rd-image>
-        自定义
-      </Col>
-    </Row>
+          v-for="url in urlList"
+          :key="url"
+          fit="contain"
+          :width="300"
+          :height="200"
+          :src="url"
+          lazy />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -104,7 +127,31 @@ export default {
     return {
       fitList: ['fill', 'contain', 'cover', 'none', 'scale-down'],
       url: 'https://file.iviewui.com/images/image-demo-11.jpg',
-      showLoading: 0
+      showLoading: 0,
+      verticalUrlList: [
+        'https://file.iviewui.com/images/image-demo-1.jpg',
+        'https://file.iviewui.com/images/image-demo-2.jpg',
+        'https://file.iviewui.com/images/image-demo-3.jpg',
+        'https://file.iviewui.com/images/image-demo-4.jpg',
+        'https://file.iviewui.com/images/image-demo-5.jpg',
+        'https://file.iviewui.com/images/image-demo-6.jpg',
+        'https://file.iviewui.com/images/image-demo-7.jpg',
+        'https://file.iviewui.com/images/image-demo-8.jpg',
+        'https://file.iviewui.com/images/image-demo-9.jpg',
+        'https://file.iviewui.com/images/image-demo-10.jpg'
+      ],
+      urlList: [
+        'https://file.iviewui.com/images/image-demo-11.jpg',
+        'https://file.iviewui.com/images/image-demo-12.jpg',
+        'https://file.iviewui.com/images/image-demo-13.jpg',
+        'https://file.iviewui.com/images/image-demo-14.jpg',
+        'https://file.iviewui.com/images/image-demo-15.jpg',
+        'https://file.iviewui.com/images/image-demo-16.jpg',
+        'https://file.iviewui.com/images/image-demo-17.jpg',
+        'https://file.iviewui.com/images/image-demo-18.jpg',
+        'https://file.iviewui.com/images/image-demo-19.jpg',
+        'https://file.iviewui.com/images/image-demo-20.jpg'
+      ]
     }
   },
   methods: {
@@ -137,5 +184,32 @@ export default {
 <style lang="less">
 .demo-image-bg .rd-image {
   background: #f8f8f9;
+}
+
+.demo-image-lazy-vertical {
+  width: 800px;
+  height: 400px;
+  overflow-y: auto;
+}
+
+.demo-image-lazy-vertical .rd-image {
+  display: block;
+  min-height: 200px;
+}
+
+.demo-image-lazy {
+  width: 400px;
+  height: 200px;
+  overflow: hidden;
+  overflow-x: scroll;
+}
+
+.demo-image-lazy-inner {
+  width: 3000px;
+  height: 200px;
+}
+
+.demo-image-lazy .rd-image {
+  float: left;
 }
 </style>

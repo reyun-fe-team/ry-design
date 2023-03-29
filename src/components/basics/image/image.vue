@@ -19,7 +19,10 @@
       v-else-if="imageError"
       :class="prefixCls + '-error'">
       <slot name="error">
-        <span>{{ failLang }}</span>
+        <Icon
+          type="ios-image-outline"
+          size="24"
+          color="#ccc" />
       </slot>
     </div>
     <!-- 预览 -->
@@ -190,9 +193,6 @@ export default {
             : this.previewTipWidth
       }
     },
-    failLang() {
-      return '失败'
-    },
     loadingType() {
       return this.lazy ? 'lazy' : 'eager'
     },
@@ -245,7 +245,7 @@ export default {
     },
     handleImageLoad() {
       setTimeout(() => {
-        //this.loading = false
+        this.loading = false
       }, 3000)
       // this.loading = false
       this.imageError = false

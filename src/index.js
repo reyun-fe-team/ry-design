@@ -144,7 +144,7 @@ const install = function (Vue) {
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue)
 }
-
+console.log('image')
 export default {
   version: process.env.VERSION,
   install,
