@@ -200,7 +200,7 @@ export default {
       return this.type === 'video' ? videoPlay : imageAmplify
     },
     currentVideoSign() {
-      return this.videoSign && this.type === 'video' && !this.previewTip
+      return this.videoSign && !this.previewTip && !this.loading && !this.imageError
     }
   },
   mounted() {
@@ -244,10 +244,10 @@ export default {
       this.handleLazy()
     },
     handleImageLoad() {
-      setTimeout(() => {
-        this.loading = false
-      }, 3000)
-      // this.loading = false
+      // setTimeout(() => {
+      //   this.loading = false
+      // }, 3000)
+      this.loading = false
       this.imageError = false
       this.$emit('on-load')
     },

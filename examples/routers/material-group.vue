@@ -434,7 +434,6 @@ export default {
             'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/fd6/53a/644/fd653a644c0eaa919e6058cd347b17e8.mp4'
         }
       ],
-      // 方形大图
       largeSquareImage: [
         {
           src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/fd6/f7a/f5d/fd6f7af5dd140f355d40aa8f87ebb3f1-small.jpg'
