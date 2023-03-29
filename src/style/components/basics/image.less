@@ -25,17 +25,23 @@
     visibility: hidden;
   }
 
+  &-tip,
   &-error,
-  &-placeholder,
-  &-tip {
+  &-placeholder {
     position: absolute;
     top: 50%;
     left: 50%;
     z-index: 1;
-    cursor: pointer;
-    border-radius: 50%;
+    display: flex;
     transform: translate(-50%, -50%);
     transition: all 0.1s;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  &-tip {
+    cursor: pointer;
+    border-radius: 50%;
 
     img {
       width: 100%;
@@ -43,12 +49,24 @@
     }
   }
 
+  
+
   &-inner:hover {
     .@{image} {
       &-mark {
         opacity: 1;
       }
     }
+  }
+
+  &-placeholder {
+    &-spin {
+      animation: rdSpin 1s linear infinite;
+    }
+  }
+
+  .ivu-spin-fix {
+    background-color: transparent;
   }
 
   &-video-sign {

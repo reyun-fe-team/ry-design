@@ -11,7 +11,6 @@
       fit="contain"
       :preview="preview"
       :preview-tip="previewTip"
-      :style="imageStyles"
       :class="classImage"
       :type="currentType(index)"
       :alt="option.src"
@@ -119,22 +118,15 @@ export default {
     videoSign: {
       type: Boolean,
       default: false
+    },
+    background: {
+      type: String,
+      default: '#eef0f3ff'
+    },
+    selected: {
+      type: Boolean,
+      default: false
     }
-    // vertical: {
-    //   type: Boolean,
-    //   default: false
-    // },
-    // name: {
-    //   type: String,
-    //   default: getUuid
-    // },
-    // 4.5.0
-    // buttonStyle: {
-    //   validator(value) {
-    //     return oneOf(value, ['default', 'solid'])
-    //   },
-    //   default: 'default'
-    // }
   },
   data() {
     return {
@@ -148,7 +140,7 @@ export default {
       return this.data.slice(0, this.size)
     },
     classes() {
-      return [`${prefixCls}`, `${prefixCls}-flex`]
+      return [`${prefixCls}`, `${prefixCls}-flex`, { [`${prefixCls}-selected`]: this.selected }]
     },
     classImage() {
       let { size } = this
@@ -159,24 +151,25 @@ export default {
       return {
         width: typeof this.width === 'number' ? `${this.width}px` : this.width,
         height: typeof this.height === 'number' ? `${this.height}px` : this.height,
-        padding: this.padding + 'px'
+        padding: this.padding + 'px',
+        background: this.background
       }
     },
-    imageStyles() {
-      return {}
-      // let { size } = this
-      // let width = 100
-      // let height = [1, 2].includes(size) ? 100 : 50
-      // if ([2, 3].includes(size)) {
-      //   width = 100 / size
-      // } else if ([4, 6].includes(size)) {
-      //   width = 100 / (size / 2)
-      // }
-      // return {
-      //   width: width + '%',
-      //   height: height + '%'
-      // }
-    },
+    // imageStyles() {
+    //   return {}
+    //   let { size } = this
+    //   let width = 100
+    //   let height = [1, 2].includes(size) ? 100 : 50
+    //   if ([2, 3].includes(size)) {
+    //     width = 100 / size
+    //   } else if ([4, 6].includes(size)) {
+    //     width = 100 / (size / 2)
+    //   }
+    //   return {
+    //     width: width + '%',
+    //     height: height + '%'
+    //   }
+    // },
     previewGroupTipStyle() {
       return {
         width:
@@ -192,13 +185,6 @@ export default {
     previewTipSrc() {
       return this.type === 'video' ? videoPlay : imageAmplify
     }
-  },
-  watch: {
-    // modelValue() {
-    //   if (this.currentValue !== this.modelValue) {
-    //     this.currentValue = this.modelValue
-    //   }
-    // }
   },
   methods: {
     currentType(index) {
@@ -216,23 +202,6 @@ export default {
     handleDelete() {
       this.$emit('on-delete')
     }
-    // openPreviewIcon() {
-    //   return this.previewTip
-    //   // return !(
-    //   //   !this.previewTip ||
-    //   //   (this.previewTip && this.openCover && index == 1 && this.size === 2)
-    //   // )
-    //   // if (!this.previewTip || (this.previewTip && this.openCover && index == 1)) {
-    //   //   return false
-    //   // }
-    //   // return true
-    // }
-    // change(data) {
-    //   this.currentValue = data.value
-    //   this.$emit('update:modelValue', data.value)
-    //   this.$emit('on-change', data.value)
-    //   this.handleFormItemChange('change', data.value)
-    // }
   }
 }
 </script>

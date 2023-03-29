@@ -7,7 +7,12 @@
       v-if="loading"
       :class="prefixCls + '-placeholder'">
       <slot name="placeholder">
-        <span>{{ loadingLang }}</span>
+        <Spin fix>
+          <Icon
+            type="ios-loading"
+            size="18"
+            :class="prefixCls + '-placeholder-spin'"></Icon>
+        </Spin>
       </slot>
     </div>
     <div
@@ -31,7 +36,7 @@
         @load="handleImageLoad"
         @error="handleImageError" />
       <slot
-        v-if="previewTip"
+        v-if="previewTip && !loading"
         name="preview">
         <div
           :class="prefixCls + '-tip'"
@@ -185,9 +190,6 @@ export default {
             : this.previewTipWidth
       }
     },
-    loadingLang() {
-      return '加载中'
-    },
     failLang() {
       return '失败'
     },
@@ -198,7 +200,7 @@ export default {
       return this.type === 'video' ? videoPlay : imageAmplify
     },
     currentVideoSign() {
-      return this.videoSign && this.type === 'video'
+      return this.videoSign && this.type === 'video' && !this.previewTip
     }
   },
   mounted() {
@@ -242,7 +244,10 @@ export default {
       this.handleLazy()
     },
     handleImageLoad() {
-      this.loading = false
+      setTimeout(() => {
+        //this.loading = false
+      }, 3000)
+      // this.loading = false
       this.imageError = false
       this.$emit('on-load')
     },
@@ -267,7 +272,6 @@ export default {
     },
     handlePreview() {
       const { preview } = this
-      debugger
       if (preview) {
         this.imagePreviewModal = true
         // // reslove click image get the currentIndex to do other thing
