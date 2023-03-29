@@ -188,6 +188,10 @@ const router = new VueRouter({
     {
       path: '/indicator',
       component: resolve => require(['./routers/indicator'], resolve)
+    },
+    {
+      path: '/empty',
+      component: resolve => require(['./routers/empty'], resolve)
     }
   ]
 })
