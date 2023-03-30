@@ -52,6 +52,7 @@ import RdSubmissionRule from './components/business/submission-rule'
 import RdBatchModifyBids from './components/business/batch-modify-bids'
 import RdAccountGroupList from './components/business/account-group-list'
 import RdDatePicker from './components/basics/date-picker'
+import RdEchoContainer from './components/business/echo-container'
 
 import ViewUI from 'view-design'
 
@@ -127,7 +128,8 @@ const components = [
   RdDropdownPanel,
   RdDatePicker,
   RdIndicator,
-  RdEmpty
+  RdEmpty,
+  RdEchoContainer
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -206,6 +208,7 @@ const API = {
   RdDropdownPanel,
   RdDatePicker,
   RdIndicator,
-  RdEmpty
+  RdEmpty,
+  RdEchoContainer
 }
 module.exports.default = module.exports = API // eslint-disable-line no-undef
