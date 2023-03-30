@@ -158,6 +158,12 @@ export default {
     rightBoxStyle: {
       type: [Object, String],
       default: null
+    },
+    beforeCheck: {
+      type: Function,
+      default: () => {
+        return Promise.resolve()
+      }
     }
   },
   data() {
@@ -195,10 +201,10 @@ export default {
       return className
     },
     init() {
-      if (!this.data.length) {
-        return
-      }
       this.$nextTick(() => {
+        if (!this.data.length) {
+          return
+        }
         let { list, itemId, defaultActive } = this
         let newList = []
         this.active = defaultActive || list[0].children[0][itemId]
@@ -206,18 +212,22 @@ export default {
           newList = [...m.children, ...newList]
         })
         let activeData = newList.find(f => f[this.itemId] === this.active)
-        this.choose(activeData, true)
+        this.active = activeData[this.itemId]
+        this.$emit('on-change', this.active, activeData['parentId'])
       })
     },
-    choose(item, isFirst = true) {
-      const { itemId } = this
+    choose(item) {
+      let { itemId, active } = this
       // 当前已经选中的 不在返回
-      if (item[itemId] === this.active && !isFirst) {
+      if (item[itemId] === active) {
         return
       }
-      const active = item[itemId]
-      this.active = active
-      this.$emit('on-change', active, item['parentId'])
+      const before = this.beforeCheck()
+      if (before && (before || before.then)) {
+        const active = item[itemId]
+        this.active = active
+        this.$emit('on-change', active, item['parentId'])
+      }
     }
   }
 }

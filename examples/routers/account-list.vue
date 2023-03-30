@@ -8,6 +8,7 @@
       item-name="name"
       style="display: flex; justify-content: center; margin-top: 130px"
       width="800px"
+      :before-check="beforeCheck"
       @on-change="getActiveAccount">
       我是右边的插槽盒子
     </rd-account-list>
@@ -43,6 +44,12 @@ export default {
   computed: {},
   mounted() {},
   methods: {
+    beforeCheck() {
+      if (true) {
+        // return Promise.resolve()
+        this.$Message.error('11111')
+      }
+    },
     getActiveAccount(val) {
       console.log(val)
     }

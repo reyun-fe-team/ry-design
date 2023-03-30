@@ -137,10 +137,6 @@ export default {
       type: String,
       default: '#277ff3'
     },
-    isEvent: {
-      type: Boolean,
-      default: true
-    },
     leftTitle: {
       type: [String, Boolean],
       default: '账户'
@@ -156,6 +152,12 @@ export default {
     rightBoxStyle: {
       type: [Object, String],
       default: null
+    },
+    beforeCheck: {
+      type: Function,
+      default: () => {
+        return Promise.resolve()
+      }
     }
   },
   data() {
@@ -185,7 +187,7 @@ export default {
     },
     init() {
       this.$nextTick(() => {
-        if (!this.dataList.length) {
+        if (!this.dataList.length || !this.showLeft) {
           return
         }
         this.active = this.defaultActive ? this.defaultActive : this.dataList[0][this.itemId]
@@ -193,20 +195,20 @@ export default {
           item => item[this.itemId] === this.defaultActive
         )
         const item = this.defaultActive ? defaultActiveData : this.dataList[0]
-        this.choose(item, true)
+        this.active = item[this.itemId]
+        this.$emit('on-change', this.active)
       })
     },
-    choose(item, isFirst = true) {
-      if (!this.showLeft) {
+    choose(item) {
+      let { itemId, active } = this
+      if (!this.showLeft || item[itemId] === active) {
         return
       }
-      const { itemId } = this
-      if (item[itemId] === this.active && !isFirst) {
-        return
+      const before = this.beforeCheck()
+      if (before && (before || before.then)) {
+        this.active = item[itemId]
+        this.$emit('on-change', item[itemId])
       }
-      const active = this.isEvent ? item[itemId] : this.active
-      this.active = active
-      this.$emit('on-change', active, isFirst)
     },
     reset() {
       this.init()

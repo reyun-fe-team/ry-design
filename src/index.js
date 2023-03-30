@@ -44,6 +44,7 @@ import ProductSelect from './components/business/product-select'
 import SubmissionRule from './components/business/submission-rule'
 import BatchModifyBids from './components/business/batch-modify-bids'
 import AccountGroupList from './components/business/account-group-list'
+import DatePicker from './components/basics/date-picker'
 
 import ViewUI from 'view-design'
 
@@ -62,7 +63,12 @@ import tips from './directives/tips'
 // util
 import { setIviewMessage } from './util/message'
 
-Vue.use(ViewUI)
+Vue.use(ViewUI, {
+  datePicker: {
+    customIcon: 'icon iconfont ry-icon-data',
+    iconSize: 14
+  }
+})
 const consoleLogVersion = () => {
   window.console.log(
     '%c%s',
@@ -118,7 +124,8 @@ const components = [
   Sort,
   ImagePreview,
   DropdownPanel,
-  Indicator
+  Indicator,
+  DatePicker
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -186,5 +193,6 @@ export default {
   Sort,
   ImagePreview,
   DropdownPanel,
-  Indicator
+  Indicator,
+  DatePicker
 }
