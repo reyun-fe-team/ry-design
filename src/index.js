@@ -45,6 +45,7 @@ import SubmissionRule from './components/business/submission-rule'
 import BatchModifyBids from './components/business/batch-modify-bids'
 import AccountGroupList from './components/business/account-group-list'
 import DatePicker from './components/basics/date-picker'
+import EchoContainer from './components/business/echo-container'
 
 import ViewUI from 'view-design'
 
@@ -125,7 +126,8 @@ const components = [
   ImagePreview,
   DropdownPanel,
   Indicator,
-  DatePicker
+  DatePicker,
+  EchoContainer
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -194,5 +196,6 @@ export default {
   ImagePreview,
   DropdownPanel,
   Indicator,
-  DatePicker
+  DatePicker,
+  EchoContainer
 }

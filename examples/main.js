@@ -189,6 +189,10 @@ const router = new VueRouter({
     {
       path: '/date-picker',
       component: resolve => require(['./routers/date-picker'], resolve)
+    },
+    {
+      path: '/echo-container',
+      component: resolve => require(['./routers/echo-container'], resolve)
     }
   ]
 })

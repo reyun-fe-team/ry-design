@@ -1,0 +1,138 @@
+@echo-container: ~'@{css-prefix}echo-container';
+
+.@{echo-container} {
+    background: @input-disabled-bg;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 4px;
+    height: 32px;
+    width: fit-content;
+    &-label {
+      white-space: nowrap;
+      font-size: 12px;
+      width: auto;
+    }
+    &-icon {
+      margin: 0 3px;
+    }
+    // select样式重置开始
+    .ivu-select-selection {
+      border: none;
+      background: @input-disabled-bg;
+      box-shadow: none;
+      transition: none;
+    }
+    .ivu-select-default.ivu-select-multiple .ivu-select-selection {
+      min-height: 30px;
+    }
+    .ivu-select-multiple .ivu-tag {
+      line-height: 24px;
+    }
+    .ivu-tag {
+      background-color: @white !important;
+      border: none;
+    }
+    // select样式重置结束
+    // input样式重置开始
+    &-content-box {
+      display: flex;
+      align-items: center;
+      &-input {
+        .ivu-input {
+          background: inherit;
+          border: none;
+          outline: none;
+          box-shadow: none;
+          color: @title-color;
+          line-height: 32px;
+        }
+        &-icon {
+          visibility: hidden;
+        }
+      }
+      &-vertical-line {
+        top: 0;
+        background: #dcdee2;
+      }
+    }
+    // input样式重置结束
+    // text样式
+    &-content-text {
+      padding: 0 10px;
+    }
+    // multi-cascader样式重置开始
+    .rd-multi-cascader {
+      height: 32px;
+    }
+    .rd-multi-cascader-labels {
+      border: none;
+      box-shadow: none;
+    }
+    .rd-multi-cascader-labels-tags {
+      height: 32px;
+    }
+    .rd-multi-cascader-labels-tags .ivu-tag {
+      margin: auto 4px auto 0;
+    }
+    // multi-cascader样式重置结束
+    // indicator样式重置开始
+    .rd-indicator-select {
+      width: auto !important;
+      border: none;
+      border-radius: none;
+      background: inherit;
+      transition: none;
+    }
+    .rd-indicator-transfer {
+      width: auto;
+    }
+    // indicator样式重置结束
+}
+
+.@{echo-container}:hover {
+  background-color: @container-hover-bg;
+  color: @primary-color;
+   // 滑过 select样式重置开始
+  .ivu-select-selection {
+    background: @container-hover-bg;
+  }
+  .rd-account-select .ivu-select-input {
+    color: @primary-color;
+  }
+  .ivu-icon {
+    color: @primary-color !important;
+  }
+  .ivu-select-multiple .ivu-tag {
+    background-color: @white;
+  }
+  .rd-account-select .ivu-tag-text {
+    color: @primary-color;
+  }
+  // 滑过 select样式重置结束
+  // 滑过 input样式重置开始
+  .ivu-input {
+    color: @primary-color;
+  }
+  .@{echo-container}-content-box-input-icon {
+    visibility: visible;
+  }
+  // 滑过 input样式重置结束
+  // 滑过 multi-cascader样式重置开始
+  .rd-multi-cascader-ground {
+    color: initial;
+  }
+  .rd-multi-cascader-list-li-label-icon {
+    color: initial !important;
+  }
+  // 滑过 multi-cascader样式重置结束
+  // 滑过 indicator样式重置开始
+  .rd-indicator-select .ivu-select-selected-value{
+    color: inherit !important;
+  }
+  .rd-indicator-transfer {
+    color: initial;
+  }
+  // 滑过 indicator样式重置结束
+}
+
