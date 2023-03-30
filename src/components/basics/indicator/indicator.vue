@@ -122,6 +122,11 @@ export default {
     indicatorRule: {
       type: Array,
       require: true
+    },
+    // 是否显示清除icon
+    showClearIcon: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -137,7 +142,7 @@ export default {
       return this.getIndicatorName(this.formData)
     },
     isShowClear() {
-      return this.selectName.length && this.hasMouseHoverHead
+      return this.selectName.length && this.hasMouseHoverHead && this.showClearIcon
     }
   },
   watch: {
