@@ -137,7 +137,7 @@ export default {
           break
         case 'indicator':
           params = {
-            clearable: false
+            showClearIcon: false
           }
           break
       }
