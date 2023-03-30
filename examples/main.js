@@ -181,6 +181,10 @@ const router = new VueRouter({
     {
       path: '/dropdown-panel',
       component: resolve => require(['./routers/dropdown-panel'], resolve)
+    },
+    {
+      path: '/indicator',
+      component: resolve => require(['./routers/indicator'], resolve)
     }
   ]
 })
