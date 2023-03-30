@@ -36,12 +36,10 @@
   </div>
 </template>
 <script>
-// import { getCurrentInstance } from 'vue'
+import { prefix } from '@src/config.js'
 import { oneOf } from '@src/util/assist.js'
-// import mixinsForm from '../../mixins/form'
 import videoPlay from '@src/images/image-preview/video-play.svg'
 import imageAmplify from '@src/images/image/amplify.png'
-import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'material-group'
 
 export default {
@@ -56,22 +54,6 @@ export default {
     data: {
       type: Array,
       default: () => []
-    },
-    width: {
-      type: [String, Number],
-      default: ''
-    },
-    imageWidth: {
-      type: [String, Number],
-      default: ''
-    },
-    height: {
-      type: [String, Number],
-      default: ''
-    },
-    padding: {
-      type: [String, Number],
-      default: 0
     },
     positionType: {
       type: String,
@@ -99,14 +81,6 @@ export default {
       },
       default: 'image'
     },
-    previewTipWidth: {
-      type: [String, Number],
-      default: 32
-    },
-    previewGroupTipWidth: {
-      type: [String, Number],
-      default: 32
-    },
     preview: {
       type: Boolean,
       default: false
@@ -119,21 +93,38 @@ export default {
       type: Boolean,
       default: false
     },
-    background: {
-      type: String,
-      default: '#EEF0F3'
-    },
     selected: {
       type: Boolean,
       default: false
     },
-    borderRadius: {
-      type: [String, Number],
-      default: 0
+    borderHover: {
+      type: Boolean,
+      default: false
     },
-    borderWidth: {
+    // Style
+    background: {
+      type: String,
+      default: '#EEF0F3'
+    },
+    width: {
       type: [String, Number],
-      default: 1
+      default: ''
+    },
+    height: {
+      type: [String, Number],
+      default: ''
+    },
+    styles: {
+      type: Object,
+      default: () => {}
+    },
+    previewTipWidth: {
+      type: [String, Number],
+      default: 32
+    },
+    previewGroupTipWidth: {
+      type: [String, Number],
+      default: 32
     }
   },
   data() {
@@ -148,7 +139,14 @@ export default {
       return this.data.slice(0, this.size)
     },
     classes() {
-      return [`${prefixCls}`, `${prefixCls}-flex`, { [`${prefixCls}-selected`]: this.selected }]
+      return [
+        `${prefixCls}`,
+        `${prefixCls}-flex`,
+        {
+          [`${prefixCls}-selected`]: this.selected,
+          [`${prefixCls}-border-hover`]: this.borderHover
+        }
+      ]
     },
     classImage() {
       let { size } = this
@@ -157,31 +155,14 @@ export default {
     },
     imageGroupStyles() {
       return {
-        width: typeof this.width === 'number' ? `${this.width}px` : this.width,
-        height: typeof this.height === 'number' ? `${this.height}px` : this.height,
-        padding: typeof this.padding === 'number' ? `${this.padding}px` : this.padding,
-        background: this.background,
-        borderRadius:
-          typeof this.borderRadius === 'number' ? `${this.borderRadius}px` : this.borderRadius,
-        borderWidth:
-          typeof this.borderWidth === 'number' ? `${this.borderWidth}px` : this.borderWidth
+        ...{
+          width: typeof this.width === 'number' ? `${this.width}px` : this.width,
+          height: typeof this.height === 'number' ? `${this.height}px` : this.height,
+          background: this.background
+        },
+        ...this.styles
       }
     },
-    // imageStyles() {
-    //   return {}
-    //   let { size } = this
-    //   let width = 100
-    //   let height = [1, 2].includes(size) ? 100 : 50
-    //   if ([2, 3].includes(size)) {
-    //     width = 100 / size
-    //   } else if ([4, 6].includes(size)) {
-    //     width = 100 / (size / 2)
-    //   }
-    //   return {
-    //     width: width + '%',
-    //     height: height + '%'
-    //   }
-    // },
     previewGroupTipStyle() {
       return {
         width:

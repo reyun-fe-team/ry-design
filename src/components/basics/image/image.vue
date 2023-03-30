@@ -19,10 +19,11 @@
       v-else-if="imageError"
       :class="prefixCls + '-error'">
       <slot name="error">
-        <Icon
+        <!-- <Icon
           type="ios-image-outline"
           size="24"
-          color="#ccc" />
+          color="#ccc" /> -->
+        <img :src="imageErrorImge" />
       </slot>
     </div>
     <!-- 预览 -->
@@ -43,18 +44,19 @@
         name="preview">
         <div
           :class="prefixCls + '-tip'"
-          :style="previewTipStyle"
+          :style="previewTipStyles"
           @click.stop="handlePreview">
           <img :src="previewTipSrc" />
         </div>
       </slot>
     </div>
     <!-- 脚标 -->
-    <div
-      v-if="currentVideoSign"
-      :class="prefixCls + '-video-sign'">
-      <img :src="videoSignImg" />
-    </div>
+    <template v-if="currentVideoSign">
+      <img
+        :src="videoSignImg"
+        :class="prefixCls + '-video-sign'"
+        :style="videoSignStyle" />
+    </template>
 
     <template v-if="preview">
       <rd-image-preview
@@ -69,6 +71,7 @@ import { isClient } from '@src/util/assist.js'
 import videoPlay from '@src/images/image-preview/video-play.svg'
 import imageAmplify from '@src/images/image/amplify.png'
 import videoSignImg from '@src/images/image/video-sign.svg'
+import imageErrorImge from '@src/images/image/image-error.svg'
 
 import { oneOf } from '@src/util/assist.js'
 
@@ -82,28 +85,25 @@ const prefixCls = prefix + 'image'
 export default {
   name: prefixCls,
   props: {
-    type: {
-      type: String,
-      validator(value) {
-        return oneOf(value, ['image', 'video'])
-      },
-      default: 'image'
-    },
     src: {
       type: String,
+      default: ''
+    },
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit
+    fit: {
+      type: String, // 'fill' | 'contain' | 'cover' | 'none' | 'scale'-down'
       default: ''
     },
     alt: {
       type: String,
       default: ''
     },
-    previewTip: {
-      type: Boolean,
-      default: false
-    },
-    previewTipWidth: {
-      type: [String, Number],
-      default: 32
+    type: {
+      type: String,
+      validator(value) {
+        return oneOf(value, ['image', 'video'])
+      },
+      default: 'image'
     },
     referrerPolicy: {
       type: String,
@@ -117,11 +117,7 @@ export default {
       type: [String, Number],
       default: ''
     },
-    // https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit
-    fit: {
-      type: String, // 'fill' | 'contain' | 'cover' | 'none' | 'scale'-down'
-      default: ''
-    },
+    // 懒加载
     lazy: {
       type: Boolean,
       default: false
@@ -130,6 +126,7 @@ export default {
       type: [String],
       default: ''
     },
+    // 预览
     preview: {
       type: Boolean,
       default: false
@@ -138,9 +135,22 @@ export default {
       type: String,
       default: ''
     },
+    previewTip: {
+      type: Boolean,
+      default: false
+    },
+    previewTipWidth: {
+      type: [String, Number],
+      default: 32
+    },
+    // 角标
     videoSign: {
       type: Boolean,
       default: false
+    },
+    videoSignWidth: {
+      type: [String, Number],
+      default: 12
     }
   },
   data() {
@@ -152,9 +162,10 @@ export default {
       observer: null,
       prefixCls,
       videoPlay,
+      imagePreviewModal: false,
       imageAmplify,
       videoSignImg,
-      imagePreviewModal: false
+      imageErrorImge
     }
   },
   computed: {
@@ -172,7 +183,6 @@ export default {
     fitStyle() {
       const fitContains = ['fill', 'contain', 'cover', 'none', 'scale-down']
       const { fit } = this
-      console.log(fitContains.includes(fit), 'fit')
       return fitContains.includes(fit) ? `object-fit:${fit};` : ''
     },
     imageStyles() {
@@ -181,7 +191,7 @@ export default {
         height: typeof this.height === 'number' ? `${this.height}px` : this.height
       }
     },
-    previewTipStyle() {
+    previewTipStyles() {
       return {
         width:
           typeof this.previewTipWidth === 'number'
@@ -201,6 +211,12 @@ export default {
     },
     currentVideoSign() {
       return this.videoSign && !this.previewTip && !this.loading && !this.imageError
+    },
+    videoSignStyle() {
+      return {
+        width:
+          typeof this.videoSignWidth === 'number' ? `${this.videoSignWidth}px` : this.videoSignWidth
+      }
     }
   },
   mounted() {
@@ -212,7 +228,6 @@ export default {
   methods: {
     handleLazy() {
       const $el = this.$refs.image
-      // console.log('root', this.scrollElement)
       const observer = (this.observer = new IntersectionObserver(this.handlerObserveImage, {
         root: this.scrollElement,
         rootMargin: '0px',
@@ -221,7 +236,6 @@ export default {
       observer.observe($el)
     },
     handlerObserveImage(entries) {
-      // console.log('callback', entries)
       for (let entry of entries) {
         if (entry.isIntersecting) {
           // destory new IntersectionObserver
@@ -239,15 +253,14 @@ export default {
       } else if (scrollContainer && typeof scrollContainer === 'string') {
         this.scrollElement = document.querySelector(scrollContainer)
       }
-      // console.log('有lazy')
       // on scrollElement scroll
       this.handleLazy()
     },
     handleImageLoad() {
-      setTimeout(() => {
-        this.loading = false
-      }, 3000)
-      //this.loading = false
+      // setTimeout(() => {
+      //   this.loading = false
+      // }, 3000)
+      this.loading = false
       this.imageError = false
       this.$emit('on-load')
     },
@@ -274,8 +287,6 @@ export default {
       const { preview } = this
       if (preview) {
         this.imagePreviewModal = true
-        // // reslove click image get the currentIndex to do other thing
-        // this.$emit('on-click', { initialIndex })
       }
       this.$emit('on-preview-click')
     }

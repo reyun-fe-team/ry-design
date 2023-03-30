@@ -3,11 +3,14 @@
 @padding-item : 2px;
 .@{material-group} {
   position: relative;
-  // background-color: #eef0f3ff;
-  border: solid #e0e0e8;
+  border: solid @border-color-gray-white 1px;
 
   &-selected {
     border-color: @selected-color;
+  }
+
+  &-border-hover:hover {
+    border-color: @selected-color !important;
   }
 
   &-delete {

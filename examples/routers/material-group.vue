@@ -228,7 +228,7 @@
 
     <h2 style="margin-top: 24px">修改padding:8px, 自定义padding</h2>
     <rd-material-group
-      :padding="8"
+      :styles="{ padding: '8px' }"
       style="margin: 0 24px 0 0"
       :size="1"
       :data="hengImage"
@@ -297,12 +297,36 @@
     <rd-material-group
       style="margin: 0 24px 0 0"
       :size="1"
+      border-hover
       :selected="selectValue === 'open'"
       :data="hengVideo"
       type="video"
       video-sign
       :width="216"
       :height="120"></rd-material-group>
+
+    <Row class="text-center">
+      <Col flex="1">
+        <rd-material-group
+          :size="4"
+          :data="hengVideo"
+          :width="216"
+          :height="120"></rd-material-group>
+        <div>有背景色，无圆角，无padding 尺寸</div>
+      </Col>
+      <Col flex="1">
+        <rd-material-group
+          :size="1"
+          :data="hengVideo"
+          background="#fff"
+          :width="216"
+          :height="120"
+          border-hover
+          :styles="borderStyles"
+          padding="2px"></rd-material-group>
+        <div>无背景色，有圆角，padding：2px</div>
+      </Col>
+    </Row>
   </div>
 </template>
 
@@ -310,6 +334,12 @@
 export default {
   data() {
     return {
+      borderStyles: {
+        borderRadius: '8px',
+        borderWidth: '1px',
+        borderColor: '#e0e0e8',
+        padding: '2px'
+      },
       selectValue: 'open',
       // 横版图片
       hengImage: [
