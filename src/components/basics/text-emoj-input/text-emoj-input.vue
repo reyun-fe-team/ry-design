@@ -209,10 +209,14 @@ export default {
       const disableInputFn = () => e.preventDefault()
       e.stopPropagation()
       // 使用默认的获取纯文本的方法
-      const oiginalText =
-        this.isTransform && this.transformHtml2Text
+      let oiginalText = ''
+      if (this.isTransform) {
+        oiginalText = this.transformHtml2Text
           ? this.transformHtml2Text(stringHtml)
           : getPlainText(stringHtml)
+      } else {
+        oiginalText = e.target.innerText
+      }
       this.$emit('input', oiginalText)
       this.$emit('on-change', {
         currentData,
@@ -289,9 +293,13 @@ export default {
       this.$emit('on-blur', e)
       const stringHtml = e.target.innerHTML
       // 使用默认的获取纯文本的方法
-      let oiginalText = getPlainText(stringHtml)
-      if (this.isTransform && this.transformHtml2Text) {
-        oiginalText = this.transformHtml2Text(stringHtml)
+      let oiginalText = ''
+      if (this.isTransform) {
+        oiginalText = this.transformHtml2Text
+          ? this.transformHtml2Text(stringHtml)
+          : getPlainText(stringHtml)
+      } else {
+        oiginalText = e.target.innerText
       }
       oiginalText = oiginalText.replaceAll('<br>&nbsp;', '')
       this.$nextTick(() => {
@@ -455,9 +463,13 @@ export default {
     getValue() {
       const stringHtml = this.richEditRef.innerHTML
       // 使用默认的获取纯文本的方法
-      let oiginalText = getPlainText(stringHtml)
-      if (this.isTransform && this.transformHtml2Text) {
-        oiginalText = this.transformHtml2Text(stringHtml)
+      let oiginalText = ''
+      if (this.isTransform) {
+        oiginalText = this.transformHtml2Text
+          ? this.transformHtml2Text(stringHtml)
+          : getPlainText(stringHtml)
+      } else {
+        oiginalText = this.richEditRef.innerText
       }
       oiginalText = oiginalText.replaceAll('<br>&nbsp;', '').replaceAll('<br>', '')
       return oiginalText
