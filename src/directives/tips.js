@@ -38,7 +38,8 @@ function createTooltip(target, options = {}) {
 function showTooltip(event) {
   const el = event.target
   const tooltipOption = el._tooltipOption
-  if (tooltipOption) {
+  // 传入的参数content不为空或者传入contentRender才createTooltip
+  if (tooltipOption.content || tooltipOption.contentRender) {
     // 没有创建组件才去初始化
     let tooltipRef = el._tooltipRef
     if (!tooltipRef) {

@@ -3,10 +3,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './app.vue'
 import ryDesign from '../src/index'
-// import iView from 'view-design'
+// 调试打包后的dist文件
 // import ryDesign from '../dist/ry-design.min.js'
 // import '../dist/styles/main.css'
-// Vue.use(iView)
 Vue.use(VueRouter)
 Vue.use(ryDesign)
 
@@ -175,16 +174,28 @@ const router = new VueRouter({
       component: resolve => require(['./routers/sort'], resolve)
     },
     {
-      path: '/image-preview',
-      component: resolve => require(['./routers/image-preview'], resolve)
-    },
-    {
       path: '/dropdown-panel',
       component: resolve => require(['./routers/dropdown-panel'], resolve)
     },
     {
+      path: '/image-preview',
+      component: resolve => require(['./routers/image-preview'], resolve)
+    },
+    {
       path: '/date-picker',
       component: resolve => require(['./routers/date-picker'], resolve)
+    },
+    {
+      path: '/indicator',
+      component: resolve => require(['./routers/indicator'], resolve)
+    },
+    {
+      path: '/empty',
+      component: resolve => require(['./routers/empty'], resolve)
+    },
+    {
+      path: '/echo-container',
+      component: resolve => require(['./routers/echo-container'], resolve)
     }
   ]
 })
