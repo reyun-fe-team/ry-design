@@ -28,6 +28,7 @@
           :placeholder="placeholder"
           :transform-html2-text="transformHtml2Text"
           :transform-text2-html="transformText2Html"
+          :is-transform="isTransform"
           :calc-text-fn="calcTextFn"
           :valid-fn="validFn"
           :max-length="maxLength"
@@ -158,6 +159,11 @@ export default {
     // 错误校验方法
     propsValidFn: {
       type: Function
+    },
+    // 是否支持转译 例如< > 转译成&lt; &gt;
+    isTransform: {
+      type: Boolean,
+      default: true
     },
     // 粘贴是否过滤表情符
     isPasteFilterEmoji: {
