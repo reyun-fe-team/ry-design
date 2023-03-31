@@ -60,6 +60,11 @@ export default {
      */
     // eslint-disable-next-line vue/require-default-prop
     transformText2Html: Function,
+    // 是否支持转译 例如< > 转译成&lt; &gt;
+    isTransform: {
+      type: Boolean,
+      default: true
+    },
     // 传入的默认文本（通用文本内容）
     value: {
       require: true,
@@ -204,9 +209,10 @@ export default {
       const disableInputFn = () => e.preventDefault()
       e.stopPropagation()
       // 使用默认的获取纯文本的方法
-      const oiginalText = this.transformHtml2Text
-        ? this.transformHtml2Text(stringHtml)
-        : getPlainText(stringHtml)
+      const oiginalText =
+        this.isTransform && this.transformHtml2Text
+          ? this.transformHtml2Text(stringHtml)
+          : getPlainText(stringHtml)
       this.$emit('input', oiginalText)
       this.$emit('on-change', {
         currentData,
@@ -284,7 +290,7 @@ export default {
       const stringHtml = e.target.innerHTML
       // 使用默认的获取纯文本的方法
       let oiginalText = getPlainText(stringHtml)
-      if (this.transformHtml2Text) {
+      if (this.isTransform && this.transformHtml2Text) {
         oiginalText = this.transformHtml2Text(stringHtml)
       }
       oiginalText = oiginalText.replaceAll('<br>&nbsp;', '')
@@ -450,7 +456,7 @@ export default {
       const stringHtml = this.richEditRef.innerHTML
       // 使用默认的获取纯文本的方法
       let oiginalText = getPlainText(stringHtml)
-      if (this.transformHtml2Text) {
+      if (this.isTransform && this.transformHtml2Text) {
         oiginalText = this.transformHtml2Text(stringHtml)
       }
       oiginalText = oiginalText.replaceAll('<br>&nbsp;', '').replaceAll('<br>', '')
