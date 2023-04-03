@@ -33,6 +33,8 @@ import RdDropdownSearch from './components/basics/dropdown-search'
 import RdDropdownPanel from './components/basics/dropdown-panel'
 import RdIndicator from './components/basics/indicator'
 import RdEmpty from './components/basics/empty'
+import Image from './components/basics/image'
+import MaterialGroup from './components/basics/material-group/material-group'
 
 // business
 import RdBatchUploadXls from './components/business/batch-upload-xls'
@@ -129,7 +131,9 @@ const components = [
   RdDatePicker,
   RdIndicator,
   RdEmpty,
-  RdEchoContainer
+  RdEchoContainer,
+  Image,
+  MaterialGroup
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -209,6 +213,8 @@ const API = {
   RdDatePicker,
   RdIndicator,
   RdEmpty,
-  RdEchoContainer
+  RdEchoContainer,
+  Image,
+  MaterialGroup
 }
 module.exports.default = module.exports = API // eslint-disable-line no-undef

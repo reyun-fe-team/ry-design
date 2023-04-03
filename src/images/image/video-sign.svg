@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>画板</title>
+    <defs>
+        <filter x="0.0%" y="0.0%" width="100.0%" height="100.0%" filterUnits="objectBoundingBox" id="filter-1">
+            <feGaussianBlur stdDeviation="0" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+    </defs>
+    <g id="画板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组-21">
+            <rect id="矩形" fill="#151B39" opacity="0.802906" filter="url(#filter-1)" x="0" y="0" width="40" height="40" rx="10"></rect>
+            <path d="M29.6000553,22.106667 L16.0000553,31.0560003 C15.6195619,31.3063779 15.1551879,31.3953438 14.7090974,31.3033251 C14.2630069,31.2113065 13.8717442,30.9458415 13.6213886,30.5653336 C13.4310972,30.2855325 13.3306312,29.9543668 13.3333333,29.6160003 L13.3333333,11.7173336 C13.3333333,10.7688766 14.1022649,10 15.0507219,10 C15.3871697,10 15.7166236,10.0960505 16.0000553,10.2773336 L29.6000553,19.226667 C30.3911412,19.7538087 30.6100414,20.8197575 30.0907219,21.6160003 C29.9577831,21.8075474 29.7916023,21.9737281 29.6000553,22.106667 Z" id="路径_1578-path" fill="#FFFFFF"></path>
+        </g>
+    </g>
+</svg>

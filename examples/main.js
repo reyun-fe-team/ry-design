@@ -196,6 +196,14 @@ const router = new VueRouter({
     {
       path: '/echo-container',
       component: resolve => require(['./routers/echo-container'], resolve)
+    },
+    {
+      path: '/image',
+      component: resolve => require(['./routers/image'], resolve)
+    },
+    {
+      path: '/material-group',
+      component: resolve => require(['./routers/material-group'], resolve)
     }
   ]
 })
