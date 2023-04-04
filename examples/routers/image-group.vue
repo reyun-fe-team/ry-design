@@ -2,109 +2,109 @@
   <div>
     <h2>横版图片</h2>
     <section style="display: flex">
-      <rd-material-group
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="1"
         :data="hengImage"
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="2"
         :data="hengImage"
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="3"
         :data="hengImage"
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="4"
         :data="hengImage"
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="6"
         :data="hengImage"
         :width="256"
-        :height="120"></rd-material-group>
+        :height="120"></rd-image-group>
     </section>
     <h2 style="margin-top: 24px">竖版图片</h2>
     <section style="display: flex">
-      <rd-material-group
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="1"
         :data="shuImage"
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="2"
         :data="shuImage"
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="3"
         position-type="vertical"
         :data="shuImage"
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="4"
         :data="shuImage"
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="6"
         :data="shuImage"
         :width="256"
-        :height="120"></rd-material-group>
+        :height="120"></rd-image-group>
     </section>
     <h2 style="margin-top: 24px">方形大图</h2>
 
     <section style="display: flex">
-      <rd-material-group
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="1"
         :data="largeSquareImage"
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="2"
         :data="largeSquareImage"
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="3"
         :data="largeSquareImage"
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="4"
         :data="largeSquareImage"
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="6"
         :data="largeSquareImage"
         :width="256"
-        :height="120"></rd-material-group>
+        :height="120"></rd-image-group>
     </section>
 
     <h2 style="margin-top: 24px">横版视频</h2>
     <section style="display: flex">
-      <rd-material-group
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="1"
         :data="hengVideo"
@@ -112,8 +112,8 @@
         preview-tip
         preview
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="2"
         :data="hengVideo"
@@ -121,8 +121,8 @@
         preview-tip
         preview
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="3"
         :data="hengVideo"
@@ -130,8 +130,8 @@
         preview-tip
         preview
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="4"
         :data="hengVideo"
@@ -139,8 +139,8 @@
         preview-tip
         preview
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="6"
         :data="hengVideo"
@@ -148,11 +148,11 @@
         preview-tip
         preview
         :width="256"
-        :height="120"></rd-material-group>
+        :height="120"></rd-image-group>
     </section>
     <h2 style="margin-top: 24px">竖版视频</h2>
     <section style="display: flex">
-      <rd-material-group
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="1"
         :data="shuVideo"
@@ -160,8 +160,8 @@
         preview-tip
         preview
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="2"
         :data="shuVideo"
@@ -169,8 +169,8 @@
         preview-tip
         preview
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="3"
         position-type="vertical"
@@ -179,8 +179,8 @@
         preview-tip
         preview
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="4"
         :data="shuVideo"
@@ -188,8 +188,8 @@
         preview-tip
         preview
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="6"
         :data="shuVideo"
@@ -197,11 +197,11 @@
         preview-tip
         preview
         :width="256"
-        :height="120"></rd-material-group>
+        :height="120"></rd-image-group>
     </section>
 
     <h2 style="margin-top: 24px">一个视频配一个封面</h2>
-    <rd-material-group
+    <rd-image-group
       style="margin: 0 0 24px"
       :size="2"
       :data="hengVideoCover"
@@ -211,10 +211,10 @@
       preview
       open-cover
       :height="120"
-      @on-preview-click="onPreviewClick"></rd-material-group>
+      @on-preview-click="onPreviewClick"></rd-image-group>
 
     <h2 style="margin-top: 24px">整体一个预览ICON</h2>
-    <rd-material-group
+    <rd-image-group
       style="margin: 0 24px 0 0"
       :size="6"
       preview-group-tip
@@ -224,19 +224,19 @@
       :width="256"
       :height="120"
       @on-preview-group-click="onPreviewGroupClick"
-      @on-delete="onDelete"></rd-material-group>
+      @on-delete="onDelete"></rd-image-group>
 
     <h2 style="margin-top: 24px">修改padding:8px, 自定义padding</h2>
-    <rd-material-group
+    <rd-image-group
       :styles="{ padding: '8px' }"
       style="margin: 0 24px 0 0"
       :size="1"
       :data="hengImage"
       :width="216"
-      :height="120"></rd-material-group>
+      :height="120"></rd-image-group>
 
     <h2 style="margin-top: 24px">background 设置#fff</h2>
-    <rd-material-group
+    <rd-image-group
       style="margin: 0 0 24px"
       :size="2"
       background="#fff"
@@ -247,19 +247,19 @@
       preview
       open-cover
       :height="120"
-      @on-preview-click="onPreviewClick"></rd-material-group>
+      @on-preview-click="onPreviewClick"></rd-image-group>
 
     <h2 style="margin-top: 24px">角标</h2>
     <section style="display: flex">
-      <rd-material-group
+      <rd-image-group
         style="margin: 0 24px 0 0"
         :size="1"
         :data="hengVideo"
         type="video"
         video-sign
         :width="216"
-        :height="120"></rd-material-group>
-      <rd-material-group
+        :height="120"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px"
         :size="2"
         :data="hengVideo"
@@ -268,8 +268,8 @@
         video-sign
         open-cover
         :height="120"
-        @on-preview-click="onPreviewClick"></rd-material-group>
-      <rd-material-group
+        @on-preview-click="onPreviewClick"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px"
         :size="6"
         :data="hengVideo"
@@ -277,8 +277,8 @@
         type="video"
         video-sign
         :height="120"
-        @on-preview-click="onPreviewClick"></rd-material-group>
-      <rd-material-group
+        @on-preview-click="onPreviewClick"></rd-image-group>
+      <rd-image-group
         style="margin: 0 24px"
         :size="6"
         :data="shuVideo"
@@ -286,7 +286,7 @@
         type="video"
         video-sign
         :height="120"
-        @on-preview-click="onPreviewClick"></rd-material-group>
+        @on-preview-click="onPreviewClick"></rd-image-group>
     </section>
     <h2 style="margin-top: 24px">选中</h2>
     <Button
@@ -294,7 +294,7 @@
       @click="selectValueChange">
       Primary
     </Button>
-    <rd-material-group
+    <rd-image-group
       style="margin: 0 24px 0 0"
       :size="1"
       border-hover
@@ -303,27 +303,26 @@
       type="video"
       video-sign
       :width="216"
-      :height="120"></rd-material-group>
+      :height="120"></rd-image-group>
 
     <Row class="text-center">
       <Col flex="1">
-        <rd-material-group
+        <rd-image-group
           :size="4"
           :data="hengVideo"
           :width="216"
-          :height="120"></rd-material-group>
+          :height="120"></rd-image-group>
         <div>有背景色，无圆角，无padding 尺寸</div>
       </Col>
       <Col flex="1">
-        <rd-material-group
+        <rd-image-group
           :size="1"
           :data="hengVideo"
           background="#fff"
           :width="216"
           :height="120"
           border-hover
-          :styles="borderStyles"
-          padding="2px"></rd-material-group>
+          :styles="borderStyles"></rd-image-group>
         <div>无背景色，有圆角，padding：2px</div>
       </Col>
     </Row>

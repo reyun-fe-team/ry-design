@@ -202,8 +202,8 @@ const router = new VueRouter({
       component: resolve => require(['./routers/image'], resolve)
     },
     {
-      path: '/material-group',
-      component: resolve => require(['./routers/material-group'], resolve)
+      path: '/image-group',
+      component: resolve => require(['./routers/image-group'], resolve)
     }
   ]
 })
