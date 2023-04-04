@@ -27,7 +27,7 @@ import Schedule from './components/basics/schedule'
 import DropdownSearch from './components/basics/dropdown-search'
 import Sort from './components/basics/sort'
 import Image from './components/basics/image'
-import MaterialGroup from './components/basics/material-group/material-group'
+import ImageGroup from './components/basics/image-group'
 import ImagePreview from './components/basics/image-preview'
 import DropdownPanel from './components/basics/dropdown-panel'
 
@@ -117,7 +117,7 @@ const components = [
   UTableColumn,
   Sort,
   Image,
-  MaterialGroup,
+  ImageGroup,
   DropdownSearch,
   Sort,
   ImagePreview,
@@ -144,7 +144,7 @@ const install = function (Vue) {
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue)
 }
-console.log('image')
+
 export default {
   version: process.env.VERSION,
   install,
@@ -187,7 +187,7 @@ export default {
   UTableColumn,
   Sort,
   Image,
-  MaterialGroup,
+  ImageGroup,
   DropdownSearch,
   ImagePreview,
   DropdownPanel

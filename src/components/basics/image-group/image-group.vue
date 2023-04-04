@@ -4,19 +4,19 @@
     :class="classes"
     :style="imageGroupStyles">
     <rd-image
-      v-for="(option, index) in currenData"
-      :key="index"
+      v-for="(option, initialIndex) in currenData"
+      :key="initialIndex"
       :src="option.src"
       :preview-src="option.previewSrc"
       fit="contain"
       :preview="preview"
       :preview-tip="previewTip"
       :class="classImage"
-      :type="currentType(index)"
+      :type="currentType(initialIndex)"
       :alt="option.src"
       :preview-tip-width="previewTipWidth"
       :video-sign="videoSign"
-      @on-preview-click="onPreviewClick(option)"></rd-image>
+      @on-preview-click="onPreviewClick(option, initialIndex)"></rd-image>
     <div
       v-if="showDelete"
       :class="prefixCls + '-delete'"
@@ -40,7 +40,7 @@ import { prefix } from '@src/config.js'
 import { oneOf } from '@src/util/assist.js'
 import videoPlay from '@src/images/image-preview/video-play.svg'
 import imageAmplify from '@src/images/image/amplify.png'
-const prefixCls = prefix + 'material-group'
+const prefixCls = prefix + 'image-group'
 
 export default {
   name: prefixCls,
@@ -62,34 +62,19 @@ export default {
         return oneOf(value, ['horizontal', 'vertical'])
       }
     },
-    openCover: {
-      type: Boolean,
-      default: false
-    },
-    previewTip: {
-      type: Boolean,
-      default: false
-    },
     previewGroupTip: {
       type: Boolean,
       default: false
     },
-    type: {
-      type: String,
-      validator(value) {
-        return oneOf(value, ['image', 'video'])
-      },
-      default: 'image'
+    previewGroupTipWidth: {
+      type: [String, Number],
+      default: 32
     },
-    preview: {
+    openCover: {
       type: Boolean,
       default: false
     },
     showDelete: {
-      type: Boolean,
-      default: false
-    },
-    videoSign: {
       type: Boolean,
       default: false
     },
@@ -118,11 +103,27 @@ export default {
       type: Object,
       default: () => {}
     },
-    previewTipWidth: {
-      type: [String, Number],
-      default: 32
+    type: {
+      type: String,
+      validator(value) {
+        return oneOf(value, ['image', 'video'])
+      },
+      default: 'image'
     },
-    previewGroupTipWidth: {
+    // 图片组件参数
+    videoSign: {
+      type: Boolean,
+      default: false
+    },
+    preview: {
+      type: Boolean,
+      default: false
+    },
+    previewTip: {
+      type: Boolean,
+      default: false
+    },
+    previewTipWidth: {
       type: [String, Number],
       default: 32
     }
@@ -181,13 +182,10 @@ export default {
   },
   methods: {
     currentType(index) {
-      if (this.openCover && index === 1) {
-        return 'image'
-      }
-      return this.type
+      return this.openCover && index === 1 ? 'image' : this.type
     },
-    onPreviewClick(data) {
-      this.$emit('on-preview-click', data)
+    onPreviewClick(data, initialIndex) {
+      this.$emit('on-preview-click', data, initialIndex)
     },
     handlePreview() {
       this.$emit('on-preview-group-click', this.currenData)
