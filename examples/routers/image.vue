@@ -64,7 +64,7 @@
         style="margin-right: 24px"
         src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg"></rd-image>
       <rd-image
-        :key="showLoading"
+        :key="showLoading + 1"
         width="216px"
         height="120px"
         fit="contain"
@@ -99,8 +99,8 @@
     <h2 style="margin-top: 24px">懒加载-横向</h2>
     <div class="demo-image-lazy-vertical">
       <rd-image
-        v-for="url in verticalUrlList"
-        :key="url"
+        v-for="(url, index) in verticalUrlList"
+        :key="index"
         fit="contain"
         :src="url"
         lazy />
@@ -109,8 +109,8 @@
     <div class="demo-image-lazy">
       <div class="demo-image-lazy-inner">
         <rd-image
-          v-for="url in urlList"
-          :key="url"
+          v-for="(url, index) in urlList"
+          :key="index"
           fit="contain"
           :width="300"
           :height="200"
