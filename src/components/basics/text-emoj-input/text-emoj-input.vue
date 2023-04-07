@@ -203,19 +203,17 @@ export default {
        */
       // 本次输入的值
       const currentData = e.data
-      const stringHtml = e.target.innerHTML
+      const stringHtml = this.isTransform ? e.target.innerHTML : e.target.innerText
       // const reg = /<img[^>]*>/gi
       // const v = stringHtml.match(reg)
       const disableInputFn = () => e.preventDefault()
       e.stopPropagation()
       // 使用默认的获取纯文本的方法
-      let oiginalText = ''
+      let oiginalText = stringHtml
       if (this.isTransform) {
         oiginalText = this.transformHtml2Text
           ? this.transformHtml2Text(stringHtml)
           : getPlainText(stringHtml)
-      } else {
-        oiginalText = e.target.innerText
       }
       this.$emit('input', oiginalText)
       this.$emit('on-change', {
@@ -291,15 +289,13 @@ export default {
         return
       }
       this.$emit('on-blur', e)
-      const stringHtml = e.target.innerHTML
+      const stringHtml = this.isTransform ? e.target.innerHTML : e.target.innerText
       // 使用默认的获取纯文本的方法
-      let oiginalText = ''
+      let oiginalText = stringHtml
       if (this.isTransform) {
         oiginalText = this.transformHtml2Text
           ? this.transformHtml2Text(stringHtml)
           : getPlainText(stringHtml)
-      } else {
-        oiginalText = e.target.innerText
       }
       oiginalText = oiginalText.replaceAll('<br>&nbsp;', '')
       this.$nextTick(() => {
@@ -461,15 +457,13 @@ export default {
     },
     // 获取输入值
     getValue() {
-      const stringHtml = this.richEditRef.innerHTML
+      const stringHtml = this.isTransform ? this.richEditRef.innerHTML : this.richEditRef.innerText
       // 使用默认的获取纯文本的方法
-      let oiginalText = ''
+      let oiginalText = stringHtml
       if (this.isTransform) {
         oiginalText = this.transformHtml2Text
           ? this.transformHtml2Text(stringHtml)
           : getPlainText(stringHtml)
-      } else {
-        oiginalText = this.richEditRef.innerText
       }
       oiginalText = oiginalText.replaceAll('<br>&nbsp;', '').replaceAll('<br>', '')
       return oiginalText
