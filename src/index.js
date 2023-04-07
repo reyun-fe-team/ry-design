@@ -28,6 +28,7 @@ import DropdownSearch from './components/basics/dropdown-search'
 import Sort from './components/basics/sort'
 import ImagePreview from './components/basics/image-preview'
 import DropdownPanel from './components/basics/dropdown-panel'
+import Indicator from './components/basics/indicator'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -123,7 +124,8 @@ const components = [
   Sort,
   ImagePreview,
   DropdownPanel,
-  DatePicker
+  DatePicker,
+  Indicator
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -191,5 +193,6 @@ export default {
   Sort,
   ImagePreview,
   DropdownPanel,
-  DatePicker
+  DatePicker,
+  Indicator
 }
