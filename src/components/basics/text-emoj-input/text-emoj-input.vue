@@ -309,9 +309,9 @@ export default {
     },
     // 插入html标记
     insertHtmlMark(html) {
-      if (!this.canUseHtml) {
-        return
-      }
+      // if (!this.canUseHtml) {
+      //   return
+      // }
       let pass = true
       if (this.validHtmlMarkFn) {
         pass = this.validHtmlMarkFn(html)
@@ -336,7 +336,12 @@ export default {
       if (document.selection) {
         this.currentRange.pasteHTML(html)
       } else {
-        document.execCommand('insertHTML', false, html)
+        // 转译字符兼容，判断是否可以转译字符，默认转译。
+        if (this.isTransform) {
+          document.execCommand('insertHTML', false, html)
+        } else {
+          document.execCommand('insertText', false, html)
+        }
         this.currentRange && this.currentRange.collapse(false)
       }
       this.saveSelection()
