@@ -203,16 +203,18 @@ export default {
        */
       // 本次输入的值
       const currentData = e.data
-      const stringHtml = e.target.innerHTML
+      const stringHtml = this.isTransform ? e.target.innerHTML : e.target.innerText
       // const reg = /<img[^>]*>/gi
       // const v = stringHtml.match(reg)
       const disableInputFn = () => e.preventDefault()
       e.stopPropagation()
       // 使用默认的获取纯文本的方法
-      const oiginalText =
-        this.isTransform && this.transformHtml2Text
+      let oiginalText = stringHtml
+      if (this.isTransform) {
+        oiginalText = this.transformHtml2Text
           ? this.transformHtml2Text(stringHtml)
           : getPlainText(stringHtml)
+      }
       this.$emit('input', oiginalText)
       this.$emit('on-change', {
         currentData,
@@ -287,11 +289,13 @@ export default {
         return
       }
       this.$emit('on-blur', e)
-      const stringHtml = e.target.innerHTML
+      const stringHtml = this.isTransform ? e.target.innerHTML : e.target.innerText
       // 使用默认的获取纯文本的方法
-      let oiginalText = getPlainText(stringHtml)
-      if (this.isTransform && this.transformHtml2Text) {
-        oiginalText = this.transformHtml2Text(stringHtml)
+      let oiginalText = stringHtml
+      if (this.isTransform) {
+        oiginalText = this.transformHtml2Text
+          ? this.transformHtml2Text(stringHtml)
+          : getPlainText(stringHtml)
       }
       oiginalText = oiginalText.replaceAll('<br>&nbsp;', '')
       this.$nextTick(() => {
@@ -305,9 +309,9 @@ export default {
     },
     // 插入html标记
     insertHtmlMark(html) {
-      if (!this.canUseHtml) {
-        return
-      }
+      // if (!this.canUseHtml) {
+      //   return
+      // }
       let pass = true
       if (this.validHtmlMarkFn) {
         pass = this.validHtmlMarkFn(html)
@@ -332,7 +336,12 @@ export default {
       if (document.selection) {
         this.currentRange.pasteHTML(html)
       } else {
-        document.execCommand('insertHTML', false, html)
+        // 转译字符兼容，判断是否可以转译字符，默认转译。
+        if (this.isTransform) {
+          document.execCommand('insertHTML', false, html)
+        } else {
+          document.execCommand('insertText', false, html)
+        }
         this.currentRange && this.currentRange.collapse(false)
       }
       this.saveSelection()
@@ -453,11 +462,13 @@ export default {
     },
     // 获取输入值
     getValue() {
-      const stringHtml = this.richEditRef.innerHTML
+      const stringHtml = this.isTransform ? this.richEditRef.innerHTML : this.richEditRef.innerText
       // 使用默认的获取纯文本的方法
-      let oiginalText = getPlainText(stringHtml)
-      if (this.isTransform && this.transformHtml2Text) {
-        oiginalText = this.transformHtml2Text(stringHtml)
+      let oiginalText = stringHtml
+      if (this.isTransform) {
+        oiginalText = this.transformHtml2Text
+          ? this.transformHtml2Text(stringHtml)
+          : getPlainText(stringHtml)
       }
       oiginalText = oiginalText.replaceAll('<br>&nbsp;', '').replaceAll('<br>', '')
       return oiginalText
