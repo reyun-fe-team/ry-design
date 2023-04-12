@@ -23,7 +23,7 @@
           <rd-icon
             type="ry-icon-modal-close"
             :class="[prefixCls + '-close']"
-            :size="32"
+            :size="24"
             @click.native="handleClose"></rd-icon>
           <!-- 图片 -->
           <div
