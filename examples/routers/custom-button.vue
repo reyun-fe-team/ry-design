@@ -5,6 +5,7 @@
       <div style="padding-left: 10px; margin-bottom: 10px">
         <span style="display: inline-block; width: 100px">主要按钮</span>
         <span>
+          <rd-button type="dark">type:dark</rd-button>
           <rd-button icon="ry-icon-xinjian">自定义图标</rd-button>
           <rd-button
             type="primary"

@@ -1,12 +1,12 @@
 <!--
  * @Date: 2022-12-07 16:56:34
- * @LastEditTime: 2022-12-08 16:56:57
+ * @LastEditTime: 2023-04-12 16:46:28
  * @Description: 普通类型的按钮
 -->
 <template>
   <Button
     :class="classes"
-    :type="type"
+    :type="currentType"
     :custom-icon="customIcon"
     :loading="loading"
     :icon="currentIcon"
@@ -52,6 +52,9 @@ export default {
     },
     currentIcon() {
       return this.icon.startsWith('ry-icon') ? '' : this.icon
+    },
+    currentType() {
+      return !['dark'].includes(this.type) ? this.type : 'default'
     }
   }
 }

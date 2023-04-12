@@ -1,6 +1,6 @@
 <!--
  * @Date: 2022-12-07 16:13:28
- * @LastEditTime: 2022-12-08 17:22:18
+ * @LastEditTime: 2023-04-12 16:32:25
  * @Description: 按钮组件
 -->
 <template>
@@ -142,7 +142,7 @@ export default {
     // 普通的按钮
     isNormalized() {
       // 普通按钮 text 文字按钮 primary 主要按钮  dashed 灰色框按钮 default 默认纯白色按钮
-      let list = ['text', 'primary', 'dashed', 'default']
+      let list = ['text', 'primary', 'dashed', 'default', 'dark']
       return list.includes(this.type)
     },
     // 显示角标
