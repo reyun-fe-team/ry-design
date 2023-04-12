@@ -7,9 +7,10 @@
   <Button
     :class="classes"
     :type="type"
+    :custom-icon="customIcon"
     :loading="loading"
-    :disabled="disabled"
-    :icon="icon">
+    :icon="currentIcon"
+    :disabled="disabled">
     <slot></slot>
   </Button>
 </template>
@@ -45,6 +46,12 @@ export default {
     classes() {
       const classList = [`${prefixCls}`, this.type]
       return classList
+    },
+    customIcon() {
+      return this.icon.startsWith('ry-icon') ? `iconfont ${this.icon}` : ''
+    },
+    currentIcon() {
+      return this.icon.startsWith('ry-icon') ? '' : this.icon
     }
   }
 }
