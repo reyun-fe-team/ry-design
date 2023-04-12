@@ -2,9 +2,10 @@
   <div>
     <div style="margin-bottom: 25px">
       <h3 style="margin-bottom: 15px">常规按钮</h3>
-      <div style="margin-bottom: 10px; padding-left: 10px">
+      <div style="padding-left: 10px; margin-bottom: 10px">
         <span style="display: inline-block; width: 100px">主要按钮</span>
         <span>
+          <rd-button icon="ry-icon-xinjian">自定义图标</rd-button>
           <rd-button
             type="primary"
             icon="ios-search"
@@ -28,7 +29,7 @@
           </rd-button>
         </span>
       </div>
-      <div style="margin-bottom: 10px; padding-left: 10px">
+      <div style="padding-left: 10px; margin-bottom: 10px">
         <span style="display: inline-block; width: 100px">默认纯白按钮</span>
         <span>
           <rd-button
@@ -49,7 +50,7 @@
           </rd-button>
         </span>
       </div>
-      <div style="margin-bottom: 10px; padding-left: 10px">
+      <div style="padding-left: 10px; margin-bottom: 10px">
         <span style="display: inline-block; width: 100px">灰框按钮</span>
         <span>
           <rd-button
@@ -75,7 +76,7 @@
           </rd-button>
         </span>
       </div>
-      <div style="margin-bottom: 10px; padding-left: 10px">
+      <div style="padding-left: 10px; margin-bottom: 10px">
         <span style="display: inline-block; width: 100px">文字按钮</span>
         <span>
           <rd-button
@@ -99,7 +100,7 @@
     </div>
     <div style="margin-bottom: 25px">
       <h3 style="margin-bottom: 15px">插画按钮</h3>
-      <div style="margin-bottom: 10px; padding-left: 10px">
+      <div style="padding-left: 10px; margin-bottom: 10px">
         <span style="display: inline-block; width: 100px">主要按钮</span>
         <span>
           <rd-button
@@ -125,7 +126,7 @@
     </div>
     <div style="margin-bottom: 25px">
       <h3 style="margin-bottom: 15px">纯图标按钮</h3>
-      <div style="margin-bottom: 10px; padding-left: 10px">
+      <div style="padding-left: 10px; margin-bottom: 10px">
         <span style="display: inline-block; width: 100px">主要按钮</span>
         <span>
           <rd-button
