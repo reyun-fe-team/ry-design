@@ -5,9 +5,9 @@
       :class="prefixCls + '-label'">
       {{ label }}
       <Icon
-        :class="prefixCls + '-icon'"
         v-if="isLabelTooltip"
         v-tooltip="labelTooltipOption"
+        :class="prefixCls + '-icon'"
         custom="iconfont ry-icon-help"
         color="#555666"></Icon>
       :
@@ -60,6 +60,7 @@
     </slot>
     <Icon
       v-if="isClear"
+      size="14"
       custom="iconfont ry-icon-guanbi"
       color="#767A82"
       @click="clear"></Icon>
