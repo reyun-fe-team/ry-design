@@ -125,8 +125,8 @@ const components = [
   Sort,
   ImagePreview,
   DropdownPanel,
-  Indicator,
   DatePicker,
+  Indicator,
   EchoContainer
 ]
 const directives = {
@@ -195,7 +195,7 @@ export default {
   Sort,
   ImagePreview,
   DropdownPanel,
-  Indicator,
   DatePicker,
+  Indicator,
   EchoContainer
 }

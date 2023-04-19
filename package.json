@@ -1,7 +1,7 @@
 {
   "name": "ry-design",
   "main": "dist/ry-design.min.js",
-  "version": "2.5.1",
+  "version": "2.6.1",
   "repository": {
     "type": "git",
     "url": "git@github.com:reyun-fe-team/ry-design.git"
@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --config build/webpack.dev.config.js",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.config.js",
-    "commit":"npm run build && npm publish && cnpm sync ry-design"
+    "commit":"npm run build && npm publish && open https://npmmirror.com/sync/ry-design"
   },
   "author": "ry",
   "dependencies": {

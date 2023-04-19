@@ -183,12 +183,12 @@ const router = new VueRouter({
       component: resolve => require(['./routers/dropdown-panel'], resolve)
     },
     {
-      path: '/indicator',
-      component: resolve => require(['./routers/indicator'], resolve)
-    },
-    {
       path: '/date-picker',
       component: resolve => require(['./routers/date-picker'], resolve)
+    },
+    {
+      path: '/indicator',
+      component: resolve => require(['./routers/indicator'], resolve)
     },
     {
       path: '/echo-container',
