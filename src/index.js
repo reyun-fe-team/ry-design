@@ -29,6 +29,7 @@ import Sort from './components/basics/sort'
 import ImagePreview from './components/basics/image-preview'
 import DropdownPanel from './components/basics/dropdown-panel'
 import Indicator from './components/basics/indicator'
+import Empty from './components/basics/empty'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -125,7 +126,8 @@ const components = [
   ImagePreview,
   DropdownPanel,
   DatePicker,
-  Indicator
+  Indicator,
+  Empty
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -194,5 +196,6 @@ export default {
   ImagePreview,
   DropdownPanel,
   DatePicker,
-  Indicator
+  Indicator,
+  Empty
 }
