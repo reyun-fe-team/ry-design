@@ -74,7 +74,7 @@ export default {
   name: prefixCls,
   props: {
     value: {
-      type: [String, Array, Object],
+      type: [String, Number, Array, Object],
       default: ''
     },
     label: {
@@ -119,12 +119,14 @@ export default {
         case 'select':
           params = {
             clearable: false,
-            maxTagCount
+            maxTagCount,
+            placeholder: this.$attrs.placeholder || '请选择'
           }
           break
         case 'input':
           params = {
-            clearable: false
+            clearable: false,
+            placeholder: this.$attrs.placeholder || '请输入'
           }
           break
         case 'text':
@@ -167,11 +169,15 @@ export default {
         this.current = []
       } else if (Object.prototype.toString.call(this.value) === '[object Object]') {
         this.current = {}
+      } else {
+        this.current = null
       }
     },
     // 清空
     clear() {
       this.clearValue()
+      this.$emit('input', this.current)
+      this.$emit('on-change', this.current)
       this.$emit('on-clear')
     }
   }
