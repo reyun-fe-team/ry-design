@@ -12,6 +12,7 @@
       :preview="preview"
       :preview-tip="previewTip"
       :class="classImage"
+      :style="imageStyles"
       :type="currentType(initialIndex)"
       :alt="option.src"
       :preview-tip-width="previewTipWidth"
@@ -158,10 +159,14 @@ export default {
       return {
         ...{
           width: typeof this.width === 'number' ? `${this.width}px` : this.width,
-          height: typeof this.height === 'number' ? `${this.height}px` : this.height,
-          background: this.background
+          height: typeof this.height === 'number' ? `${this.height}px` : this.height
         },
         ...this.styles
+      }
+    },
+    imageStyles() {
+      return {
+        background: this.background
       }
     },
     previewGroupTipStyle() {
