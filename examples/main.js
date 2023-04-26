@@ -189,6 +189,18 @@ const router = new VueRouter({
     {
       path: '/image-group',
       component: resolve => require(['./routers/image-group'], resolve)
+    },
+    {
+      path: '/date-picker',
+      component: resolve => require(['./routers/date-picker'], resolve)
+    },
+    {
+      path: '/indicator',
+      component: resolve => require(['./routers/indicator'], resolve)
+    },
+    {
+      path: '/empty',
+      component: resolve => require(['./routers/empty'], resolve)
     }
   ]
 })

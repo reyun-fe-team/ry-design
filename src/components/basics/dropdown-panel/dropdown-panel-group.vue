@@ -26,11 +26,12 @@
         </template>
       </div>
       <div :class="prefixCls + '-content'">
-        <div
+        <DropdownItem
           v-for="item in group.items"
           :key="item.value"
+          :disabled="item.disabled"
           :class="itemsClass(item)"
-          @click="onClick(item)">
+          :name="item.value">
           <slot
             name="groupItem"
             :data="item">
@@ -46,7 +47,7 @@
             </template>
             <template v-else>{{ item.label }}</template>
           </slot>
-        </div>
+        </DropdownItem>
       </div>
     </div>
   </DropdownMenu>
@@ -59,10 +60,6 @@ export default {
     data: {
       type: Array,
       default: () => []
-    },
-    labelValue: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -78,10 +75,6 @@ export default {
           [`${prefixCls}-item-disabled`]: item.disabled
         }
       ]
-    },
-    onClick(item) {
-      let result = this.labelValue ? this.data.find(e => e.value === item.value) : item.value
-      this.$emit('on-click',result)
     }
   }
 }
