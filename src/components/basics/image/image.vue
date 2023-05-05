@@ -19,10 +19,6 @@
       v-else-if="imageError"
       :class="prefixCls + '-error'">
       <slot name="error">
-        <!-- <Icon
-          type="ios-image-outline"
-          size="24"
-          color="#ccc" /> -->
         <img :src="imageErrorImge" />
       </slot>
     </div>
@@ -151,6 +147,10 @@ export default {
     videoSignWidth: {
       type: [String, Number],
       default: 12
+    },
+    isCursor: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -188,7 +188,8 @@ export default {
     imageStyles() {
       return {
         width: typeof this.width === 'number' ? `${this.width}px` : this.width,
-        height: typeof this.height === 'number' ? `${this.height}px` : this.height
+        height: typeof this.height === 'number' ? `${this.height}px` : this.height,
+        cursor: this.isCursor ? 'pointer' : 'auto'
       }
     },
     previewTipStyles() {
@@ -223,6 +224,7 @@ export default {
     isClient && this.handleImageEvent()
   },
   created() {
+    console.log('image')
     this.offObserver()
   },
   methods: {
