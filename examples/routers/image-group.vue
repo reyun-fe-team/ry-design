@@ -1,5 +1,24 @@
 <template>
   <div>
+    <rd-image-group
+      style="margin: 0 24px 0 0"
+      :size="4"
+      :data="baseData"
+      :width="76"
+      :height="44"
+      is-cursor
+      @on-click="onClick"></rd-image-group>
+    <rd-image-group
+      style="margin: 0 24px 0 0"
+      :size="2"
+      :data="baseVideoData"
+      type="video"
+      :width="76"
+      :height="44"
+      is-cursor
+      :preview-tip-width="16"
+      @on-click="onClick"></rd-image-group>
+
     <h2>横版图片</h2>
     <section style="display: flex">
       <rd-image-group
@@ -340,6 +359,29 @@ export default {
         padding: '2px'
       },
       selectValue: 'open',
+      baseData: [
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cee/e93/537/ceee93537cdb0a1836b5acc2a5d9ed49.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cee/e93/537/ceee93537cdb0a1836b5acc2a5d9ed491.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cee/e93/537/ceee93537cdb0a1836b5acc2a5d9ed491.jpg'
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cee/e93/537/ceee93537cdb0a1836b5acc2a5d9ed491.jpg'
+        }
+      ],
+      baseVideoData: [
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cee/e93/537/ceee93537cdb0a1836b5acc2a5d9ed49.jpg',
+          previewTip: true
+        },
+        {
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/cee/e93/537/ceee93537cdb0a1836b5acc2a5d9ed491.jpg'
+        }
+      ],
       // 横版图片
       hengImage: [
         {
@@ -487,6 +529,9 @@ export default {
   },
   methods: {
     onPreviewClick(data) {
+      this.$Message.info('预览' + data.src)
+    },
+    onClick(data) {
       this.$Message.info('预览' + data.src)
     },
     onPreviewGroupClick(data) {

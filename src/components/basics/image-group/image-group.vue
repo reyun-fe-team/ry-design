@@ -5,19 +5,22 @@
     :style="imageGroupStyles">
     <rd-image
       v-for="(option, initialIndex) in currenData"
-      :key="initialIndex"
+      :key="option.src + '_' + initialIndex"
       :src="option.src"
       :preview-src="option.previewSrc"
       fit="contain"
       :preview="preview"
-      :preview-tip="previewTip"
+      :preview-tip="previewTip || option.previewTip"
       :class="classImage"
       :style="imageStyles"
       :type="currentType(initialIndex)"
       :alt="option.src"
       :preview-tip-width="previewTipWidth"
       :video-sign="videoSign"
-      @on-preview-click="onPreviewClick(option, initialIndex)"></rd-image>
+      :is-cursor="isCursor"
+      :lazy="lazy"
+      @on-preview-click="onPreviewClick(option, initialIndex)"
+      @click.native="handleClick(option, initialIndex)"></rd-image>
     <div
       v-if="showDelete"
       :class="prefixCls + '-delete'"
@@ -34,6 +37,7 @@
       @click.stop="handlePreview">
       <img :src="previewTipSrc" />
     </div>
+    <slot></slot>
   </div>
 </template>
 <script>
@@ -127,6 +131,15 @@ export default {
     previewTipWidth: {
       type: [String, Number],
       default: 32
+    },
+    isCursor: {
+      type: Boolean,
+      default: false
+    },
+    // 懒加载
+    lazy: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -185,6 +198,9 @@ export default {
       return this.type === 'video' ? videoPlay : imageAmplify
     }
   },
+  created() {
+    console.log('image-group')
+  },
   methods: {
     currentType(index) {
       return this.openCover && index === 1 ? 'image' : this.type
@@ -197,6 +213,9 @@ export default {
     },
     handleDelete() {
       this.$emit('on-delete')
+    },
+    handleClick(data, initialIndex) {
+      this.$emit('on-click', data, initialIndex)
     }
   }
 }
