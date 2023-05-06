@@ -5,12 +5,14 @@
         v-for="(item, index) in indicatorRule"
         :key="index"
         :class="[prefixCls + '-list-item', { active: symbol === item.value }]"
-        @click="onChange(item)">
+        @click.stop="onChange(item)">
         <span>{{ item.label }}</span>
       </div>
     </div>
 
-    <div :class="[prefixCls + '-right']">
+    <div
+      :class="[prefixCls + '-right']"
+      @click.stop>
       <div :class="[prefixCls + '-right-body']">
         <Form
           ref="form"
