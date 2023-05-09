@@ -198,9 +198,6 @@ export default {
       return this.type === 'video' ? videoPlay : imageAmplify
     }
   },
-  created() {
-    console.log('image-group')
-  },
   methods: {
     currentType(index) {
       return this.openCover && index === 1 ? 'image' : this.type
