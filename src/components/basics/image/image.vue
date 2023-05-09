@@ -224,7 +224,6 @@ export default {
     isClient && this.handleImageEvent()
   },
   created() {
-    console.log('image')
     this.offObserver()
   },
   methods: {
