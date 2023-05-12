@@ -157,7 +157,7 @@ export function count({ value, type, isDifferWord }) {
   return len
 }
 
-const isClient = typeof window !== 'undefined'
+export const isClient = typeof window !== 'undefined'
 
 const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g
 const MOZ_HACK_REGEXP = /^moz([A-Z])/

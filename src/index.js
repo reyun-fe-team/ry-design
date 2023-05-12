@@ -26,6 +26,8 @@ import Page from './components/basics/page'
 import Schedule from './components/basics/schedule'
 import DropdownSearch from './components/basics/dropdown-search'
 import Sort from './components/basics/sort'
+import Image from './components/basics/image'
+import ImageGroup from './components/basics/image-group'
 import ImagePreview from './components/basics/image-preview'
 import DropdownPanel from './components/basics/dropdown-panel'
 import Indicator from './components/basics/indicator'
@@ -122,6 +124,9 @@ const components = [
   AccountGroupList,
   UTable,
   UTableColumn,
+  Sort,
+  Image,
+  ImageGroup,
   DropdownSearch,
   Sort,
   ImagePreview,
@@ -193,8 +198,10 @@ export default {
   AccountGroupList,
   UTable,
   UTableColumn,
-  DropdownSearch,
   Sort,
+  Image,
+  ImageGroup,
+  DropdownSearch,
   ImagePreview,
   DropdownPanel,
   DatePicker,
