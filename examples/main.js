@@ -197,6 +197,10 @@ const router = new VueRouter({
     {
       path: '/echo-container',
       component: resolve => require(['./routers/echo-container'], resolve)
+    },
+    {
+      path: '/upload',
+      component: resolve => require(['./routers/upload'], resolve)
     }
   ]
 })

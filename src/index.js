@@ -30,6 +30,7 @@ import ImagePreview from './components/basics/image-preview'
 import DropdownPanel from './components/basics/dropdown-panel'
 import Indicator from './components/basics/indicator'
 import Empty from './components/basics/empty'
+import Upload from './components/basics/upload'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -129,7 +130,8 @@ const components = [
   DatePicker,
   Indicator,
   Empty,
-  EchoContainer
+  EchoContainer,
+  Upload
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -200,5 +202,6 @@ export default {
   DatePicker,
   Indicator,
   Empty,
-  EchoContainer
+  EchoContainer,
+  Upload
 }
