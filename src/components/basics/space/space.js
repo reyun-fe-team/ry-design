@@ -47,9 +47,6 @@ const Space = {
     const children = content.children
     const items = filterEmpty(children)
     const _$slots = content.slots()
-    console.log('content:', _$slots, _$slots.split)
-    console.log('children:', children)
-    console.log('items:', items)
     const _contentProps = content.props
 
     // 样式逻辑处理
