@@ -205,6 +205,10 @@ const router = new VueRouter({
     {
       path: '/echo-container',
       component: resolve => require(['./routers/echo-container'], resolve)
+    },
+    {
+      path: '/account-xmp',
+      component: resolve => require(['./routers/account-xmp'], resolve)
     }
   ]
 })
