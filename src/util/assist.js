@@ -272,3 +272,16 @@ export function removeClass(el, cls) {
     el.className = trim(curClass)
   }
 }
+
+/*get is empty element？*/
+export function isEmptyElement(c) {
+  return !(c.tag || (c.text && c.text.trim() !== ''))
+}
+/*filter empty element*/
+export function filterEmpty() {
+  var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : []
+
+  return children.filter(function (c) {
+    return !isEmptyElement(c)
+  })
+}

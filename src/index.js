@@ -35,6 +35,7 @@ import RdIndicator from './components/basics/indicator'
 import RdEmpty from './components/basics/empty'
 import Image from './components/basics/image'
 import ImageGroup from './components/basics/image-group'
+import Space from './components/basics/space'
 
 // business
 import RdBatchUploadXls from './components/business/batch-upload-xls'
@@ -133,7 +134,8 @@ const components = [
   RdEmpty,
   RdEchoContainer,
   Image,
-  ImageGroup
+  ImageGroup,
+  Space
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -215,6 +217,7 @@ const API = {
   RdEmpty,
   RdEchoContainer,
   Image,
-  ImageGroup
+  ImageGroup,
+  Space
 }
 module.exports.default = module.exports = API // eslint-disable-line no-undef
