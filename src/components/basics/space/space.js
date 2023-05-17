@@ -19,10 +19,12 @@ const Space = {
       default: 'small'
     },
     wrap: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     fill: {
-      type: Boolean
+      type: Boolean,
+      default: false
     }
   },
   render: function render(h, content) {
@@ -71,23 +73,20 @@ const Space = {
     }
     const getMarginStyle = isLast => {
       const style = {}
-      const marginRight = `${getMargin(
-        isArray(contentProps.size) ? contentProps[0] : contentProps.size
-      )}px`
-      const marginBottom = `${getMargin(
-        isArray(contentProps.size) ? contentProps[1] : contentProps.size
-      )}px`
+      const { size, wrap, direction } = contentProps
+      const marginRight = `${getMargin(isArray(size) ? size[0] : size)}px`
+      const marginBottom = `${getMargin(isArray(size) ? size[1] : size)}px`
       if (isLast) {
-        return contentProps.wrap
+        return wrap
           ? {
               marginBottom
             }
           : {}
       }
-      if (contentProps.direction === 'horizontal') {
+      if (direction === 'horizontal') {
         style.marginRight = marginRight
       }
-      if (contentProps.direction === 'vertical' || contentProps.wrap) {
+      if (direction === 'vertical' || wrap) {
         style.marginBottom = marginBottom
       }
       return style
