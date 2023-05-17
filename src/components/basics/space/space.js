@@ -25,51 +25,33 @@ const Space = {
       type: Boolean
     }
   },
-  computed: {
-    mergedAlign({ align, direction }) {
-      let _a
-      return (_a = align) != null ? _a : direction === 'horizontal' ? 'center' : ''
-    },
-    cls(direction, mergedAlign, wrap, fill) {
-      return [
-        prefixCls,
-        {
-          [`${prefixCls}-${direction}`]: direction,
-          [`${prefixCls}-align-${mergedAlign}`]: mergedAlign,
-          [`${prefixCls}-wrap`]: wrap,
-          [`${prefixCls}-fill`]: fill
-        }
-      ]
-    }
-  },
   render: function render(h, content) {
     // 获取子元素数组
     const children = content.children
     const items = filterEmpty(children)
-    const _$slots = content.slots()
-    const _contentProps = content.props
+    const content$slots = content.slots()
+    const contentProps = content.props
 
     // 样式逻辑处理
     const itemClassName = prefixCls + '-item'
     const mergedAlign = () => {
-      const { align, direction } = _contentProps
-      let _a
-      return (_a = align) != null ? _a : direction === 'horizontal' ? 'center' : ''
+      const { align, direction } = contentProps
+      return align != null ? align : direction === 'horizontal' ? 'center' : ''
     }
-    const _mergedAlign = mergedAlign()
+    const mergedAlignFn = mergedAlign()
     const cls = () => {
-      const { direction, wrap, fill } = _contentProps
+      const { direction, wrap, fill } = contentProps
       return [
         prefixCls,
         {
           [`${prefixCls}-${direction}`]: direction,
-          [`${prefixCls}-align-${_mergedAlign}`]: _mergedAlign,
+          [`${prefixCls}-align-${mergedAlignFn}`]: mergedAlignFn,
           [`${prefixCls}-wrap`]: wrap,
           [`${prefixCls}-fill`]: fill
         }
       ]
     }
-    const _cls = cls()
+    const clsFn = cls()
     const getMargin = size => {
       if (isNumber(size)) {
         return size
@@ -90,22 +72,22 @@ const Space = {
     const getMarginStyle = isLast => {
       const style = {}
       const marginRight = `${getMargin(
-        isArray(_contentProps.size) ? _contentProps[0] : _contentProps.size
+        isArray(contentProps.size) ? contentProps[0] : contentProps.size
       )}px`
       const marginBottom = `${getMargin(
-        isArray(_contentProps.size) ? _contentProps[1] : _contentProps.size
+        isArray(contentProps.size) ? contentProps[1] : contentProps.size
       )}px`
       if (isLast) {
-        return _contentProps.wrap
+        return contentProps.wrap
           ? {
               marginBottom
             }
           : {}
       }
-      if (_contentProps.direction === 'horizontal') {
+      if (contentProps.direction === 'horizontal') {
         style.marginRight = marginRight
       }
-      if (_contentProps.direction === 'vertical' || _contentProps.wrap) {
+      if (contentProps.direction === 'vertical' || contentProps.wrap) {
         style.marginBottom = marginBottom
       }
       return style
@@ -114,11 +96,11 @@ const Space = {
     const container = h(
       'div',
       {
-        class: _cls
+        class: clsFn
       },
       [
         items.map((child, i) => {
-          const shouldRenderSplit = _$slots.split && i > 0
+          const shouldRenderSplit = content$slots.split && i > 0
           return h(
             'div',
             {
@@ -133,7 +115,7 @@ const Space = {
                     class: `${prefixCls}-item-split`,
                     style: getMarginStyle(false)
                   },
-                  [_$slots.split]
+                  [content$slots.split]
                 ),
               h(
                 'div',
