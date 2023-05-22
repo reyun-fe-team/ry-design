@@ -43,7 +43,7 @@
   </Dropdown>
 </template>
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'button-illustration'
 import Render from './../../base/render'
 import _isArray from 'lodash/isArray'

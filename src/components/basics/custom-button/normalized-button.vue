@@ -14,7 +14,7 @@
   </Button>
 </template>
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'button-normalized'
 export default {
   name: 'NormalizedButton',

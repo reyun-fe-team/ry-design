@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'text-input-list'
 
 import rdTextEmojInput from '../text-emoj-input/text-emoj-input'

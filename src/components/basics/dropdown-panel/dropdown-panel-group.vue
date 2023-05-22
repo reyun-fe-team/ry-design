@@ -53,7 +53,7 @@
   </DropdownMenu>
 </template>
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'dropdown-panel-group'
 export default {
   props: {

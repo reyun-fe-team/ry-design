@@ -104,7 +104,7 @@
   </div>
 </template>
 <script>
-import { oneOf, getStyle } from '@src/util/assist.js'
+import { oneOf, getStyle } from '@src/util/assist'
 
 const getStrFullLength = (str = '') =>
   str.split('').reduce((pre, cur) => {
@@ -130,7 +130,7 @@ const cutStrByFullLength = (str = '', maxLength) => {
     return pre
   }, '')
 }
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'ellipsis'
 export default {
   name: prefixCls,

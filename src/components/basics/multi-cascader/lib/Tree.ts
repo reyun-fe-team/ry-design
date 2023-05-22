@@ -1,4 +1,4 @@
-import Node from './Node.js'
+import Node from './Node'
 export default class TreeStore {
   constructor(options) {
     for (let option in options) {

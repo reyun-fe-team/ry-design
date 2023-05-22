@@ -28,7 +28,7 @@
   </div>
 </template>
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'digital-details-list'
 
 export default {

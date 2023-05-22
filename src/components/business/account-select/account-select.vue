@@ -76,7 +76,7 @@
   </div>
 </template>
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'account-select'
 import _cloneDeep from 'lodash/cloneDeep'
 const maxTagCount = 1

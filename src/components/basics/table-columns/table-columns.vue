@@ -146,7 +146,7 @@
 </template>
 
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'table-columns'
 import editTitle from './components/edit-title.vue'
 import ryIcon from '../icon/icon.vue'

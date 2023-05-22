@@ -110,7 +110,7 @@
 </template>
 <script>
 import moment from 'moment'
-import { prefix } from '../../../config.js'
+import { prefix } from '@src/config'
 import _cloneDeep from 'lodash/cloneDeep'
 import _assign from 'lodash/assign'
 const prefixCls = prefix + 'submission-rule'

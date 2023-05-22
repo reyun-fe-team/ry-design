@@ -48,7 +48,7 @@
 <script>
 import imageError from '@src/images/image-preview/image-error.png'
 import previewVideo from './preview-video'
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'image-preview'
 export default {
   name: prefixCls,

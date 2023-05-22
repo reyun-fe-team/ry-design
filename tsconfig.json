@@ -4,23 +4,30 @@
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
+    "importHelpers": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "resolveJsonModule": true,
-    "allowJs": true,
-    "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "useDefineForClassFields": true,
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "jest",
+      "webpack",
+      "lodash-es",
+      "decimal.js",
+      "resize-observer-browser"
     ],
     "paths": {
-      "@/*": [
+      // "@/*": [
+      //   "src/*"
+      // ],
+      "@src": [
         "src/*"
+      ],
+      "@tests/*": [
+        "tests/*"
       ]
     },
     "lib": [

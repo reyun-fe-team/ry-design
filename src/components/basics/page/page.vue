@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import { oneOf } from '@src/util/assist.js'
-import { prefix } from '@src/config.js'
+import { oneOf } from '@src/util/assist'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'page'
 export default {
   name: prefixCls,

@@ -1,4 +1,4 @@
-// Thanks to: https://github.com/airyland/vux/blob/v2/src/directives/transfer-dom/index.js
+// Thanks to: https://github.com/airyland/vux/blob/v2/src/directives/transfer-dom
 // Thanks to: https://github.com/calebroseland/vue-dom-portal
 
 /**

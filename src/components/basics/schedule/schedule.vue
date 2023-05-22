@@ -78,15 +78,10 @@
   </div>
 </template>
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'schedule'
-import {
-  createArr,
-  createWeekData,
-  splicing,
-  createSheetStates
-} from '../../../util/rd-schedule-utils.js'
-import { getKey } from '../../../util/assist.js'
+import { createArr, createWeekData, splicing, createSheetStates } from '@src/util/rd-schedule-utils'
+import { getKey } from '@src//util/assist'
 
 export default {
   name: prefixCls,

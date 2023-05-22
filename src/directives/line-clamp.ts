@@ -1,7 +1,7 @@
 /**
  * 限制文本最多显示几行，以...结束，仅适用于 webkit 内核浏览器
  * */
-import { addClass, removeClass } from '../util/assist.js'
+import { addClass, removeClass } from '@src/util/assist'
 
 export default {
   inserted(el, binding) {

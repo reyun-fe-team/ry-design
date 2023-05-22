@@ -74,7 +74,7 @@
 import _isEmpty from 'lodash/isEmpty'
 import _find from 'lodash/find'
 
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'multi-cascader-list'
 
 export default {

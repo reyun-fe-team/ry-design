@@ -124,9 +124,9 @@
 </template>
 
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'multi-cascader'
-import TreeStore from './lib/Tree.js'
+import TreeStore from './lib/Tree'
 import multiCascaderList from './multi-cascader-list.vue'
 import _cloneDeep from 'lodash/cloneDeep'
 import _find from 'lodash/find'

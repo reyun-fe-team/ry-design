@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import { prefix } from '@src/config.js'
-import { oneOf } from '../../../util/assist.js'
-import typeConfig from './typeConfig.js'
+import { prefix } from '@src/config'
+import { oneOf } from '@src/util/assist'
+import typeConfig from './typeConfig'
 const prefixCls = prefix + 'exception'
 export default {
   name: prefixCls,

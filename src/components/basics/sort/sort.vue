@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'sort'
 export default {
   name: prefixCls,

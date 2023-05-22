@@ -3,7 +3,7 @@
  * @Date: 2022-05-24 17:51:28
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
  * @LastEditTime: 2022-05-26 18:01:37
- * @FilePath: /ry-design/src/components/business/layout-module-config/data.js
+ * @FilePath: /ry-design/src/components/business/layout-module-config
  * @Description: 组件layout-module-config的一些工具
  */
 import { isArrRepeat, typeOf } from './assist'

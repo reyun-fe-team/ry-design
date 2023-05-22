@@ -36,7 +36,7 @@
 
 <script>
 import _cloneDeep from 'lodash/cloneDeep'
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'multi-radio-button'
 export default {
   name: prefixCls,

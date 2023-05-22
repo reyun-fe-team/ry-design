@@ -245,7 +245,7 @@
 </template>
 
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'product-select'
 import svg from '@src/images/common/no-data.svg'
 import _cloneDeep from 'lodash/cloneDeep'

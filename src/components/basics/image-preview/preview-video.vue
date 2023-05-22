@@ -57,7 +57,7 @@
   </div>
 </template>
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'preview-video'
 
 import videoError from '@src/images/image-preview/video-default.png'

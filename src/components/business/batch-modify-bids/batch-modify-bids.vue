@@ -69,7 +69,7 @@
   </div>
 </template>
 <script>
-import { prefix } from '../../../config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'batch-modify-bids'
 
 export default {

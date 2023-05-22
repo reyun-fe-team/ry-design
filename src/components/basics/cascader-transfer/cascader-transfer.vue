@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'cascader-transfer'
 import cascaderContent from './cascader'
 import _cloneDeep from 'lodash/cloneDeep'

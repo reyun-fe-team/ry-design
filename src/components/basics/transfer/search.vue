@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 let prefixCls = prefix + 'transfer-list-search'
 export default {
   name: prefixCls,

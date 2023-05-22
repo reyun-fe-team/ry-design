@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'draggable-card'
 import _findLastIndex from 'lodash/findIndex'
 import _cloneDeep from 'lodash/cloneDeep'

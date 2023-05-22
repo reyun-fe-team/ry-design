@@ -57,7 +57,6 @@
   </main>
 </template>
 <script>
-// import { count } from '@src/util/assist.js'
 const maxLen = 10
 export default {
   data() {

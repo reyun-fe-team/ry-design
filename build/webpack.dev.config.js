@@ -55,13 +55,25 @@ module.exports = {
         }
       },
       {
+        // test: /\.js$/,
+        // loader: 'babel-loader',
+        // options: {
+        //   sourceMap: true
+        // },
+        // exclude: /node_modules/
         test: /\.js$/,
-        loader: 'babel-loader',
-        options: {
-          sourceMap: true
-        },
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader'
+        }
       },
+      // {
+      //   test: /\.tsx?$/,
+      //   exclude: /node_modules/,
+      //   use: {
+      //     loader: 'ts-loader'
+      //   }
+      // },
       {
         test: /\.css$/,
         loaders: [
@@ -135,7 +147,8 @@ module.exports = {
       '@src': path.join(__dirname, '../src'),
       '@exp': path.join(__dirname, '../examples')
     },
-    extensions: ['*', '.js', '.vue', '.json']
+    //extensions: ['*', '.js', '.vue', '.json']
+    extensions: ['*', '.vue', '.ts', '.tsx', '.js', '.jsx', '.json']
   },
   devtool: '#eval-source-map',
   plugins: [

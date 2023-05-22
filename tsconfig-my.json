@@ -1,0 +1,55 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    //"lib": ["es6", "dom"],
+    // "experimentalDecorators": true,
+    // "moduleResolution": "node",
+    // "esModuleInterop": true,
+    // "allowSyntheticDefaultImports": true,
+    // "sourceMap": true,
+    // "baseUrl": ".",
+    //
+    //"target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "types": [
+      "webpack-env"
+    ],
+    // '@src': path.join(__dirname, '../src'),
+    "paths": {
+     // "@src":["src/*"]
+      "@src": [
+        "src/*"
+      ]
+    },
+    "lib": [
+      "es6",
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

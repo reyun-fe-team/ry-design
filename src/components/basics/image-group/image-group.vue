@@ -41,8 +41,8 @@
   </div>
 </template>
 <script>
-import { prefix } from '@src/config.js'
-import { oneOf } from '@src/util/assist.js'
+import { prefix } from '@src/config'
+import { oneOf } from '@src/util/assist'
 import videoPlay from '@src/images/image-preview/video-play.svg'
 import imageAmplify from '@src/images/image/amplify.png'
 const prefixCls = prefix + 'image-group'

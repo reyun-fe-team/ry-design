@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 let prefixCls = prefix + 'transfer-list-operation'
 export default {
   name: prefixCls,

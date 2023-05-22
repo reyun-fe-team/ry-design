@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'dropdown-panel'
 import dropdownPanelList from './dropdown-panel-list'
 import dropdownPanelGroup from './dropdown-panel-group'

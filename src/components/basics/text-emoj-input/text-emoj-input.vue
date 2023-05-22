@@ -33,7 +33,7 @@
 import { getPlainText } from './../../../util/text-emoj-input'
 import { typeOf } from './../../../util/assist'
 
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'text-emoj-input'
 
 export default {

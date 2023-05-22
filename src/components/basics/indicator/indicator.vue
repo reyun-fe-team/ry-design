@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'indicator'
 
 import indicatorGroup from './indicator-group'

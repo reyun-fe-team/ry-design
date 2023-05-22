@@ -93,7 +93,7 @@
   </div>
 </template>
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 import _isEmpty from 'lodash/isEmpty'
 const prefixCls = prefix + 'text-item-show'
 export default {

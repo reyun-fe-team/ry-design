@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'word-limit'
-import { count } from '@src/util/assist.js'
+import { count } from '@src/util/assist'
 export default {
   name: prefixCls,
   props: {

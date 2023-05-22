@@ -3,7 +3,7 @@
  * @Date: 2022-06-16 13:40:18
  * @LastEditors: 杨玉峰 yangyufeng@reyun.com
  * @LastEditTime: 2022-06-24 14:19:58
- * @FilePath: /ry-design/src/util/text-emoj-input.js
+ * @FilePath: /ry-design/src/util/text-emoj-input
  * @Description: text-emoj-input 组件用到的工具方法
  */
 // 转义符换成普通字符

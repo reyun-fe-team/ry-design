@@ -151,7 +151,7 @@
   </main>
 </template>
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = `${prefix}batch-upload-xls`
 export default {
   name: prefixCls,

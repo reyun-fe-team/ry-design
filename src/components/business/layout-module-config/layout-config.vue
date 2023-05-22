@@ -36,7 +36,7 @@
   </div>
 </template>
 <script>
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'layout-module-config'
 const LINE = '1px solid #e0e0e8'
 

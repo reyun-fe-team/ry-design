@@ -63,19 +63,19 @@
   </div>
 </template>
 <script>
-import { isClient } from '@src/util/assist.js'
+import { isClient } from '@src/util/assist'
 import videoPlay from '@src/images/image-preview/video-play.svg'
 import imageAmplify from '@src/images/image/amplify.png'
 import videoSignImg from '@src/images/image/video-sign.svg'
 import imageErrorImge from '@src/images/image/image-error.svg'
 
-import { oneOf } from '@src/util/assist.js'
+import { oneOf } from '@src/util/assist'
 
 // is Element
 const isElement = el => {
   return typeof HTMLElement === 'object' && el instanceof HTMLElement
 }
-import { prefix } from '@src/config.js'
+import { prefix } from '@src/config'
 const prefixCls = prefix + 'image'
 
 export default {
