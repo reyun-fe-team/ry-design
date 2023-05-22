@@ -1,31 +1,28 @@
 {
   "name": "ry-design",
-  "main": "dist/ry-design.min.js",
   "version": "2.9.1",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:reyun-fe-team/ry-design.git"
+  "author": "ry",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.config.js",
+    "beta": "npm run build && npm publish --tag=beta && open https://npmmirror.com/sync/ry-design",
+    "commit": "npm run build && npm publish && open https://npmmirror.com/sync/ry-design",
+    "dev": "webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --config build/webpack.dev.config.js"
   },
+  "main": "dist/ry-design.min.js",
   "files": [
     "dist",
     "src"
   ],
-  "scripts": {
-    "dev": "webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --config build/webpack.dev.config.js",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.config.js",
-    "commit":"npm run build && npm publish && open https://npmmirror.com/sync/ry-design",
-    "beta":"npm run build && npm publish --tag=beta && open https://npmmirror.com/sync/ry-design"
-  },
-  "author": "ry",
   "dependencies": {
     "moment": "^2.29.4",
     "umy-ui": "^1.1.6",
-    "view-design": "^4.6.1"
-  },
-  "peerDependencies": {
-    "vue": "^2.6.7"
+    "view-design": "^4.6.1",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^9.1.2"
   },
   "devDependencies": {
+    "@vue/cli-plugin-typescript": "~5.0.0",
+    "@vue/cli-service": "^5.0.8",
     "autoprefixer": "^9.6.0",
     "autoprefixer-loader": "^3.2.0",
     "babel-cli": "^6.26.0",
@@ -85,6 +82,7 @@
     "stylelint": "^14.15.0",
     "stylelint-config-standard": "^29.0.0",
     "stylelint-order": "^5.0.0",
+    "typescript": "~4.5.5",
     "uglifyjs-webpack-plugin": "^1.3.0",
     "url-loader": "^1.1.2",
     "vue": "^2.6.10",
@@ -98,15 +96,18 @@
     "webpack-dev-server": "^2.11.5",
     "webpack-merge": "^3.0.0"
   },
-  "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
+  "peerDependencies": {
+    "vue": "^2.6.7"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
   ],
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
   "lint-staged": {
     "*.js": [
       "lint-staged",
@@ -116,5 +117,9 @@
       "lint-staged",
       "git add"
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:reyun-fe-team/ry-design.git"
   }
 }
