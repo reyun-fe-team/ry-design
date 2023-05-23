@@ -76,7 +76,6 @@
 <script>
 import _isEqual from 'lodash/isEqual'
 import { prefix } from '@src/config.js'
-import nlNL from 'view-design/src/locale/lang/nl-NL'
 const prefixCls = prefix + 'radio-group'
 export default {
   name: prefixCls,

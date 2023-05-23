@@ -10,7 +10,6 @@
 </template>
 
 <script>
-window._this = null
 export default {
   name: 'RadioGroup',
   data() {
@@ -43,9 +42,6 @@ export default {
         }
       ]
     }
-  },
-  created() {
-    window._this = this
   },
   methods: {
     isDisabledItemFun(e) {
