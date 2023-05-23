@@ -76,6 +76,7 @@
 <script>
 import _isEqual from 'lodash/isEqual'
 import { prefix } from '@src/config.js'
+import nlNL from 'view-design/src/locale/lang/nl-NL'
 const prefixCls = prefix + 'radio-group'
 export default {
   name: prefixCls,
@@ -120,6 +121,10 @@ export default {
     isCustom: {
       type: Boolean,
       default: false
+    },
+    isDynamicEnum: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -151,6 +156,32 @@ export default {
       },
       deep: true,
       immediate: true
+    },
+    defaultList: {
+      handler(n) {
+        if (!this.isDynamicEnum) {
+          return
+        }
+        if (this.isDisabledAll) {
+          let val = null
+          if (val !== this.newValue) {
+            this.newValue = val
+            this.onChange(val)
+          }
+        } else {
+          let val = null
+          let values = n.map(e => e.value)
+          if (!values.includes(this.newValue)) {
+            let f = n.find(e => !(e.disabled || this.isDisabledItemFun(e))) || {}
+            val = f.value
+            if (val !== this.newValue) {
+              this.newValue = val
+              this.onChange(val)
+            }
+          }
+        }
+      },
+      deep: true
     }
   },
   methods: {

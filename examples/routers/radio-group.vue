@@ -3,13 +3,14 @@
     <rd-radio-group
       v-model="value"
       :default-list="list"
-      is-custom
       :is-disabled-item-fun="isDisabledItemFun"
+      is-dynamic-enum
       @on-change="onChange"></rd-radio-group>
   </div>
 </template>
 
 <script>
+window._this = null
 export default {
   name: 'RadioGroup',
   data() {
@@ -42,6 +43,9 @@ export default {
         }
       ]
     }
+  },
+  created() {
+    window._this = this
   },
   methods: {
     isDisabledItemFun(e) {
