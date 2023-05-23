@@ -1,12 +1,14 @@
 const path = require('path')
+const pkg = require('../package.json')
 const webpack = require('webpack')
 // const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
 module.exports = {
+  mode: 'development',
   entry: {
-    main: './examples/main',
+    main: './examples/main.js',
     vendors: ['vue', 'vue-router']
   },
   output: {
@@ -22,7 +24,7 @@ module.exports = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: {
+          use: {
             css: [
               'vue-style-loader',
               {
@@ -67,16 +69,16 @@ module.exports = {
           loader: 'babel-loader'
         }
       },
-      // {
-      //   test: /\.tsx?$/,
-      //   exclude: /node_modules/,
-      //   use: {
-      //     loader: 'ts-loader'
-      //   }
-      // },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'ts-loader'
+        }
+      },
       {
         test: /\.css$/,
-        loaders: [
+        use: [
           {
             loader: 'style-loader',
             options: {
@@ -93,7 +95,7 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        loaders: [
+        use: [
           {
             loader: 'style-loader',
             options: {
@@ -116,7 +118,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: [
+        use: [
           {
             loader: 'style-loader',
             options: {
@@ -133,7 +135,11 @@ module.exports = {
       },
       {
         test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-        loader: 'url-loader?limit=8192'
+        loader: 'url-loader',
+        options: {
+          limit: 8192
+          // name: utils.assetsPath('img/[name].[hash:7].[ext]')
+        }
       },
       {
         test: /\.(html|tpl)$/,
@@ -150,18 +156,45 @@ module.exports = {
     //extensions: ['*', '.js', '.vue', '.json']
     extensions: ['*', '.vue', '.ts', '.tsx', '.js', '.jsx', '.json']
   },
-  devtool: '#eval-source-map',
+  devtool: 'eval-source-map',
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendors',
-      filename: 'vendor.bundle.js'
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendors',
+    //   filename: 'vendor.bundle.js'
+    // }),
     new HtmlWebpackPlugin({
       inject: true,
       filename: path.join(__dirname, '../examples/dist/index.html'),
       template: path.join(__dirname, '../examples/index.html')
     }),
-    new FriendlyErrorsPlugin()
-  ]
+    new FriendlyErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.VERSION': `'${pkg.version}'`
+    })
+  ],
+  // 如果需要对入口文件进行代码分割，请使用 optimization.runtimeChunk 配置选项
+  // optimization: {
+  //   splitChunks: {
+  //     cacheGroups: {
+  //       vendors: {
+  //         test: /[\\/]node_modules[\\/]/,
+  //         name: 'vendors',
+  //         chunks: 'all'
+  //       }
+  //     }
+  //   }
+  // }
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+          name: 'my-vendors',
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'all'
+        },
+        default: false
+      }
+    }
+  }
 }

@@ -1,40 +1,48 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es5",
+    //"lib": ["es6", "dom"],
+    // "experimentalDecorators": true,
+    // "moduleResolution": "node",
+    // "esModuleInterop": true,
+    // "allowSyntheticDefaultImports": true,
+    // "sourceMap": true,
+    // "baseUrl": ".",
+    //
+    //"target": "esnext",
+    "checkJs": false,
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
-    "importHelpers": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": true,
     "sourceMap": true,
     "baseUrl": ".",
+    // 新增
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
     "types": [
       "webpack-env",
-      "jest",
-      "webpack",
-      "lodash-es",
-      "decimal.js",
-      "resize-observer-browser"
+      // 新增
+      // "umy-ui"
     ],
     "paths": {
-      // "@/*": [
-      //   "src/*"
-      // ],
       "@src": [
         "src/*"
-      ],
-      "@tests/*": [
-        "tests/*"
       ]
     },
     "lib": [
+      "es6",
       "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
     ]
   },
   "include": [

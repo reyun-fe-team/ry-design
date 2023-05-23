@@ -6,7 +6,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.config.js",
     "beta": "npm run build && npm publish --tag=beta && open https://npmmirror.com/sync/ry-design",
     "commit": "npm run build && npm publish && open https://npmmirror.com/sync/ry-design",
-    "dev": "webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --config build/webpack.dev.config.js"
+    "dev": "webpack-dev-server --static test/ --open --live-reload --hot --compress --history-api-fallback --config build/webpack.dev.config.js"
   },
   "main": "dist/ry-design.min.js",
   "files": [
@@ -58,7 +58,7 @@
     "file-loader": "^1.1.11",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.0.6",
+    "html-webpack-plugin": "^5.5.1",
     "karma": "^2.0.5",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
@@ -82,6 +82,7 @@
     "stylelint": "^14.15.0",
     "stylelint-config-standard": "^29.0.0",
     "stylelint-order": "^5.0.0",
+    "ts-loader": "^9.4.2",
     "typescript": "~4.5.5",
     "uglifyjs-webpack-plugin": "^1.3.0",
     "url-loader": "^1.1.2",
@@ -92,8 +93,9 @@
     "vue-router": "^3.0.6",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^3.11.0",
-    "webpack-dev-server": "^2.11.5",
+    "webpack": "^5.83.1",
+    "webpack-cli": "^5.1.1",
+    "webpack-dev-server": "^4.15.0",
     "webpack-merge": "^3.0.0"
   },
   "peerDependencies": {

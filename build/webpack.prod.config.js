@@ -6,6 +6,7 @@ const pkg = require('../package.json')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 process.env.NODE_ENV = 'production'
 module.exports = {
+  mode: 'production',
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, '../dist'),
