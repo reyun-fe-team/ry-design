@@ -6,9 +6,13 @@
     <StatusText type="primary">123123</StatusText>
     <SpinLoading></SpinLoading>
     <Link
-      label="label"
+      label="Link"
       :tooltips="[1, 2]"
       href="https://kazupon.github.io/vue-i18n/zh/started.html#html"></Link>
+    EllipsisText
+    <EllipsisText
+      content="content"
+      always-show-tips></EllipsisText>
   </main>
 </template>
 
@@ -18,9 +22,10 @@ import StatusText from '@src/components/business/account-xmp/StatusText.vue'
 
 import SpinLoading from '@src/components/business/account-xmp/SpinLoading.vue'
 import Link from '@src/components/business/account-xmp/Link.vue'
+import EllipsisText from '@src/components/business/account-xmp/EllipsisText.vue'
 
 export default {
-  components: { TooltipIcon, StatusText, SpinLoading, Link },
+  components: { TooltipIcon, StatusText, SpinLoading, Link, EllipsisText },
   props: {},
   data() {
     return {}

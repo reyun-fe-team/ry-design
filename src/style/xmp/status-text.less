@@ -27,3 +27,22 @@
     background-color: #b1b1b1;
   }
 }
+
+.xmp-ellipsis-text {
+  white-space: normal;
+
+  .xmp-limit-line-text-content {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+  }
+
+  .@{css-prefix}tooltip {
+    display: block;
+    .@{css-prefix}tooltip-rel {
+      display: block;
+    }
+  }
+}

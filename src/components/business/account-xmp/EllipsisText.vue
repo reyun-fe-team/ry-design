@@ -1,147 +1,165 @@
 <template>
-    <div class="ellipsis-text">
-        <!-- 如果页面有太多Tooltip， 比如列表， 导致页面卡死, 所以做成只有需要hover提示的才用tooltip -->
-        <div v-if="isUseDiv" class="limit-line-text-content" ref="content">
-            <slot>
-                {{ content }}
-            </slot>
-        </div>
-        <Tooltip
-            v-else
-            ref="tooltip"
-            :max-width="tipsMaxWidth"
-            :placement="tipsPlacement"
-            :content="content"
-            :disabled="tipsDisabled"
-            transfer
-            :transfer-class-name="transferClassName"
-        >
-            <template #content>
-                <slot name="content"></slot>
-            </template>
-            <div class="limit-line-text-content" ref="content">
-                <slot>
-                    {{ content }}
-                </slot>
-            </div>
-        </Tooltip>
+  <div class="xmp-ellipsis-text">
+    <!-- 如果页面有太多Tooltip， 比如列表， 导致页面卡死, 所以做成只有需要hover提示的才用tooltip -->
+    <div
+      v-if="isUseDiv"
+      ref="content"
+      class="xmp-limit-line-text-content">
+      <slot>
+        {{ content }}
+      </slot>
     </div>
+    <Tooltip
+      v-else
+      ref="tooltip"
+      :max-width="tipsMaxWidth"
+      :placement="tipsPlacement"
+      :content="content"
+      :disabled="tipsDisabled"
+      transfer
+      :transfer-class-name="transferClassName">
+      <template #content>
+        <slot name="content"></slot>
+      </template>
+      <div
+        ref="content"
+        class="xmp-limit-line-text-content">
+        <slot>
+          {{ content }}
+        </slot>
+      </div>
+    </Tooltip>
+  </div>
 </template>
-<script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { get } from 'lodash-es';
-import { addResizeListener, removeResizeListener } from '@/utils/resizeEvent';
 
-@Component
-export default class EllipsisText extends Vue {
-    @Prop({ type: [String, Number] })
-    content!: string|number;
-
-    @Prop({ type: String })
-    transferClassName!: string;
-
-    @Prop({ type: [String, Number], default: 300 })
-    tipsMaxWidth!: number | string;
-
-    @Prop({ type: String, default: 'top' })
-    tipsPlacement!: string;
-
-    @Prop({ type: Boolean, default: false })
-    tipsDisabled!: boolean;
-
-    @Prop({ type: [String, Number], default: 2 })
-    line!: number;
-
-    @Prop({ type: Boolean, default: true })
-    showTips!: boolean;
-
+<script>
+export default {
+  props: {
+    content: {
+      type: [String, Number]
+    },
+    transferClassName: {
+      type: String
+    },
+    tipsMaxWidth: {
+      type: [String, Number],
+      default: 300
+    },
+    tipsPlacement: {
+      type: String,
+      default: 'top'
+    },
+    tipsDisabled: {
+      type: Boolean,
+      default: false
+    },
+    line: {
+      type: [String, Number],
+      default: 2
+    },
+    showTips: {
+      type: Boolean,
+      default: true
+    },
     /**
      * *是否hover显示tooltip，逻辑判断优先级showTips > alwaysShowTips，即showTips = true时alwaysShowTips才生效
-    */
-    @Prop({ type: Boolean, default: false })
-    alwaysShowTips!: boolean;
-
-    showTooltip: boolean = false;
-
-    @Watch('content')
-    watchContent() {
-        this.checkTooltipEnable();
+     */
+    alwaysShowTips: {
+      type: Boolean,
+      default: false
     }
-
-    @Watch('line')
-    watchLine() {
-        this.setLineNum();
+  },
+  data() {
+    return {
+      showTooltip: false
     }
-
-    @Watch('isUseDiv')
-    watchOsUseDiv() {
-        this.setLineNum();
+  },
+  computed: {
+    isUseDiv() {
+      return !this.showTooltip || !this.showTips
     }
-
-    get isUseDiv() {
-       return !this.showTooltip || !this.showTips;
+  },
+  watch: {
+    content() {
+      this.checkTooltipEnable()
+    },
+    line() {
+      this.setLineNum()
+    },
+    isUseDiv() {
+      this.setLineNum()
     }
-
+  },
+  mounted() {
+    this.setLineNum()
+    this.checkTooltipEnable()
+    this.addResizeListener(this.$el, () => {
+      this.checkTooltipEnable()
+    })
+  },
+  beforeDestroy() {
+    this.removeResizeListener(this.$el)
+  },
+  methods: {
     checkTooltipEnable() {
-        if (!this.showTips) {
-            return;
-        }
-        if (this.alwaysShowTips) {
-            this.showTooltip = true;
-            return;
-        }
-        const contentEl = this.$refs.content as HTMLElement;
-        this.showTooltip = contentEl.offsetHeight < contentEl.scrollHeight;
-    }
-
+      if (!this.showTips) {
+        return
+      }
+      if (this.alwaysShowTips) {
+        this.showTooltip = true
+        return
+      }
+      const contentEl = this.$refs['content']
+      this.showTooltip = contentEl.offsetHeight < contentEl.scrollHeight
+    },
     setLineNum() {
-        this.$nextTick(() => {
-            const contentEl = this.$refs.content as HTMLElement;
-            if (contentEl) {
-                (contentEl.style as any).webkitLineClamp = this.line.toString();
-            }
-        });
-    }
-
-    mounted() {
-        this.setLineNum();
-        this.checkTooltipEnable();
-        addResizeListener(this.$el, () => {
-            this.checkTooltipEnable();
-        });
-    }
-
-    beforeDestroy() {
-        removeResizeListener(this.$el);
-    }
-
-    handleClosePopper() {
-        if (this.isUseDiv) {
-            return;
+      this.$nextTick(() => {
+        const contentEl = this.$refs['content']
+        if (contentEl) {
+          contentEl.style.webkitLineClamp = this.line.toString()
         }
-        const el = get(this.$refs, 'tooltip') as any;
-        if (el) {
-            el.handleClosePopper();
+      })
+    },
+    resizeHandler(entries) {
+      for (const entry of entries) {
+        const listeners = entry.target.__resizeListeners__ || []
+        if (listeners.length) {
+          listeners.forEach(fn => {
+            fn()
+          })
         }
+      }
+    },
+    addResizeListener(element, fn) {
+      if (!element.__resizeListeners__) {
+        element.__resizeListeners__ = []
+        element.__ro__ = new ResizeObserver(this.resizeHandler)
+        element.__ro__.observe(element)
+      }
+      element.__resizeListeners__.push(fn)
+    },
+    removeResizeListener(element, fn) {
+      if (!element || !element.__resizeListeners__) {
+        return
+      }
+      if (fn) {
+        element.__resizeListeners__.splice(element.__resizeListeners__.indexOf(fn), 1)
+      } else {
+        element.__resizeListeners__ = []
+      }
+      if (!element.__resizeListeners__.length && element.__ro__) {
+        element.__ro__.disconnect()
+      }
     }
+    // handleClosePopper() {
+    //   if (this.isUseDiv) {
+    //     return
+    //   }
+    //   const el = get(this.$refs, 'tooltip')
+    //   if (el) {
+    //     el.handleClosePopper()
+    //   }
+    // }
+  }
 }
 </script>
-<style lang="less">
-.ellipsis-text {
-    white-space: normal;
-    .limit-line-text-content {
-        display: -webkit-box;
-        overflow: hidden;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        word-break: break-all;
-    }
-
-    .@{css-prefix}tooltip {
-        display: block;
-        .@{css-prefix}tooltip-rel {
-            display: block;
-        }
-    }
-}
-</style>
