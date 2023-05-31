@@ -205,6 +205,10 @@ const router = new VueRouter({
     {
       path: '/echo-container',
       component: resolve => require(['./routers/echo-container'], resolve)
+    },
+    {
+      path: '/filter-list',
+      component: resolve => require(['./routers/filter-list'], resolve)
     }
   ]
 })

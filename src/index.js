@@ -49,6 +49,7 @@ import BatchModifyBids from './components/business/batch-modify-bids'
 import AccountGroupList from './components/business/account-group-list'
 import DatePicker from './components/basics/date-picker'
 import EchoContainer from './components/business/echo-container'
+import FilterList from './components/business/filter-list'
 
 import ViewUI from 'view-design'
 
@@ -134,7 +135,8 @@ const components = [
   DatePicker,
   Indicator,
   Empty,
-  EchoContainer
+  EchoContainer,
+  FilterList
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -207,5 +209,6 @@ export default {
   DatePicker,
   Indicator,
   Empty,
-  EchoContainer
+  EchoContainer,
+  FilterList
 }

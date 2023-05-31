@@ -1,0 +1,48 @@
+@filter-list: ~"@{css-prefix}filter-list";
+@filter-list-body: ~"@{css-prefix}filter-list-body";
+
+.@{filter-list} {
+  &-input {
+    &:hover .ivu-input {
+      border-color: @selected-color;
+    }
+    
+
+    &-body {
+      display: flex;
+      padding: 0 24px 0 10px;
+      line-height: 32px;
+      cursor: pointer
+    }
+   
+
+    &-label {
+      padding-right: 5px;
+    }
+
+    &-contain {
+      padding-right: 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+    }
+
+    .ivu-input-prefix {
+      width: 100%;
+      text-align: left;
+    }
+
+    &-placeholder {
+      // overflow: hidden;
+      color: #b1b1b1;
+      // text-overflow: ellipsis;
+      // white-space: nowrap;
+    }
+  }
+
+  &-body {
+    display: flex;
+    min-width: 380px;
+  }
+}
