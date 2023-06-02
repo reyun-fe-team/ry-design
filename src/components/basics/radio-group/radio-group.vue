@@ -153,7 +153,9 @@ export default {
           if (!this.isDynamicEnum) {
             this.$emit('input', newValue)
           } else {
-            this.onChange(newValue)
+            this.$nextTick(() => {
+              this.onChange(newValue)
+            })
           }
         }
       },
@@ -169,7 +171,9 @@ export default {
           let val = null
           if (val !== this.newValue) {
             this.newValue = val
-            this.onChange(val)
+            this.$nextTick(() => {
+              this.onChange(val)
+            })
           }
         } else {
           let val = null
@@ -179,7 +183,9 @@ export default {
             val = f.value
             if (val !== this.newValue) {
               this.newValue = val
-              this.onChange(val)
+              this.$nextTick(() => {
+                this.onChange(val)
+              })
             }
           }
         }
