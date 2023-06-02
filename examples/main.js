@@ -209,6 +209,10 @@ const router = new VueRouter({
     {
       path: '/filter-list',
       component: resolve => require(['./routers/filter-list'], resolve)
+    },
+    {
+      path: '/filter-list-select',
+      component: resolve => require(['./routers/filter-list-select'], resolve)
     }
   ]
 })

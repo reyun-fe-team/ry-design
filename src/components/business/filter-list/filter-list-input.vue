@@ -4,6 +4,7 @@
       ref="input"
       :class="classes"
       readonly
+      :style="styles"
       :disabled="disabled">
       <template #prefix>
         <div :class="prefixCls + '-body'">
@@ -13,7 +14,7 @@
             :class="prefixCls + '-label'">
             {{ `${label}:` }}
           </div>
-          <div :class="prefixCls + '-contain'">
+          <div :class="prefixCls + '-content'">
             <!-- placeholder -->
             <span
               v-if="isPlaceholder"
@@ -26,9 +27,9 @@
               <template v-if="current.length === 1">
                 <!-- 兼容图标等展示 -->
                 <slot
-                  name="select-contain"
+                  name="select-content"
                   :data="{ label, current }">
-                  {{ current[0] }}
+                  {{ current[0].label }}
                 </slot>
               </template>
               <template v-else>已选 {{ current.length }} 个</template>
@@ -76,6 +77,12 @@ export default {
     placeholder: {
       type: String,
       default: '请选择'
+    },
+    styles: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   data() {

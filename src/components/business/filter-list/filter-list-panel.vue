@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="prefixCls">
     <!-- visible -->
     <Dropdown
       visible
@@ -14,9 +14,11 @@
 </template>
 
 <script>
+import { prefix } from '@src/config.js'
+const prefixCls = prefix + 'filter-list-panel'
 export default {
-  components: {},
   props: {
+    name: prefixCls,
     placement: {
       type: String,
       default: 'bottom-start'
@@ -28,7 +30,8 @@ export default {
   },
   data() {
     return {
-      visible: false
+      visible: false,
+      prefixCls
     }
   },
   computed: {},

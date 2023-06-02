@@ -50,6 +50,7 @@ import AccountGroupList from './components/business/account-group-list'
 import DatePicker from './components/basics/date-picker'
 import EchoContainer from './components/business/echo-container'
 import FilterList from './components/business/filter-list'
+import FilterListSelect from './components/business/filter-list-select'
 
 import ViewUI from 'view-design'
 
@@ -136,7 +137,8 @@ const components = [
   Indicator,
   Empty,
   EchoContainer,
-  FilterList
+  FilterList,
+  FilterListSelect
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -210,5 +212,6 @@ export default {
   Indicator,
   Empty,
   EchoContainer,
-  FilterList
+  FilterList,
+  FilterListSelect
 }

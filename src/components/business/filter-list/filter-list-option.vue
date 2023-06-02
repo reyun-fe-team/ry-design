@@ -1,5 +1,5 @@
 <template>
-  <main :class="prefixCls">option</main>
+  <div :class="prefixCls">option</div>
 </template>
 
 <script>
