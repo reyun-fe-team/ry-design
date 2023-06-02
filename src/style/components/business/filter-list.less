@@ -1,6 +1,7 @@
 @filter-list: ~"@{css-prefix}filter-list";
 @filter-list-input: ~"@{css-prefix}filter-list-input";
 @filter-list-panel: ~"@{css-prefix}filter-list-panel";
+@filter-list-option: ~"@{css-prefix}filter-list-option";
 
 .@{filter-list} {
   &-body {
@@ -79,5 +80,49 @@
 .@{filter-list-panel} {
   .ivu-select-dropdown {
     padding: 0
+  }
+}
+.@{filter-list-option} {
+  &-header {
+    height: 40px;
+    padding: 0 10px;
+    line-height: 40px;
+    background: #f9f9f9;
+
+    &-title {
+      float: left;
+    }
+
+    &-operate {
+      float: right;
+      color: @selected-color;
+      cursor: pointer;
+    }
+  }
+
+  &-body {
+    overflow-y: auto;
+
+    &-item {
+      display: flex;
+      padding: 7px 10px;
+      text-align: left;
+      transition: background @transition-time @ease-in-out;
+
+      &:hover {
+        background: #f3f3f3;
+      }
+
+      p {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    &-clear {
+      cursor: pointer;
+    }
   }
 }

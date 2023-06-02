@@ -1,35 +1,49 @@
 <template>
   <div>
     <h2>filter-list-select事例</h2>
-    <div style="display: inline-block">
-      多选-宽度自适应
-      <rd-filter-list-select
-        v-model="selectMultiple"
-        :data="data"
-        multiple
-        label="多选"></rd-filter-list-select>
-    </div>
+    <section>
+      <div style="display: inline-block">
+        多选-宽度自适应
+        <rd-filter-list-select
+          v-model="selectMultiple"
+          :data="data"
+          multiple
+          label="多选"></rd-filter-list-select>
+      </div>
 
-    <div style="display: inline-block; margin-left: 380px">
-      多选组
-      <rd-filter-list-select
-        v-model="selectMultiple"
-        :input-width="400"
-        :width="200"
-        :data="data"
-        :group-name-list="groupNameList"
-        multiple
-        label="多选"></rd-filter-list-select>
-    </div>
+      <div style="display: inline-block; margin-left: 380px">
+        多选组
+        <rd-filter-list-select
+          v-model="selectMultiple"
+          :input-width="400"
+          :width="200"
+          :data="data"
+          :group-name-list="groupNameList"
+          multiple
+          label="多选"></rd-filter-list-select>
+      </div>
+    </section>
 
-    <div style="display: inline-block; margin-left: 380px">
-      单选{{ select }}
-      <rd-filter-list-select
-        v-model="select"
-        :width="200"
-        :data="data"
-        label="单选"></rd-filter-list-select>
-    </div>
+    <section style="margin-top: 400px">
+      <div style="display: inline-block">
+        单选{{ select }}
+        <rd-filter-list-select
+          v-model="select"
+          :width="200"
+          :data="data"
+          label="单选"></rd-filter-list-select>
+      </div>
+
+      <div style="display: inline-block; margin-left: 380px">
+        单选组{{ select }}
+        <rd-filter-list-select
+          v-model="select"
+          :group-name-list="groupNameList"
+          :width="200"
+          :data="data"
+          label="单选"></rd-filter-list-select>
+      </div>
+    </section>
   </div>
 </template>
 

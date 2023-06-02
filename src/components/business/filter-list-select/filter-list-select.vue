@@ -1,22 +1,27 @@
 <template>
   <div>
     <rd-filter-list
-      v-model="currentValue"
+      v-model="current"
       :data="data"
       :label="label"
       :query="query"
-      :input-width="inputWidth"
+      :not-found-text="notFoundText"
       :not-found="!filterData.length"
+      :input-width="inputWidth"
+      :option-width="optionWidth"
+      :height="height"
+      :max-height="maxHeight"
+      :min-height="minHeight"
       @query-change="queryChange">
       <div
         :class="prefixCls"
         class="small-scroll-y"
         :style="styles">
         <div v-if="multiple">
-          <!-- {{ currentValue }} -->
+          <!-- {{ current }} -->
 
           <CheckboxGroup
-            v-model="currentValue"
+            v-model="current"
             :class="prefixCls + '-items'"
             @on-change="handleCheckboxChange">
             <div
@@ -24,7 +29,8 @@
               :key="item.value">
               <div
                 v-if="groupNameList && groupNameList[item.value]"
-                :class="prefixCls + '-group-name'">
+                :class="prefixCls + '-group-name'"
+                :title="groupNameList[item.value]">
                 {{ groupNameList[item.value] }}
               </div>
               <Checkbox
@@ -43,13 +49,19 @@
         </div>
         <div v-else>
           <RadioGroup
-            v-model="currentValue[0]"
+            v-model="current[0]"
             size="small"
             :class="prefixCls + '-items'"
             @on-change="handleRadioChange">
             <div
               v-for="item in filterData"
               :key="item.key">
+              <div
+                v-if="groupNameList && groupNameList[item.value]"
+                :class="prefixCls + '-group-name'"
+                :title="groupNameList[item.value]">
+                {{ groupNameList[item.value] }}
+              </div>
               <Radio
                 :key="item.value"
                 :disabled="item.disabled"
@@ -105,18 +117,20 @@ export default {
       type: [String, Number],
       default: ''
     },
+    height: [Number, String],
     maxHeight: {
-      type: [Number, String]
+      type: [Number, String],
+      default: 320
     },
-    minHeight: {
-      type: [Number, String]
-    },
-    inputWidth: [String, Number]
+    minHeight: [Number, String],
+    inputWidth: [String, Number],
+    optionWidth: [String, Number],
+    notFoundText: String
   },
   data() {
     return {
       prefixCls,
-      currentValue: this.value,
+      current: this.value,
       query: ''
     }
   },
@@ -130,6 +144,10 @@ export default {
         const width = parseInt(this.width)
         style.width = `${width}px`
       }
+      if (this.height) {
+        const height = parseInt(this.height)
+        style.height = `${height}px`
+      }
       if (this.maxHeight) {
         const maxHeight = parseInt(this.maxHeight)
         style.maxHeight = `${maxHeight}px`
@@ -142,12 +160,12 @@ export default {
     }
   },
   watch: {
-    currentValue(val) {
+    current(val) {
       this.$emit('input', val)
     },
     value: {
       handler(val) {
-        this.currentValue = val
+        this.current = val
       },
       deep: true
     }

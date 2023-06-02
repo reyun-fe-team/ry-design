@@ -38,10 +38,14 @@
               {{ notFoundText }}
             </div>
           </div>
-
-          <!-- <filter-list-select v-model="current"></filter-list-select> -->
         </div>
-        <filter-list-option></filter-list-option>
+        <filter-list-option
+          v-model="current"
+          :width="optionWidth"
+          :height="height"
+          :max-height="maxHeight"
+          :min-height="minHeight"
+          :data="inputData"></filter-list-option>
       </div>
     </filter-list-panel>
   </div>
@@ -53,7 +57,6 @@ import filterListPanel from './filter-list-panel'
 // import filterListSelect from './filter-list-select'
 import filterListOption from './filter-list-option'
 import filterListInput from './filter-list-input'
-import _cloneDeep from 'lodash/cloneDeep'
 export default {
   name: prefixCls,
   components: { filterListPanel, filterListOption, filterListInput },
@@ -92,7 +95,14 @@ export default {
     inputWidth: {
       type: [String, Number],
       default: '200px'
-    }
+    },
+    optionWidth: [String, Number],
+    height: [Number, String],
+    maxHeight: {
+      type: [Number, String],
+      default: 320
+    },
+    minHeight: [Number, String]
   },
   data() {
     return {
@@ -124,6 +134,10 @@ export default {
     },
     queryValue(val) {
       this.$emit('query-change', val)
+    },
+    current(val) {
+      this.$emit('input', val)
+      this.$emit('on-change', val)
     }
     // current: {
     //   handler(val) {
