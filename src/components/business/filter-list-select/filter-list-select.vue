@@ -1,76 +1,72 @@
 <template>
   <div>
+    list-select:{{ current }}
     <rd-filter-list
       v-model="current"
+      :real-data="realData"
       :data="data"
       :label="label"
+      :trigger="trigger"
       :query="query"
       :not-found-text="notFoundText"
       :not-found="!filterData.length"
       :input-width="inputWidth"
       :option-width="optionWidth"
+      :width="width"
       :height="height"
       :max-height="maxHeight"
       :min-height="minHeight"
-      @query-change="queryChange">
+      :filterable="filterable"
+      :is-select-option="isSelectOption"
+      :clearable="clearable"
+      @query-change="queryChange"
+      @on-visible-change="handleVisibleChange">
       <div
         :class="prefixCls"
         class="small-scroll-y"
-        :style="styles">
-        <div v-if="multiple">
-          <!-- {{ current }} -->
-
-          <CheckboxGroup
-            v-model="current"
-            :class="prefixCls + '-items'"
-            @on-change="handleCheckboxChange">
-            <div
-              v-for="item in filterData"
-              :key="item.value">
-              <div
-                v-if="groupNameList && groupNameList[item.value]"
-                :class="prefixCls + '-group-name'"
-                :title="groupNameList[item.value]">
-                {{ groupNameList[item.value] }}
-              </div>
-              <Checkbox
-                :key="item.value"
-                :label="item.value"
-                :disabled="item.disabled">
-                <slot
-                  name="select-item"
-                  :data="item"
-                  :items="item">
-                  <span :title="item.label">{{ item.label }}</span>
-                </slot>
-              </Checkbox>
+        :style="mainStyles">
+        <div
+          v-for="item in filterData"
+          :key="item.key">
+          <div
+            v-if="groupNameList && groupNameList[item.value]"
+            :class="prefixCls + '-group-name'"
+            :title="groupNameList[item.value]">
+            {{ groupNameList[item.value] }}
+          </div>
+          <div
+            :key="item.value"
+            :class="[
+              prefixCls + '-item',
+              {
+                [prefixCls + '-item-selected']: current.includes(item.value)
+              }
+            ]"
+            :disabled="item.disabled"
+            @click="handleClick(item.value)">
+            <Checkbox
+              v-if="multiple"
+              style="margin: 0 0 0 10px"
+              :value="current.includes(item.value)"
+              @click="handleClick(item.value)"></Checkbox>
+            <div :class="prefixCls + '-item-contain'">
+              <slot
+                name="select-item"
+                :src="item.src"
+                :item="item">
+                <rd-filter-list-describe
+                  style="width: 100%"
+                  :height="item.description || item.src ? 48 : 32"
+                  :src="item.src"
+                  :text="item.label"
+                  :description="item.description"></rd-filter-list-describe>
+              </slot>
             </div>
-          </CheckboxGroup>
+          </div>
         </div>
-        <div v-else>
-          <RadioGroup
-            v-model="current[0]"
-            size="small"
-            :class="prefixCls + '-items'"
-            @on-change="handleRadioChange">
-            <div
-              v-for="item in filterData"
-              :key="item.key">
-              <div
-                v-if="groupNameList && groupNameList[item.value]"
-                :class="prefixCls + '-group-name'"
-                :title="groupNameList[item.value]">
-                {{ groupNameList[item.value] }}
-              </div>
-              <Radio
-                :key="item.value"
-                :disabled="item.disabled"
-                :label="item.value">
-                {{ item.label }}
-              </Radio>
-            </div>
-          </RadioGroup>
-        </div>
+      </div>
+      <div slot="search-operate">
+        <slot name="search-operate"></slot>
       </div>
     </rd-filter-list>
   </div>
@@ -79,9 +75,12 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-select'
+import rdFilterListDescribe from '../filter-list/filter-list-describe'
+import _cloneDeep from 'lodash/cloneDeep'
+import { oneOf, getPropsValueArrayData } from '@src/util/assist.js'
 export default {
   name: prefixCls,
-  components: {},
+  components: { rdFilterListDescribe },
   props: {
     data: {
       type: Array,
@@ -90,7 +89,7 @@ export default {
       }
     },
     value: {
-      type: Array,
+      type: [Array, String, Number],
       default: () => {
         return []
       }
@@ -105,6 +104,15 @@ export default {
       default(data, query) {
         const type = 'label' in data ? 'label' : 'value'
         return data[type].indexOf(query) > -1
+      }
+    },
+    saveType: {
+      type: String,
+      default: 'always-save',
+      //default: 'leave-asve',
+      // 时时保存 always-save 离开保存leave-asve
+      validator(value) {
+        return oneOf(value, ['always-save', 'leave-asve'])
       }
     },
     groupNameList: {
@@ -125,12 +133,17 @@ export default {
     minHeight: [Number, String],
     inputWidth: [String, Number],
     optionWidth: [String, Number],
-    notFoundText: String
+    notFoundText: String,
+    filterable: Boolean,
+    isSelectOption: Boolean,
+    clearable: Boolean,
+    trigger: String
   },
   data() {
+    let current = getPropsValueArrayData(this.value)
     return {
       prefixCls,
-      current: this.value,
+      current: _cloneDeep(current),
       query: ''
     }
   },
@@ -138,12 +151,12 @@ export default {
     filterData() {
       return this.data.filter(item => this.filterMethod(item, this.query))
     },
-    styles() {
+    realData() {
+      let current = Array.isArray(this.value) ? this.value : [this.value]
+      return _cloneDeep(current)
+    },
+    mainStyles() {
       let style = {}
-      if (this.width) {
-        const width = parseInt(this.width)
-        style.width = `${width}px`
-      }
       if (this.height) {
         const height = parseInt(this.height)
         style.height = `${height}px`
@@ -160,24 +173,59 @@ export default {
     }
   },
   watch: {
-    current(val) {
-      this.$emit('input', val)
-    },
+    // current(val) {
+    //   if (this.saveType === 'always-save') {
+    //     // if (Array.isArray(this.value)) {
+    //     //   this.$emit('input', val)
+    //     //   this.$emit('on-change', val)
+    //     // } else {
+    //     //   this.$emit('input', val[0])
+    //     //   this.$emit('on-change', val[0])
+    //     // }
+    //     this.$emit('input', this.current)
+    //     this.$emit('on-change', this.current)
+    //   }
+    // },
     value: {
       handler(val) {
-        this.current = val
+        if (this.saveType === 'always-save') {
+          this.current = val
+        } else {
+          let current = getPropsValueArrayData(val)
+          this.current = _cloneDeep(current)
+        }
       },
       deep: true
     }
   },
   methods: {
-    handleCheckboxChange() {},
-    handleRadioChange() {
-      // this.resultList = this.showList.filter((item: IListItem) => item.value === value);
-      // this.emitResultList();
-    },
+    getValue() {},
     queryChange(val) {
       this.query = val
+    },
+    handleClick(val) {
+      if (this.multiple) {
+        if (this.current.includes(val)) {
+          this.current = this.current.filter(item => item !== val)
+        } else {
+          this.current.push(val)
+        }
+      } else {
+        this.current = [val]
+      }
+    },
+    handleVisibleChange(val) {
+      if (!val && this.saveType === 'leave-asve') {
+        const data = _cloneDeep(this.current)
+        if (Array.isArray(this.value)) {
+          this.$emit('input', data)
+          this.$emit('on-change', data)
+        } else {
+          this.$emit('input', val[0])
+          this.$emit('on-change', val[0])
+        }
+      }
+      this.$emit('on-visible-change', val)
     }
   }
 }

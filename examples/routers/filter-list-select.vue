@@ -3,43 +3,73 @@
     <h2>filter-list-select事例</h2>
     <section>
       <div style="display: inline-block">
-        多选-宽度自适应
+        多选-宽度自适应 {{ selectMultiple }} 事例：{{ selectMultiple }}
         <rd-filter-list-select
           v-model="selectMultiple"
+          clearable
+          filterable
+          :height="200"
+          is-select-option
           :data="data"
-          multiple
-          label="多选"></rd-filter-list-select>
+          multiple>
+          <div
+            slot="select-item"
+            style="line-height: 40px">
+            自定义item
+          </div>
+        </rd-filter-list-select>
       </div>
 
       <div style="display: inline-block; margin-left: 380px">
-        多选组
+        多选组 事例：{{ selectMultiple }}
         <rd-filter-list-select
           v-model="selectMultiple"
           :input-width="400"
           :width="200"
+          filterable
+          is-select-option
           :data="data"
           :group-name-list="groupNameList"
           multiple
-          label="多选"></rd-filter-list-select>
+          label="多选">
+          <div slot="search-operate">
+            <span style="color: #3989faff">刷新</span>
+            <span style="margin-right: 10px; color: #3989faff">应用管理</span>
+          </div>
+        </rd-filter-list-select>
       </div>
     </section>
 
     <section style="margin-top: 400px">
       <div style="display: inline-block">
-        单选{{ select }}
+        单选{{ selectRadio }}
         <rd-filter-list-select
-          v-model="select"
-          :width="200"
+          v-model="selectRadio"
+          :width="400"
+          :data="data"
+          filterable
+          label="单选">
+          <div slot="search-operate">
+            <span style="color: #3989faff">刷新</span>
+            <span style="margin-right: 10px; color: #3989faff">应用管理</span>
+          </div>
+        </rd-filter-list-select>
+      </div>
+      <div style="display: inline-block; margin-left: 380px">
+        单选{{ selectRadio }}
+        <rd-filter-list-select
+          v-model="selectRadio"
+          :width="400"
           :data="data"
           label="单选"></rd-filter-list-select>
       </div>
 
       <div style="display: inline-block; margin-left: 380px">
-        单选组{{ select }}
+        单选组 selectRadio:{{ selectRadio }}
         <rd-filter-list-select
-          v-model="select"
+          v-model="selectRadio"
           :group-name-list="groupNameList"
-          :width="200"
+          :width="400"
           :data="data"
           label="单选"></rd-filter-list-select>
       </div>
@@ -52,7 +82,7 @@ export default {
   data() {
     return {
       selectMultiple: ['1104'],
-      select: ['1104'],
+      selectRadio: '',
       groupList: [
         {
           label: '热云数据热云数据热云数据热云数据热云数据热云数据',
@@ -60,7 +90,9 @@ export default {
           children: [
             {
               label: '汕头市添翼01汕头市添翼01汕头市添翼01汕头市添翼01汕头市添翼01',
-              value: '1104'
+              value: '1104',
+              src: 'https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_1a800195d0c386c281c4886b50f12536.jpeg?from=4010531038',
+              description: 'com.cisbdc.os.con'
             }
           ]
         },
@@ -70,7 +102,9 @@ export default {
           children: [
             {
               label: '球球-A1',
-              value: '1157'
+              value: '1157',
+              description: 'com.cisbdc.os.con',
+              src: 'https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_1a800195d0c386c281c4886b50f12536.jpeg?from=4010531038'
             }
           ]
         },
@@ -80,7 +114,8 @@ export default {
           children: [
             {
               label: '预约测试账号',
-              value: '204814'
+              value: '204814',
+              src: 'https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_1a800195d0c386c281c4886b50f12536.jpeg?from=4010531038'
             },
             {
               label: '预约测试账号2',
@@ -142,7 +177,17 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      title: {
+        title: '三分钟工作室',
+        subTitle: '1087677119',
+        thumbnailInfo: {
+          style: {
+            'border-radius': '50%'
+          },
+          src: 'https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_1a800195d0c386c281c4886b50f12536.jpeg?from=4010531038'
+        }
+      }
     }
   },
   computed: {

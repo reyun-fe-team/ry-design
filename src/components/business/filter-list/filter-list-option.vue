@@ -2,7 +2,9 @@
   <div
     :class="prefixCls"
     :style="mainStyles">
-    <div :class="prefixCls + '-header'">
+    <div
+      ref="filter-list-option-header"
+      :class="prefixCls + '-header'">
       <label
         for=""
         :class="prefixCls + '-header-title'">
@@ -58,7 +60,11 @@ export default {
     },
     height: [Number, String],
     maxHeight: [Number, String],
-    minHeight: [Number, String]
+    minHeight: [Number, String],
+    headerHeight: {
+      type: [Number, String],
+      default: 40
+    }
   },
   data() {
     return {
@@ -109,6 +115,9 @@ export default {
       this.current = []
       this.$emit('input', this.current)
       this.$emit('on-change', this.current)
+    },
+    getHeaderHeight() {
+      return this.$refs['filter-list-option-header'].offsetHeight
     }
   }
 }

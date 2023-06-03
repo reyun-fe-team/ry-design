@@ -1,60 +1,40 @@
 @filter-list-select: ~"@{css-prefix}filter-list-select";
 
 .@{filter-list-select} {
+  padding: 8px 0;
   overflow-y: auto;
 
-  .ivu-radio-group {
-    width: 100%;
-  }
+  &-item {
+    display: flex;
+    cursor: pointer;
+    transition: background @transition-time @ease-in-out;
+    align-items: center;
 
-  &-items {
-    .ivu-checkbox-group-item {
-      display: inherit;
-      width: 100%;
-      padding: 0 16px;
-      margin-right: 0;
-      overflow: hidden;
-      line-height: 32px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: background @transition-time @ease-in-out;
-
-      &:hover {
-        background: #f3f3f3;
-      }
-    }
-
-    // .ivu-checkbox + span,
-    // .ivu-checkbox-wrapper + span {
-    //   overflow: hidden;
-    //   text-overflow: ellipsis;
-    //   white-space: nowrap;
-    // }
-
-    
-
-    .ivu-radio-group-item {
-      width: 100%;
-      padding: 0 16px;
-      margin-right: 0;
-      overflow: hidden;
-      line-height: 32px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      transition: background @transition-time @ease-in-out;
-
-      .ivu-radio {
-        display: none;
-      }
-
-      &:hover {
-        color: @selected-color;
-        background: #f3f3f3;
-      }
-    }
-
-    .ivu-radio-wrapper-checked {
+    &:hover {
       color: @selected-color;
+      background: #f3f3f3;
+
+      .rd-filter-list-describe-body-description {
+        color: @selected-color;
+      }
+    }
+
+    &-contain {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    &-selected {
+      color: @selected-color;
+
+      .rd-filter-list-describe-body-description {
+        color: @selected-color;
+      }
+    }
+
+    .ivu-checkbox-checked .ivu-checkbox-inner::after {
+      top: 1px;
+      left: 4px;
     }
   }
 

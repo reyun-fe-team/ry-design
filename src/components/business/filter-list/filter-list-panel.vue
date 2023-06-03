@@ -2,9 +2,9 @@
   <div :class="prefixCls">
     <!-- visible -->
     <Dropdown
-      visible
       :placement="placement"
-      :trigger="trigger">
+      :trigger="trigger"
+      @on-visible-change="handleVisibleChange">
       <slot></slot>
       <DropdownMenu slot="list">
         <slot name="list"></slot>
@@ -34,8 +34,6 @@ export default {
       prefixCls
     }
   },
-  computed: {},
-  mounted() {},
   methods: {
     handleVisibleChange(val) {
       this.visible = val

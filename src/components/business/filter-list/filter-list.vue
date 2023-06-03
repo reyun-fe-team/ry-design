@@ -1,6 +1,6 @@
 <template>
   <div :class="classes">
-    <!-- trigger="custom" -->
+    filter-list: {{ current }}
     <filter-list-panel
       :trigger="trigger"
       @on-visible-change="handleVisibleChange">
@@ -9,27 +9,35 @@
         :label="label"
         :styles="inputStyles"
         :placeholder="inputPlaceholder"
-        :icon-state="visible"></filter-list-input>
+        :icon-state="iconState"
+        :clearable="clearable"
+        @on-change="filterListInputChange"></filter-list-input>
       <div
         slot="list"
         :class="prefixCls + '-body'">
-        <div :class="prefixCls + '-body-panel'">
-          <Input
-            v-model="queryValue"
-            :placeholder="filterPlaceholder"
-            :class="prefixCls + '-body-panel-search'"
-            @on-change="filterChange">
-            <Icon
-              slot="prefix"
-              type="ios-search" />
-            <Icon
-              v-show="!!query"
-              slot="suffix"
-              type="ios-close"
-              :class="prefixCls + '-body-panel-search-clear'"
-              size="20"
-              @click="onClearSearch" />
-          </Input>
+        <div
+          :class="prefixCls + '-body-panel'"
+          :style="panelStyle">
+          <div
+            v-if="filterable"
+            :class="prefixCls + '-body-panel-search'">
+            <Input
+              v-model="queryValue"
+              :placeholder="filterPlaceholder"
+              @on-change="filterChange">
+              <Icon
+                slot="prefix"
+                type="ios-search" />
+              <Icon
+                v-show="!!query"
+                slot="suffix"
+                type="ios-close"
+                :class="prefixCls + '-body-panel-search-clear'"
+                size="20"
+                @click="onClearSearch" />
+            </Input>
+            <slot name="search-operate"></slot>
+          </div>
           <div :class="prefixCls + '-body-content'">
             <slot v-if="!notFound"></slot>
             <div
@@ -40,12 +48,15 @@
           </div>
         </div>
         <filter-list-option
+          v-if="isSelectOption"
+          ref="filter-list-option"
           v-model="current"
+          :filterable="filterable"
           :width="optionWidth"
-          :height="height"
-          :max-height="maxHeight"
-          :min-height="minHeight"
-          :data="inputData"></filter-list-option>
+          :height="heightOption"
+          :max-height="maxHeightOption"
+          :min-height="minHeightOption"
+          :data="optionData"></filter-list-option>
       </div>
     </filter-list-panel>
   </div>
@@ -54,17 +65,18 @@
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list'
 import filterListPanel from './filter-list-panel'
-// import filterListSelect from './filter-list-select'
 import filterListOption from './filter-list-option'
 import filterListInput from './filter-list-input'
+import { oneOf } from '@src/util/assist.js'
 export default {
   name: prefixCls,
   components: { filterListPanel, filterListOption, filterListInput },
   props: {
     value: {
-      type: [Array, String, Number],
+      type: Array,
       default: () => []
     },
+    realData: Array,
     data: {
       type: Array,
       default() {
@@ -79,7 +91,6 @@ export default {
       type: String,
       default: '请输入要搜索的内容'
     },
-    label: String,
     query: {
       type: String,
       default: ''
@@ -102,27 +113,71 @@ export default {
       type: [Number, String],
       default: 320
     },
-    minHeight: [Number, String]
+    minHeight: [Number, String],
+    filterable: {
+      type: Boolean,
+      default: false
+    },
+    isSelectOption: {
+      type: Boolean,
+      default: false
+    },
+    clearable: Boolean,
+    width: {
+      type: [String, Number],
+      default: ''
+    },
+    saveType: {
+      type: String,
+      default: 'leave-asve',
+      // 时时保存 always-save 离开保存leave-asve
+      validator(value) {
+        return oneOf(value, ['always-save', 'leave-asve'])
+      }
+    }
   },
   data() {
     return {
       prefixCls,
       current: this.value,
-      visible: false,
-      queryValue: this.query
+      iconState: false,
+      queryValue: this.query,
+      refHeight: null
     }
   },
   computed: {
     classes() {
       return [`${prefixCls}`]
     },
+    panelStyle() {
+      let style = {}
+      if (this.width) {
+        const width = parseInt(this.width)
+        style.width = `${width}px`
+      }
+      return style
+    },
+
     inputData() {
+      const data = this.realData ? this.realData : this.value
+      return this.data.filter(val => data.includes(val.value))
+    },
+    optionData() {
       return this.data.filter(val => this.current.includes(val.value))
     },
     inputStyles() {
       return {
         width: typeof this.inputWidth === 'number' ? `${this.inputWidth}px` : this.inputWidth
       }
+    },
+    heightOption() {
+      return this.filterable ? this.height : this.height - (this.refHeight || 0)
+    },
+    maxHeightOption() {
+      return this.filterable ? this.maxHeight : this.maxHeight - (this.refHeight || 0)
+    },
+    minHeightOption() {
+      return this.filterable ? this.minHeight : this.minHeight - (this.refHeight || 0)
     }
   },
   watch: {
@@ -132,28 +187,30 @@ export default {
       },
       deep: true
     },
-    queryValue(val) {
-      this.$emit('query-change', val)
-    },
     current(val) {
       this.$emit('input', val)
       this.$emit('on-change', val)
+    },
+    queryValue(val) {
+      this.$emit('query-change', val)
     }
-    // current: {
-    //   handler(val) {
-    //     this.$emit('input', val)
-    //     this.$emit('on-change', val)
-    //   },
-    //   deep: true
-    // }
+  },
+  mounted() {
+    if (this.isSelectOption) {
+      this.refHeight = this.$refs['filter-list-option'].getHeaderHeight()
+    }
   },
   methods: {
     handleVisibleChange(val) {
-      this.visible = val
+      this.iconState = val
+      this.$emit('on-visible-change', val)
     },
     filterChange() {},
     onClearSearch() {
       this.queryValue = ''
+    },
+    filterListInputChange(val) {
+      this.current = val
     }
   }
 }

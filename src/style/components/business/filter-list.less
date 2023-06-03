@@ -2,17 +2,24 @@
 @filter-list-input: ~"@{css-prefix}filter-list-input";
 @filter-list-panel: ~"@{css-prefix}filter-list-panel";
 @filter-list-option: ~"@{css-prefix}filter-list-option";
+@filter-list-describe: ~"@{css-prefix}filter-list-describe";
 
 .@{filter-list} {
   &-body {
     display: flex;
-    // min-width: 380px;
 
     &-panel {
       border-right: 1px solid #eee;
+     
 
       &-search {
         border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+
+        .ivu-input-wrapper {
+          flex: 1
+        }
 
         .ivu-input {
           height: 40px;
@@ -40,41 +47,56 @@
   }
 }
 .@{filter-list-input} {
-  &:hover .ivu-input {
-    border-color: @selected-color;
-  }
-    
+  display: flex;
+  padding: 0 10px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  align-items: center;
+  transition: color @transition-time @ease-in-out;
 
-  &-body {
-    display: flex;
-    padding: 0 24px 0 10px;
-    line-height: 32px;
-    cursor: pointer;
+  &:hover {
+    border-color: @selected-color;
+    .@{filter-list-input}-operate-clearable {
+      .@{filter-list-input}-operate-clear {
+        display: inline-block;
+      }
+      .@{filter-list-input}-operate-arrow {
+        display: none;
+      }
+    }
   }
-   
 
   &-label {
     padding-right: 5px;
   }
 
-  &-content {
-    padding-right: 8px;
+  &-body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     flex: 1;
+
+    &-placeholder {
+      padding: 7px 0;
+      overflow: hidden;
+      color: #b1b1b1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &-echo {
+      padding: 7px 0;
+    }
   }
 
-  .ivu-input-prefix {
-    width: 100%;
-    text-align: left;
-  }
+  &-operate {
+    min-width: 16px;
+    margin-left: 8px;
 
-  &-placeholder {
-    overflow: hidden;
-    color: #b1b1b1;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    &-clear {
+      display: none;
+    }
   }
 }
 .@{filter-list-panel} {
@@ -84,17 +106,15 @@
 }
 .@{filter-list-option} {
   &-header {
+    display: flex;
     height: 40px;
     padding: 0 10px;
-    line-height: 40px;
     background: #f9f9f9;
-
-    &-title {
-      float: left;
-    }
+    border-bottom: 1px solid #e8e8e8;
+    align-items: center;
+    justify-content: space-between;
 
     &-operate {
-      float: right;
       color: @selected-color;
       cursor: pointer;
     }
@@ -123,6 +143,33 @@
 
     &-clear {
       cursor: pointer;
+    }
+  }
+}
+.@{filter-list-describe} {
+  display: flex;
+  align-items: center;
+  padding: 4px 10px;
+
+  &-image {
+    margin-right: 10px;
+  }
+
+  &-body {
+    flex: 1;
+    overflow: hidden;
+
+    &-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &-description {
+      overflow: hidden;
+      color: rgba(153, 153, 153, 100%);
+      text-overflow: ellipsis;
+      white-space: nowrap
     }
   }
 }

@@ -272,3 +272,23 @@ export function removeClass(el, cls) {
     el.className = trim(curClass)
   }
 }
+
+export const getPropsValueArrayData = value => {
+  let data = null
+  switch (value) {
+    case '[object Array]':
+      data = value
+      break
+    case '[object String]':
+      if (value !== '') {
+        data = [value]
+      }
+      break
+    case '[object Number]':
+      data = [value]
+      break
+    default:
+      data = []
+  }
+  return data
+}

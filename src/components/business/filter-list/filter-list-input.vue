@@ -1,60 +1,65 @@
 <template>
-  <div>
-    <Input
-      ref="input"
-      :class="classes"
-      readonly
-      :style="styles"
-      :disabled="disabled">
-      <template #prefix>
-        <div :class="prefixCls + '-body'">
-          <div
-            v-if="label && label.trim()"
-            ref="prefixRef"
-            :class="prefixCls + '-label'">
-            {{ `${label}:` }}
-          </div>
-          <div :class="prefixCls + '-content'">
-            <!-- placeholder -->
-            <span
-              v-if="isPlaceholder"
-              :class="prefixCls + '-placeholder'">
-              {{ placeholder }}
-            </span>
-            <!-- 有数据 -->
-            <template v-else>
-              <!-- 多选 -->
-              <template v-if="current.length === 1">
-                <!-- 兼容图标等展示 -->
-                <slot
-                  name="select-content"
-                  :data="{ label, current }">
-                  {{ current[0].label }}
-                </slot>
-              </template>
-              <template v-else>已选 {{ current.length }} 个</template>
-            </template>
-          </div>
+  <div
+    :class="classes"
+    :style="styles">
+    <div
+      v-if="label && label.trim()"
+      ref="prefixRef"
+      :class="prefixCls + '-label'">
+      {{ `${label}:` }}
+    </div>
+    <div :class="prefixCls + '-body'">
+      <div
+        v-if="isPlaceholder"
+        :class="prefixCls + '-body-placeholder'">
+        {{ placeholder }}
+      </div>
+      <!-- 有数据 -->
+      <template v-else>
+        <!-- 多选 -->
+        <template v-if="current.length === 1">
+          <rd-filter-list-describe
+            style="width: 100%; padding: 0"
+            :height="current[0].description || current[0].src ? 56 : 32"
+            :src="current[0].src"
+            :text="current[0].label"
+            :description="current[0].description"></rd-filter-list-describe>
+        </template>
+        <div
+          v-else
+          :class="prefixCls + '-body-echo'">
+          已选 {{ current.length }} 个
         </div>
       </template>
-      <div
-        slot="suffix"
-        :class="prefixCls + '-suffix'">
-        <Icon
-          :type="`ios-arrow-${iconState ? 'up' : 'down'}`"
-          :color="disabled ? '#ccc' : '#818181'" />
-      </div>
-    </Input>
+    </div>
+    <!-- </div> -->
+    <div
+      :class="[
+        prefixCls + '-operate',
+        { [prefixCls + '-operate-clearable']: clearable && current.length }
+      ]">
+      <rd-icon
+        :class="prefixCls + '-operate-arrow'"
+        :type="`ios-arrow-${iconState ? 'up' : 'down'}`"
+        color="#818181" />
+      <rd-icon
+        v-if="clearable && current.length"
+        :class="prefixCls + '-operate-clear'"
+        color="#757a8a"
+        type="ry-icon-guanbi"
+        @click.native.stop="handleClear"></rd-icon>
+    </div>
   </div>
 </template>
 
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-input'
-import _cloneDeep from 'lodash/cloneDeep'
+import rdFilterListDescribe from './filter-list-describe'
+
 export default {
   name: prefixCls,
-  components: {},
+  components: { rdFilterListDescribe },
   props: {
     value: {
       type: Array,
@@ -63,10 +68,6 @@ export default {
       }
     },
     iconState: {
-      type: Boolean,
-      default: false
-    },
-    disabled: {
       type: Boolean,
       default: false
     },
@@ -83,22 +84,21 @@ export default {
       default: () => {
         return {}
       }
+    },
+    clearable: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       prefixCls,
-      current: _cloneDeep(this.value)
+      current: this.value
     }
   },
   computed: {
     classes() {
-      return [
-        `${this.prefixCls}`
-        // {
-        //   [prefixCls + '-focus']: this.iconState
-        // }
-      ]
+      return [`${this.prefixCls}`]
     },
     // 是否有已选数据
     isPlaceholder() {
@@ -108,12 +108,16 @@ export default {
   watch: {
     value: {
       handler() {
-        this.current = _cloneDeep(this.value)
+        this.current = this.value
       },
       deep: true
     }
   },
-  mounted() {},
-  methods: {}
+  methods: {
+    handleClear() {
+      this.current = []
+      this.$emit('on-change', this.current)
+    }
+  }
 }
 </script>
