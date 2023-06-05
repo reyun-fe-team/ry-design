@@ -7,9 +7,12 @@
         <rd-filter-list-select
           v-model="selectMultiple"
           clearable
+          :input-height="48"
           show-select-option
           :data="data"
-          multiple>
+          multiple
+          show-image
+          show-description>
           <div
             slot="select-item"
             slot-scope="{ row }"
@@ -50,7 +53,9 @@
           :data="data"
           clearable
           filterable
-          label="单选">
+          label="单选"
+          show-image
+          show-description>
           <div slot="search-operate">
             <span style="color: #3989faff">刷新</span>
             <span style="margin-right: 10px; color: #3989faff">应用管理</span>
@@ -177,7 +182,9 @@ export default {
         const value = `${i.toString(36)}${j}`
         children.push({
           value: `${i + 1}-${value}`,
-          label: `${i + 1}-${value}`
+          label: `${i + 1}-${value}`,
+          description: 'beijin-description',
+          src: 'https://web.adsdesk.cn/img/lpf.f19b1cfc.png'
         })
       }
       this.groupList.push({

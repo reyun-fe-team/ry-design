@@ -29,9 +29,11 @@
           :index="index">
           <rd-filter-list-describe
             style="width: 100%"
-            :height="source.description || source.src ? inputHeight || 48 : inputHeight || 32"
+            :height="getHeight(source)"
             :src="source.src"
             :text="source.label"
+            show-image
+            show-description
             :description="source.description"></rd-filter-list-describe>
         </slot>
       </div>
@@ -70,6 +72,13 @@ export default {
   methods: {
     handleClick(val) {
       this.$parent.$parent.$emit('on-click', val)
+    },
+    getHeight({ description, src }) {
+      const { inputHeight } = this
+      if (description || src) {
+        return inputHeight > 48 ? inputHeight : 48
+      }
+      return inputHeight > 32 ? inputHeight : 32
     }
   }
 }
