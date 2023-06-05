@@ -1,9 +1,14 @@
 @filter-list-select: ~"@{css-prefix}filter-list-select";
+@filter-list-select-virtual: ~"@{css-prefix}filter-list-select-virtual";
 
 .@{filter-list-select} {
   padding: 8px 0;
-  overflow-y: auto;
 
+  &-virtual-list {
+    overflow-y: auto
+  }
+}
+.@{filter-list-select-virtual} {
   &-item {
     display: flex;
     cursor: pointer;

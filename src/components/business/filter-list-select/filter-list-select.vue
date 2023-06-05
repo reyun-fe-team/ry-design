@@ -1,7 +1,7 @@
 <template>
   <div>
-    <!-- list-select:{{ current }} -->
     <rd-filter-list
+      ref="filter-list"
       v-model="current"
       :real-data="realData"
       :data="data"
@@ -22,54 +22,19 @@
       :clearable="clearable"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange">
-      <div
-        :class="prefixCls"
-        class="small-scroll-y"
-        :style="mainStyles">
-        <div
-          v-for="(item, index) in filterData"
-          :key="item.key">
-          <div
-            v-if="groupNameList && groupNameList[item.value]"
-            :class="prefixCls + '-group-name'"
-            :title="groupNameList[item.value]">
-            {{ groupNameList[item.value] }}
-          </div>
-          <div
-            :key="item.value"
-            :class="[
-              prefixCls + '-item',
-              {
-                [prefixCls + '-item-selected']: current.includes(item.value)
-              }
-            ]"
-            :disabled="item.disabled"
-            @click="handleClick(item.value)">
-            <Checkbox
-              v-if="multiple"
-              style="margin: 0 0 0 10px"
-              :value="current.includes(item.value)"
-              @click="handleClick(item.value)"></Checkbox>
-            <div :class="prefixCls + '-item-contain'">
-              <slot
-                name="select-item"
-                :src="item.src"
-                :row="item"
-                :index="index">
-                <rd-filter-list-describe
-                  style="width: 100%"
-                  :height="item.description || item.src ? inputHeight || 48 : inputHeight || 32"
-                  :src="item.src"
-                  :text="item.label"
-                  :description="item.description"></rd-filter-list-describe>
-              </slot>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div slot="search-operate">
+      <rd-virtual-list
+        ref="list"
+        :class="[prefixCls + '-virtual-list', 'small-scroll-y']"
+        :style="mainStyles"
+        data-key="uid"
+        :data-sources="getLine"
+        :extra-props="{ filterData, groupNameList, current, multiple, inputHeight }"
+        :data-component="virtualComponent"
+        v-on="$listeners"
+        @on-click="handleClick" />
+      <templat slot="search-operate">
         <slot name="search-operate"></slot>
-      </div>
+      </templat>
     </rd-filter-list>
   </div>
 </template>
@@ -77,10 +42,11 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-select'
-import rdFilterListDescribe from '../filter-list/filter-list-describe'
+
 import _cloneDeep from 'lodash/cloneDeep'
 import { oneOf } from '@src/util/assist.js'
 import Emitter from '@src/mixins/emitter'
+import virtualComponent from './filter-list-select-virtual.vue'
 
 const checkValuesNotEqual = (value, values) => {
   const strValue = JSON.stringify(value)
@@ -89,7 +55,6 @@ const checkValuesNotEqual = (value, values) => {
 }
 export default {
   name: prefixCls,
-  components: { rdFilterListDescribe },
   mixins: [Emitter],
   props: {
     data: {
@@ -123,10 +88,10 @@ export default {
     saveType: {
       type: String,
       default: 'always-save',
-      //default: 'leave-asve',
-      // 时时保存 always-save 离开保存leave-asve
+      //default: 'leave-save',
+      // 时时保存 always-save 离开保存leave-save
       validator(value) {
-        return oneOf(value, ['always-save', 'leave-asve'])
+        return oneOf(value, ['always-save', 'leave-save'])
       }
     },
     width: {
@@ -154,7 +119,8 @@ export default {
     return {
       prefixCls,
       current: [],
-      query: ''
+      query: '',
+      virtualComponent
     }
   },
   computed: {
@@ -184,6 +150,12 @@ export default {
     pullCurrentWatch() {
       // 其实程序做到这一步就可以监听到数据的变化了，再用JSON.parse做数据还原方便后边数据处理。
       return JSON.parse(JSON.stringify(this.current))
+    },
+    getLine() {
+      return this.filterData.map((item, idx) => ({
+        uid: `key_${idx}`,
+        ...item
+      }))
     }
   },
   watch: {
@@ -201,12 +173,12 @@ export default {
       }
     },
     pullCurrentWatch(now, before) {
-      if (this.saveType === 'always-save') {
+      if (this.saveType === 'always-save' || !this.multiple) {
         const newValue = JSON.stringify(now)
         const oldValue = JSON.stringify(before)
         const shouldEmitInput = newValue === oldValue
         if (!shouldEmitInput) {
-          // console.log('时时-触发-emitChange')
+          // console.log('时时触发-emitChange')
           this.emitChange()
         }
       }
@@ -245,21 +217,21 @@ export default {
     queryChange(val) {
       this.query = val
     },
-    handleClick(val) {
+    handleClick({ value }) {
       if (this.multiple) {
-        if (this.current.includes(val)) {
-          this.current = this.current.filter(item => item !== val)
+        if (this.current.includes(value)) {
+          this.current = this.current.filter(item => item !== value)
         } else {
-          this.current.push(val)
+          this.current.push(value)
         }
       } else {
-        this.current = [val]
+        this.current = [value]
+        this.$refs['filter-list'].closeDropdown()
       }
     },
     handleVisibleChange(val) {
-      if (!val && this.saveType === 'leave-asve') {
-        // 根据value的类型决定返回的数据类型
-        // console.log('离开-触发-emitChange')
+      if (!val && this.saveType === 'leave-save' && this.multiple) {
+        // console.log('离开触发-emitChange')
         this.emitChange()
       }
       this.$emit('on-visible-change', val)

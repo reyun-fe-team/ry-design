@@ -117,6 +117,7 @@ export default {
     handleClear() {
       this.current = []
       this.$emit('on-change', this.current)
+      this.$emit('on-clear', this.current)
     }
   }
 }
