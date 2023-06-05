@@ -1,0 +1,50 @@
+@filter-list-select: ~"@{css-prefix}filter-list-select";
+
+.@{filter-list-select} {
+  padding: 8px 0;
+  overflow-y: auto;
+
+  &-item {
+    display: flex;
+    cursor: pointer;
+    transition: background @transition-time @ease-in-out;
+    align-items: center;
+
+    &:hover {
+      color: @selected-color;
+      background: #f3f3f3;
+
+      .rd-filter-list-describe-body-description {
+        color: @selected-color;
+      }
+    }
+
+    &-contain {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    &-selected {
+      color: @selected-color;
+
+      .rd-filter-list-describe-body-description {
+        color: @selected-color;
+      }
+    }
+
+    .ivu-checkbox-checked .ivu-checkbox-inner::after {
+      top: 1px;
+      left: 4px;
+    }
+  }
+
+  &-group-name {
+    padding: 0 10px;
+    overflow: hidden;
+    line-height: 40px;
+    color: #151b39;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: #f9f9f9;
+  }
+}

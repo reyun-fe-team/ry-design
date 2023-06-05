@@ -56,9 +56,10 @@ import RdBatchModifyBids from './components/business/batch-modify-bids'
 import RdAccountGroupList from './components/business/account-group-list'
 import RdDatePicker from './components/basics/date-picker'
 import RdEchoContainer from './components/business/echo-container'
+import RdFilterList from './components/business/filter-list'
+import RdFilterListSelect from './components/business/filter-list-select'
 
 import ViewUI from 'view-design'
-
 import Package from '../package.json'
 import 'view-design/dist/styles/iview.css'
 import './style/index.less'
@@ -135,7 +136,9 @@ const components = [
   RdEchoContainer,
   Image,
   ImageGroup,
-  Space
+  Space,
+  RdFilterList,
+  RdFilterListSelect
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -218,6 +221,8 @@ const API = {
   RdEchoContainer,
   Image,
   ImageGroup,
-  Space
+  Space,
+  RdFilterList,
+  RdFilterListSelect
 }
 module.exports.default = module.exports = API // eslint-disable-line no-undef
