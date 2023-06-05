@@ -1,6 +1,5 @@
 <template>
   <div :class="classes">
-    <!-- filter-list: {{ current }} -->
     <filter-list-panel
       ref="list-panel"
       :trigger="trigger"
@@ -157,6 +156,10 @@ export default {
       if (this.width) {
         const width = parseInt(this.width)
         style.width = `${width}px`
+      }
+      if (this.inputWidth) {
+        const width = parseInt(this.inputWidth)
+        style.minWidth = `${width}px`
       }
       return style
     },

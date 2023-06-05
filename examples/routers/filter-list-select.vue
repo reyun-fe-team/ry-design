@@ -1,14 +1,12 @@
 <template>
   <div>
     <h2>filter-list-select事例</h2>
-    <Button @click="selectMultipleChange">点击</Button>
     <section>
       <div style="display: inline-block">
         多选-宽度自适应 {{ selectMultiple }} 事例：{{ selectMultiple }}
         <rd-filter-list-select
           v-model="selectMultiple"
           clearable
-          :width="200"
           show-select-option
           :data="data"
           multiple>
@@ -32,6 +30,7 @@
           :data="data"
           :group-name-list="groupNameList"
           multiple
+          save-type="leave-save"
           label="多选">
           <div slot="search-operate">
             <span style="color: #3989faff">刷新</span>
@@ -46,11 +45,11 @@
         单选{{ selectRadio }}--{{ typeof selectRadio }}==
         <rd-filter-list-select
           v-model="selectRadio"
-          :width="400"
+          :max-height="256"
+          :width="200"
           :data="data"
           clearable
           filterable
-          save-type="leave-save"
           label="单选">
           <div slot="search-operate">
             <span style="color: #3989faff">刷新</span>
@@ -62,8 +61,8 @@
         单选{{ selectRadio }}
         <rd-filter-list-select
           v-model="selectRadio"
+          :max-height="256"
           clearable
-          :width="400"
           :data="data"
           label="单选"></rd-filter-list-select>
       </div>
@@ -73,7 +72,6 @@
         <rd-filter-list-select
           v-model="selectRadio"
           :group-name-list="groupNameList"
-          :width="400"
           :data="data"
           label="单选"></rd-filter-list-select>
       </div>
@@ -138,103 +136,9 @@
 export default {
   data() {
     return {
-      selectMultiple: ['1104'],
+      selectMultiple: [],
       selectRadio: '',
-      groupList: [
-        {
-          label: '热云数据热云数据热云数据热云数据热云数据热云数据',
-          disabled: false,
-          children: [
-            {
-              label: '汕头市添翼01汕头市添翼01汕头市添翼01汕头市添翼01汕头市添翼01',
-              value: '1104',
-              src: 'https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_1a800195d0c386c281c4886b50f12536.jpeg?from=4010531038',
-              description: 'com.cisbdc.os.con'
-            }
-          ]
-        },
-        {
-          label: '热云数据13',
-          disabled: false,
-          children: [
-            {
-              label: '球球-A1',
-              value: '1157',
-              description: 'com.cisbdc.os.con',
-              src: 'https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_1a800195d0c386c281c4886b50f12536.jpeg?from=4010531038'
-            }
-          ]
-        },
-        {
-          label: '热云数据14',
-          disabled: false,
-          children: [
-            {
-              label: '预约测试账号',
-              value: '204814',
-              src: 'https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_1a800195d0c386c281c4886b50f12536.jpeg?from=4010531038'
-            },
-            {
-              label: '预约测试账号2',
-              value: '19783809'
-            }
-          ]
-        },
-        {
-          label: '热云数据15',
-          disabled: false,
-          children: [
-            {
-              label: '精灵02',
-              value: '19858972'
-            },
-            {
-              label: '精灵03',
-              value: '19858222'
-            },
-            {
-              label: '精灵04',
-              value: '19858970'
-            }
-          ]
-        },
-        {
-          label: '热云数据16',
-          disabled: false,
-          children: [
-            {
-              label: '欣网01',
-              value: '204822'
-            }
-          ]
-        },
-        {
-          label: '热云数据17',
-          disabled: false,
-          children: [
-            {
-              label: '热云06',
-              value: '9946'
-            },
-            {
-              label: '热云07',
-              value: '99461'
-            },
-            {
-              label: '热云08',
-              value: '99462'
-            },
-            {
-              label: '热云09',
-              value: '99463'
-            },
-            {
-              label: '热云100',
-              value: '99464'
-            }
-          ]
-        }
-      ],
+      groupList: [],
       formValidate: {
         city: [],
         app: '',
@@ -266,12 +170,23 @@ export default {
       return list
     }
   },
-  mounted() {},
+  mounted() {
+    for (let i = 0; i < 3; i++) {
+      let children = []
+      for (let j = 0; j < 20; j++) {
+        const value = `${i.toString(36)}${j}`
+        children.push({
+          value: `${i + 1}-${value}`,
+          label: `${i + 1}-${value}`
+        })
+      }
+      this.groupList.push({
+        label: i + 1 + '热云数据热云数据热云数据热云数据热云数据热云数据',
+        children
+      })
+    }
+  },
   methods: {
-    selectMultipleChange() {
-      this.selectMultiple = ['19858972', '19858222', '19858970']
-      this.selectRadio = '19858972'
-    },
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
