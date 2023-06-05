@@ -130,10 +130,10 @@ export default {
     clearable: Boolean,
     saveType: {
       type: String,
-      default: 'leave-asve',
-      // 时时保存 always-save 离开保存leave-asve
+      default: 'leave-save',
+      // 时时保存 always-save 离开保存leave-save
       validator(value) {
-        return oneOf(value, ['always-save', 'leave-asve'])
+        return oneOf(value, ['always-save', 'leave-save'])
       }
     }
   },

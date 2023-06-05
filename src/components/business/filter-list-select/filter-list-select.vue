@@ -123,10 +123,10 @@ export default {
     saveType: {
       type: String,
       default: 'always-save',
-      //default: 'leave-asve',
-      // 时时保存 always-save 离开保存leave-asve
+      //default: 'leave-save',
+      // 时时保存 always-save 离开保存leave-save
       validator(value) {
-        return oneOf(value, ['always-save', 'leave-asve'])
+        return oneOf(value, ['always-save', 'leave-save'])
       }
     },
     width: {
@@ -257,7 +257,7 @@ export default {
       }
     },
     handleVisibleChange(val) {
-      if (!val && this.saveType === 'leave-asve') {
+      if (!val && this.saveType === 'leave-save') {
         // 根据value的类型决定返回的数据类型
         // console.log('离开-触发-emitChange')
         this.emitChange()
