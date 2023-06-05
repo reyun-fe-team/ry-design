@@ -2,6 +2,7 @@
   <div :class="classes">
     <!-- filter-list: {{ current }} -->
     <filter-list-panel
+      ref="list-panel"
       :trigger="trigger"
       @on-visible-change="handleVisibleChange">
       <filter-list-input
@@ -11,7 +12,7 @@
         :placeholder="inputPlaceholder"
         :icon-state="iconState"
         :clearable="clearable"
-        @on-change="filterListInputChange"></filter-list-input>
+        @on-clear="filterListInputChange"></filter-list-input>
       <div
         slot="list"
         :class="prefixCls + '-body'">
@@ -69,6 +70,7 @@ import filterListPanel from './filter-list-panel'
 import filterListOption from './filter-list-option'
 import filterListInput from './filter-list-input'
 import { oneOf } from '@src/util/assist.js'
+
 export default {
   name: prefixCls,
   components: { filterListPanel, filterListOption, filterListInput },
@@ -198,8 +200,10 @@ export default {
       this.$emit('query-change', val)
     }
   },
-  mounted() {},
   methods: {
+    closeDropdown() {
+      this.$refs['list-panel'].closeDropdown()
+    },
     handleVisibleChange(val) {
       this.iconState = val
       if (val && this.showSelectOption) {
@@ -217,6 +221,7 @@ export default {
       this.current = val
       this.$emit('input', val)
       this.$emit('on-change', val)
+      this.$emit('on-input-clear', val)
     },
     optionChange() {
       this.$emit('input', this.current)

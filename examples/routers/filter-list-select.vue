@@ -50,6 +50,7 @@
           :data="data"
           clearable
           filterable
+          save-type="leave-save"
           label="单选">
           <div slot="search-operate">
             <span style="color: #3989faff">刷新</span>
@@ -61,6 +62,7 @@
         单选{{ selectRadio }}
         <rd-filter-list-select
           v-model="selectRadio"
+          clearable
           :width="400"
           :data="data"
           label="单选"></rd-filter-list-select>

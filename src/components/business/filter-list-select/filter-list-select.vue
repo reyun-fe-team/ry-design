@@ -2,6 +2,7 @@
   <div>
     <!-- list-select:{{ current }} -->
     <rd-filter-list
+      ref="filter-list"
       v-model="current"
       :real-data="realData"
       :data="data"
@@ -254,6 +255,9 @@ export default {
         }
       } else {
         this.current = [val]
+        if (this.saveType === 'always-save') {
+          this.$refs['filter-list'].closeDropdown()
+        }
       }
     },
     handleVisibleChange(val) {

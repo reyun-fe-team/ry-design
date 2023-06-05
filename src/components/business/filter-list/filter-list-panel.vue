@@ -1,7 +1,7 @@
 <template>
   <div :class="prefixCls">
-    <!-- visible -->
     <Dropdown
+      ref="Dropdown"
       :placement="placement"
       :trigger="trigger"
       @on-visible-change="handleVisibleChange">
@@ -38,6 +38,9 @@ export default {
     handleVisibleChange(val) {
       this.visible = val
       this.$emit('on-visible-change', val)
+    },
+    closeDropdown() {
+      this.$refs.Dropdown.handleClick()
     }
   }
 }
