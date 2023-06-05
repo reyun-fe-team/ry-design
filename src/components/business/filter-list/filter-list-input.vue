@@ -6,7 +6,7 @@
       v-if="label && label.trim()"
       ref="prefixRef"
       :class="prefixCls + '-label'">
-      {{ `${label}:` }}
+      {{ `${label}` }}
     </div>
     <div :class="prefixCls + '-body'">
       <div
@@ -32,7 +32,6 @@
         </div>
       </template>
     </div>
-    <!-- </div> -->
     <div
       :class="[
         prefixCls + '-operate',
@@ -42,6 +41,7 @@
         :class="prefixCls + '-operate-arrow'"
         :type="`ios-arrow-${iconState ? 'up' : 'down'}`"
         color="#818181" />
+
       <rd-icon
         v-if="clearable && current.length"
         :class="prefixCls + '-operate-clear'"

@@ -1,21 +1,22 @@
 <template>
   <div>
     <h2>filter-list-select事例</h2>
+    <Button @click="selectMultipleChange">点击</Button>
     <section>
       <div style="display: inline-block">
         多选-宽度自适应 {{ selectMultiple }} 事例：{{ selectMultiple }}
         <rd-filter-list-select
           v-model="selectMultiple"
           clearable
-          filterable
-          :height="200"
-          is-select-option
+          :width="200"
+          show-select-option
           :data="data"
           multiple>
           <div
             slot="select-item"
+            slot-scope="{ row }"
             style="line-height: 40px">
-            自定义item
+            自定义item {{ row.label }}
           </div>
         </rd-filter-list-select>
       </div>
@@ -27,7 +28,7 @@
           :input-width="400"
           :width="200"
           filterable
-          is-select-option
+          show-select-option
           :data="data"
           :group-name-list="groupNameList"
           multiple
@@ -42,11 +43,12 @@
 
     <section style="margin-top: 400px">
       <div style="display: inline-block">
-        单选{{ selectRadio }}
+        单选{{ selectRadio }}--{{ typeof selectRadio }}==
         <rd-filter-list-select
           v-model="selectRadio"
           :width="400"
           :data="data"
+          clearable
           filterable
           label="单选">
           <div slot="search-operate">
@@ -74,6 +76,59 @@
           label="单选"></rd-filter-list-select>
       </div>
     </section>
+
+    <Form
+      ref="formValidate"
+      style="margin-top: 250px"
+      :model="formValidate"
+      :rules="ruleValidate"
+      :label-width="80">
+      <FormItem
+        label="City"
+        prop="city">
+        <Select
+          v-model="formValidate.city"
+          multiple
+          placeholder="Select your city">
+          <Option value="beijing">New York</Option>
+          <Option value="shanghai">London</Option>
+          <Option value="shenzhen">Sydney</Option>
+        </Select>
+      </FormItem>
+      <FormItem
+        label="应用"
+        prop="app">
+        <rd-filter-list-select
+          v-model="formValidate.app"
+          :width="400"
+          clearable
+          :data="data"></rd-filter-list-select>
+      </FormItem>
+      <FormItem
+        label="应用多选"
+        prop="app1">
+        {{ formValidate.app1 }}
+        <rd-filter-list-select
+          v-model="formValidate.app1"
+          :width="400"
+          multiple
+          clearable
+          :data="data"></rd-filter-list-select>
+      </FormItem>
+
+      <FormItem>
+        <Button
+          type="primary"
+          @click="handleSubmit('formValidate')">
+          Submit
+        </Button>
+        <Button
+          style="margin-left: 8px"
+          @click="handleReset('formValidate')">
+          Reset
+        </Button>
+      </FormItem>
+    </Form>
   </div>
 </template>
 
@@ -178,15 +233,17 @@ export default {
           ]
         }
       ],
-      title: {
-        title: '三分钟工作室',
-        subTitle: '1087677119',
-        thumbnailInfo: {
-          style: {
-            'border-radius': '50%'
-          },
-          src: 'https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_1a800195d0c386c281c4886b50f12536.jpeg?from=4010531038'
-        }
+      formValidate: {
+        city: [],
+        app: '',
+        app1: []
+      },
+      ruleValidate: {
+        city: [
+          { type: 'array', required: true, message: 'Please select the city', trigger: 'change' }
+        ],
+        app: [{ required: true, message: '请选择应用', trigger: 'change' }],
+        app1: [{ required: true, type: 'array', message: '请选择应用1', trigger: 'change' }]
       }
     }
   },
@@ -208,6 +265,23 @@ export default {
     }
   },
   mounted() {},
-  methods: {}
+  methods: {
+    selectMultipleChange() {
+      this.selectMultiple = ['19858972', '19858222', '19858970']
+      this.selectRadio = '19858972'
+    },
+    handleSubmit(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.$Message.success('Success!')
+        } else {
+          this.$Message.error('Fail!')
+        }
+      })
+    },
+    handleReset(name) {
+      this.$refs[name].resetFields()
+    }
+  }
 }
 </script>

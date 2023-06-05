@@ -1,6 +1,6 @@
 <template>
   <div>
-    list-select:{{ current }}
+    <!-- list-select:{{ current }} -->
     <rd-filter-list
       v-model="current"
       :real-data="realData"
@@ -11,13 +11,14 @@
       :not-found-text="notFoundText"
       :not-found="!filterData.length"
       :input-width="inputWidth"
+      :input-height="inputHeight"
       :option-width="optionWidth"
       :width="width"
       :height="height"
       :max-height="maxHeight"
       :min-height="minHeight"
       :filterable="filterable"
-      :is-select-option="isSelectOption"
+      :show-select-option="showSelectOption"
       :clearable="clearable"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange">
@@ -26,7 +27,7 @@
         class="small-scroll-y"
         :style="mainStyles">
         <div
-          v-for="item in filterData"
+          v-for="(item, index) in filterData"
           :key="item.key">
           <div
             v-if="groupNameList && groupNameList[item.value]"
@@ -53,10 +54,11 @@
               <slot
                 name="select-item"
                 :src="item.src"
-                :item="item">
+                :row="item"
+                :index="index">
                 <rd-filter-list-describe
                   style="width: 100%"
-                  :height="item.description || item.src ? 48 : 32"
+                  :height="item.description || item.src ? inputHeight || 48 : inputHeight || 32"
                   :src="item.src"
                   :text="item.label"
                   :description="item.description"></rd-filter-list-describe>
@@ -77,10 +79,18 @@ import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-select'
 import rdFilterListDescribe from '../filter-list/filter-list-describe'
 import _cloneDeep from 'lodash/cloneDeep'
-import { oneOf, getPropsValueArrayData } from '@src/util/assist.js'
+import { oneOf } from '@src/util/assist.js'
+import Emitter from '@src/mixins/emitter'
+
+const checkValuesNotEqual = (value, values) => {
+  const strValue = JSON.stringify(value)
+  const strValues = JSON.stringify(values)
+  return strValue !== strValues
+}
 export default {
   name: prefixCls,
   components: { rdFilterListDescribe },
+  mixins: [Emitter],
   props: {
     data: {
       type: Array,
@@ -99,13 +109,17 @@ export default {
       type: Boolean,
       default: false
     },
-    filterMethod: {
-      type: Function,
-      default(data, query) {
-        const type = 'label' in data ? 'label' : 'value'
-        return data[type].indexOf(query) > -1
+    groupNameList: {
+      type: Object,
+      default: () => {
+        return {}
       }
     },
+    notFoundText: String,
+    filterable: Boolean,
+    showSelectOption: Boolean,
+    clearable: Boolean,
+    trigger: String,
     saveType: {
       type: String,
       default: 'always-save',
@@ -113,12 +127,6 @@ export default {
       // 时时保存 always-save 离开保存leave-asve
       validator(value) {
         return oneOf(value, ['always-save', 'leave-asve'])
-      }
-    },
-    groupNameList: {
-      type: Object,
-      default: () => {
-        return {}
       }
     },
     width: {
@@ -132,18 +140,20 @@ export default {
     },
     minHeight: [Number, String],
     inputWidth: [String, Number],
+    inputHeight: [String, Number],
     optionWidth: [String, Number],
-    notFoundText: String,
-    filterable: Boolean,
-    isSelectOption: Boolean,
-    clearable: Boolean,
-    trigger: String
+    filterMethod: {
+      type: Function,
+      default(data, query) {
+        const type = 'label' in data ? 'label' : 'value'
+        return data[type].indexOf(query) > -1
+      }
+    }
   },
   data() {
-    let current = getPropsValueArrayData(this.value)
     return {
       prefixCls,
-      current: _cloneDeep(current),
+      current: [],
       query: ''
     }
   },
@@ -170,36 +180,68 @@ export default {
         style.minHeight = `${minHeight}px`
       }
       return style
+    },
+    pullCurrentWatch() {
+      // 其实程序做到这一步就可以监听到数据的变化了，再用JSON.parse做数据还原方便后边数据处理。
+      return JSON.parse(JSON.stringify(this.current))
     }
   },
   watch: {
-    // current(val) {
-    //   if (this.saveType === 'always-save') {
-    //     // if (Array.isArray(this.value)) {
-    //     //   this.$emit('input', val)
-    //     //   this.$emit('on-change', val)
-    //     // } else {
-    //     //   this.$emit('input', val[0])
-    //     //   this.$emit('on-change', val[0])
-    //     // }
-    //     this.$emit('input', this.current)
-    //     this.$emit('on-change', this.current)
-    //   }
-    // },
-    value: {
-      handler(val) {
-        if (this.saveType === 'always-save') {
-          this.current = val
-        } else {
-          let current = getPropsValueArrayData(val)
-          this.current = _cloneDeep(current)
+    value(value) {
+      if (value === '') {
+        this.current = []
+      } else if (checkValuesNotEqual(value, this.current)) {
+        this.$nextTick(() => {
+          const data = this.getInitialValue()
+          this.current = data
+        })
+        // if (!this.multiple) {
+        //   this.dispatch('FormItem', 'on-form-change', this.publicValue)
+        // }
+      }
+    },
+    pullCurrentWatch(now, before) {
+      if (this.saveType === 'always-save') {
+        const newValue = JSON.stringify(now)
+        const oldValue = JSON.stringify(before)
+        const shouldEmitInput = newValue === oldValue
+        if (!shouldEmitInput) {
+          // console.log('时时-触发-emitChange')
+          this.emitChange()
         }
-      },
-      deep: true
+      }
     }
   },
+  mounted() {
+    const data = this.getInitialValue()
+    this.current = data
+  },
   methods: {
-    getValue() {},
+    getInitialValue() {
+      const { multiple, value } = this
+      let initialValue = Array.isArray(value) ? _cloneDeep(value) : [value]
+      if (
+        !multiple &&
+        (typeof initialValue[0] === 'undefined' ||
+          (String(initialValue[0]).trim() === '' && !Number.isFinite(initialValue[0])))
+      ) {
+        initialValue = []
+      }
+      return initialValue
+    },
+    emitChange() {
+      let emitValue = this.multiple ? _cloneDeep(this.current) : this.current[0]
+      // Form 重置时，如果初始值是 null，也置为 null，而不是 []
+      if (Array.isArray(emitValue) && !emitValue.length && this.value === null) {
+        emitValue = null
+      } else if (emitValue === undefined && this.value === null) {
+        emitValue = null
+      }
+      // console.log('更新数据-emitChange')
+      this.$emit('input', emitValue)
+      this.$emit('on-change', emitValue)
+      this.dispatch('FormItem', 'on-form-change', emitValue)
+    },
     queryChange(val) {
       this.query = val
     },
@@ -216,14 +258,9 @@ export default {
     },
     handleVisibleChange(val) {
       if (!val && this.saveType === 'leave-asve') {
-        const data = _cloneDeep(this.current)
-        if (Array.isArray(this.value)) {
-          this.$emit('input', data)
-          this.$emit('on-change', data)
-        } else {
-          this.$emit('input', val[0])
-          this.$emit('on-change', val[0])
-        }
+        // 根据value的类型决定返回的数据类型
+        // console.log('离开-触发-emitChange')
+        this.emitChange()
       }
       this.$emit('on-visible-change', val)
     }

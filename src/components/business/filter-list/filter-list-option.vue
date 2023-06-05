@@ -116,6 +116,7 @@ export default {
       this.$emit('input', this.current)
       this.$emit('on-change', this.current)
     },
+    // 提供方法
     getHeaderHeight() {
       return this.$refs['filter-list-option-header'].offsetHeight
     }

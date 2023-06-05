@@ -1,6 +1,6 @@
 <template>
   <div :class="classes">
-    filter-list: {{ current }}
+    <!-- filter-list: {{ current }} -->
     <filter-list-panel
       :trigger="trigger"
       @on-visible-change="handleVisibleChange">
@@ -48,7 +48,7 @@
           </div>
         </div>
         <filter-list-option
-          v-if="isSelectOption"
+          v-if="showSelectOption"
           ref="filter-list-option"
           v-model="current"
           :filterable="filterable"
@@ -56,7 +56,8 @@
           :height="heightOption"
           :max-height="maxHeightOption"
           :min-height="minHeightOption"
-          :data="optionData"></filter-list-option>
+          :data="optionData"
+          @on-change="optionChange"></filter-list-option>
       </div>
     </filter-list-panel>
   </div>
@@ -84,7 +85,6 @@ export default {
       }
     },
     trigger: String,
-    placement: String,
     label: String,
     inputPlaceholder: String,
     filterPlaceholder: {
@@ -105,28 +105,29 @@ export default {
     },
     inputWidth: {
       type: [String, Number],
-      default: '200px'
+      default: 200
     },
-    optionWidth: [String, Number],
+    inputHeight: [String, Number],
+    width: {
+      type: [String, Number],
+      default: ''
+    },
     height: [Number, String],
     maxHeight: {
       type: [Number, String],
       default: 320
     },
     minHeight: [Number, String],
+    optionWidth: [String, Number],
     filterable: {
       type: Boolean,
       default: false
     },
-    isSelectOption: {
+    showSelectOption: {
       type: Boolean,
       default: false
     },
     clearable: Boolean,
-    width: {
-      type: [String, Number],
-      default: ''
-    },
     saveType: {
       type: String,
       default: 'leave-asve',
@@ -157,7 +158,6 @@ export default {
       }
       return style
     },
-
     inputData() {
       const data = this.realData ? this.realData : this.value
       return this.data.filter(val => data.includes(val.value))
@@ -166,9 +166,16 @@ export default {
       return this.data.filter(val => this.current.includes(val.value))
     },
     inputStyles() {
-      return {
-        width: typeof this.inputWidth === 'number' ? `${this.inputWidth}px` : this.inputWidth
+      let style = {}
+      if (this.inputWidth) {
+        const width = parseInt(this.inputWidth)
+        style.width = `${width}px`
       }
+      if (this.inputHeight) {
+        const height = parseInt(this.inputHeight)
+        style.height = `${height}px`
+      }
+      return style
     },
     heightOption() {
       return this.filterable ? this.height : this.height - (this.refHeight || 0)
@@ -187,22 +194,19 @@ export default {
       },
       deep: true
     },
-    current(val) {
-      this.$emit('input', val)
-      this.$emit('on-change', val)
-    },
     queryValue(val) {
       this.$emit('query-change', val)
     }
   },
-  mounted() {
-    if (this.isSelectOption) {
-      this.refHeight = this.$refs['filter-list-option'].getHeaderHeight()
-    }
-  },
+  mounted() {},
   methods: {
     handleVisibleChange(val) {
       this.iconState = val
+      if (val && this.showSelectOption) {
+        this.$nextTick(() => {
+          this.refHeight = this.$refs['filter-list-option'].getHeaderHeight()
+        })
+      }
       this.$emit('on-visible-change', val)
     },
     filterChange() {},
@@ -211,6 +215,12 @@ export default {
     },
     filterListInputChange(val) {
       this.current = val
+      this.$emit('input', val)
+      this.$emit('on-change', val)
+    },
+    optionChange() {
+      this.$emit('input', this.current)
+      this.$emit('on-change', this.current)
     }
   }
 }
