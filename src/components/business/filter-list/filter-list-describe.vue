@@ -3,7 +3,7 @@
     :class="prefixCls"
     :style="mainStyles">
     <div
-      v-if="src"
+      v-if="src && showImage"
       :class="prefixCls + '-image'">
       <rd-image
         width="34px"
@@ -14,7 +14,7 @@
     <section :class="prefixCls + '-body'">
       <div :class="prefixCls + '-body-text'">{{ text }}</div>
       <p
-        v-if="description"
+        v-if="showDescription && description"
         :class="prefixCls + '-body-description'">
         {{ description }}
       </p>
@@ -40,8 +40,15 @@ export default {
     },
     description: {
       type: String,
-      // default: '描述description'
       default: ''
+    },
+    showImage: {
+      type: Boolean,
+      default: false
+    },
+    showDescription: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

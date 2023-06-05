@@ -11,6 +11,8 @@
         :placeholder="inputPlaceholder"
         :icon-state="iconState"
         :clearable="clearable"
+        :show-image="showImage"
+        :show-description="showDescription"
         @on-clear="filterListInputChange"></filter-list-input>
       <div
         slot="list"
@@ -136,7 +138,9 @@ export default {
       validator(value) {
         return oneOf(value, ['always-save', 'leave-save'])
       }
-    }
+    },
+    showImage: Boolean,
+    showDescription: Boolean
   },
   data() {
     return {
@@ -177,7 +181,16 @@ export default {
         style.width = `${width}px`
       }
       if (this.inputHeight) {
-        const height = parseInt(this.inputHeight)
+        let height = parseInt(this.inputHeight)
+        if (height < 32) {
+          height = 32
+        }
+        if (this.inputData && this.inputData.length && this.inputData.length === 1) {
+          const { description, src } = this.inputData[0]
+          if ((description && this.showDescription) || (src && this.showImage)) {
+            height = this.inputHeight > 48 ? this.inputHeight : 48
+          }
+        }
         style.height = `${height}px`
       }
       return style

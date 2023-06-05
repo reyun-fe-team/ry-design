@@ -20,6 +20,8 @@
       :filterable="filterable"
       :show-select-option="showSelectOption"
       :clearable="clearable"
+      :show-image="showImage"
+      :show-description="showDescription"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange">
       <rd-virtual-list
@@ -32,9 +34,9 @@
         :data-component="virtualComponent"
         v-on="$listeners"
         @on-click="handleClick" />
-      <templat slot="search-operate">
+      <template slot="search-operate">
         <slot name="search-operate"></slot>
-      </templat>
+      </template>
     </rd-filter-list>
   </div>
 </template>
@@ -105,7 +107,10 @@ export default {
     },
     minHeight: [Number, String],
     inputWidth: [String, Number],
-    inputHeight: [String, Number],
+    inputHeight: {
+      type: [String, Number],
+      default: 32
+    },
     optionWidth: [String, Number],
     filterMethod: {
       type: Function,
@@ -113,7 +118,9 @@ export default {
         const type = 'label' in data ? 'label' : 'value'
         return data[type].indexOf(query) > -1
       }
-    }
+    },
+    showImage: Boolean,
+    showDescription: Boolean
   },
   data() {
     return {

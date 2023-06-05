@@ -23,6 +23,8 @@
             :height="current[0].description || current[0].src ? 56 : 32"
             :src="current[0].src"
             :text="current[0].label"
+            :show-image="showImage"
+            :show-description="showDescription"
             :description="current[0].description"></rd-filter-list-describe>
         </template>
         <div
@@ -88,7 +90,9 @@ export default {
     clearable: {
       type: Boolean,
       default: false
-    }
+    },
+    showImage: Boolean,
+    showDescription: Boolean
   },
   data() {
     return {
