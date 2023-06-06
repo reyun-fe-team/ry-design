@@ -41,13 +41,11 @@
       ]">
       <rd-icon
         :class="prefixCls + '-operate-arrow'"
-        :type="`ios-arrow-${iconState ? 'up' : 'down'}`"
-        color="#818181" />
+        :type="`ios-arrow-${iconState ? 'up' : 'down'}`" />
 
       <rd-icon
         v-if="clearable && current.length"
         :class="prefixCls + '-operate-clear'"
-        color="#757a8a"
         type="ry-icon-guanbi"
         @click.native.stop="handleClear"></rd-icon>
     </div>
@@ -92,7 +90,11 @@ export default {
       default: false
     },
     showImage: Boolean,
-    showDescription: Boolean
+    showDescription: Boolean,
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -102,7 +104,13 @@ export default {
   },
   computed: {
     classes() {
-      return [`${this.prefixCls}`]
+      return [
+        `${this.prefixCls}`,
+        {
+          [this.prefixCls + '-hover']: !this.disabled,
+          [this.prefixCls + '-disabled']: this.disabled
+        }
+      ]
     },
     // 是否有已选数据
     isPlaceholder() {

@@ -55,7 +55,7 @@
   align-items: center;
   transition: color @transition-time @ease-in-out;
 
-  &:hover {
+  &-hover:hover {
     border-color: @selected-color;
     .@{filter-list-input}-operate-clearable {
       .@{filter-list-input}-operate-clear {
@@ -94,11 +94,27 @@
     min-width: 16px;
     margin-left: 8px;
 
+    &-arrow {
+      color: #818181;
+    }
+
     &-clear {
       display: none;
+      color: #757a8a;
     }
   }
 }
+// disabled
+.@{filter-list-input}-disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  background-color: #f3f3f3;
+  opacity: 1;
+  .@{filter-list-input}-operate-arrow,.@{filter-list-input}-body-placeholder {
+    color: #ccc
+  }
+}
+
 .@{filter-list-panel} {
   .ivu-select-dropdown {
     padding: 0
@@ -168,10 +184,11 @@
     }
 
     &-description {
+      margin-top: 3px;
       overflow: hidden;
       color: rgba(153, 153, 153, 100%);
       text-overflow: ellipsis;
-      white-space: nowrap
+      white-space: nowrap;
     }
   }
 }

@@ -21,6 +21,7 @@
           :input-height="48"
           show-select-option
           :data="data"
+          disabled
           multiple
           show-image
           show-description>
@@ -59,6 +60,7 @@
         单选{{ selectRadio }}--{{ typeof selectRadio }}==
         <rd-filter-list-select
           v-model="selectRadio"
+          disabled
           :max-height="256"
           :width="200"
           :data="data"
@@ -194,6 +196,7 @@ export default {
         children.push({
           value: `${i + 1}-${value}`,
           label: `${i + 1}-${value}`,
+          disabled: [2, 4, 6, 7].includes(j) ? true : false,
           description: 'beijin-description',
           src: 'https://web.adsdesk.cn/img/lpf.f19b1cfc.png'
         })

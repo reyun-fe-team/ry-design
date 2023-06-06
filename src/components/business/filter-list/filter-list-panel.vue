@@ -3,7 +3,8 @@
     <Dropdown
       ref="Dropdown"
       :placement="placement"
-      :trigger="trigger"
+      :trigger="currentTrigger"
+      @click.native.stop
       @on-visible-change="handleVisibleChange">
       <slot></slot>
       <DropdownMenu slot="list">
@@ -26,6 +27,10 @@ export default {
     trigger: {
       type: String,
       default: 'click'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -34,8 +39,16 @@ export default {
       prefixCls
     }
   },
+  computed: {
+    currentTrigger() {
+      return this.disabled ? 'custom' : this.trigger
+    }
+  },
   methods: {
     handleVisibleChange(val) {
+      if (this.disabled) {
+        return
+      }
       this.visible = val
       this.$emit('on-visible-change', val)
     },
