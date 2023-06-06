@@ -3,6 +3,7 @@
     <filter-list-panel
       ref="list-panel"
       :trigger="trigger"
+      :disabled="disabled"
       @on-visible-change="handleVisibleChange">
       <filter-list-input
         :value="inputData"
@@ -12,6 +13,7 @@
         :icon-state="iconState"
         :clearable="clearable"
         :show-image="showImage"
+        :disabled="disabled"
         :show-description="showDescription"
         @on-clear="filterListInputChange"></filter-list-input>
       <div
@@ -140,7 +142,8 @@ export default {
       }
     },
     showImage: Boolean,
-    showDescription: Boolean
+    showDescription: Boolean,
+    disabled: Boolean
   },
   data() {
     return {

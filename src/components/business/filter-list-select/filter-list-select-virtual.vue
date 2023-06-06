@@ -12,12 +12,16 @@
         prefixCls + '-item',
         {
           [prefixCls + '-item-selected']: current.includes(source.value)
+        },
+        {
+          [prefixCls + '-item-disabled']: source.disabled
         }
       ]"
       :disabled="source.disabled"
       @click="handleClick(source)">
       <Checkbox
         v-if="multiple"
+        :disabled="source.disabled"
         style="margin: 0 0 0 10px"
         :value="current.includes(source.value)"
         @click="handleClick(source)"></Checkbox>
@@ -71,6 +75,9 @@ export default {
   },
   methods: {
     handleClick(val) {
+      if (val.disabled) {
+        return
+      }
       this.$parent.$parent.$emit('on-click', val)
     },
     getHeight({ description, src }) {

@@ -24,6 +24,7 @@
       :show-description="showDescription"
       :input-placeholder="inputPlaceholder"
       :filter-placeholder="filterPlaceholder"
+      :disabled="disabled"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange">
       <rd-virtual-list
@@ -35,10 +36,13 @@
         :extra-props="{ filterData, groupNameList, current, multiple, inputHeight }"
         :data-component="virtualComponent"
         v-on="$listeners"
-        @on-click="handleClick" />
+        @on-click="handleClick"></rd-virtual-list>
       <template slot="search-operate">
         <slot name="search-operate"></slot>
       </template>
+      <!-- <template slot="select-item">
+        <slot name="select-item"></slot>
+      </template> -->
     </rd-filter-list>
   </div>
 </template>
@@ -124,7 +128,11 @@ export default {
     showImage: Boolean,
     showDescription: Boolean,
     inputPlaceholder: String,
-    filterPlaceholder: String
+    filterPlaceholder: String,
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
