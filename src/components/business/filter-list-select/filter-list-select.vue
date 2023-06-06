@@ -33,7 +33,7 @@
         :style="mainStyles"
         data-key="uid"
         :data-sources="getLine"
-        :extra-props="{ filterData, groupNameList, current, multiple, inputHeight }"
+        :extra-props="{ filterData, groupNameList, current, multiple, inputHeight, labelMethod }"
         :data-component="virtualComponent"
         v-on="$listeners"
         @on-click="handleClick"></rd-virtual-list>
@@ -125,6 +125,7 @@ export default {
         return data[type].indexOf(query) > -1
       }
     },
+    labelMethod: Function,
     showImage: Boolean,
     showDescription: Boolean,
     inputPlaceholder: String,

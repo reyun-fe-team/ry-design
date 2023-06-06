@@ -21,10 +21,10 @@
           :input-height="48"
           show-select-option
           :data="data"
-          disabled
           multiple
           show-image
-          show-description>
+          show-description
+          :label-method="labelMethod">
           <div
             slot="select-item"
             slot-scope="{ row }"
@@ -194,8 +194,9 @@ export default {
       for (let j = 0; j < 20; j++) {
         const value = `${i.toString(36)}${j}`
         children.push({
-          value: `${i + 1}-${value}`,
-          label: `${i + 1}-${value}`,
+          value: `${i + 1}-${value}-value`,
+          label: `${i + 1}-${value} (beijin-description)`,
+          newLabel: `${i + 1}-${value}`,
           disabled: [2, 4, 6, 7].includes(j) ? true : false,
           description: 'beijin-description',
           src: 'https://web.adsdesk.cn/img/lpf.f19b1cfc.png'
@@ -219,6 +220,9 @@ export default {
     },
     handleReset(name) {
       this.$refs[name].resetFields()
+    },
+    labelMethod(data) {
+      return data.newLabel
     }
   }
 }
