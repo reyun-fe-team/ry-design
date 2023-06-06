@@ -35,7 +35,7 @@
             style="width: 100%"
             :height="getHeight(source)"
             :src="source.src"
-            :text="source.label"
+            :text="getLabel"
             show-image
             show-description
             :description="source.description"></rd-filter-list-describe>
@@ -66,11 +66,22 @@ export default {
       }
     },
     multiple: Boolean,
-    inputHeight: [String, Number]
+    inputHeight: [String, Number],
+    labelMethod: {
+      type: Function,
+      default(data) {
+        return 'label' in data ? data.label : ''
+      }
+    }
   },
   data() {
     return {
       prefixCls
+    }
+  },
+  computed: {
+    getLabel() {
+      return this.labelMethod(this.source)
     }
   },
   methods: {
