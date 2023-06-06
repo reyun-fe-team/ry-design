@@ -22,6 +22,8 @@
       :clearable="clearable"
       :show-image="showImage"
       :show-description="showDescription"
+      :input-placeholder="inputPlaceholder"
+      :filter-placeholder="filterPlaceholder"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange">
       <rd-virtual-list
@@ -120,7 +122,9 @@ export default {
       }
     },
     showImage: Boolean,
-    showDescription: Boolean
+    showDescription: Boolean,
+    inputPlaceholder: String,
+    filterPlaceholder: String
   },
   data() {
     return {
