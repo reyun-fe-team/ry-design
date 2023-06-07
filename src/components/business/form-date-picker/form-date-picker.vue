@@ -11,7 +11,6 @@
     <div :class="prefixCls + '-body'">
       <rd-date-picker
         v-model="time"
-        width="164px"
         v-bind="$attrs"
         :confirm="false"
         v-on="$listeners"></rd-date-picker>
