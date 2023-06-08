@@ -12,10 +12,13 @@
         :src="src"></rd-image>
     </div>
     <section :class="prefixCls + '-body'">
-      <div :class="prefixCls + '-body-text'">{{ text }}</div>
-      <p
-        v-if="showDescription && description"
-        :class="prefixCls + '-body-description'">
+      <div
+        :class="prefixCls + '-body-text'"
+        :title="text">
+        {{ text }}
+      </div>
+      <p :title="description">
+        v-if="showDescription && description" :class="prefixCls + '-body-description'">
         {{ description }}
       </p>
     </section>

@@ -20,6 +20,7 @@
         :save-rule="true"
         :show-word-limit="false"
         :show-save-rule="false"
+        :rules="rules"
         @on-name-programs="onNamePrograms"></rd-wildcard>
     </Form>
     <Button
@@ -76,6 +77,11 @@ export default {
             message: '超出最大'
           }
         ]
+      },
+      rules: {
+        required: true,
+        message: '请输入内容form-item-rules触发',
+        trigger: 'change'
       }
     }
   },
