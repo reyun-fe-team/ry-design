@@ -4,6 +4,7 @@
       <FormItem
         :prop="mergeOptions.prop"
         :label="mergeOptions.label"
+        :rules="rules"
         :label-width="mergeOptions.labelWidth">
         <label
           v-if="mergeOptions.tooltip"
@@ -178,6 +179,9 @@ export default {
     clearable: {
       type: Boolean,
       default: false
+    },
+    rules: {
+      type: [Object, Array]
     }
   },
   data() {
