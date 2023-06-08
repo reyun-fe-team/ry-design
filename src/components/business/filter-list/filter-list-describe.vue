@@ -3,7 +3,7 @@
     :class="prefixCls"
     :style="mainStyles">
     <div
-      v-if="src && showImage"
+      v-if="showImage && src"
       :class="prefixCls + '-image'">
       <rd-image
         width="34px"
@@ -17,8 +17,10 @@
         :title="text">
         {{ text }}
       </div>
-      <p :title="description">
-        v-if="showDescription && description" :class="prefixCls + '-body-description'">
+      <p
+        v-if="showDescription && description"
+        :title="description"
+        :class="prefixCls + '-body-description'">
         {{ description }}
       </p>
     </section>
