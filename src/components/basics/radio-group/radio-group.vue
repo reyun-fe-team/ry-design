@@ -81,7 +81,7 @@ export default {
   name: prefixCls,
   props: {
     value: {
-      type: [String, Number, Boolean]
+      type: [String, Number]
     },
     defaultList: {
       type: Array,
@@ -139,12 +139,13 @@ export default {
           let newValue = null
           if (!this.isCustom) {
             let { defaultList } = this
-            let values = defaultList.map(e => e.value)
+            let values = defaultList
+              .filter(f => !(f.disabled || this.isDisabledItemFun(f)))
+              .map(e => e.value)
             if (values.includes(n)) {
               newValue = n
             } else {
-              let f = defaultList.find(e => !e.disabled) || {}
-              newValue = f.value || null
+              newValue = values.length ? values[0] : null
             }
           } else {
             newValue = n
@@ -177,9 +178,9 @@ export default {
           }
         } else {
           let val = null
-          let values = n.map(e => e.value)
+          let values = n.filter(f => !(f.disabled || this.isDisabledItemFun(f))).map(m => m.value)
           if (!values.includes(this.newValue)) {
-            let f = n.find(e => !(e.disabled || this.isDisabledItemFun(e))) || {}
+            let f = values.length ? values[0] : {}
             val = f.value
             if (val !== this.newValue) {
               this.newValue = val
