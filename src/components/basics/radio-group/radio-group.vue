@@ -180,8 +180,7 @@ export default {
           let val = null
           let values = n.filter(f => !(f.disabled || this.isDisabledItemFun(f))).map(m => m.value)
           if (!values.includes(this.newValue)) {
-            let f = values.length ? values[0] : {}
-            val = f.value
+            val = values.length ? values[0] : null
             if (val !== this.newValue) {
               this.newValue = val
               this.$nextTick(() => {
