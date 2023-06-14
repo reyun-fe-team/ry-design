@@ -205,7 +205,7 @@ export default {
       return [
         `${prefixCls}-list`,
         {
-          [`${prefixCls}-show-more`]: this.showMore
+          [`${prefixCls}-show-more`]: !this.showMore
         }
       ]
     },
