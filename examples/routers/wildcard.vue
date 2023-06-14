@@ -17,9 +17,9 @@
         :wildcard-label-config="{ label: 'asd', width: 68, tooltip: '123' }"
         :data="data"
         join-symbol=""
-        :save-rule="true"
+        :save-rule="false"
+        :show-save-rule="true"
         :show-word-limit="false"
-        :show-save-rule="false"
         @on-name-programs="onNamePrograms"></rd-wildcard>
     </Form>
     <Button
