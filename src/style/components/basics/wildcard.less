@@ -84,23 +84,39 @@
       }
 
       &-item {
-        padding-right: 16px;
-        padding-bottom: 16px;
+        padding: 5px 18px;
+        margin-right: 4px;
+        margin-bottom: 8px;
         font-style: normal;
         line-height: 12px;
-        color: #151b39;
+        color: #999;
         cursor: pointer;
+        background-color: #f7f7f7;
+        border-radius: 3px;
         user-select: none;
 
         &-active {
-          color: #999;
+          color: #3989fa;
+          background-color: rgba(57, 137, 250, 10%);
         }
 
         &:hover {
           color: #3989fa !important;
         }
       }
+
+      &-action {
+        width: 28px;
+        height: 16px;
+        font-size: 12px;
+        line-height: 16px;
+        color: #3989fa;
+        cursor: pointer;
+        user-select: none;
+      }
     }
+
+    
 
     &-name-save {
       .ivu-checkbox {
@@ -113,5 +129,10 @@
         vertical-align: top;
       }
     }
+  }
+
+  &-show-more {
+    height: 30px;
+    overflow-y: hidden;
   }
 }
