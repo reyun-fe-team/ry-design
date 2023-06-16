@@ -83,8 +83,8 @@
             </p>
             <div
               :class="prefixCls + '-list-name-rule-action'"
-              @click="handleShowMore">
-              {{ showMore ? '更多' : '收起' }}
+              @click="handleHideMore">
+              {{ hideMore ? '更多' : '收起' }}
             </div>
           </div>
           <div
@@ -193,7 +193,7 @@ export default {
       mergeOptions: {},
       mergeWildcardLabelConfig: {},
       list: [],
-      showMore: false
+      hideMore: true
     }
   },
   computed: {
@@ -205,7 +205,7 @@ export default {
       return [
         `${prefixCls}-list`,
         {
-          [`${prefixCls}-show-more`]: !this.showMore
+          [`${prefixCls}-show-more`]: !this.hideMore
         }
       ]
     },
@@ -327,8 +327,8 @@ export default {
         this.keyword += activeTitle
       }
     },
-    handleShowMore() {
-      this.showMore = !this.showMore
+    handleHideMore() {
+      this.hideMore = !this.hideMore
     }
   }
 }
