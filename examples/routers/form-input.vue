@@ -1,7 +1,7 @@
 <template>
   <main>
     <h2 style="margin: 24px 0">rd-form-input</h2>
-    <form-input
+    <rd-form-input
       v-model="inputValue"
       label="输入框："
       :clearable="true"
@@ -11,11 +11,7 @@
 </template>
 
 <script>
-import formInput from '@src/components/business/form-input/form-input.vue'
 export default {
-  components: {
-    formInput
-  },
   data() {
     return {
       inputValue: ''
