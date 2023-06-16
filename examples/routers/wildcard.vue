@@ -14,7 +14,7 @@
           label: '计划',
           tooltip: '仅对新创建的广告组生效，不支持更新已有广告组。'
         }"
-        :wildcard-label-config="{ label: 'asd', width: 68, tooltip: '123' }"
+        :wildcard-label-config="{ label: '', width: 0 }"
         :data="data"
         join-symbol=""
         :save-rule="false"
