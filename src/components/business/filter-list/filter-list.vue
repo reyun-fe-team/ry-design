@@ -4,6 +4,7 @@
       ref="list-panel"
       :trigger="trigger"
       :disabled="disabled"
+      :transfer="transfer"
       @on-visible-change="handleVisibleChange">
       <filter-list-input
         :value="inputData"
@@ -142,7 +143,8 @@ export default {
     },
     showImage: Boolean,
     showDescription: Boolean,
-    disabled: Boolean
+    disabled: Boolean,
+    transfer: Boolean
   },
   data() {
     return {

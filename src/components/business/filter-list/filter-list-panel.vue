@@ -4,6 +4,7 @@
       ref="Dropdown"
       :placement="placement"
       :trigger="currentTrigger"
+      :transfer="transfer"
       @click.native.stop
       @on-visible-change="handleVisibleChange">
       <slot></slot>
@@ -29,6 +30,10 @@ export default {
       default: 'click'
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    transfer: {
       type: Boolean,
       default: false
     }
