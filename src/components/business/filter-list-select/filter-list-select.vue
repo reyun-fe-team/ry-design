@@ -25,6 +25,7 @@
       :input-placeholder="inputPlaceholder"
       :filter-placeholder="filterPlaceholder"
       :disabled="disabled"
+      :transfer="transfer"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange">
       <rd-virtual-list
@@ -133,7 +134,8 @@ export default {
     disabled: {
       type: Boolean,
       default: false
-    }
+    },
+    transfer: Boolean
   },
   data() {
     return {
