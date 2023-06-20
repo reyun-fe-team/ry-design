@@ -118,6 +118,7 @@
         prop="app">
         <rd-filter-list-select
           v-model="formValidate.app"
+          filterable
           :width="400"
           clearable
           :data="data"></rd-filter-list-select>
@@ -128,6 +129,7 @@
         {{ formValidate.app1 }}
         <rd-filter-list-select
           v-model="formValidate.app1"
+          filterable
           :width="400"
           multiple
           clearable

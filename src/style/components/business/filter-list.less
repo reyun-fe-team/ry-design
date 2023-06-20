@@ -24,8 +24,9 @@
         .ivu-input {
           height: 40px;
           border: none;
-          outline: 0;
-          box-shadow: none;
+          outline: none;
+          // 需要强制覆盖掉iview的form-item产生的样式
+          box-shadow: none !important;
         }
 
         .ivu-input-prefix i,
@@ -176,6 +177,7 @@
   &-body {
     flex: 1;
     overflow: hidden;
+    line-height: normal;
 
     &-text {
       overflow: hidden;
