@@ -3,8 +3,6 @@
     <h2 style="margin: 24px 0">rd-form-indicator</h2>
     <rd-form-indicator
       v-model="indicatorData"
-      label="点击数："
-      unit="元"
       :clearable="true"
       :width="240"
       :styles="{ width: '240px' }" />

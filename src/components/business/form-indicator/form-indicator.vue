@@ -240,7 +240,7 @@ export default {
         return ''
       }
       const filterValue = cur => {
-        return `${this.precision ? cur.toFixed(this.precision) : cur}${this.unit}`
+        return `${this.precision ? cur.toFixed(this.precision) : cur}${this.unit || ''}`
       }
       if (ruleType === 'number-input-between') {
         return symbolLabel + filterValue(startValue) + '-' + filterValue(endValue)
