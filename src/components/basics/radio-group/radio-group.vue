@@ -151,12 +151,14 @@ export default {
             newValue = n
           }
           this.newValue = newValue
-          if (!this.isDynamicEnum) {
-            this.$emit('input', newValue)
+          if (this.isDynamicEnum) {
+            if (this.newValue !== n) {
+              this.$nextTick(() => {
+                this.onChange(newValue)
+              })
+            }
           } else {
-            this.$nextTick(() => {
-              this.onChange(newValue)
-            })
+            this.$emit('input', newValue)
           }
         }
       },
