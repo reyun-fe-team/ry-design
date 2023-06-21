@@ -15,7 +15,8 @@
         :show-image="showImage"
         :disabled="disabled"
         :show-description="showDescription"
-        @on-clear="filterListInputChange"></filter-list-input>
+        @on-clear="filterListInputChange"
+        @click.native="handlerInputClick"></filter-list-input>
       <div
         slot="list"
         :class="prefixCls + '-body'">
@@ -245,6 +246,9 @@ export default {
     optionChange() {
       this.$emit('input', this.current)
       this.$emit('on-change', this.current)
+    },
+    handlerInputClick() {
+      this.$emit('on-click', this.current)
     }
   }
 }
