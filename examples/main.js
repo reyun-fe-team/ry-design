@@ -218,12 +218,24 @@ const router = new VueRouter({
       component: resolve => require(['./routers/filter-list-select'], resolve)
     },
     {
+      path: '/filter-cascader',
+      component: resolve => require(['./routers/filter-cascader'], resolve)
+    },
+    {
       path: '/form-date-picker',
       component: resolve => require(['./routers/form-date-picker'], resolve)
     },
     {
       path: '/form-input',
       component: resolve => require(['./routers/form-input'], resolve)
+    },
+    {
+      path: '/form-indicator',
+      component: resolve => require(['./routers/form-indicator'], resolve)
+    },
+    {
+      path: '/form-select-indicator',
+      component: resolve => require(['./routers/form-select-indicator'], resolve)
     }
   ]
 })

@@ -1,0 +1,50 @@
+@form-select-indicator: ~"@{css-prefix}form-select-indicator";
+
+.@{form-select-indicator} {
+  &-form {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    display: flex;
+    margin-bottom: 16px;
+    align-items: center;
+
+    &:hover {
+      border-color: @selected-color;
+    }
+    &-line {
+      height: 16px;
+      margin-right: 6px;
+      border-right: 1px solid #E8E8E8;
+    }
+  }
+
+  &:hover {
+    .rd-form-select-indicator-icon-delete {
+      display: inline-block;
+    }
+  }
+
+  &-icon-delete {
+    cursor: pointer;
+    display: none;
+    margin-left: 10px;
+  }
+  .rd-filter-list-input {
+    padding: 0 4px 0 10px;
+    border: none;
+
+    .ivu-icon {
+      font-size: 14px !important;
+    }
+  }
+  .rd-form-indicator {
+    border: none;
+  }
+
+  &-add-line {
+    font-size: 12px;
+    color: #3989FA;
+    line-height: 16px;
+    cursor: pointer;
+  }
+}

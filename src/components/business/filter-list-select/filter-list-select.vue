@@ -27,7 +27,8 @@
       :disabled="disabled"
       :transfer="transfer"
       @query-change="queryChange"
-      @on-visible-change="handleVisibleChange">
+      @on-visible-change="handleVisibleChange"
+      @on-click="handlerClick">
       <rd-virtual-list
         ref="list"
         :class="[prefixCls + '-virtual-list', 'small-scroll-y']"
@@ -257,6 +258,9 @@ export default {
         this.emitChange()
       }
       this.$emit('on-visible-change', val)
+    },
+    handlerClick(val) {
+      this.$emit('on-click', val)
     }
   }
 }

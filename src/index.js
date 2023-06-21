@@ -58,6 +58,11 @@ import RdDatePicker from './components/basics/date-picker'
 import RdEchoContainer from './components/business/echo-container'
 import RdFilterList from './components/business/filter-list'
 import RdFilterListSelect from './components/business/filter-list-select'
+// import RdFilterCascader from './components/business/filter-cascader'
+import RdFormDatePicker from './components/business/form-date-picker'
+import RdFormInput from './components/business/form-input'
+import RdFormIndicator from './components/business/form-indicator'
+import RdFormSelectIndicator from './components/business/form-select-indicator'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -138,7 +143,12 @@ const components = [
   ImageGroup,
   Space,
   RdFilterList,
-  RdFilterListSelect
+  RdFilterListSelect,
+  // RdFilterCascader,
+  RdFormDatePicker,
+  RdFormInput,
+  RdFormIndicator,
+  RdFormSelectIndicator
 ]
 const directives = {
   'line-clamp': lineClamp,
