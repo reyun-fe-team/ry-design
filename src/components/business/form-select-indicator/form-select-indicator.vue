@@ -1,6 +1,5 @@
 <template>
   <div :class="classes">
-    指标选择
     <div
       v-for="(item, index) of formData"
       :key="index"
@@ -74,7 +73,7 @@ export default {
         return {
           selectRadio: '',
           indicatorData: {
-            type: 'TYPE_NUM',
+            type: '',
             symbol: '',
             symbolLabel: '',
             ruleType: '',
@@ -146,7 +145,7 @@ export default {
       if (item.selectRadio) {
         this.groupList.forEach(val => {
           if (val.value === item.selectRadio) {
-            this.formData[index].indicatorData.type = val.dataType
+            this.formData[index].indicatorData.type = item.selectRadio
             this.formData[index].indicatorData.dataType = val.dataType
           }
         })

@@ -4,7 +4,7 @@
     <div>
       <div style="display: inline-block">
         多选组 事例：{{ selectMultiple }}
-        <rd-filter-list-select
+        <rd-filter-cascader
           v-model="selectMultiple"
           :input-width="400"
           :width="200"
@@ -14,7 +14,7 @@
           :group-name-list="groupNameList"
           multiple
           save-type="leave-save"
-          label="级联多选"></rd-filter-list-select>
+          label="级联多选"></rd-filter-cascader>
       </div>
     </div>
   </div>
@@ -39,9 +39,9 @@ export default {
     },
     data() {
       let list = []
-      // this.groupList.forEach(item => {
-      //   list = [...list, ...item.children]
-      // })
+      this.groupList.forEach(item => {
+        list = [...list, ...item.children]
+      })
       return list
     }
   },

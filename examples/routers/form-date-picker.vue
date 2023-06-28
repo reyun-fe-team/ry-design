@@ -4,7 +4,7 @@
     <rd-form-date-picker
       v-model="datePickerValue"
       label="数据时间："
-      :clearable="true"
+      :clearable="false"
       :styles="{ width: '240px' }" />
   </main>
 </template>

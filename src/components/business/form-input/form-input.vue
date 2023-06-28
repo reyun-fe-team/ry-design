@@ -1,6 +1,7 @@
 <template>
   <div
     :class="classes"
+    :width="width"
     :style="styles">
     <div
       v-if="label && label.trim()"
@@ -41,6 +42,9 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    width: {
+      type: [Number, String]
     },
     label: {
       type: String,
