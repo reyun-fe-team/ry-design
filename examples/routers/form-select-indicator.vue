@@ -1,7 +1,7 @@
 <template>
   <main>
     <h2 style="margin: 24px 0">rd-form-select-indicator</h2>
-    <formSelectIndicator
+    <rd-form-select-indicator
       v-model="currentData"
       :group-list="groupList"
       :clearable="true"
@@ -11,14 +11,7 @@
 </template>
 
 <script>
-import formSelectIndicator from '@src/components/business/form-select-indicator/form-select-indicator'
 export default {
-  components: {
-    formSelectIndicator
-  },
-  data() {
-    return {}
-  },
   computed: {
     currentData() {
       return {

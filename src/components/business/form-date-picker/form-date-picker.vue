@@ -38,10 +38,6 @@ export default {
       default: () => {
         return {}
       }
-    },
-    clearable: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
