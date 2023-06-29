@@ -139,9 +139,14 @@ export default {
           let newValue = null
           if (!this.isCustom) {
             let { defaultList } = this
-            let values = defaultList
-              .filter(f => !(f.disabled || this.isDisabledItemFun(f)))
-              .map(e => e.value)
+            let values = []
+            if (this.isDynamicEnum) {
+              values = defaultList
+                .filter(f => !(f.disabled || this.isDisabledItemFun(f)))
+                .map(e => e.value)
+            } else {
+              values = defaultList.map(e => e.value)
+            }
             if (values.includes(n)) {
               newValue = n
             } else {
