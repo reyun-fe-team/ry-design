@@ -31,7 +31,7 @@ const Space = {
     // 获取子元素数组
     const children = content.children
     const items = filterEmpty(children)
-    const content$slots = content.slots()
+    const contentSlots = content.slots()
     const contentProps = content.props
 
     // 样式逻辑处理
@@ -99,7 +99,7 @@ const Space = {
       },
       [
         items.map((child, i) => {
-          const shouldRenderSplit = content$slots.split && i > 0
+          const shouldRenderSplit = contentSlots.split && i > 0
           return h(
             'div',
             {
@@ -114,7 +114,7 @@ const Space = {
                     class: `${prefixCls}-item-split`,
                     style: getMarginStyle(false)
                   },
-                  [content$slots.split]
+                  [contentSlots.split]
                 ),
               h(
                 'div',
