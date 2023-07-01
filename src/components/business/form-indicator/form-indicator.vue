@@ -19,7 +19,7 @@
           @mouseenter="hasMouseHoverHead = true"
           @mouseleave="hasMouseHoverHead = false">
           <div
-            v-if="formData && formData.label && formData.label.trim()"
+            v-if="showLabel && formData && formData.label && formData.label.trim()"
             ref="prefixRef"
             :class="prefixCls + '-label'">
             <span :class="prefixCls + '-label-text'">{{ `${formData.label}` }}</span>
@@ -88,6 +88,11 @@ export default {
     placement: {
       type: String,
       default: 'bottom-start'
+    },
+    // 是否显示label
+    showLabel: {
+      type: Boolean,
+      default: true
     },
     value: {
       required: true,
