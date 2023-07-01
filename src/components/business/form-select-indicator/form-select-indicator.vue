@@ -146,12 +146,12 @@ export default {
           this.currentValue.data[index] &&
           !this.currentValue.data[index].symbol
         ) {
-          params.label = label
+          params.label = `${label} :`
           params.dataType = dataType
           params.type = this.currentValue.selectData[index]
           this.currentValue.data[index] = params
         } else {
-          this.currentValue.data[index].label = label
+          this.currentValue.data[index].label = `${label} :`
           this.currentValue.data[index].dataType = dataType
           this.currentValue.data[index].type = this.currentValue.selectData[index]
         }
