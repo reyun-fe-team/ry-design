@@ -221,6 +221,10 @@ const router = new VueRouter({
     {
       path: '/form-input',
       component: resolve => require(['./routers/form-input'], resolve)
+    },
+    {
+      path: '/filter-list-cascader',
+      component: resolve => require(['./routers/filter-list-cascader'], resolve)
     }
   ]
 })

@@ -51,6 +51,7 @@ import DatePicker from './components/basics/date-picker'
 import EchoContainer from './components/business/echo-container'
 import FilterList from './components/business/filter-list'
 import FilterListSelect from './components/business/filter-list-select'
+import FilterLisCascader from './components/business/filter-list-cascader'
 
 import ViewUI from 'view-design'
 
@@ -138,7 +139,8 @@ const components = [
   Empty,
   EchoContainer,
   FilterList,
-  FilterListSelect
+  FilterListSelect,
+  FilterLisCascader
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -213,5 +215,6 @@ export default {
   Empty,
   EchoContainer,
   FilterList,
-  FilterListSelect
+  FilterListSelect,
+  FilterLisCascader
 }
