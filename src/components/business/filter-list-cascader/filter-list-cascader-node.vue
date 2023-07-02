@@ -52,10 +52,6 @@ export default {
       type: [String, Number],
       default: ''
     }
-    // selected: {
-    //   type: Boolean,
-    //   default: false
-    // }
   },
   data() {
     return {
