@@ -13,11 +13,23 @@
     }
   }
 
+  &-content {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    margin-right: 10px;
+  }
+
+  &-icon-delete {
+    cursor: pointer;
+    display: none;
+    margin-left: 10px;
+  }
+
   &-form {
     border: 1px solid #ddd;
     border-radius: 3px;
     display: flex;
-    margin-bottom: 16px;
     align-items: center;
 
     &:hover {
@@ -36,11 +48,6 @@
     }
   }
 
-  &-icon-delete {
-    cursor: pointer;
-    display: none;
-    margin-left: 10px;
-  }
   .rd-filter-list-input {
     padding: 0 4px 0 10px;
     border: none;
@@ -50,7 +57,12 @@
     }
   }
   .rd-form-indicator {
+    display: block;
     border: none;
+
+    .ivu-dropdown {
+      display: block;
+    }
   }
 
   &-add-line {

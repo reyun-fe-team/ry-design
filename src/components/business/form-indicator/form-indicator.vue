@@ -194,6 +194,13 @@ export default {
     },
     isShowClear() {
       return this.selectName.length && this.hasMouseHoverHead && this.showClearIcon
+    },
+    indicatorSelectStyle() {
+      let { width } = this
+      width = `${parseInt(width)}px`
+      return {
+        width: `calc(${width} - 2px)`
+      }
     }
   },
   watch: {

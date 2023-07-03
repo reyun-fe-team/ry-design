@@ -11,6 +11,7 @@
       <div
         v-for="(_, index) in currentValue.data"
         :key="index"
+        :class="prefixCls + '-content'"
         @mouseover="handleMouseOver(index)"
         @mouseleave="handleMouseLeave">
         <div
@@ -34,14 +35,14 @@
             :width="182"
             :styles="{ width: '240px' }"
             @on-change="changeIndicator" />
-          <span
-            v-if="currentValue.data.length > 1 && showDeleteIcon === index"
-            :class="prefixCls + '-icon-delete'">
-            <Icon
-              custom="iconfont ry-icon-guanbi"
-              @click="handlerDelete(index)"></Icon>
-          </span>
         </div>
+        <span
+          v-if="currentValue.data.length > 1 && showDeleteIcon === index"
+          :class="prefixCls + '-icon-delete'">
+          <Icon
+            custom="iconfont ry-icon-guanbi"
+            @click="handlerDelete(index)"></Icon>
+        </span>
       </div>
       <span
         v-if="currentValue.data.length < maxLine"
@@ -146,12 +147,12 @@ export default {
           this.currentValue.data[index] &&
           !this.currentValue.data[index].symbol
         ) {
-          params.label = `${label} :`
+          params.label = label
           params.dataType = dataType
           params.type = this.currentValue.selectData[index]
           this.currentValue.data[index] = params
         } else {
-          this.currentValue.data[index].label = `${label} :`
+          this.currentValue.data[index].label = label
           this.currentValue.data[index].dataType = dataType
           this.currentValue.data[index].type = this.currentValue.selectData[index]
         }
