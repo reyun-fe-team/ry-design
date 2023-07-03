@@ -13,7 +13,6 @@
         <div
           ref="indicator-select"
           class="indicator-select"
-          :style="indicatorSelectStyle"
           :class="[prefixCls + '-select', { active: visible }]"
           @click="handlerClick"
           @mouseenter="hasMouseHoverHead = true"
@@ -22,7 +21,7 @@
             v-if="showLabel && formData && formData.label && formData.label.trim()"
             ref="prefixRef"
             :class="prefixCls + '-label'">
-            <span :class="prefixCls + '-label-text'">{{ `${formData.label}` }}</span>
+            <span :class="prefixCls + '-label-text'">{{ `${formData.label} :` }}</span>
           </div>
           <div :class="prefixCls + '-right'">
             <span
@@ -102,11 +101,6 @@ export default {
     placeholder: {
       type: String,
       default: '请选择'
-    },
-    // 宽度
-    width: {
-      type: [String, Number],
-      default: '184'
     },
     // 步长
     step: {
@@ -200,13 +194,6 @@ export default {
     },
     isShowClear() {
       return this.selectName.length && this.hasMouseHoverHead && this.showClearIcon
-    },
-    indicatorSelectStyle() {
-      let { width } = this
-      width = `${parseInt(width)}px`
-      return {
-        width: `calc(${width} - 2px)`
-      }
     }
   },
   watch: {
