@@ -51,6 +51,13 @@ export default {
       return [`${this.prefixCls}`]
     }
   },
-  watch: {}
+  watch: {
+    value: {
+      deep: true,
+      handler(val) {
+        this.time = val
+      }
+    }
+  }
 }
 </script>
