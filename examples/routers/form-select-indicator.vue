@@ -2,8 +2,8 @@
   <main>
     <h2 style="margin: 24px 0">rd-form-select-indicator</h2>
     <rd-form-select-indicator
-      v-model="currentData"
-      :group-list="groupList"
+      v-model="dataFiltering"
+      :data-list="groupList"
       :clearable="true"
       :width="240"
       :styles="{ width: '240px' }" />
@@ -12,22 +12,37 @@
 
 <script>
 export default {
-  computed: {
-    currentData() {
-      return {
-        selectRadio: '',
-        indicatorData: {
-          type: 'TYPE_NUM',
-          symbol: '',
-          symbolLabel: '',
-          ruleType: '',
-          startValue: 0,
-          endValue: 0,
-          value: 0,
-          dataType: 'TYPE_NUM'
-        }
+  data() {
+    return {
+      dataFiltering: {
+        data: [
+          {
+            label: '花费',
+            type: 'charge',
+            symbol: '>',
+            symbolLabel: '大于',
+            ruleType: '',
+            startValue: 0,
+            endValue: 0,
+            value: 20,
+            dataType: 'TYPE_NUM'
+          },
+          {
+            type: 'shows',
+            symbol: '<=',
+            symbolLabel: '小于等于',
+            ruleType: '封面曝光数',
+            startValue: 0,
+            endValue: 0,
+            value: 88,
+            dataType: 'TYPE_NUM'
+          }
+        ],
+        selectData: ['charge', 'shows']
       }
-    },
+    }
+  },
+  computed: {
     groupList() {
       return [
         {
