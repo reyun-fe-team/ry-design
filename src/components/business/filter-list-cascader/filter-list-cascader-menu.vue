@@ -4,7 +4,7 @@
       <filter-list-cascader-node
         v-for="(node, index) in nodes"
         :key="node.value + index"
-        :selected="node.value === currentActivePath"
+        :selected="node.value === activePath && showSeleted"
         :node="node"
         @handle-expand="handleExpand"
         @check-change="checkChange"></filter-list-cascader-node>
@@ -24,15 +24,15 @@ export default {
       type: Array,
       required: true
     },
-    activePath: {
-      type: [String, Number],
-      default: ''
+    showSeleted: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       prefixCls,
-      currentActivePath: this.activePath
+      activePath: ''
     }
   },
   computed: {
@@ -40,15 +40,9 @@ export default {
       return [`${prefixCls}`]
     }
   },
-  watch: {
-    activePath(val) {
-      this.currentActivePath = val
-    }
-  },
-  mounted() {},
   methods: {
     handleExpand(val) {
-      this.currentActivePath = val.value
+      this.activePath = val.value
       this.$emit('handle-expand', val)
     },
     checkChange(val) {

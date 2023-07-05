@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>filter-list-cascader</h2>
+    <Button @click="fu">赋予</Button>
     <section>
       <rd-filter-list-cascader
         v-model="selectMultiple"
@@ -9,6 +10,7 @@
         :height="320"
         filterable
         multiple
+        save-type="leave-save"
         show-select-option></rd-filter-list-cascader>
     </section>
   </div>
@@ -19,7 +21,6 @@ export default {
   data() {
     return {
       selectMultiple: [],
-      groupList: [],
       options: [
         {
           value: 1,
@@ -60,7 +61,7 @@ export default {
           children: [
             {
               value: '2-1',
-              label: '陕西'
+              label: '浙江1'
               // children: [
               //   { value: 19, label: '西安' },
               //   { value: 20, label: '延安' }
@@ -79,58 +80,11 @@ export default {
       ]
     }
   },
-  computed: {
-    groupNameList() {
-      let params = {}
-      this.groupList.forEach(item => {
-        const key = item.children[0].value
-        params[key] = item.label
-      })
-      return params
-    },
-    data() {
-      let list = []
-      // this.groupList.forEach(item => {
-      //   list = [...list, ...item.children]
-      // })
-      return list
-    }
-  },
-  mounted() {
-    for (let i = 0; i < 3; i++) {
-      let children = []
-      for (let j = 0; j < 20; j++) {
-        const value = `${i.toString(36)}${j}`
-        children.push({
-          value: `${i + 1}-${value}-value`,
-          label: `${i + 1}-${value} (beijin-description)`,
-          newLabel: `${i + 1}-${value}`,
-          disabled: [2, 4, 6, 7].includes(j) ? true : false,
-          description: 'beijin-description',
-          src: 'https://web.adsdesk.cn/img/lpf.f19b1cfc.png'
-        })
-      }
-      this.groupList.push({
-        label: i + 1 + '热云数据热云数据热云数据热云数据热云数据热云数据',
-        children
-      })
-    }
-  },
   methods: {
-    handleSubmit(name) {
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          this.$Message.success('Success!')
-        } else {
-          this.$Message.error('Fail!')
-        }
-      })
-    },
-    handleReset(name) {
-      this.$refs[name].resetFields()
-    },
-    labelMethod(data) {
-      return data.newLabel
+    fu() {
+      setTimeout(() => {
+        this.selectMultiple = ['1-1', '1-2', '1-3', '2-1']
+      }, 2000)
     }
   }
 }

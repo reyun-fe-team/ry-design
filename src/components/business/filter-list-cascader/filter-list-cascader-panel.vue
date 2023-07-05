@@ -3,7 +3,7 @@
     :class="classes"
     :style="styles">
     <filter-list-cascader-menu
-      :active-path="activePath"
+      show-seleted
       :nodes="menus"
       @handle-expand="handleExpand"
       @check-change="checkChange($event, 0)"></filter-list-cascader-menu>
@@ -18,7 +18,7 @@
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-cascader-panel'
 import filterListCascaderMenu from './filter-list-cascader-menu'
-
+import { deepCopy } from '@src/util/assist'
 export default {
   name: prefixCls,
   components: { filterListCascaderMenu },
@@ -47,8 +47,7 @@ export default {
       prefixCls,
       current: this.value,
       menus: [],
-      selectedMenus: [],
-      activePath: ''
+      selectedMenus: []
     }
   },
   computed: {
@@ -57,11 +56,17 @@ export default {
     }
   },
   watch: {
-    data() {
-      this.init()
+    data(val, oldVal) {
+      if (val && oldVal && JSON.stringify(val) !== JSON.stringify(oldVal)) {
+        this.init()
+        this.selectedMenus = []
+      }
     },
-    value(val) {
-      this.current = val
+    value(val, oldVal) {
+      if (val && oldVal && JSON.stringify(val) !== JSON.stringify(oldVal)) {
+        this.current = val
+        this.init()
+      }
     },
     current(val) {
       this.$emit('input', val)
@@ -72,16 +77,67 @@ export default {
   },
   methods: {
     init() {
-      this.menus = this.data
-      this.selectedMenus = []
+      let _data = deepCopy(this.data)
+      this.menus = this.getNodes(_data)
+      this.selectedMenus.forEach(val => {
+        val.checked = this.current.includes(val.value)
+      })
+    },
+    getNodes(data) {
+      const { current } = this
+      const list = data.map(option => {
+        let { value, label, children = [] } = option
+        let checked = false
+        if (current.includes(value)) {
+          checked = true
+        } else if (children && children.length) {
+          const a = children.every(val => {
+            return current.includes(val.value)
+          })
+          if (a) {
+            checked = true
+          }
+        }
+        if (children && children.length) {
+          children = this.getNodes(children)
+        }
+        return {
+          value,
+          label,
+          checked,
+          children
+        }
+      })
+
+      return list
     },
     checkChange({ data, selected }, index) {
       if (index === 0) {
         const ids = this.menus.find(val => val.value === data.value).children.map(val => val.value)
+        this.menus.forEach(val => {
+          if (val.value === data.value) {
+            val.checked = selected
+            if (val.children) {
+              val.children.forEach(item => {
+                item.checked = val.checked
+              })
+            }
+          }
+        })
         ids.forEach(val => {
           this.doCheck(selected, val)
         })
       } else {
+        this.menus.forEach(item => {
+          if (item.children.some(val => val.value === data.value)) {
+            item.children.forEach(val => {
+              if (val.value === data.value) {
+                val.checked = selected
+              }
+            })
+            item.checked = item.children.every(val => val.checked)
+          }
+        })
         this.doCheck(selected, data.value)
       }
     },
@@ -93,9 +149,8 @@ export default {
       }
     },
     handleExpand(data) {
-      const item = this.data.find(val => val.value === data.value)
+      const item = this.menus.find(val => val.value === data.value)
       if (item) {
-        this.activePath = item.value
         this.selectedMenus = item.children
       }
     }

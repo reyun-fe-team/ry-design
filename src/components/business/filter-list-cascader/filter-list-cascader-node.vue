@@ -6,7 +6,7 @@
     <Checkbox
       :disabled="node.disabled"
       style="margin: 0 0 0 10px"
-      :value="current.includes(node.value)"
+      :value="node.checked"
       @on-change="handleMultiCheckChange"></Checkbox>
     <div :class="prefixCls + '-contain'">
       <slot
@@ -51,6 +51,10 @@ export default {
     activePath: {
       type: [String, Number],
       default: ''
+    },
+    selected: {
+      type: Boolean,
+      debugger: false
     }
   },
   data() {
@@ -75,18 +79,15 @@ export default {
     },
     getLabel() {
       return this.labelMethod(this.node)
-    },
-    selected() {
-      return this.current.includes(this.node.value)
     }
   },
   methods: {
     handleExpand() {
       this.$emit('handle-expand', this.node)
     },
-    handleMultiCheckChange(val) {
+    handleMultiCheckChange(selected) {
       const { node } = this
-      this.$emit('check-change', { data: node, selected: val })
+      this.$emit('check-change', { data: node, selected })
     }
   }
 }

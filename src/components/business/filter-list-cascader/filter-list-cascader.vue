@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ filterData }}
     <rd-filter-list
       ref="filter-list"
       v-model="current"
@@ -134,9 +135,11 @@ export default {
     filterData() {
       return this.data.reduce((list, item) => {
         const _item = JSON.parse(JSON.stringify(item))
-        const end = _item.children.filter(item => this.filterMethod(item, this.query))
-        _item.children = end && end.length ? end : []
-        if (_item.children && _item.children.length) {
+        const end = _item.children
+          ? _item.children.filter(item => this.filterMethod(item, this.query))
+          : []
+        if (end && end.length) {
+          _item.children = end
           list.push(_item)
         }
         return list
