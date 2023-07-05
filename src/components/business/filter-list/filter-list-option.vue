@@ -24,7 +24,7 @@
         v-for="item in data"
         :key="item.value"
         :class="prefixCls + '-body-item'">
-        <p :title="item.label">{{ item.label }}</p>
+        <p v-tooltip="{ content: item.label, delay: 1000 }">{{ item.label }}</p>
         <rd-icon
           color="rgba(87, 91, 101, 1)"
           type="ry-icon-text-delete"

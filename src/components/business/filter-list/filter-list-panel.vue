@@ -5,7 +5,6 @@
       :placement="placement"
       :trigger="currentTrigger"
       :transfer="transfer"
-      @click.native.stop
       @on-visible-change="handleVisibleChange">
       <slot></slot>
       <DropdownMenu slot="list">
