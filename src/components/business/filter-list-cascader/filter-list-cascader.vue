@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ filterData }}
     <rd-filter-list
       ref="filter-list"
       v-model="current"
