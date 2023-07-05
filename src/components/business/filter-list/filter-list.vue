@@ -4,6 +4,7 @@
       ref="list-panel"
       :trigger="trigger"
       :disabled="disabled"
+      :transfer="transfer"
       @on-visible-change="handleVisibleChange">
       <filter-list-input
         :value="inputData"
@@ -28,8 +29,7 @@
             :class="prefixCls + '-body-panel-search'">
             <Input
               v-model="queryValue"
-              :placeholder="filterPlaceholder"
-              @on-change="filterChange">
+              :placeholder="filterPlaceholder">
               <Icon
                 slot="prefix"
                 type="ios-search" />
@@ -144,7 +144,8 @@ export default {
     },
     showImage: Boolean,
     showDescription: Boolean,
-    disabled: Boolean
+    disabled: Boolean,
+    transfer: Boolean
   },
   data() {
     return {
@@ -173,10 +174,18 @@ export default {
     },
     inputData() {
       const data = this.realData ? this.realData : this.value
-      return this.data.filter(val => data.includes(val.value))
+      return data
+        .map(item => {
+          return this.data.find(val => val.value === item)
+        })
+        .filter(val => val)
     },
     optionData() {
-      return this.data.filter(val => this.current.includes(val.value))
+      return this.current
+        .map(item => {
+          return this.data.find(val => val.value === item)
+        })
+        .filter(val => val)
     },
     inputStyles() {
       let style = {}
@@ -226,6 +235,9 @@ export default {
     },
     handleVisibleChange(val) {
       this.iconState = val
+      if (!val) {
+        this.queryValue = ''
+      }
       if (val && this.showSelectOption) {
         this.$nextTick(() => {
           this.refHeight = this.$refs['filter-list-option'].getHeaderHeight()
@@ -233,7 +245,6 @@ export default {
       }
       this.$emit('on-visible-change', val)
     },
-    filterChange() {},
     onClearSearch() {
       this.queryValue = ''
     },

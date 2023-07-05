@@ -233,6 +233,10 @@ const router = new VueRouter({
     {
       path: '/form-select-indicator',
       component: resolve => require(['./routers/form-select-indicator'], resolve)
+    },
+    {
+      path: '/filter-list-cascader',
+      component: resolve => require(['./routers/filter-list-cascader'], resolve)
     }
   ]
 })

@@ -1,15 +1,15 @@
 <template>
   <div>
+    {{ filterData }}
     <rd-filter-list
       ref="filter-list"
       v-model="current"
       :real-data="realData"
-      :data="data"
+      :data="optionData"
       :label="label"
       :trigger="trigger"
       :query="query"
       :not-found-text="notFoundText"
-      :not-found="!filterData.length"
       :input-width="inputWidth"
       :input-height="inputHeight"
       :option-width="optionWidth"
@@ -26,37 +26,28 @@
       :filter-placeholder="filterPlaceholder"
       :disabled="disabled"
       :transfer="transfer"
+      :not-found="!filterData.length"
       @query-change="queryChange"
-      @on-visible-change="handleVisibleChange"
-      @on-click="handlerClick">
-      <rd-virtual-list
-        ref="list"
-        :class="[prefixCls + '-virtual-list', 'small-scroll-y']"
-        :style="mainStyles"
-        data-key="uid"
-        :data-sources="getLine"
-        :extra-props="{ filterData, groupNameList, current, multiple, inputHeight, labelMethod }"
-        :data-component="virtualComponent"
-        v-on="$listeners"
-        @on-click="handleClick"></rd-virtual-list>
+      @on-visible-change="handleVisibleChange">
       <template slot="search-operate">
         <slot name="search-operate"></slot>
       </template>
-      <!-- <template slot="select-item">
-        <slot name="select-item"></slot>
-      </template> -->
+      <filter-list-cascader-panel
+        v-model="current"
+        :styles="mainStyles"
+        :data="filterData"></filter-list-cascader-panel>
     </rd-filter-list>
   </div>
 </template>
 
 <script>
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'filter-list-select'
+const prefixCls = prefix + 'filter-list-cascader'
 
 import _cloneDeep from 'lodash/cloneDeep'
 import { oneOf } from '@src/util/assist.js'
 import Emitter from '@src/mixins/emitter'
-import virtualComponent from './filter-list-select-virtual.vue'
+import filterListCascaderPanel from './filter-list-cascader-panel'
 
 const checkValuesNotEqual = (value, values) => {
   const strValue = JSON.stringify(value)
@@ -65,6 +56,7 @@ const checkValuesNotEqual = (value, values) => {
 }
 export default {
   name: prefixCls,
+  components: { filterListCascaderPanel },
   mixins: [Emitter],
   props: {
     data: {
@@ -83,12 +75,6 @@ export default {
     multiple: {
       type: Boolean,
       default: false
-    },
-    groupNameList: {
-      type: Object,
-      default: () => {
-        return {}
-      }
     },
     notFoundText: String,
     filterable: Boolean,
@@ -142,13 +128,22 @@ export default {
     return {
       prefixCls,
       current: [],
-      query: '',
-      virtualComponent
+      query: ''
     }
   },
   computed: {
     filterData() {
-      return this.data.filter(item => this.filterMethod(item, this.query))
+      return this.data.reduce((list, item) => {
+        const _item = JSON.parse(JSON.stringify(item))
+        const end = _item.children
+          ? _item.children.filter(item => this.filterMethod(item, this.query))
+          : []
+        if (end && end.length) {
+          _item.children = end
+          list.push(_item)
+        }
+        return list
+      }, [])
     },
     realData() {
       let current = Array.isArray(this.value) ? this.value : [this.value]
@@ -174,11 +169,13 @@ export default {
       // 其实程序做到这一步就可以监听到数据的变化了，再用JSON.parse做数据还原方便后边数据处理。
       return JSON.parse(JSON.stringify(this.current))
     },
-    getLine() {
-      return this.filterData.map((item, idx) => ({
-        uid: `key_${idx}`,
-        ...item
-      }))
+    optionData() {
+      return this.data.reduce((list, val) => {
+        if (val.children && val.children.length) {
+          list = [...list, ...val.children]
+        }
+        return list
+      }, [])
     }
   },
   watch: {
@@ -190,9 +187,6 @@ export default {
           const data = this.getInitialValue()
           this.current = data
         })
-        // if (!this.multiple) {
-        //   this.dispatch('FormItem', 'on-form-change', this.publicValue)
-        // }
       }
     },
     pullCurrentWatch(now, before) {
@@ -258,9 +252,6 @@ export default {
         this.emitChange()
       }
       this.$emit('on-visible-change', val)
-    },
-    handlerClick(val) {
-      this.$emit('on-click', val)
     }
   }
 }

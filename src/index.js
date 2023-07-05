@@ -56,6 +56,7 @@ import FormDatePicker from './components/business/form-date-picker'
 import FormInput from './components/business/form-input'
 import FormIndicator from './components/business/form-indicator'
 import FormSelectIndicator from './components/business/form-select-indicator'
+import FilterLisCascader from './components/business/filter-list-cascader'
 
 import ViewUI from 'view-design'
 
@@ -148,7 +149,8 @@ const components = [
   FormDatePicker,
   FormInput,
   FormIndicator,
-  FormSelectIndicator
+  FormSelectIndicator,
+  FilterLisCascader
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -223,5 +225,6 @@ export default {
   Empty,
   EchoContainer,
   FilterList,
-  FilterListSelect
+  FilterListSelect,
+  FilterLisCascader
 }
