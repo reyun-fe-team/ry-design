@@ -13,13 +13,13 @@
     </div>
     <section :class="prefixCls + '-body'">
       <div
-        :class="prefixCls + '-body-text'"
-        :title="text">
+        v-tooltip="{ content: text, delay: 1000 }"
+        :class="prefixCls + '-body-text'">
         {{ text }}
       </div>
       <p
         v-if="showDescription && description"
-        :title="description"
+        v-tooltip="{ content: description, delay: 1000 }"
         :class="prefixCls + '-body-description'">
         {{ description }}
       </p>
