@@ -40,7 +40,7 @@
           v-if="currentValue.data.length > 1 && showDeleteIcon === index"
           :class="prefixCls + '-icon-delete'">
           <Icon
-            custom="iconfont ry-icon-guanbi"
+            custom="iconfont ry-icon-trash-outline"
             @click="handlerDelete(index)"></Icon>
         </span>
       </div>
