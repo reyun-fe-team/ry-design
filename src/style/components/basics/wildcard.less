@@ -64,11 +64,10 @@
   &-list {
     display: flex;
     justify-content: space-between;
-    height: 30px;
-    overflow-y: hidden;
 
     &-name-rule {
       display: flex;
+      margin-right: 100px;
       flex: 1;
       justify-content: flex-start;
 
@@ -85,41 +84,23 @@
       }
 
       &-item {
-        padding: 5px 18px;
-        margin-right: 4px;
-        margin-bottom: 8px;
+        padding-right: 16px;
+        padding-bottom: 16px;
         font-style: normal;
         line-height: 12px;
-        color: #999;
+        color: #151b39;
         cursor: pointer;
-        background-color: #f7f7f7;
-        border-radius: 3px;
         user-select: none;
 
         &-active {
-          color: #3989fa;
-          background-color: rgba(57, 137, 250, 10%);
+          color: #999;
         }
 
         &:hover {
           color: #3989fa !important;
         }
       }
-
-      &-action {
-        width: 28px;
-        flex: 0 0 28px;
-        height: 16px;
-        margin-right: 15px;
-        font-size: 12px;
-        line-height: 16px;
-        color: #3989fa;
-        cursor: pointer;
-        user-select: none;
-      }
     }
-
-    
 
     &-name-save {
       .ivu-checkbox {
@@ -132,9 +113,5 @@
         vertical-align: top;
       }
     }
-  }
-
-  &-show-more {
-    height: auto;
   }
 }
