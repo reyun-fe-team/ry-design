@@ -1,0 +1,46 @@
+@form-input: ~"@{css-prefix}form-input";
+
+.@{form-input} {
+  display: flex;
+  padding: 0 10px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  align-items: center;
+
+  &:hover {
+    border-color: @selected-color;
+  }
+
+  &-label {
+    line-height: 30px;
+    padding-right: 5px;
+  }
+
+  &-body {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+
+    &-placeholder {
+      padding: 7px 0;
+      overflow: hidden;
+      color: #b1b1b1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &-operate {
+    min-width: 16px;
+    margin-left: 8px;
+  }
+
+  .ivu-input {
+    padding: 0;
+    color: #151b39;
+    height: 30px;
+    line-height: 30px;
+  }
+}

@@ -2,102 +2,113 @@
 
 .@{prefix-container} {
   &-wrapper {
-    display    : flex;
-    width      : 100%;
+    display: flex;
+    width: 100%;
     line-height: normal;
   }
 
   &-group {
     &-prepend {
-      white-space               : nowrap;
-      vertical-align            : middle;
-      padding                   : 0 10px;
-      font-weight               : 400;
-      color                     : #151B39;
-      text-align                : center;
-      background-color          : @background-light-gray;
-      border                    : 1px solid @border-color-base;
-      border-right              : 0;
-      border-radius             : 4px;
-      display                   : inline-block;
+      display: inline-block;
+      height: 32px;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 32px;
+      color: #151b39;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      background-color: @background-light-gray;
+      border: 1px solid @border-color-base;
+      border-radius: 4px;
+      border-right: 0;
       border-bottom-right-radius: 0;
-      border-top-right-radius   : 0;
-      line-height               : 32px;
-      height                    : 32px;
-      font-size                 : 12px;
+      border-top-right-radius: 0;
 
       // 内置 select
       .ivu-select {
-        margin: -4px -10px 0 -10px;
+        margin: -4px -10px 0;
       }
 
       .ivu-select-selection {
+        margin: -1px;
         background-color: inherit;
-        margin          : -1px;
-        border          : 1px solid transparent;
-        box-shadow      : none
+        border: 1px solid transparent;
+        box-shadow: none
       }
 
       // 内置 Button
       .ivu-btn {
-        border-color    : transparent;
+        margin: -6px -8px 0 -10px;
+        color: inherit;
         background-color: transparent;
-        color           : inherit;
-        margin          : -6px -8px 0 -10px;
-        box-shadow      : none
+        border-color: transparent;
+        box-shadow: none
       }
     }
+
     &-append {
-      white-space              : nowrap;
-      vertical-align           : middle;
-      padding                  : 0 8px;
-      font-weight              : 400;
-      color                    : #151B39;
-      text-align               : center;
-      background-color         : @background-light-gray;
-      border                   : 1px solid @border-color-base;
-      border-left              : 0;
-      border-radius            : 4px;
-      border-left              : 0;
-      display                  : inline-block;
+      display: inline-block;
+      height: 32px;
+      padding: 0 8px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 32px;
+      color: #151b39;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      background-color: @background-light-gray;
+      border: 1px solid @border-color-base;
+      border-radius: 4px;
+      border-left: 0;
       border-bottom-left-radius: 0;
-      border-top-left-radius   : 0;
-      line-height              : 32px;
-      height                   : 32px;
-      font-size                : 12px;
+      border-top-left-radius: 0;
 
       // 内置 select
       .ivu-select {
-        margin: -4px -10px 0 -10px;
+        margin: -4px -10px 0;
       }
 
       .ivu-select-selection {
+        margin: -1px;
         background-color: inherit;
-        margin          : -1px;
-        border          : 1px solid transparent;
-        box-shadow      : none
+        border: 1px solid transparent;
+        box-shadow: none
       }
 
       // 内置 Button
       .ivu-btn {
-        border-color    : transparent;
+        margin: -6px -8px 0 -10px;
+        color: inherit;
         background-color: transparent;
-        color           : inherit;
-        margin          : -6px -8px 0 -10px;
-        box-shadow      : none
+        border-color: transparent;
+        box-shadow: none
       }
     }
   }
-  &-body{
-    &-prepend{
-      .ivu-input-number,.ivu-select-selection,.ivu-input{
-        border-top-left-radius:     0;
-        border-bottom-left-radius:  0;
+
+  &-body {
+    &-prepend {
+      .ivu-input-number,
+      .ivu-select-selection,
+      .ivu-input {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .rd-filter-list-input {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
       }
     }
-    &-append{
-      .ivu-input-number,.ivu-select-selection,.ivu-input{
-        border-top-right-radius:    0;
+
+    &-append {
+      .ivu-input-number,
+      .ivu-select-selection,
+      .ivu-input {
+        border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
     }

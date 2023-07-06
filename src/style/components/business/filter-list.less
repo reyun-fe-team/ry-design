@@ -1,0 +1,196 @@
+@filter-list: ~"@{css-prefix}filter-list";
+@filter-list-input: ~"@{css-prefix}filter-list-input";
+@filter-list-panel: ~"@{css-prefix}filter-list-panel";
+@filter-list-option: ~"@{css-prefix}filter-list-option";
+@filter-list-describe: ~"@{css-prefix}filter-list-describe";
+
+.@{filter-list} {
+  &-body {
+    display: flex;
+
+    &-panel {
+      border-right: 1px solid #eee;
+     
+
+      &-search {
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+
+        .ivu-input-wrapper {
+          flex: 1
+        }
+
+        .ivu-input {
+          height: 40px;
+          border: none;
+          outline: none;
+          // 需要强制覆盖掉iview的form-item产生的样式
+          box-shadow: none !important;
+        }
+
+        .ivu-input-prefix i,
+        .ivu-input-suffix i {
+          line-height: 40px;
+        }
+
+        &-clear {
+          cursor: pointer;
+        }
+      }
+    }
+
+    &-not-found {
+      line-height: 32px;
+      color: #c5c8ce;
+      text-align: center;
+    }
+  }
+}
+.@{filter-list-input} {
+  display: flex;
+  padding: 0 10px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  align-items: center;
+  transition: color @transition-time @ease-in-out;
+
+  &-hover:hover {
+    border-color: @selected-color;
+    .@{filter-list-input}-operate-clearable {
+      .@{filter-list-input}-operate-clear {
+        display: inline-block;
+      }
+      .@{filter-list-input}-operate-arrow {
+        display: none;
+      }
+    }
+  }
+
+  &-label {
+    padding-right: 5px;
+  }
+
+  &-body {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+
+    &-placeholder {
+      padding: 7px 0;
+      overflow: hidden;
+      color: #b1b1b1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &-echo {
+      padding: 7px 0;
+    }
+  }
+
+  &-operate {
+    min-width: 16px;
+    margin-left: 8px;
+
+    &-arrow {
+      color: #818181;
+    }
+
+    &-clear {
+      display: none;
+      color: #757a8a;
+    }
+  }
+}
+// disabled
+.@{filter-list-input}-disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  background-color: #f3f3f3;
+  opacity: 1;
+  .@{filter-list-input}-operate-arrow,.@{filter-list-input}-body-placeholder {
+    color: #ccc
+  }
+}
+
+.@{filter-list-panel} {
+  .ivu-select-dropdown {
+    padding: 0
+  }
+}
+.@{filter-list-option} {
+  &-header {
+    display: flex;
+    height: 40px;
+    padding: 0 10px;
+    background: #f9f9f9;
+    border-bottom: 1px solid #e8e8e8;
+    align-items: center;
+    justify-content: space-between;
+
+    &-operate {
+      color: @selected-color;
+      cursor: pointer;
+    }
+  }
+
+  &-body {
+    overflow-y: auto;
+
+    &-item {
+      display: flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 10px;
+      text-align: left;
+      transition: background @transition-time @ease-in-out;
+
+      &:hover {
+        background: #f3f3f3;
+      }
+
+      p {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    &-clear {
+      cursor: pointer;
+    }
+  }
+}
+.@{filter-list-describe} {
+  display: flex;
+  align-items: center;
+  padding: 4px 10px;
+
+  &-image {
+    margin-right: 10px;
+  }
+
+  &-body {
+    flex: 1;
+    overflow: hidden;
+    line-height: normal;
+
+    &-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &-description {
+      margin-top: 3px;
+      overflow: hidden;
+      color: rgba(153, 153, 153, 100%);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

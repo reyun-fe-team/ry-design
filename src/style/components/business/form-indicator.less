@@ -1,0 +1,109 @@
+@form-indicator: ~"@{css-prefix}form-indicator";
+
+.@{form-indicator} {
+  display: block;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+
+  .ivu-dropdown {
+    display: block;
+  }
+
+  &-transfer {
+    max-height: 240px;
+    margin: 3px 0;
+    padding: 0;
+  }
+
+  &-select {
+    position: relative;
+    display: flex;
+    height: 32px;
+    cursor: pointer;
+    background: @white;
+    border-radius: 3px;
+    box-sizing: border-box;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      border-color: rgba(58, 136, 250, 65%);
+    }
+
+    &.active {
+      border-color: @link-color;
+      outline: 0;
+    }
+
+    span {
+      font-size: 12px;
+      color: #151b39;
+
+      &.ivu-select-placeholder {
+        color: #b8b9bb;
+      }
+
+      &.ivu-select-selected-value {
+        width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .ivu-select-arrow {
+      &.visble {
+        display: inline-block;
+        transform: translateY(-50%) rotate(180deg);
+      }
+    }
+  }
+
+  &:hover {
+    border-color: @selected-color;
+  }
+
+  &-label {
+    line-height: 32px;
+    &-text {
+      padding: 0 10px;
+    }
+  }
+
+  &-right {
+    flex: 1;
+  }
+
+  &-body {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+
+    &-placeholder {
+      padding: 7px 0;
+      overflow: hidden;
+      color: #b1b1b1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &-operate {
+    min-width: 16px;
+    margin-left: 8px;
+  }
+
+  .ivu-input {
+    padding: 0;
+    color: #151b39;
+    height: 34px;
+    line-height: 34px;
+    border: none;
+  }
+
+  .rd-indicator-select {
+    border: none;
+  }
+}
