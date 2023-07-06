@@ -1,14 +1,12 @@
 <template>
   <div :class="classes">
-    <div :class="prefixCls + '-list'">
-      <filter-list-cascader-node
-        v-for="(node, index) in nodes"
-        :key="node.value + index"
-        :selected="node.value === activePath && showSeleted"
-        :node="node"
-        @handle-expand="handleExpand"
-        @check-change="checkChange"></filter-list-cascader-node>
-    </div>
+    <filter-list-cascader-node
+      v-for="(node, index) in nodes"
+      :key="node.value + '-' + index"
+      :selected="node.value === activePath && showSeleted"
+      :node="node"
+      @handle-expand="handleExpand"
+      @check-change="checkChange"></filter-list-cascader-node>
   </div>
 </template>
 
@@ -37,7 +35,7 @@ export default {
   },
   computed: {
     classes() {
-      return [`${prefixCls}`]
+      return [`${prefixCls}`, 'small-scroll-y']
     }
   },
   methods: {
