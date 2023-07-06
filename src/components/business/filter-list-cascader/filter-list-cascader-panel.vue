@@ -1,17 +1,17 @@
 <template>
-  <div
-    :class="classes"
-    :style="styles">
-    <filter-list-cascader-menu
-      show-seleted
-      :nodes="menus"
-      @handle-expand="handleExpand"
-      @check-change="checkChange($event, 0)"></filter-list-cascader-menu>
-    <filter-list-cascader-menu
-      v-show="selectedMenus.length"
-      :nodes="selectedMenus"
-      @check-change="checkChange($event, 1)"></filter-list-cascader-menu>
-  </div>
+    <div
+      :class="classes"
+      :style="styles">
+      <filter-list-cascader-menu
+        show-seleted
+        :nodes="menus"
+        @handle-expand="handleExpand"
+        @check-change="checkChange($event, 0)"></filter-list-cascader-menu>
+      <filter-list-cascader-menu
+        v-show="selectedMenus.length"
+        :nodes="selectedMenus"
+        @check-change="checkChange($event, 1)"></filter-list-cascader-menu>
+    </div>
 </template>
 
 <script>
@@ -79,6 +79,7 @@ export default {
     init() {
       let _data = deepCopy(this.data)
       this.menus = this.getNodes(_data)
+
       this.selectedMenus.forEach(val => {
         val.checked = this.current.includes(val.value)
       })
@@ -90,7 +91,7 @@ export default {
         let checked = false
         if (current.includes(value)) {
           checked = true
-        } else if (children && children.length) {
+        } else if (children.length) {
           const a = children.every(val => {
             return current.includes(val.value)
           })
@@ -98,13 +99,15 @@ export default {
             checked = true
           }
         }
-        if (children && children.length) {
+        if (children.length) {
           children = this.getNodes(children)
         }
+        let indeterminate = !children.every(val => val.checked) && children.some(val => val.checked)
         return {
           value,
           label,
           checked,
+          indeterminate,
           children
         }
       })
@@ -117,18 +120,23 @@ export default {
         this.menus.forEach(val => {
           if (val.value === data.value) {
             val.checked = selected
+
             if (val.children) {
               val.children.forEach(item => {
                 item.checked = val.checked
               })
+              val.indeterminate = false
             }
           }
         })
         ids.forEach(val => {
           this.doCheck(selected, val)
         })
+        this.selectedMenus.forEach(val => {
+          val.checked = this.current.includes(val.value)
+        })
       } else {
-        this.menus.forEach(item => {
+        this.menus.forEach((item, index) => {
           if (item.children.some(val => val.value === data.value)) {
             item.children.forEach(val => {
               if (val.value === data.value) {
@@ -136,9 +144,17 @@ export default {
               }
             })
             item.checked = item.children.every(val => val.checked)
+
+            item.indeterminate =
+              !item.children.every(val => val.checked) && item.children.some(val => val.checked)
           }
+          // 需要$set强制更新
+          this.$set(this.menus, index, item)
         })
         this.doCheck(selected, data.value)
+        this.selectedMenus.forEach(val => {
+          val.checked = this.current.includes(val.value)
+        })
       }
     },
     doCheck(selected, value) {

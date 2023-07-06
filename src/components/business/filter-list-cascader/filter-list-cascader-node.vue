@@ -7,6 +7,7 @@
       :disabled="node.disabled"
       style="margin: 0 0 0 10px"
       :value="node.checked"
+      :indeterminate="node.indeterminate"
       @on-change="handleMultiCheckChange"></Checkbox>
     <div :class="prefixCls + '-contain'">
       <slot

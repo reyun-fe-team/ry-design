@@ -477,7 +477,7 @@ export default {
   methods: {
     fu() {
       setTimeout(() => {
-        this.selectMultiple = ['1-1', '1-2', '1-3', '2-1']
+        this.selectMultiple = [3, 6, 9, 30]
       }, 2000)
     }
   }
