@@ -19,6 +19,7 @@
         <!-- 多选 -->
         <template v-if="current.length === 1">
           <rd-filter-list-describe
+            :key="uuid"
             style="width: 100%; padding: 0"
             :height="current[0].description || current[0].src ? 56 : 32"
             :src="current[0].src"
@@ -56,7 +57,7 @@
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-input'
 import rdFilterListDescribe from './filter-list-describe'
-
+import { getKey } from '@src/util/assist'
 export default {
   name: prefixCls,
   components: { rdFilterListDescribe },
@@ -115,6 +116,14 @@ export default {
     // 是否有已选数据
     isPlaceholder() {
       return this.value && this.value.length === 0
+    },
+    uuid() {
+      let uuid = getKey()
+      if (this.current.length) {
+        const { labe = '', description = '' } = this.current[0]
+        uuid = uuid + labe + description
+      }
+      return uuid
     }
   },
   watch: {
