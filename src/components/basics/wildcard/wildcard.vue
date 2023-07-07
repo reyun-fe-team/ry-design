@@ -4,6 +4,7 @@
       <FormItem
         :prop="mergeOptions.prop"
         :label="mergeOptions.label"
+        :rules="rules"
         :label-width="mergeOptions.labelWidth">
         <label
           v-if="mergeOptions.tooltip"
@@ -34,7 +35,7 @@
             {{ wordLimit }}
           </span>
         </div>
-        <div :class="prefixCls + '-list'">
+        <div :class="classesList">
           <div :class="prefixCls + '-list-name-rule'">
             <span
               :class="prefixCls + '-list-name-rule-label'"
@@ -81,6 +82,11 @@
                 </Tooltip>
               </i>
             </p>
+            <div
+              :class="prefixCls + '-list-name-rule-action'"
+              @click="handleHideMore">
+              {{ hideMore ? '更多' : '收起' }}
+            </div>
           </div>
           <div
             v-if="showSaveRule"
@@ -167,14 +173,6 @@ export default {
       type: Object,
       default: () => {}
     },
-    wildcardConfig: {
-      type: Object,
-      default: () => {
-        return {
-          wildcardTag: '{}'
-        }
-      }
-    },
     showSaveRule: {
       type: Boolean,
       default: true
@@ -186,6 +184,9 @@ export default {
     clearable: {
       type: Boolean,
       default: false
+    },
+    rules: {
+      type: [Object, Array]
     }
   },
   data() {
@@ -195,12 +196,22 @@ export default {
       saveNameRule: false,
       mergeOptions: {},
       mergeWildcardLabelConfig: {},
-      list: []
+      list: [],
+      hideMore: true
     }
   },
   computed: {
     classes() {
       return [`${prefixCls}`]
+    },
+    classesList() {
+      // :class="prefixCls + '-list'"
+      return [
+        `${prefixCls}-list`,
+        {
+          [`${prefixCls}-show-more`]: !this.hideMore
+        }
+      ]
     },
     wordLimit() {
       let len = this.calculateLength(this.keyword)
@@ -227,7 +238,9 @@ export default {
     handleNameItem(e) {
       let title = e.target.getAttribute('data-value')
       let item = this.list.find(e => e.title === title)
-      this.changeKeyword(item)
+      if (item) {
+        this.changeKeyword(item)
+      }
     },
     onKeyDown(e) {
       const elInput = e.target
@@ -236,15 +249,8 @@ export default {
       const startPosVal = elInput.value.slice(0, startPos)
       const endPosVal = elInput.value.slice(startPos, elInput.value.length)
 
-      const { wildcardTag } = this.wildcardConfig || {}
-      if (!wildcardTag) {
-        return false
-      }
-      const wildcardTagLeft = wildcardTag[0]
-      const wildcardTagRight = wildcardTag[1]
-
       if (keyCode === 39 && endPosVal) {
-        let endNum = endPosVal.indexOf(wildcardTagRight)
+        let endNum = endPosVal.indexOf('}')
         let char = endPosVal.substring(0, endNum + 1)
         if (titleList.includes(char)) {
           elInput.selectionStart = startPos + endNum
@@ -253,7 +259,7 @@ export default {
       }
 
       if (keyCode === 37 && startPosVal) {
-        let frontNum = startPosVal.lastIndexOf(wildcardTagLeft)
+        let frontNum = startPosVal.lastIndexOf('{')
         let char = startPosVal.substring(frontNum)
         if (titleList.includes(char)) {
           elInput.selectionStart = frontNum + 1
@@ -264,8 +270,8 @@ export default {
         // 新增判断：如果光标位置相等(没有选中文本)，那么执行删除通配符
         if (elInput.selectionStart === elInput.selectionEnd) {
           let lastChar = startPosVal.charAt(startPosVal.length - 1)
-          let frontNum = startPosVal.lastIndexOf(wildcardTagLeft)
-          if (lastChar === wildcardTagRight) {
+          let frontNum = startPosVal.lastIndexOf('{')
+          if (lastChar === '}') {
             let delChar = startPosVal.substring(frontNum)
             if (titleList.includes(delChar)) {
               elInput.selectionStart = startPosVal.length - delChar.length
@@ -309,24 +315,14 @@ export default {
     },
     changeKeyword(item) {
       let activeTitle = item.title
-
       let replaceName = ''
       if (this.keyword) {
         let index = this.keyword.indexOf(activeTitle)
-        const specialChars = '\\^$.|?*+()[]{}'
-        const regexStr = `([${specialChars
-          .split('')
-          .map(c => `\\${c}`)
-          .join('')}])`
-
         if (index === 0) {
-          replaceName = new RegExp(
-            `${activeTitle.replace(new RegExp(regexStr, 'g'), '\\$1')}([${this.joinSymbol}]+)?`
-          )
+          replaceName = new RegExp(`${activeTitle}([${this.joinSymbol}]+)?`)
         } else {
-          replaceName = new RegExp(
-            `([${this.joinSymbol}]+)?${activeTitle.replace(new RegExp(regexStr, 'g'), '\\$1')}`
-          )
+          replaceName = new RegExp(`([${this.joinSymbol}]+)?${activeTitle}`)
+          activeTitle = `${this.joinSymbol}${activeTitle}`
         }
       }
       if (this.keyword.includes(item.title) || this.keyword.includes(item.reg)) {
@@ -334,6 +330,9 @@ export default {
       } else {
         this.keyword += activeTitle
       }
+    },
+    handleHideMore() {
+      this.hideMore = !this.hideMore
     }
   }
 }
