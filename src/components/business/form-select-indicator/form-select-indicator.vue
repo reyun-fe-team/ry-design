@@ -22,7 +22,7 @@
             :max-height="256"
             :input-width="160"
             filterable
-            :data="dataList"
+            :data="getFilteredDataList(index)"
             @on-click="handleStop"
             @on-change="changeData(index)"></rd-filter-list-select>
           <div :class="prefixCls + '-form-line'"></div>
@@ -137,6 +137,13 @@ export default {
     }
   },
   methods: {
+    getFilteredDataList(index) {
+      const selectedValues = this.currentValue.selectData.slice(0, index)
+      const filteredDataList = this.dataList.filter(item => {
+        return !selectedValues.includes(item.value)
+      })
+      return filteredDataList
+    },
     changeData(index) {
       if (!_isEmpty(this.dataList)) {
         let { label = '', dataType = '' } =
