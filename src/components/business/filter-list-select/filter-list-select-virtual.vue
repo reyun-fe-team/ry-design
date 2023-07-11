@@ -11,7 +11,7 @@
       :class="[
         prefixCls + '-item',
         {
-          [prefixCls + '-item-selected']: current.includes(source.value)
+          [prefixCls + '-item-selected']: !multiple && current.includes(source.value)
         },
         {
           [prefixCls + '-item-disabled']: source.disabled
