@@ -14,6 +14,9 @@
           [prefixCls + '-item-selected']: !multiple && current.includes(source.value)
         },
         {
+          [prefixCls + '-item-hover-color']: !multiple
+        },
+        {
           [prefixCls + '-item-disabled']: source.disabled
         }
       ]"
