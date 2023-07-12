@@ -16,12 +16,7 @@
     align-items: center;
 
     &:hover {
-      color: @selected-color;
       background: #f3f3f3;
-
-      .rd-filter-list-describe-body-description {
-        color: @selected-color;
-      }
     }
 
     &-contain {
@@ -30,6 +25,14 @@
     }
 
     &-selected {
+      color: @selected-color;
+
+      .rd-filter-list-describe-body-description {
+        color: @selected-color;
+      }
+    }
+
+    &-hover-color:hover {
       color: @selected-color;
 
       .rd-filter-list-describe-body-description {
