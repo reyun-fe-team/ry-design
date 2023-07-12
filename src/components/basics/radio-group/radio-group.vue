@@ -81,7 +81,7 @@ export default {
   name: prefixCls,
   props: {
     value: {
-      type: [String, Number, Boolean]
+      type: [String, Number]
     },
     defaultList: {
       type: Array,
@@ -120,6 +120,10 @@ export default {
     isCustom: {
       type: Boolean,
       default: false
+    },
+    isDynamicEnum: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -135,22 +139,65 @@ export default {
           let newValue = null
           if (!this.isCustom) {
             let { defaultList } = this
-            let values = defaultList.map(e => e.value)
+            let values = []
+            if (this.isDynamicEnum) {
+              values = defaultList
+                .filter(f => !(f.disabled || this.isDisabledItemFun(f)))
+                .map(e => e.value)
+            } else {
+              values = defaultList.map(e => e.value)
+            }
             if (values.includes(n)) {
               newValue = n
             } else {
-              let f = defaultList.find(e => !e.disabled) || {}
-              newValue = f.value || null
+              newValue = values.length ? values[0] : null
             }
           } else {
             newValue = n
           }
           this.newValue = newValue
-          this.$emit('input', newValue)
+          if (this.isDynamicEnum) {
+            if (this.newValue !== n) {
+              this.$nextTick(() => {
+                this.onChange(newValue)
+              })
+            }
+          } else {
+            this.$emit('input', newValue)
+          }
         }
       },
       deep: true,
       immediate: true
+    },
+    defaultList: {
+      handler(n) {
+        if (!this.isDynamicEnum) {
+          return
+        }
+        if (this.isDisabledAll) {
+          let val = null
+          if (val !== this.newValue) {
+            this.newValue = val
+            this.$nextTick(() => {
+              this.onChange(val)
+            })
+          }
+        } else {
+          let val = null
+          let values = n.filter(f => !(f.disabled || this.isDisabledItemFun(f))).map(m => m.value)
+          if (!values.includes(this.newValue)) {
+            val = values.length ? values[0] : null
+            if (val !== this.newValue) {
+              this.newValue = val
+              this.$nextTick(() => {
+                this.onChange(val)
+              })
+            }
+          }
+        }
+      },
+      deep: true
     }
   },
   methods: {
