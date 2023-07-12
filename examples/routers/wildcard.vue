@@ -14,12 +14,12 @@
           label: '计划',
           tooltip: '仅对新创建的广告组生效，不支持更新已有广告组。'
         }"
-        :wildcard-label-config="{ label: 'asd', width: 68, tooltip: '123' }"
+        :wildcard-label-config="{ label: '', width: 0 }"
         :data="data"
         join-symbol=""
-        :save-rule="true"
+        :save-rule="false"
+        :show-save-rule="true"
         :show-word-limit="false"
-        :show-save-rule="false"
         @on-name-programs="onNamePrograms"></rd-wildcard>
     </Form>
     <Button
@@ -41,24 +41,24 @@ export default {
       value: [],
       data: [
         {
-          label: '+投放方式',
+          label: '投放方式',
           id: 'a',
           title: '{投放方式}',
           tooltip: 'tooltiptooltiptooltiptooltiptooltiptooltiptooltiptooltiptooltiptooltip'
         },
-        { label: '+序号', id: 'b', title: '{序号_01}', alias: '{序号' },
-        { label: '+日期', id: 'c', title: '{日期}' },
-        { label: '+定向包名称', id: 'd', title: '{定向包名称}' },
+        { label: '序号', id: 'b', title: '{序号_01}', alias: '{序号' },
+        { label: '日期', id: 'c', title: '{日期}' },
+        { label: '定向包名称', id: 'd', title: '{定向包名称}' },
         {
           label:
-            '+定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称',
+            '定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称',
           id: 'e',
           title:
             '{定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称}'
         },
         {
           label:
-            '+定向包名称定向包名称定向包名包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称',
+            '定向包名称定向包名称定向包名包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称',
           id: 'f',
           title:
             '{定向包名称定向包名称定向包名包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称定向包名称}'
@@ -76,6 +76,11 @@ export default {
             message: '超出最大'
           }
         ]
+      },
+      rules: {
+        required: true,
+        message: '请输入内容form-item-rules触发',
+        trigger: 'change'
       }
     }
   },

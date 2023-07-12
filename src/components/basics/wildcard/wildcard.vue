@@ -4,6 +4,7 @@
       <FormItem
         :prop="mergeOptions.prop"
         :label="mergeOptions.label"
+        :rules="rules"
         :label-width="mergeOptions.labelWidth">
         <label
           v-if="mergeOptions.tooltip"
@@ -34,7 +35,7 @@
             {{ wordLimit }}
           </span>
         </div>
-        <div :class="prefixCls + '-list'">
+        <div :class="classesList">
           <div :class="prefixCls + '-list-name-rule'">
             <span
               :class="prefixCls + '-list-name-rule-label'"
@@ -81,6 +82,11 @@
                 </Tooltip>
               </i>
             </p>
+            <div
+              :class="prefixCls + '-list-name-rule-action'"
+              @click="handleHideMore">
+              {{ hideMore ? '更多' : '收起' }}
+            </div>
           </div>
           <div
             v-if="showSaveRule"
@@ -178,6 +184,9 @@ export default {
     clearable: {
       type: Boolean,
       default: false
+    },
+    rules: {
+      type: [Object, Array]
     }
   },
   data() {
@@ -187,12 +196,22 @@ export default {
       saveNameRule: false,
       mergeOptions: {},
       mergeWildcardLabelConfig: {},
-      list: []
+      list: [],
+      hideMore: true
     }
   },
   computed: {
     classes() {
       return [`${prefixCls}`]
+    },
+    classesList() {
+      // :class="prefixCls + '-list'"
+      return [
+        `${prefixCls}-list`,
+        {
+          [`${prefixCls}-show-more`]: !this.hideMore
+        }
+      ]
     },
     wordLimit() {
       let len = this.calculateLength(this.keyword)
@@ -219,7 +238,9 @@ export default {
     handleNameItem(e) {
       let title = e.target.getAttribute('data-value')
       let item = this.list.find(e => e.title === title)
-      this.changeKeyword(item)
+      if (item) {
+        this.changeKeyword(item)
+      }
     },
     onKeyDown(e) {
       const elInput = e.target
@@ -309,6 +330,9 @@ export default {
       } else {
         this.keyword += activeTitle
       }
+    },
+    handleHideMore() {
+      this.hideMore = !this.hideMore
     }
   }
 }
