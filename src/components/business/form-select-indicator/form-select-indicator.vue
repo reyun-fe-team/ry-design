@@ -33,6 +33,7 @@
             :show-clear-icon="false"
             :unit="getUnit(index)"
             :width="182"
+            :indicator-rule="indicatorRule"
             :styles="{ width: '240px' }"
             @on-change="changeIndicator" />
         </div>
@@ -92,6 +93,40 @@ export default {
     dataList: {
       type: Array,
       default: () => []
+    },
+    indicatorRule: {
+      type: Array,
+      default: () => [
+        {
+          value: '=',
+          label: '等于'
+        },
+        {
+          value: '!=',
+          label: '不等于'
+        },
+        {
+          value: '<',
+          label: '小于'
+        },
+        {
+          value: '>',
+          label: '大于'
+        },
+        {
+          value: '>=',
+          label: '大于等于'
+        },
+        {
+          value: '<=',
+          label: '小于等于'
+        },
+        {
+          value: 'BETWEEN',
+          label: '介于',
+          ruleType: 'number-input-between'
+        }
+      ]
     }
   },
   data() {
