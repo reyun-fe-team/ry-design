@@ -6,6 +6,7 @@
         <span slot="prepend">投放账户</span>
         <rd-filter-list-select
           v-model="selectMultiple"
+          placement="bottom-end"
           :data="data"
           :height="200"
           :width="200"
@@ -38,6 +39,7 @@
         多选组 事例：{{ selectMultiple }}
         <rd-filter-list-select
           v-model="selectMultiple"
+          placement="bottom-end"
           :input-width="400"
           :width="200"
           filterable

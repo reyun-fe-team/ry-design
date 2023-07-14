@@ -5,6 +5,7 @@
       :trigger="trigger"
       :disabled="disabled"
       :transfer="transfer"
+      :placement="placement"
       @on-visible-change="handleVisibleChange">
       <filter-list-input
         :value="inputData"
@@ -145,7 +146,8 @@ export default {
     showImage: Boolean,
     showDescription: Boolean,
     disabled: Boolean,
-    transfer: Boolean
+    transfer: Boolean,
+    placement: String
   },
   data() {
     return {
