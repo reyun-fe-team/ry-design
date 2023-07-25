@@ -2,8 +2,8 @@
   <div>
     <div
       v-if="groupNameList && groupNameList[source.value]"
-      :class="prefixCls + '-group-name'"
-      :title="groupNameList[source.value]">
+      v-tooltip="{ maxWidth: 200, content: groupNameList[source.value], delay: 1000 }"
+      :class="prefixCls + '-group-name'">
       {{ groupNameList[source.value] }}
     </div>
     <div
