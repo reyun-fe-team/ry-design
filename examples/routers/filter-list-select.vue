@@ -199,7 +199,9 @@ export default {
         const value = `${i.toString(36)}${j}`
         children.push({
           value: `${i + 1}-${value}-value`,
-          label: `${i + 1}-${value} (beijin-description)`,
+          label: `${
+            i + 1
+          }-${value} (beijin-description)adeawkdehkqjwehjkqwkjehqjkwehjkqwheqwkehkjqehkjqweqhkwejk`,
           newLabel: `${i + 1}-${value}`,
           disabled: [2, 4, 6, 7].includes(j) ? true : false,
           description: 'beijin-description',
