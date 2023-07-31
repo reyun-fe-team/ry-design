@@ -31,13 +31,14 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-describe'
+
 export default {
   name: prefixCls,
   props: {
     height: [Number, String],
     text: {
       type: String,
-      default: '状态'
+      default: '-'
     },
     src: {
       type: String,
@@ -70,8 +71,6 @@ export default {
       }
       return style
     }
-  },
-  mounted() {},
-  methods: {}
+  }
 }
 </script>
