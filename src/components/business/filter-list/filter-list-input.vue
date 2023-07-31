@@ -21,7 +21,7 @@
           <rd-filter-list-describe
             :key="uuid"
             style="width: 100%; padding: 0"
-            :height="current[0].description || current[0].src ? 56 : 32"
+            :height="current[0].description || current[0].src ? 48 : 32"
             :src="current[0].src"
             :text="current[0].label"
             :show-image="showImage"

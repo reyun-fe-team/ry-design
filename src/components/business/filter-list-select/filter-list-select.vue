@@ -35,16 +35,19 @@
         :style="mainStyles"
         data-key="uid"
         :data-sources="getLine"
-        :extra-props="{ filterData, groupNameList, current, multiple, inputHeight, labelMethod }"
+        :extra-props="{
+          filterData,
+          groupNameList,
+          current,
+          multiple,
+          renderItem
+        }"
         :data-component="virtualComponent"
         v-on="$listeners"
         @on-click="handleClick"></rd-virtual-list>
       <template slot="search-operate">
         <slot name="search-operate"></slot>
       </template>
-      <!-- <template slot="select-item">
-        <slot name="select-item"></slot>
-      </template> -->
     </rd-filter-list>
   </div>
 </template>
@@ -57,6 +60,7 @@ import _cloneDeep from 'lodash/cloneDeep'
 import { oneOf } from '@src/util/assist.js'
 import Emitter from '@src/mixins/emitter'
 import virtualComponent from './filter-list-select-virtual.vue'
+import rdFilterListDescribe from '../filter-list/filter-list-describe'
 
 const checkValuesNotEqual = (value, values) => {
   const strValue = JSON.stringify(value)
@@ -127,7 +131,12 @@ export default {
         return data[type].indexOf(query) > -1
       }
     },
-    labelMethod: Function,
+    labelMethod: {
+      type: Function,
+      default(data) {
+        return 'label' in data ? data.label : ''
+      }
+    },
     showImage: Boolean,
     showDescription: Boolean,
     inputPlaceholder: String,
@@ -143,7 +152,35 @@ export default {
       prefixCls,
       current: [],
       query: '',
-      virtualComponent
+      virtualComponent,
+      renderItem: (h, { row, index }) => {
+        let node = null
+        const itemSlot = this.$scopedSlots['select-item']
+        const describeSlot = this.$scopedSlots['describe-operate']
+        if (itemSlot) {
+          node = h('div', [itemSlot({ row, index })])
+        } else {
+          node = h(
+            rdFilterListDescribe,
+            {
+              style: {
+                width: '100%'
+              },
+              props: {
+                height: this.getHeight(row),
+                src: row.src,
+                text: this.getLabel(row),
+                showImage: true,
+                showDescription: true,
+                description: row.description
+              }
+            },
+            describeSlot ? describeSlot({ row, index }) : null
+          )
+        }
+
+        return node
+      }
     }
   },
   computed: {
@@ -212,6 +249,16 @@ export default {
     this.current = data
   },
   methods: {
+    getLabel(val) {
+      return this.labelMethod(val)
+    },
+    getHeight({ description, src }) {
+      const { inputHeight } = this
+      if (description || src) {
+        return inputHeight > 48 ? inputHeight : 48
+      }
+      return inputHeight > 32 ? inputHeight : 32
+    },
     getInitialValue() {
       const { multiple, value } = this
       let initialValue = Array.isArray(value) ? _cloneDeep(value) : [value]

@@ -2,7 +2,7 @@
   <div>
     <h2>filter-list-select事例</h2>
     <section>
-      <rd-prefix-container>
+      <rd-prefix-container v-if="false">
         <span slot="prepend">投放账户</span>
         <rd-filter-list-select
           v-model="selectMultiple"
@@ -18,23 +18,41 @@
         <rd-filter-list-select
           v-model="selectMultiple"
           clearable
-          :input-height="48"
           show-select-option
           :data="data"
           multiple
           show-image
           show-description
+          filterable
           :label-method="labelMethod">
-          <div
+          <!-- <div
             slot="select-item"
-            slot-scope="{ row }"
+            slot-scope="{ row, index }"
             style="line-height: 40px">
-            自定义item {{ row.label }}
+            自定义item {{ index }} : {{ row.label }}
+          </div> -->
+          <div slot="search-operate">
+            <span style="color: #3989faff">刷新</span>
+            <span style="margin-right: 10px; color: #3989faff">应用管理</span>
+          </div>
+
+          <div
+            v-if="!row.disabled"
+            slot="describe-operate"
+            slot-scope="{ row, index }">
+            <div
+              v-if="!row.isDefault"
+              @click.stop="setDefault(row, index)">
+              设为默认
+            </div>
+            <div v-if="row.isDefault">默认</div>
           </div>
         </rd-filter-list-select>
       </div>
 
-      <div style="display: inline-block; margin-left: 380px">
+      <div
+        v-if="false"
+        style="display: inline-block; margin-left: 380px">
         多选组 事例：{{ selectMultiple }}
         <rd-filter-list-select
           v-model="selectMultiple"
@@ -55,7 +73,9 @@
       </div>
     </section>
 
-    <section style="margin-top: 400px">
+    <section
+      v-if="false"
+      style="margin-top: 400px">
       <div style="display: inline-block">
         单选{{ selectRadio }}--{{ typeof selectRadio }}==
         <rd-filter-list-select
@@ -96,6 +116,7 @@
     </section>
 
     <Form
+      v-if="false"
       ref="formValidate"
       style="margin-top: 250px"
       :model="formValidate"
@@ -156,7 +177,7 @@
 export default {
   data() {
     return {
-      selectMultiple: [],
+      selectMultiple: ['1-00-value'],
       selectRadio: '',
       groupList: [],
       formValidate: {
@@ -170,7 +191,8 @@ export default {
         ],
         app: [{ required: true, message: '请选择应用', trigger: 'change' }],
         app1: [{ required: true, type: 'array', message: '请选择应用1', trigger: 'change' }]
-      }
+      },
+      data: []
     }
   },
   computed: {
@@ -181,13 +203,6 @@ export default {
         params[key] = item.label
       })
       return params
-    },
-    data() {
-      let list = []
-      this.groupList.forEach(item => {
-        list = [...list, ...item.children]
-      })
-      return list
     }
   },
   mounted() {
@@ -201,7 +216,8 @@ export default {
           newLabel: `${i + 1}-${value}`,
           disabled: [2, 4, 6, 7].includes(j) ? true : false,
           description: 'beijin-description',
-          src: 'https://web.adsdesk.cn/img/lpf.f19b1cfc.png'
+          src: 'https://web.adsdesk.cn/img/lpf.f19b1cfc.png',
+          isDefault: false
         })
       }
       this.groupList.push({
@@ -209,6 +225,11 @@ export default {
         children
       })
     }
+    let list = []
+    this.groupList.forEach(item => {
+      list = [...list, ...item.children]
+    })
+    this.data = list
   },
   methods: {
     handleSubmit(name) {
@@ -225,6 +246,12 @@ export default {
     },
     labelMethod(data) {
       return data.newLabel
+    },
+    setDefault(row, index) {
+      console.log('设为默认', row, index, this.data)
+      this.data.forEach(val => {
+        val.isDefault = val.value === row.value
+      })
     }
   }
 }
