@@ -85,6 +85,7 @@
                       v-if="item.prefix.content"
                       theme="light"
                       :max-width="200"
+                      transfer
                       :content="item.prefix.content">
                       <!-- ali-icon 暂时不能上传，先使用图片 -->
                       <ry-icon
@@ -102,6 +103,7 @@
                     v-if="item.tooltip"
                     theme="light"
                     :max-width="200"
+                    transfer
                     :content="item.tooltip">
                     <span :class="prefixCls + '-view-list-content-item-title'">
                       {{ item.title }}
@@ -118,6 +120,7 @@
                       v-if="item.suffix.content"
                       theme="light"
                       :max-width="200"
+                      transfer
                       :content="item.suffix.content">
                       <ry-icon
                         :type="item.suffix.icon"
