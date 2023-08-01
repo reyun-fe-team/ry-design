@@ -1,7 +1,15 @@
 <template>
   <main :class="classes">
     <div :class="prefixCls + '-header'">
-      <span>可添加的指标</span>
+      <div>
+        <span>可添加的指标</span>
+        <span
+          v-if="showAddCustom"
+          :class="prefixCls + '-header-add-custom'"
+          @click="handlerAddCustom">
+          + 添加自定义指标
+        </span>
+      </div>
       <Input
         v-model="keyword"
         search
@@ -170,6 +178,10 @@ export default {
     },
     editCallBack: {
       type: Function
+    },
+    showAddCustom: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -213,6 +225,9 @@ export default {
       this.hookValue = this.value
       this.setItemCheck()
       this.emitData()
+    },
+    handlerAddCustom() {
+      this.$emit('add-custom')
     },
     // #用户交互
     keywordChange() {
