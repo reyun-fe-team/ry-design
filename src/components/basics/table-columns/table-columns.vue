@@ -86,7 +86,6 @@
                       theme="light"
                       placement="top"
                       :max-width="200"
-                      transfer
                       :content="item.prefix.content">
                       <!-- ali-icon 暂时不能上传，先使用图片 -->
                       <ry-icon
@@ -105,7 +104,6 @@
                     theme="light"
                     placement="top"
                     :max-width="200"
-                    transfer
                     :content="item.tooltip">
                     <span :class="prefixCls + '-view-list-content-item-title'">
                       {{ item.title }}
@@ -123,7 +121,6 @@
                       theme="light"
                       placement="top"
                       :max-width="200"
-                      transfer
                       :content="item.suffix.content">
                       <ry-icon
                         :type="item.suffix.icon"
