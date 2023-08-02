@@ -61,6 +61,7 @@ export default {
     },
     multiple: Boolean,
     renderItem: Function
+    // beforeChange: Function
   },
   data() {
     return {
@@ -70,9 +71,20 @@ export default {
   methods: {
     handleClick(val) {
       if (val.disabled) {
-        return
+        return this.$parent.$parent.$emit('on-click', val)
       }
       this.$parent.$parent.$emit('on-click', val)
+      // if (!this.beforeChange) {
+      //   this.$parent.$parent.$emit('on-click', val)
+      // }
+      // const before = this.beforeChange([val])
+      // if (before && before.then) {
+      //   before.then(() => {
+      //     this.$parent.$parent.$emit('on-click', val)
+      //   })
+      // } else if (before !== false) {
+      //   this.$parent.$parent.$emit('on-click', val)
+      // }
     }
   }
 }
