@@ -71,7 +71,7 @@ export default {
   methods: {
     handleClick(val) {
       if (val.disabled) {
-        return this.$parent.$parent.$emit('on-click', val)
+        return
       }
       this.$parent.$parent.$emit('on-click', val)
       // if (!this.beforeChange) {
