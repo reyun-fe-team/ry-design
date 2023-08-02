@@ -26,6 +26,7 @@
       :filter-placeholder="filterPlaceholder"
       :disabled="disabled"
       :transfer="transfer"
+      :placement="placement"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange"
       @on-click="handlerClick">
@@ -146,7 +147,8 @@ export default {
       default: false
     },
     transfer: Boolean,
-    beforeChange: Function
+    beforeChange: Function,
+    placement: String
   },
   data() {
     return {
