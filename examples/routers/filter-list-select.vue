@@ -52,7 +52,7 @@
       </div>
 
       <div
-        v-if="false"
+        v-if="true"
         style="display: inline-block; margin-left: 380px">
         多选组 事例：{{ selectMultiple }}
         <rd-filter-list-select
@@ -66,7 +66,9 @@
           :group-name-list="groupNameList"
           multiple
           save-type="leave-save"
-          label="多选">
+          label="多选"
+          @before-change="beforeChange"
+          @on-click="handleClick">
           <div slot="search-operate">
             <span style="color: #3989faff">刷新</span>
             <span style="margin-right: 10px; color: #3989faff">应用管理</span>
@@ -256,7 +258,26 @@ export default {
       this.data.forEach(val => {
         val.isDefault = val.value === row.value
       })
-    }
+    },
+    beforeChange(data) {
+      let lens = this.groupList.length
+      let findIndex = -1
+      for (let i = 0; i < lens; i++) {
+        if (this.groupList[i].children.some(val => data.includes(val.value))) {
+          findIndex = i
+          break
+        }
+      }
+      let list = []
+      this.groupList.forEach((val, index) => {
+        val.children.forEach(item => {
+          item.disabled = findIndex === -1 ? false : findIndex !== index
+        })
+        list = [...list, ...val.children]
+      })
+      this.data = list
+    },
+    handleClick() {}
   }
 }
 </script>

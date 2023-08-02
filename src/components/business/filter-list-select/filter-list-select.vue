@@ -147,6 +147,7 @@ export default {
       default: false
     },
     transfer: Boolean,
+    beforeChange: Function,
     placement: String
   },
   data() {
@@ -235,11 +236,11 @@ export default {
       }
     },
     pullCurrentWatch(now, before) {
-      if (this.saveType === 'always-save' || !this.multiple) {
-        const newValue = JSON.stringify(now)
-        const oldValue = JSON.stringify(before)
-        const shouldEmitInput = newValue === oldValue
-        if (!shouldEmitInput) {
+      const newValue = JSON.stringify(now)
+      const oldValue = JSON.stringify(before)
+      if (newValue !== oldValue) {
+        this.$emit('before-change', now)
+        if (this.saveType === 'always-save' || !this.multiple) {
           // console.log('时时触发-emitChange')
           this.emitChange()
         }
