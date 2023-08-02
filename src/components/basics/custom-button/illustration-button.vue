@@ -11,28 +11,35 @@
       type="primary"
       :class="[btnClass]"
       :disabled="disabled">
-      <!-- 文本 -->
-      <span class="illustration-text">
-        <slot></slot>
-      </span>
-      <!-- 插画图 -->
-      <div
-        class="illustration-image"
-        :style="headIcon"></div>
-      <!-- 下拉箭头 -->
-      <rd-icon
-        v-if="showDropdownMenu"
-        type="ios-arrow-down"
-        class="illustration-arrow"></rd-icon>
+      <div class="illustration-content">
+        <!-- 插画图 -->
+        <div
+          class="illustration-image"
+          :style="headIcon"></div>
+        <!-- 文本 -->
+        <div class="illustration-text">
+          <slot></slot>
+        </div>
+        <!-- 下拉箭头 -->
+        <div
+          v-if="showDropdownMenu"
+          class="illustration-arrow">
+          <rd-icon type="ios-arrow-down"></rd-icon>
+        </div>
+        <div
+          v-else
+          class="illustration-arrow-empty"></div>
+      </div>
     </Button>
     <template
       v-if="showDropdownMenu"
       #list>
-      <DropdownMenu>
+      <DropdownMenu :style="dropDownMenuStyle">
         <DropdownItem
           v-for="item in dropDownItems"
           :key="item.name"
-          v-bind="getDropdownItemProps(item)">
+          v-bind="getDropdownItemProps(item)"
+          @click.native="handleDropdownItemClick(item)">
           <Render
             v-if="item.render"
             :render="item.render"></Render>
@@ -54,6 +61,17 @@ export default {
     Render
   },
   props: {
+    // 下拉菜单面板样式
+    dropDownMenuStyle: {
+      type: Object,
+      default: () => ({})
+    },
+    // 下拉的事件集合（插画按钮支持）
+    // onDropdownItemClick 菜单子级点击事件
+    dropDownFns: {
+      type: Object,
+      default: () => ({})
+    },
     // 是否禁用按钮
     disabled: {
       type: Boolean,
@@ -106,6 +124,11 @@ export default {
     }
   },
   methods: {
+    // 菜单子级点击事件
+    handleDropdownItemClick(item) {
+      const { onDropdownItemClick } = this.dropDownFns
+      onDropdownItemClick && onDropdownItemClick(item)
+    },
     getDropdownItemProps(item) {
       // name	用来标识这一项	String	-
       // disabled	禁用该项	Boolean	false

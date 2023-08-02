@@ -110,6 +110,9 @@
               placement: 'right-top',
               src: createRecommend
             }"
+            :drop-down-fns="{ onDropdownItemClick }"
+            :drop-down-menu-style="{ width: '200px' }"
+            :drop-down-props="{ transfer: true, placement: 'bottom-start' }"
             type="illustration"
             is-drop-down
             :drop-down-items="dropDownItems"
@@ -168,6 +171,11 @@ export default {
           label: 'B'
         }
       ]
+    }
+  },
+  methods: {
+    onDropdownItemClick(e) {
+      alert('您点击了' + e.label + '，对应的值为' + e.name)
     }
   }
 }

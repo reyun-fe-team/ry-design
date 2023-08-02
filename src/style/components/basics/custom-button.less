@@ -38,19 +38,21 @@
 
 // 插画按钮
 .@{button-illustration} {
-  position: relative;
-  height: 32px;
-  min-width: 88px;
-  padding: 0 16px 0 40px;
-  color: #fff !important;
+  color: #ffffff !important;
   background: #3a88fa;
+  min-width: 88px;
+  padding:0;
   border: 1px solid #3a88fa;
 
+  .illustration-content {
+    width: 100%;
+    height: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .illustration-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
     width: 40px;
     height: 100%;
     background-position: left center;
@@ -60,10 +62,24 @@
 
   .illustration-text {
     margin: 0 4px;
+    line-height: 32px;
   }
 
   .illustration-arrow {
+    border-left: 1px solid rgba(255,255,255,0.31);
+    width: 32px;
+    height: 32px;
     color: #fbfbfb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .illustration-arrow-empty {
+    width: 32px;
+    height: 32px;
+    color: #fbfbfb;
+    display: flex;
   }
 
   // 划过

@@ -29,7 +29,9 @@
       :illustration-url="illustrationUrl"
       :is-drop-down="isDropDown"
       :drop-down-items="dropDownItems"
-      :drop-down-props="dropDownProps">
+      :drop-down-props="dropDownProps"
+      :drop-down-fns="dropDownFns"
+      :drop-down-menu-style="dropDownMenuStyle">
       <slot></slot>
     </illustration-button>
     <!-- 纯图标按钮 -->
@@ -59,6 +61,17 @@ export default {
   },
   props: {
     // -----------------插画按钮-----------
+    // 下拉菜单面板样式
+    dropDownMenuStyle: {
+      type: Object,
+      default: () => ({})
+    },
+    // 下拉的事件集合（插画按钮支持）
+    // 下拉子项点击事件 onDropdownItemClick: (e) => {}
+    dropDownFns: {
+      type: Object,
+      default: () => ({})
+    },
     // 下拉属性（插画按钮支持）
     dropDownItems: {
       type: Array,
