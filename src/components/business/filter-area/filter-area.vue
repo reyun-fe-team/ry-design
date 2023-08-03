@@ -7,13 +7,13 @@
           <slot name="dimension"></slot>
           <div :class="prefixCls + '-template-list-left-select-content'">
             <!-- 所有筛选 -->
-            <template-list
+            <filter-area-template-list
               :class="prefixCls + '-template-list-left-select-content-left'"
-              :data="templateOptions"
+              :data="data"
               @on-all-filter="templateAllFilter"
               @on-change="templateCheck"
               @on-update="templateUpdate"
-              @on-delete="templateDelete"></template-list>
+              @on-delete="templateDelete"></filter-area-template-list>
             <div :class="prefixCls + '-template-list-left-select-content-center'">
               <!-- 筛选项 -->
               <div class="center-box">
@@ -46,15 +46,15 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-area'
-import templateList from './template-list'
+import filterAreaTemplateList from './filter-area-template-list'
 export default {
   name: prefixCls,
   components: {
-    templateList
+    filterAreaTemplateList
   },
   props: {
     // 模版数据集合
-    templateOptions: {
+    data: {
       type: Array,
       defualt: () => []
     }
