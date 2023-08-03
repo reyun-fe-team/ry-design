@@ -218,10 +218,6 @@ const router = new VueRouter({
       component: resolve => require(['./routers/filter-list-select'], resolve)
     },
     {
-      path: '/filter-cascader',
-      component: resolve => require(['./routers/filter-cascader'], resolve)
-    },
-    {
       path: '/form-date-picker',
       component: resolve => require(['./routers/form-date-picker'], resolve)
     },
@@ -240,6 +236,10 @@ const router = new VueRouter({
     {
       path: '/filter-list-cascader',
       component: resolve => require(['./routers/filter-list-cascader'], resolve)
+    },
+    {
+      path: '/filter-area',
+      component: resolve => require(['./routers/filter-area'], resolve)
     }
   ]
 })
