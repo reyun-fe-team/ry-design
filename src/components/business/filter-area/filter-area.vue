@@ -16,7 +16,7 @@
               @on-delete="templateDelete"></filter-area-template-list>
             <div :class="prefixCls + '-template-list-left-select-content-center'">
               <!-- 筛选项 -->
-              <div class="center-box">
+              <div :class="prefixCls + '-center-box'">
                 <slot name="select-filter"></slot>
               </div>
             </div>
@@ -81,7 +81,7 @@ export default {
       this.$emit('template-update', obj)
     },
     templateDelete(val) {
-      this.$emit('template-update', val)
+      this.$emit('template-delete', val)
     }
   }
 }

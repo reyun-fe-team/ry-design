@@ -3,10 +3,10 @@
     :class="prefixCls"
     placement="bottom-start"
     trigger="click"
-    @on-click="onClick">
+    @on-click="handlerDropClick">
     <span
       :class="prefixCls + '-screen'"
-      @click="handlerClick">
+      @click="dropBtnClick">
       筛选
       <Icon
         size="12"
@@ -20,9 +20,9 @@
         v-for="item in data"
         :key="item.value"
         :name="item.value">
-        <div :class="['dropdown-item', activeName === item.value ? 'active' : '']">
+        <div :class="[prefixCls + '-dropdown-item', activeName === item.value ? 'active' : '']">
           <div
-            class="dropdown-item-label"
+            :class="prefixCls + '-dropdown-item-label'"
             :title="item.label">
             {{ item.label }}
           </div>
@@ -70,15 +70,15 @@ export default {
     }
   },
   methods: {
-    handlerClick() {
+    dropBtnClick() {
       if (!this.data.length) {
-        this.onClick('select-template')
+        this.handlerDropClick('select-template')
       }
     },
     handerAllClick() {
       this.$emit('on-all-filter')
     },
-    onClick(value) {
+    handlerDropClick(value) {
       this.$emit('update:activevalue', value)
       if (value === 'select-template') {
         this.$emit('on-all-filter')

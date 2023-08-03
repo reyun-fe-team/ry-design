@@ -24,7 +24,7 @@
           &-center {
             flex: 1;
 
-            .center-box {
+            .@{filter-area}-center-box {
               display: flex;
               flex-wrap: wrap;
             }
@@ -89,18 +89,18 @@
     max-height: 240px;
     overflow-y: auto;
 
-    .dropdown-item {
+    .@{select-filter-area-template-list}-dropdown-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
 
       &.active {
-        .dropdown_item_label {
+        .@{select-filter-area-template-list}-dropdown-item-label {
           color: #3a88fa;
         }
       }
 
-      .dropdown-item-label {
+      .@{select-filter-area-template-list}-dropdown-item-label {
         width: 100%;
         overflow: hidden;
         font-size: 12px;
@@ -124,7 +124,7 @@
           color: #3a88fa;
         }
 
-        .dropdown-item-label {
+        .@{select-filter-area-template-list}-dropdown-item-label {
           width: 248px;
         }
       }
