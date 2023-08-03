@@ -730,7 +730,7 @@ export default {
         // 最后一个值
         let vLast = vArr.at(-1) || ''
         if (vLast) {
-          targetNode = _find(this.selectedNodes, { value: vLast })
+          targetNode = _find(this.selectedNodes, { [this.valueKey]: vLast })
         }
       }
       targetNode && (targetNode.checked = false)
