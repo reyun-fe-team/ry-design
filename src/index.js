@@ -64,6 +64,7 @@ import RdFormInput from './components/business/form-input'
 import RdFormIndicator from './components/business/form-indicator'
 import RdFormSelectIndicator from './components/business/form-select-indicator'
 import FilterLisCascader from './components/business/filter-list-cascader'
+import FilterArea from './components/business/filter-area'
 
 import ViewUI from 'view-design'
 import Package from '../package.json'
@@ -150,7 +151,8 @@ const components = [
   RdFormInput,
   RdFormIndicator,
   RdFormSelectIndicator,
-  FilterLisCascader
+  FilterLisCascader,
+  FilterArea
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -236,6 +238,7 @@ const API = {
   Space,
   RdFilterList,
   RdFilterListSelect,
-  FilterLisCascader
+  FilterLisCascader,
+  FilterArea
 }
 module.exports.default = module.exports = API // eslint-disable-line no-undef
