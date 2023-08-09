@@ -55,7 +55,7 @@ export default {
     },
     selected: {
       type: Boolean,
-      debugger: false
+      default: false
     }
   },
   data() {

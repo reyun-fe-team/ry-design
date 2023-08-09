@@ -2,8 +2,8 @@
   <div>
     <div
       v-if="groupNameList && groupNameList[source.value]"
-      :class="prefixCls + '-group-name'"
-      :title="groupNameList[source.value]">
+      v-tooltip="{ maxWidth: 200, content: groupNameList[source.value], delay: 1000 }"
+      :class="prefixCls + '-group-name'">
       {{ groupNameList[source.value] }}
     </div>
     <div
@@ -29,20 +29,10 @@
         :value="current.includes(source.value)"
         @click="handleClick(source)"></Checkbox>
       <div :class="prefixCls + '-item-contain'">
-        <slot
-          name="select-item"
-          :src="source.src"
+        <Render
           :row="source"
-          :index="index">
-          <rd-filter-list-describe
-            style="width: 100%"
-            :height="getHeight(source)"
-            :src="source.src"
-            :text="getLabel"
-            show-image
-            show-description
-            :description="source.description"></rd-filter-list-describe>
-        </slot>
+          :index="index"
+          :render="renderItem"></Render>
       </div>
     </div>
   </div>
@@ -50,11 +40,12 @@
 
 <script>
 import { prefix } from '@src/config.js'
-import rdFilterListDescribe from '../filter-list/filter-list-describe'
 const prefixCls = prefix + 'filter-list-select-virtual'
+import Render from './render'
+
 export default {
   name: prefixCls,
-  components: { rdFilterListDescribe },
+  components: { Render },
   props: {
     source: {
       type: Object,
@@ -69,22 +60,12 @@ export default {
       }
     },
     multiple: Boolean,
-    inputHeight: [String, Number],
-    labelMethod: {
-      type: Function,
-      default(data) {
-        return 'label' in data ? data.label : ''
-      }
-    }
+    renderItem: Function
+    // beforeChange: Function
   },
   data() {
     return {
       prefixCls
-    }
-  },
-  computed: {
-    getLabel() {
-      return this.labelMethod(this.source)
     }
   },
   methods: {
@@ -93,13 +74,17 @@ export default {
         return
       }
       this.$parent.$parent.$emit('on-click', val)
-    },
-    getHeight({ description, src }) {
-      const { inputHeight } = this
-      if (description || src) {
-        return inputHeight > 48 ? inputHeight : 48
-      }
-      return inputHeight > 32 ? inputHeight : 32
+      // if (!this.beforeChange) {
+      //   this.$parent.$parent.$emit('on-click', val)
+      // }
+      // const before = this.beforeChange([val])
+      // if (before && before.then) {
+      //   before.then(() => {
+      //     this.$parent.$parent.$emit('on-click', val)
+      //   })
+      // } else if (before !== false) {
+      //   this.$parent.$parent.$emit('on-click', val)
+      // }
     }
   }
 }
