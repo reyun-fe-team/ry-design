@@ -5,48 +5,59 @@
 -->
 <template>
   <Dropdown
-    trigger="hover"
-    v-bind="dropDownProps">
-    <Button
-      type="primary"
-      :class="[btnClass]"
-      :disabled="disabled">
-      <div class="illustration-content">
-        <!-- 插画图 -->
-        <div
-          class="illustration-image"
-          :style="headIcon"></div>
-        <!-- 文本 -->
-        <div class="illustration-text">
-          <slot></slot>
+    v-bind="newDropDownProps"
+    :class="[btnClass]">
+    <div :class="btnClass + '-wrap'">
+      <!-- 按钮 -->
+      <Button
+        type="primary"
+        :disabled="disabled"
+        :class="[btnClass + '-l', { [btnClass + '-l-b']: showDropdownMenu }]"
+        @click="handlePrimaryClick">
+        <div :class="btnClass + '-l-c'">
+          <!-- 插画图 -->
+          <img
+            :src="illustrationUrl"
+            :class="btnClass + '-l-i'" />
+          <!-- 文本 -->
+          <span :class="btnClass + '-l-t'">
+            <slot></slot>
+          </span>
         </div>
-        <!-- 下拉箭头 -->
-        <div
-          v-if="showDropdownMenu"
-          class="illustration-arrow">
-          <rd-icon type="ios-arrow-down"></rd-icon>
-        </div>
-        <div
-          v-else
-          class="illustration-arrow-empty"></div>
-      </div>
-    </Button>
-    <template
+      </Button>
+      <!-- 箭头 -->
+      <Button
+        v-if="showDropdownMenu"
+        v-click-outside="onClickoutside"
+        :class="btnClass + '-r'"
+        type="primary"
+        :disabled="disabled"
+        @click="handleClick"
+        @mouseenter.native="handleMouseenter"
+        @mouseleave.native="handleMouseleave">
+        <rd-icon
+          type="ios-arrow-down"
+          :class="btnClass + '-r-icon'"></rd-icon>
+      </Button>
+    </div>
+    <!-- 下拉面板 -->
+    <DropdownMenu
       v-if="showDropdownMenu"
-      #list>
-      <DropdownMenu :style="dropDownMenuStyle">
-        <DropdownItem
-          v-for="item in dropDownItems"
-          :key="item.name"
-          v-bind="getDropdownItemProps(item)"
-          @click.native="handleDropdownItemClick(item)">
-          <Render
-            v-if="item.render"
-            :render="item.render"></Render>
-          <span v-else>{{ item.label }}</span>
-        </DropdownItem>
-      </DropdownMenu>
-    </template>
+      slot="list"
+      :style="dropDownMenuStyle"
+      @mouseenter.native="handleMouseenter"
+      @mouseleave.native="handleMouseleave">
+      <DropdownItem
+        v-for="item in dropDownItems"
+        :key="item.name"
+        v-bind="getDropdownItemProps(item)"
+        @click.native="handleDropdownItemClick(item)">
+        <Render
+          v-if="item.render"
+          :render="item.render"></Render>
+        <span v-else>{{ item.label }}</span>
+      </DropdownItem>
+    </DropdownMenu>
   </Dropdown>
 </template>
 <script>
@@ -68,6 +79,7 @@ export default {
     },
     // 下拉的事件集合（插画按钮支持）
     // onDropdownItemClick 菜单子级点击事件
+    // onDropdownPrimaryClick 主按钮点击事件
     dropDownFns: {
       type: Object,
       default: () => ({})
@@ -103,16 +115,30 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      // 下拉面板展示控制
+      currentVisible: false
+    }
+  },
   computed: {
+    // 下拉参数选项（插画按钮支持）
+    newDropDownProps() {
+      return {
+        placement: 'bottom-start',
+        ...this.dropDownProps,
+        // 只能true
+        transfer: true,
+        // 只能custom
+        trigger: 'custom',
+        visible: this.currentVisible
+      }
+    },
     // 类名class集合
     btnClass() {
       return `${prefixCls}`
     },
-    headIcon() {
-      return {
-        'background-image': `url(${this.illustrationUrl})`
-      }
-    },
+    // 是否有下拉项
     showDropdownMenu() {
       if (!this.isDropDown || this.disabled) {
         return false
@@ -121,6 +147,10 @@ export default {
         return true
       }
       return false
+    },
+    // dropDown触发方式
+    trigger() {
+      return this.dropDownProps.trigger || 'hover'
     }
   },
   methods: {
@@ -129,6 +159,7 @@ export default {
       const { onDropdownItemClick } = this.dropDownFns
       onDropdownItemClick && onDropdownItemClick(item)
     },
+    // 菜单子级属性
     getDropdownItemProps(item) {
       // name	用来标识这一项	String	-
       // disabled	禁用该项	Boolean	false
@@ -138,6 +169,46 @@ export default {
       let data = {}
       list.forEach(k => (data[k] = item[k]))
       return data
+    },
+    // 主按钮点击
+    handlePrimaryClick() {
+      const { onDropdownPrimaryClick: primaryClick } = this.dropDownFns || {}
+      primaryClick && primaryClick()
+    },
+    // 下拉选项按钮点击
+    handleClick() {
+      if (this.trigger !== 'click') {
+        return false
+      }
+      this.currentVisible = !this.currentVisible
+    },
+    // ————————————————触发hover——————————————————
+    handleMouseenter() {
+      if (this.trigger !== 'hover') {
+        return false
+      }
+      if (this.timeout) {
+        clearTimeout(this.timeout)
+      }
+      this.timeout = setTimeout(() => {
+        this.currentVisible = true
+      }, 250)
+    },
+    handleMouseleave() {
+      if (this.trigger !== 'hover') {
+        return false
+      }
+      if (this.timeout) {
+        clearTimeout(this.timeout)
+        this.timeout = setTimeout(() => {
+          this.currentVisible = false
+        }, 150)
+      }
+    },
+    // ————————————————触发hover——————————————————
+    // 点击菜单按钮元素外部
+    onClickoutside() {
+      this.currentVisible = false
     }
   }
 }
