@@ -1,9 +1,9 @@
 <!--
  * @Author: 杨玉峰 yangyufeng@mobvista.com
  * @Date: 2023-02-28 14:51:20
- * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2023-02-28 18:06:05
- * @FilePath: /ry-design/src/components/basics/image-preview/video-play.vue
+ * @LastEditors: pengfei.liu
+ * @LastEditTime: 2023-07-31 10:08:40
+ * @FilePath: ~@src~@components~@basics~@image-preview~@preview-video.vue
  * @Description: 视频播放
 -->
 <template>
@@ -68,7 +68,7 @@ export default {
   props: {
     value: {
       type: Boolean,
-      debugger: false
+      default: false
     },
     src: {
       required: true,
