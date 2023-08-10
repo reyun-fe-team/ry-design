@@ -1,6 +1,6 @@
 @button: ~'@{css-prefix}button';
 @button-normalized: ~'@{css-prefix}button-normalized';
-@button-illustration: ~'@{css-prefix}button-illustration';
+@button-illustration: ~'@{css-prefix}button-illustra-dropdown';
 @button-icon: ~'@{css-prefix}button-icon';
 
 .@{button} {
@@ -49,6 +49,13 @@
   &-l {
     padding: 0;
 
+    &>span {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      overflow: hidden;
+    }
+
     &-b {
       border-right: 0;
       border-radius: 4px 0 0 4px;
@@ -56,15 +63,27 @@
   }
 
   &-r {
-    border-left: 0;
+    border: 0;
     padding: 0;
     border-radius: 0 4px 4px 0;
+    position: relative;
+    margin-left: -1px;
+
+    &-line {
+      position: absolute;
+      width: 1px;
+      height: 18px;
+      left: -.5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.31);
+    }
 
     &-icon {
-      width: 31px;
+      width: 32px;
       height: 18px;
       line-height: 18px;
-      border-left: 1px solid rgba(255, 255, 255, 0.31);
+      text-align: center;
     }
   }
 
@@ -83,7 +102,7 @@
   }
 
   &-l-t {
-    margin: 0 4px;
+    margin: 0 6px;
     line-height: 32px;
   }
 }
