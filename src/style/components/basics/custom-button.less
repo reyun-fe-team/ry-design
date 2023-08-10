@@ -1,11 +1,11 @@
 @button: ~'@{css-prefix}button';
 @button-normalized: ~'@{css-prefix}button-normalized';
-@button-illustration: ~'@{css-prefix}button-illustration';
+@button-illustration: ~'@{css-prefix}button-illustra-dropdown';
 @button-icon: ~'@{css-prefix}button-icon';
 
 .@{button} {
-  display: inline-block;
   position: relative;
+  display: inline-block;
 
   .ivu-icon {
     font-size: 12px !important;
@@ -13,22 +13,22 @@
 
   // 角标
   &-recommend {
-    display: inline-block;
     position: absolute;
     top: 0;
     z-index: 1;
+    display: inline-block;
   }
 }
 
 // 纯图标按钮
 .@{button-icon} {
-  background: #f3f3f4;
-  color: #575b65;
-  border-radius: 4px;
   display: flex;
+  color: #575b65;
+  cursor: pointer;
+  background: #f3f3f4;
+  border-radius: 4px;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 
   &:hover,
   &-selected {
@@ -49,6 +49,13 @@
   &-l {
     padding: 0;
 
+    &>span {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      overflow: hidden;
+    }
+
     &-b {
       border-right: 0;
       border-radius: 4px 0 0 4px;
@@ -56,15 +63,27 @@
   }
 
   &-r {
-    border-left: 0;
+    border: 0;
     padding: 0;
     border-radius: 0 4px 4px 0;
+    position: relative;
+    margin-left: -1px;
+
+    &-line {
+      position: absolute;
+      width: 1px;
+      height: 18px;
+      left: -.5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.31);
+    }
 
     &-icon {
-      width: 31px;
+      width: 32px;
       height: 18px;
       line-height: 18px;
-      border-left: 1px solid rgba(255, 255, 255, 0.31);
+      text-align: center;
     }
   }
 
@@ -83,7 +102,7 @@
   }
 
   &-l-t {
-    margin: 0 4px;
+    margin: 0 6px;
     line-height: 32px;
   }
 }
@@ -91,21 +110,21 @@
 // 常规按钮
 .@{button-normalized} {
   height: 32px;
-  line-height: 32px;
   min-width: 88px;
   padding: 0 16px;
   font-size: 12px;
+  line-height: 32px;
   border-radius: 3px;
 
   // 蒙版移除
-  &:before {
+  &::before {
     display: none !important;
   }
 
   // 默认
   &.default {
     color: #3989fa;
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #3989fa;
 
     // 划过
@@ -117,9 +136,9 @@
     &.ivu-btn-loading,
     // 禁用
     &:disabled {
-      background: #f7f7f7;
-      border: 1px solid #dddddd;
       color: #c0c4cc;
+      background: #f7f7f7;
+      border: 1px solid #ddd;
 
       .ivu-icon {
         color: #c0c4cc;
@@ -129,7 +148,7 @@
 
   // 主要
   &.primary {
-    color: #ffffff;
+    color: #fff;
     background: #3989fa;
     border: 1px solid #3989fa;
 
@@ -148,7 +167,7 @@
       opacity: 0.5;
 
       .ivu-icon {
-        color: #ffffff;
+        color: #fff;
       }
     }
   }
@@ -159,7 +178,7 @@
 
     // 加载中
     &.ivu-btn-loading {
-      color: rgba(57, 137, 250, 0.5);
+      color: rgba(57, 137, 250, 50%);
     }
 
     // 禁用
@@ -171,23 +190,23 @@
   // 辅助
   &.dashed {
     color: #151b39;
-    background: #ffffff;
-    border: 1px solid #dddddd;
+    background: #fff;
+    border: 1px solid #ddd;
 
     // 划过
     &:hover {
-      background: #ffffff;
-      border: 1px solid #3989fa;
       color: #3989fa;
+      background: #fff;
+      border: 1px solid #3989fa;
     }
 
     // 加载中
     &.ivu-btn-loading,
     // 禁用
     &:disabled {
-      background: #f7f7f7;
-      border: 1px solid #dddddd;
       color: #c0c4cc;
+      background: #f7f7f7;
+      border: 1px solid #ddd;
 
       .ivu-icon {
         color: #c0c4cc;

@@ -35,6 +35,7 @@
         @click="handleClick"
         @mouseenter.native="handleMouseenter"
         @mouseleave.native="handleMouseleave">
+        <i :class="btnClass + '-r-line'"></i>
         <rd-icon
           type="ios-arrow-down"
           :class="btnClass + '-r-icon'"></rd-icon>
@@ -62,7 +63,7 @@
 </template>
 <script>
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'button-illustration'
+const prefixCls = prefix + 'button-illustra-dropdown'
 import Render from './../../base/render'
 import _isArray from 'lodash/isArray'
 
