@@ -2,7 +2,7 @@
   <div>
     <h2>filter-list-select事例</h2>
     <section>
-      <rd-prefix-container v-if="false">
+      <!-- <rd-prefix-container v-if="false">
         <span slot="prepend">投放账户</span>
         <rd-filter-list-select
           v-model="selectMultiple"
@@ -13,7 +13,7 @@
           filterable
           multiple
           show-select-option></rd-filter-list-select>
-      </rd-prefix-container>
+      </rd-prefix-container> -->
       <div style="display: inline-block">
         多选-宽度自适应 {{ selectMultiple }} 事例：{{ selectMultiple }}
         <rd-filter-list-select
@@ -23,7 +23,6 @@
           :data="data"
           multiple
           show-image
-          show-description
           filterable
           :label-method="labelMethod">
           <!-- <div
