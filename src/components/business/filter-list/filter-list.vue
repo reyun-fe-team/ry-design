@@ -207,7 +207,7 @@ export default {
         ) {
           height = 48
         } else if (this.showDescription && this.showSubtitle) {
-          height = 62
+          height = 78
         }
       }
       style.height = `${height}px`

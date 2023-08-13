@@ -262,15 +262,14 @@ export default {
     },
     getHeight({ description, src, subtitle }) {
       if (this.selectItemHeight) {
-        const selectItemHeight = parseInt(this.selectItemHeight)
-        return `${selectItemHeight}px`
+        return parseInt(this.selectItemHeight)
       }
       let count = 32
       if (((description || src) && !subtitle) || ((subtitle || src) && !description)) {
         count = 48
       }
       if (description && subtitle) {
-        count = 62
+        count = 78
       }
       return count
     },
