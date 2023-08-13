@@ -26,6 +26,8 @@
             :text="current[0].label"
             :show-image="showImage"
             :show-description="showDescription"
+            :show-subtitle="showSubtitle"
+            :subtitle="current[0].subtitle"
             :description="current[0].description"></rd-filter-list-describe>
         </template>
         <div
@@ -92,6 +94,7 @@ export default {
     },
     showImage: Boolean,
     showDescription: Boolean,
+    showSubtitle: Boolean,
     disabled: {
       type: Boolean,
       default: false

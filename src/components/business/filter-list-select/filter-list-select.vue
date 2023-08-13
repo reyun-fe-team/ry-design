@@ -22,6 +22,7 @@
       :clearable="clearable"
       :show-image="showImage"
       :show-description="showDescription"
+      :show-subtitle="showSubtitle"
       :input-placeholder="inputPlaceholder"
       :filter-placeholder="filterPlaceholder"
       :disabled="disabled"
@@ -141,6 +142,7 @@ export default {
     },
     showImage: Boolean,
     showDescription: Boolean,
+    showSubtitle: Boolean,
     inputPlaceholder: String,
     filterPlaceholder: String,
     disabled: {
