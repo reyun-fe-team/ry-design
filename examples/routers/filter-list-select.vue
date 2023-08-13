@@ -222,8 +222,9 @@ export default {
           newLabel: `${i + 1}-${value}`,
           disabled: [2, 4, 6, 7].includes(j) ? true : false,
           description: 'beijin-description',
-          src: 'https://web.adsdesk.cn/img/lpf.f19b1cfc.png',
-          isDefault: false
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/e3b/a68/69c/e3ba6869c4593eaaa7984e0f555d9517-small.jpg',
+          isDefault: false,
+          subtitle: 'beijin-subtitle'
         })
       }
       this.groupList.push({

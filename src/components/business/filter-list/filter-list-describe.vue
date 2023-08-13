@@ -23,6 +23,12 @@
         :class="prefixCls + '-body-description'">
         {{ description }}
       </p>
+      <p
+        v-if="showSubtitle && subtitle"
+        v-tooltip="{ maxWidth: 200, content: subtitle, delay: 1000 }"
+        :class="prefixCls + '-body-description'">
+        {{ subtitle }}
+      </p>
     </section>
     <slot></slot>
   </div>
@@ -55,6 +61,14 @@ export default {
     showDescription: {
       type: Boolean,
       default: false
+    },
+    showSubtitle: {
+      type: Boolean,
+      default: false
+    },
+    subtitle: {
+      type: String,
+      default: ''
     }
   },
   data() {
