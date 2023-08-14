@@ -51,6 +51,31 @@
         @click="handlerAddLine">
         添加行
       </span>
+
+      <!-- 是否显示数据筛选方式 -->
+      <template
+        v-if="
+          showIndexIsUnion &&
+          currentValue.data.length > 1 &&
+          currentValue.selectData.length > 1 &&
+          currentValue.data[1].symbol
+        ">
+        <div :class="prefixCls + '-index-is-union'">
+          <Checkbox
+            v-model="formData.indexIsUnion.check"
+            :disabled="formData.indexIsUnion.disabled"></Checkbox>
+          <rd-filter-list-select
+            v-model="formData.indexIsUnion.indexIsUnion"
+            :input-width="240"
+            :width="200"
+            :option-width="200"
+            label="数据筛选方式 :"
+            :multiple="false"
+            name="indexIsUnion"
+            :data="filterItemsValue"
+            @on-change="changeIndexIsUnion"></rd-filter-list-select>
+        </div>
+      </template>
     </template>
   </div>
 </template>
@@ -94,6 +119,10 @@ export default {
       type: Array,
       default: () => []
     },
+    showIndexIsUnion: {
+      type: Boolean,
+      defualt: false
+    },
     indicatorRule: {
       type: Array,
       default: () => [
@@ -136,6 +165,13 @@ export default {
       currentValue: this.value,
       dataFilteringChecked: false,
       isChangingDataFilter: false,
+      formData: {
+        indexIsUnion: {
+          check: true,
+          disabled: true,
+          indexIsUnion: 0
+        }
+      },
       params: {
         label: '',
         type: '',
@@ -146,7 +182,11 @@ export default {
         endValue: 0,
         value: 0,
         dataType: ''
-      }
+      },
+      filterItemsValue: [
+        { label: '交集', value: 0, description: '须同时满足数据筛选所设条件。' },
+        { label: '并集', value: 1, description: '须满足任一数据筛选所设条件。' }
+      ]
     }
   },
   computed: {
@@ -200,11 +240,15 @@ export default {
         }
       }
       this.$emit('input', _cloneDeep(this.currentValue))
-      this.$emit('on-change', _cloneDeep(this.currentValue))
+      this.$emit('on-change', _cloneDeep(this.currentValue), this.formData)
     },
     changeIndicator() {
       this.$emit('input', _cloneDeep(this.currentValue))
-      this.$emit('on-change', _cloneDeep(this.currentValue))
+      this.$emit('on-change', _cloneDeep(this.currentValue), this.formData)
+    },
+    // 更改数据筛选方式
+    changeIndexIsUnion() {
+      this.$emit('on-change', _cloneDeep(this.currentValue), this.formData)
     },
     handleStop() {
       this.currentValue.data.forEach((item, index) => {
@@ -237,14 +281,13 @@ export default {
     changeDataFilterStatus(val) {
       this.dataFilteringChecked = val
       if (!val) {
-        let params = _cloneDeep(this.params)
         this.$nextTick(() => {
           this.currentValue = {
-            data: [params],
+            data: [],
             selectData: []
           }
           this.$emit('input', _cloneDeep(this.currentValue))
-          this.$emit('on-change', _cloneDeep(this.currentValue))
+          this.$emit('on-change', _cloneDeep(this.currentValue), this.formData)
         })
       }
     }

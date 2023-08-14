@@ -4,9 +4,11 @@
     <rd-form-select-indicator
       v-model="dataFiltering"
       :data-list="groupList"
+      :show-index-is-union="true"
       :clearable="true"
       :width="240"
-      :styles="{ width: '240px' }" />
+      :styles="{ width: '240px' }"
+      @on-change="handlerChange" />
   </main>
 </template>
 
@@ -81,6 +83,11 @@ export default {
           dataType: 'TYPE_PERCENTAGE'
         }
       ]
+    }
+  },
+  methods: {
+    handlerChange(currentValue, formData) {
+      console.log('currentValue, formData', currentValue, formData)
     }
   }
 }
