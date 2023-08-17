@@ -180,7 +180,8 @@ export default {
                 showDescription: true,
                 description: row.description,
                 showSubtitle: true,
-                subtitle: row.subtitle
+                subtitle: row.subtitle,
+                showTitle: true
               }
             },
             describeSlot ? describeSlot({ row, index }) : null

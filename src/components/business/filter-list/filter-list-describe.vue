@@ -13,19 +13,19 @@
     </div>
     <section :class="prefixCls + '-body'">
       <div
-        v-tooltip="{ maxWidth: 200, content: text, delay: 1000 }"
+        :title="showTitle ? text : ''"
         :class="prefixCls + '-body-text'">
         {{ text }}
       </div>
       <p
         v-if="showDescription && description"
-        v-tooltip="{ maxWidth: 200, content: description, delay: 1000 }"
-        :class="prefixCls + '-body-description'">
+        :class="prefixCls + '-body-description'"
+        :title="showTitle ? description : ''">
         {{ description }}
       </p>
       <p
         v-if="showSubtitle && subtitle"
-        v-tooltip="{ maxWidth: 200, content: subtitle, delay: 1000 }"
+        :title="showTitle ? subtitle : ''"
         :class="prefixCls + '-body-description'">
         {{ subtitle }}
       </p>
@@ -69,6 +69,10 @@ export default {
     subtitle: {
       type: String,
       default: ''
+    },
+    showTitle: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
