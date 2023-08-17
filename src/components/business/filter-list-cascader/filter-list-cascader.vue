@@ -132,14 +132,21 @@ export default {
   },
   computed: {
     filterData() {
+      if (this.query === '') {
+        return JSON.parse(JSON.stringify(this.data))
+      }
       return this.data.reduce((list, item) => {
         const _item = JSON.parse(JSON.stringify(item))
-        const end = _item.children
-          ? _item.children.filter(item => this.filterMethod(item, this.query))
-          : []
-        if (end && end.length) {
-          _item.children = end
+        let end = []
+        const isChildren = item.children && !!item.children.length
+        if (!isChildren && this.filterMethod(item, this.query)) {
           list.push(_item)
+        } else if (isChildren) {
+          end = _item.children.filter(val => this.filterMethod(val, this.query))
+          if (end && end.length) {
+            _item.children = end
+            list.push(_item)
+          }
         }
         return list
       }, [])
@@ -172,6 +179,8 @@ export default {
       return this.data.reduce((list, val) => {
         if (val.children && val.children.length) {
           list = [...list, ...val.children]
+        } else if (val && (!val.children || !val.children.length)) {
+          list = [...list, val]
         }
         return list
       }, [])
