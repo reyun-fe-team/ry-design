@@ -1,17 +1,17 @@
 <template>
-    <div
-      :class="classes"
-      :style="styles">
-      <filter-list-cascader-menu
-        show-seleted
-        :nodes="menus"
-        @handle-expand="handleExpand"
-        @check-change="checkChange($event, 0)"></filter-list-cascader-menu>
-      <filter-list-cascader-menu
-        v-show="selectedMenus.length"
-        :nodes="selectedMenus"
-        @check-change="checkChange($event, 1)"></filter-list-cascader-menu>
-    </div>
+  <div
+    :class="classes"
+    :style="styles">
+    <filter-list-cascader-menu
+      show-seleted
+      :nodes="menus"
+      @handle-expand="handleExpand"
+      @check-change="checkChange($event, 0)"></filter-list-cascader-menu>
+    <filter-list-cascader-menu
+      v-show="selectedMenus.length"
+      :nodes="selectedMenus"
+      @check-change="checkChange($event, 1)"></filter-list-cascader-menu>
+  </div>
 </template>
 
 <script>
@@ -116,25 +116,27 @@ export default {
     },
     checkChange({ data, selected }, index) {
       if (index === 0) {
-        const ids = this.menus.find(val => val.value === data.value).children.map(val => val.value)
-        this.menus.forEach(val => {
-          if (val.value === data.value) {
-            val.checked = selected
+        let findData = this.menus.find(val => val.value === data.value)
+        findData.checked = selected
+        if (findData.children.length) {
+          const ids = findData.children.map(val => val.value)
 
-            if (val.children) {
-              val.children.forEach(item => {
-                item.checked = val.checked
-              })
-              val.indeterminate = false
-            }
+          if (findData.children) {
+            findData.children.forEach(item => {
+              item.checked = findData.checked
+            })
+            findData.indeterminate = false
           }
-        })
-        ids.forEach(val => {
-          this.doCheck(selected, val)
-        })
-        this.selectedMenus.forEach(val => {
-          val.checked = this.current.includes(val.value)
-        })
+          ids.forEach(val => {
+            this.doCheck(selected, val)
+          })
+          this.selectedMenus.forEach(val => {
+            val.checked = this.current.includes(val.value)
+          })
+        } else {
+          this.doCheck(selected, data.value)
+          this.selectedMenus = []
+        }
       } else {
         this.menus.forEach((item, index) => {
           if (item.children.some(val => val.value === data.value)) {
@@ -166,9 +168,10 @@ export default {
     },
     handleExpand(data) {
       const item = this.menus.find(val => val.value === data.value)
-      if (item) {
-        this.selectedMenus = item.children
+      if (!item) {
+        return
       }
+      this.selectedMenus = item.children
     }
   }
 }
