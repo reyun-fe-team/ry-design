@@ -17,6 +17,7 @@
         :show-image="showImage"
         :disabled="disabled"
         :show-description="showDescription"
+        :show-subtitle="showSubtitle"
         @on-clear="filterListInputChange"
         @click.native="handlerInputClick"></filter-list-input>
       <div
@@ -145,6 +146,7 @@ export default {
     },
     showImage: Boolean,
     showDescription: Boolean,
+    showSubtitle: Boolean,
     disabled: Boolean,
     transfer: Boolean,
     placement: String
@@ -195,19 +197,20 @@ export default {
         const width = parseInt(this.inputWidth)
         style.width = `${width}px`
       }
+      let height = 32
       if (this.inputHeight) {
-        let height = parseInt(this.inputHeight)
-        if (height < 32) {
-          height = 32
+        height = parseInt(this.inputHeight)
+      } else {
+        if (
+          ((this.showDescription || this.showImage) && !this.showSubtitle) ||
+          ((this.showSubtitle || this.showImage) && !this.showDescription)
+        ) {
+          height = 48
+        } else if (this.showDescription && this.showSubtitle) {
+          height = 78
         }
-        if (this.inputData && this.inputData.length && this.inputData.length === 1) {
-          const { description, src } = this.inputData[0]
-          if ((description && this.showDescription) || (src && this.showImage)) {
-            height = this.inputHeight > 48 ? this.inputHeight : 48
-          }
-        }
-        style.height = `${height}px`
       }
+      style.height = `${height}px`
       return style
     },
     heightOption() {

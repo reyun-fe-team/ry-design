@@ -21,11 +21,12 @@
           <rd-filter-list-describe
             :key="uuid"
             style="width: 100%; padding: 0"
-            :height="current[0].description || current[0].src ? 48 : 32"
             :src="current[0].src"
             :text="current[0].label"
             :show-image="showImage"
             :show-description="showDescription"
+            :show-subtitle="showSubtitle"
+            :subtitle="current[0].subtitle"
             :description="current[0].description"></rd-filter-list-describe>
         </template>
         <div
@@ -92,6 +93,7 @@ export default {
     },
     showImage: Boolean,
     showDescription: Boolean,
+    showSubtitle: Boolean,
     disabled: {
       type: Boolean,
       default: false

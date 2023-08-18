@@ -2,7 +2,7 @@
   <div>
     <h2>filter-list-select事例</h2>
     <section>
-      <rd-prefix-container v-if="false">
+      <!-- <rd-prefix-container v-if="false">
         <span slot="prepend">投放账户</span>
         <rd-filter-list-select
           v-model="selectMultiple"
@@ -13,7 +13,7 @@
           filterable
           multiple
           show-select-option></rd-filter-list-select>
-      </rd-prefix-container>
+      </rd-prefix-container> -->
       <div style="display: inline-block">
         多选-宽度自适应 {{ selectMultiple }} 事例：{{ selectMultiple }}
         <rd-filter-list-select
@@ -22,8 +22,6 @@
           show-select-option
           :data="data"
           multiple
-          show-image
-          show-description
           filterable
           :label-method="labelMethod">
           <!-- <div
@@ -78,7 +76,7 @@
     </section>
 
     <section
-      v-if="false"
+      v-if="true"
       style="margin-top: 400px">
       <div style="display: inline-block">
         单选{{ selectRadio }}--{{ typeof selectRadio }}==
@@ -92,6 +90,7 @@
           filterable
           label="单选"
           show-image
+          show-subtitle
           show-description>
           <div slot="search-operate">
             <span style="color: #3989faff">刷新</span>
@@ -105,6 +104,7 @@
           v-model="selectRadio"
           :max-height="256"
           clearable
+          show-image
           :data="data"
           label="单选"></rd-filter-list-select>
       </div>
@@ -216,14 +216,15 @@ export default {
         const value = `${i.toString(36)}${j}`
         children.push({
           value: `${i + 1}-${value}-value`,
-          label: `${
+          label: `天安门上太阳升${
             i + 1
           }-${value} (beijin-description)adeawkdehkqjwehjkqwkjehqjkwehjkqwheqwkehkjqehkjqweqhkwejk`,
-          newLabel: `${i + 1}-${value}`,
+          newLabel: `天安门上太阳升${i + 1}-${value}`,
           disabled: [2, 4, 6, 7].includes(j) ? true : false,
-          description: 'beijin-description',
-          src: 'https://web.adsdesk.cn/img/lpf.f19b1cfc.png',
-          isDefault: false
+          description: '天安门上太阳升beijin-description',
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/e3b/a68/69c/e3ba6869c4593eaaa7984e0f555d9517-small.jpg',
+          isDefault: false,
+          subtitle: '天安门上太阳升beijin-subtitle'
         })
       }
       this.groupList.push({

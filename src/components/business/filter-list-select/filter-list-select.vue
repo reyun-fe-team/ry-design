@@ -22,6 +22,7 @@
       :clearable="clearable"
       :show-image="showImage"
       :show-description="showDescription"
+      :show-subtitle="showSubtitle"
       :input-placeholder="inputPlaceholder"
       :filter-placeholder="filterPlaceholder"
       :disabled="disabled"
@@ -122,8 +123,9 @@ export default {
     inputWidth: [String, Number],
     inputHeight: {
       type: [String, Number],
-      default: 32
+      default: ''
     },
+    selectItemHeight: [String, Number],
     optionWidth: [String, Number],
     filterMethod: {
       type: Function,
@@ -140,6 +142,7 @@ export default {
     },
     showImage: Boolean,
     showDescription: Boolean,
+    showSubtitle: Boolean,
     inputPlaceholder: String,
     filterPlaceholder: String,
     disabled: {
@@ -175,7 +178,10 @@ export default {
                 text: this.getLabel(row),
                 showImage: true,
                 showDescription: true,
-                description: row.description
+                description: row.description,
+                showSubtitle: true,
+                subtitle: row.subtitle,
+                showTitle: true
               }
             },
             describeSlot ? describeSlot({ row, index }) : null
@@ -255,12 +261,18 @@ export default {
     getLabel(val) {
       return this.labelMethod(val)
     },
-    getHeight({ description, src }) {
-      const { inputHeight } = this
-      if (description || src) {
-        return inputHeight > 48 ? inputHeight : 48
+    getHeight({ description, src, subtitle }) {
+      if (this.selectItemHeight) {
+        return parseInt(this.selectItemHeight)
       }
-      return inputHeight > 32 ? inputHeight : 32
+      let count = 32
+      if (((description || src) && !subtitle) || ((subtitle || src) && !description)) {
+        count = 48
+      }
+      if (description && subtitle) {
+        count = 78
+      }
+      return count
     },
     getInitialValue() {
       const { multiple, value } = this
