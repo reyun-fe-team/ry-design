@@ -261,6 +261,8 @@ export default {
     handlerDelete(index) {
       this.currentValue.data.splice(index, 1)
       this.currentValue.selectData.splice(index, 1)
+      this.$emit('input', _cloneDeep(this.currentValue))
+      this.$emit('on-change', _cloneDeep(this.currentValue), this.formData)
     },
     handleMouseOver(index) {
       this.showDeleteIcon = index
@@ -286,6 +288,7 @@ export default {
             data: [],
             selectData: []
           }
+          this.formData.indexIsUnion.indexIsUnion = 0
           this.$emit('input', _cloneDeep(this.currentValue))
           this.$emit('on-change', _cloneDeep(this.currentValue), this.formData)
         })
