@@ -55,6 +55,7 @@
         多选组 事例：{{ selectMultiple }}
         <rd-filter-list-select
           v-model="selectMultiple"
+          transfer
           placement="bottom-end"
           :input-width="400"
           :width="200"
