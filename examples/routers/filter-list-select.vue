@@ -56,7 +56,7 @@
         <rd-filter-list-select
           v-model="selectMultiple"
           transfer
-          placement="bottom-start"
+          placement="bottom-end"
           :input-width="400"
           :width="200"
           filterable
