@@ -87,7 +87,12 @@
 
   .ivu-select-dropdown {
     max-height: 240px;
-    overflow-y: auto;
+
+    .@{select-filter-area-template-list}-dropdown-menu {
+      width: 320px;
+      max-height: 200px;
+      overflow: auto;
+    }
 
     .@{select-filter-area-template-list}-dropdown-item {
       display: flex;

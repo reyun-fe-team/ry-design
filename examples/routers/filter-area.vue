@@ -76,7 +76,18 @@
 export default {
   data() {
     return {
-      data: [],
+      data: [
+        { label: '1111111', value: 11111111 },
+        { label: '2222222', value: 11111112 },
+        { label: '3333333', value: 11111113 },
+        { label: '1111114', value: 11111114 },
+        { label: '1111115', value: 11111115 },
+        { label: '1111111', value: 11111116 },
+        { label: '2222222', value: 11111117 },
+        { label: '3333333', value: 11111118 },
+        { label: '1111114', value: 11111119 },
+        { label: '1111115', value: 11111110 }
+      ],
       formData: {
         selectDate: [],
         groupIds: [],
