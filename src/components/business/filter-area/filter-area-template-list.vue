@@ -12,31 +12,32 @@
         size="12"
         custom="iconfont ry-icon-shaixuan1"></Icon>
     </span>
-    <DropdownMenu
+    <template
       v-if="data.length"
-      slot="list"
-      style="width: 320px">
-      <DropdownItem
-        v-for="item in data"
-        :key="item.value"
-        :name="item.value">
-        <div :class="[prefixCls + '-dropdown-item', activeName === item.value ? 'active' : '']">
-          <div
-            :class="prefixCls + '-dropdown-item-label'"
-            :title="item.label">
-            {{ item.label }}
+      #list>
+      <DropdownMenu :class="[prefixCls + '-dropdown-menu', 'small-scroll-y']">
+        <DropdownItem
+          v-for="item in data"
+          :key="item.value"
+          :name="item.value">
+          <div :class="[prefixCls + '-dropdown-item', activeName === item.value ? 'active' : '']">
+            <div
+              :class="prefixCls + '-dropdown-item-label'"
+              :title="item.label">
+              {{ item.label }}
+            </div>
+            <Icon
+              custom="iconfont ry-icon-jisu-edit"
+              size="12"
+              style="margin-right: 10px"
+              @click.stop="onUpdate(item.value)"></Icon>
+            <Icon
+              custom="iconfont ry-icon-text-delete"
+              size="12"
+              @click.stop="onDelete(item)"></Icon>
           </div>
-          <Icon
-            custom="iconfont ry-icon-jisu-edit"
-            size="12"
-            style="margin-right: 10px"
-            @click.stop="onUpdate(item.value)"></Icon>
-          <Icon
-            custom="iconfont ry-icon-text-delete"
-            size="12"
-            @click.stop="onDelete(item)"></Icon>
-        </div>
-      </DropdownItem>
+        </DropdownItem>
+      </DropdownMenu>
       <div :class="prefixCls + '-dropdown-footer'">
         <span
           :class="prefixCls + '-dropdown-footer-text'"
@@ -44,7 +45,7 @@
           所有筛选项
         </span>
       </div>
-    </DropdownMenu>
+    </template>
   </Dropdown>
 </template>
 <script>
