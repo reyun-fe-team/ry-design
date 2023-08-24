@@ -1,6 +1,8 @@
 <template>
   <main :class="classes">
-    <div :class="prefixCls + '-header'">
+    <div
+      v-if="!showHeader"
+      :class="prefixCls + '-header'">
       <div>
         <span>可添加的指标</span>
         <span
@@ -10,16 +12,20 @@
           + 添加自定义指标
         </span>
       </div>
+    </div>
+
+    <div>
       <Input
         v-model="keyword"
         search
         clearable
+        :class="prefixCls + '-keyword-class'"
         suffix="ios-search"
-        style="width: 200px"
         placeholder="请输入列名称搜索"
         @on-change="keywordChange"
         @on-clear="keywordClear"></Input>
     </div>
+
     <div :class="prefixCls + '-content'">
       <Spin
         v-if="loading"
@@ -182,6 +188,10 @@ export default {
     showAddCustom: {
       type: Boolean,
       default: false
+    },
+    showHeader: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
