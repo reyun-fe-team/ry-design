@@ -5,11 +5,12 @@
     <Button @click="onClickDelete1">删除弹框普通</Button>
     <Button @click="onClickDelete2">删除弹框slot可替换</Button>
     <Button @click="onClickDeep">嵌套弹窗</Button>
+    <Button @click="onClickScroll">scroll弹窗</Button>
     <div v-if="modalVisible1">
       <rd-modals
         v-model="modalVisible1"
         is-slot-default-header
-        isCreate
+        is-create
         footer-border-none
         :header-obj="headerObj"
         :width="600"
@@ -153,6 +154,17 @@
         </div>
       </rd-modals>
     </div>
+    <div v-if="scrollVisible">
+      <rd-modals
+        v-model="scrollVisible"
+        :width="400"
+        @on-cancel="onClickDeepCancel"
+        @on-ok="onClickDeepCancel">
+        <div slot="content">
+          <div style="height: 1000px; background: #2b85e4; width: 100%">我是容器内容</div>
+        </div>
+      </rd-modals>
+    </div>
   </div>
 </template>
 
@@ -166,6 +178,7 @@ export default {
       deleteHasClose: false,
       deepVisible: false,
       deepVisible1: false,
+      scrollVisible: false,
       headerObj: {
         title: '带副标题的弹框',
         subTitle: '个广告计划',
@@ -259,8 +272,12 @@ export default {
     onClickDeep() {
       this.deepVisible = true
     },
+    onClickScroll() {
+      this.scrollVisible = true
+    },
     onClickDeepCancel() {
       this.deepVisible = false
+      this.scrollVisible = false
     },
     onClickDeep1() {
       this.deepVisible1 = true
