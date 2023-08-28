@@ -293,8 +293,7 @@ export default {
         },
         {
           label: '标签',
-          value: 'TAG',
-          children: []
+          value: 'TAG'
         },
         {
           label: '组长',
