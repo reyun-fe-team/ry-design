@@ -18,12 +18,9 @@
         v-on="$listeners" />
     </div>
     <div
-      :class="[
-        prefixCls + '-operate',
-        { [prefixCls + '-operate-clearable']: clearable && current }
-      ]">
+      v-if="clearable && current"
+      :class="[prefixCls + '-operate', prefixCls + '-operate-clearable']">
       <rd-icon
-        v-if="clearable && current"
         :class="prefixCls + '-operate-clear'"
         color="#757a8a"
         type="ry-icon-guanbi"
