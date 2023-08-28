@@ -19,11 +19,20 @@
     justify-content: space-between;
     align-items: center;
 
+    >div {
+      position: relative;
+      width: 100%;
+    }
+
     &-add-custom {
+      position: absolute;
+      top: 50%;
+      right: 8px;
       margin-left: 10px;
       font-weight: normal;
       color: #3989fa;
       cursor: pointer;
+      transform: translateY(-50%);
     }
 
     .ivu-input {
@@ -45,7 +54,7 @@
   &-content {
     position: relative;
     display: flex;
-    height: 440px;
+    height: 380px;
     overflow-y: hidden;
   }
 

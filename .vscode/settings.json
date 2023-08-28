@@ -3,5 +3,13 @@
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
-  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"]
+  "stylelint.validate": [
+    "css",
+    "less",
+    "postcss",
+    "scss",
+    "vue",
+    "sass"
+  ],
+  "nuxt.isNuxtApp": false
 }

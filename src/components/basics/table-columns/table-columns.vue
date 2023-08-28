@@ -1,17 +1,17 @@
 <template>
   <main :class="classes">
-    <div
-      v-if="!showHeader"
-      :class="prefixCls + '-header'">
-      <div>
-        <span>可添加的指标</span>
-        <span
-          v-if="showAddCustom"
-          :class="prefixCls + '-header-add-custom'"
-          @click="handlerAddCustom">
-          + 添加自定义指标
-        </span>
-      </div>
+    <div :class="prefixCls + '-header'">
+      <slot name="header">
+        <div>
+          <span>可添加的指标</span>
+          <span
+            v-if="showAddCustom"
+            :class="prefixCls + '-header-add-custom'"
+            @click="handlerAddCustom">
+            + 添加自定义指标
+          </span>
+        </div>
+      </slot>
     </div>
 
     <div>
@@ -188,10 +188,6 @@ export default {
     showAddCustom: {
       type: Boolean,
       default: false
-    },
-    showHeader: {
-      type: Boolean,
-      default: true
     }
   },
   data() {

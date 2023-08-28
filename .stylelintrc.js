@@ -37,8 +37,8 @@ module.exports = {
         "number-max-precision": 3, // 限制数字中允许的小数位数
         "color-function-notation": 'legacy', // 颜色函数符号rgba\hsl
         "selector-pseudo-element-no-unknown": null, // 禁止未知选择器,要使用::v-deep
-        "max-nesting-depth": [5, {
-            "message": "嵌套层级最大支持5级"
+        "max-nesting-depth": [8, {
+            "message": "嵌套层级最大支持8级"
         }], // 最大嵌套层数
         "string-quotes": "single", // 使用单引号
         "at-rule-empty-line-before": null, // 要求或禁止在@规则之前的空行（可自动修复）
