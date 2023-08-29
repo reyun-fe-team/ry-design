@@ -237,10 +237,6 @@ const router = new VueRouter({
     {
       path: '/filter-list-cascader',
       component: resolve => require(['./routers/filter-list-cascader'], resolve)
-    },
-    {
-      path: '/table-columns-selector',
-      component: resolve => require(['./routers/table-columns-selector'], resolve)
     }
   ]
 })

@@ -57,7 +57,6 @@ import FormInput from './components/business/form-input'
 import FormIndicator from './components/business/form-indicator'
 import FormSelectIndicator from './components/business/form-select-indicator'
 import FilterLisCascader from './components/business/filter-list-cascader'
-import TableColumnsSelector from './components/business/table-columns-selector/index'
 
 import ViewUI from 'view-design'
 
@@ -151,8 +150,7 @@ const components = [
   FormInput,
   FormIndicator,
   FormSelectIndicator,
-  FilterLisCascader,
-  TableColumnsSelector
+  FilterLisCascader
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -228,6 +226,5 @@ export default {
   EchoContainer,
   FilterList,
   FilterListSelect,
-  FilterLisCascader,
-  TableColumnsSelector
+  FilterLisCascader
 }
