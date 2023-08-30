@@ -257,6 +257,7 @@ export default {
     },
     handlerAddLine() {
       this.currentValue.data.push(_cloneDeep(this.params))
+      this.currentValue.selectData.push('')
     },
     handlerDelete(index) {
       this.currentValue.data.splice(index, 1)
