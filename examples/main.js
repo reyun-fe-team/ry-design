@@ -240,10 +240,6 @@ const router = new VueRouter({
     {
       path: '/filter-area',
       component: resolve => require(['./routers/filter-area'], resolve)
-    },
-    {
-      path: '/table-columns-selector',
-      component: resolve => require(['./routers/table-columns-selector'], resolve)
     }
   ]
 })
