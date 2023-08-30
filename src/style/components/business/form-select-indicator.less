@@ -1,4 +1,6 @@
 @form-select-indicator: ~"@{css-prefix}form-select-indicator";
+@filter-list-input: ~"@{css-prefix}filter-list-input";
+@form-indicator: ~"@{css-prefix}form-indicator";
 
 .@{form-select-indicator} {
 
@@ -19,7 +21,7 @@
     margin-bottom: 16px;
     margin-right: 10px;
 
-    .rd-filter-list-input {
+    .@{filter-list-input} {
       padding: 0 4px 0 10px;
       border: none;
 
@@ -27,7 +29,8 @@
         font-size: 14px !important;
       }
     }
-    .rd-form-indicator {
+
+    .@{form-indicator} {
       display: block;
       border: none;
 
@@ -64,13 +67,17 @@
   }
 
   &:hover {
-    .rd-form-select-indicator-icon-delete {
-      display: inline-block;
+    .@{form-select-indicator} {
+      &-icon-delete {
+        display: inline-block;
+      }
     }
   }
 
-  .rd-form-select-indicator-icon-delete :hover {
-    color: #000000;
+  .@{form-select-indicator} {
+    &-icon-delete :hover {
+      color: #000000;
+    }
   }
 
   &-add-line {
