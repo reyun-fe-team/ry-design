@@ -178,7 +178,7 @@ export const getShortcutsOptionsList = (start, self) => [
   },
   {
     id: '-3day',
-    text: '近3天',
+    text: '过去3天',
     value() {
       let date1 = new Date()
       date1.setTime(date1.getTime() - 2 * 3600 * 1000 * 24)
@@ -191,7 +191,7 @@ export const getShortcutsOptionsList = (start, self) => [
   },
   {
     id: '-7day',
-    text: '近7天',
+    text: '过去7天',
     value() {
       let date1 = new Date()
       date1.setTime(date1.getTime() - 6 * 3600 * 1000 * 24)
@@ -204,7 +204,7 @@ export const getShortcutsOptionsList = (start, self) => [
   },
   {
     id: '-14day',
-    text: '近14天',
+    text: '过去14天',
     value() {
       let date1 = new Date()
       date1.setTime(date1.getTime() - 13 * 3600 * 1000 * 24)
@@ -217,7 +217,7 @@ export const getShortcutsOptionsList = (start, self) => [
   },
   {
     id: '-30day',
-    text: '近30天',
+    text: '过去30天',
     value() {
       const date = new Date()
       let date1 = new Date()
@@ -230,7 +230,7 @@ export const getShortcutsOptionsList = (start, self) => [
   },
   {
     id: '-93day',
-    text: '近93天',
+    text: '过去93天',
     value() {
       const date = new Date()
       let date1 = new Date()
