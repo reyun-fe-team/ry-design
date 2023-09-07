@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3538835 */
-  src: url('iconfont.woff2?t=1690962129360') format('woff2'),
-       url('iconfont.woff?t=1690962129360') format('woff'),
-       url('iconfont.ttf?t=1690962129360') format('truetype');
+  src: url('iconfont.woff2?t=1693828531887') format('woff2'),
+       url('iconfont.woff?t=1693828531887') format('woff'),
+       url('iconfont.ttf?t=1693828531887') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.ry-icon-illustrate:before {
+  content: "\e68b";
 }
 
 .ry-icon-shaixuan1:before {
