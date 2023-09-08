@@ -32,7 +32,7 @@ import ImagePreview from './components/basics/image-preview'
 import DropdownPanel from './components/basics/dropdown-panel'
 import Indicator from './components/basics/indicator'
 import Empty from './components/basics/empty'
-
+import Space from './components/basics/space'
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
@@ -150,7 +150,8 @@ const components = [
   FormIndicator,
   FormSelectIndicator,
   FilterLisCascader,
-  FilterArea
+  FilterArea,
+  Space
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -226,5 +227,6 @@ export default {
   EchoContainer,
   FilterList,
   FilterListSelect,
-  FilterLisCascader
+  FilterLisCascader,
+  Space
 }

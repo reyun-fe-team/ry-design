@@ -173,6 +173,14 @@ export default {
       type: Object,
       default: () => {}
     },
+    wildcardConfig: {
+      type: Object,
+      default: () => {
+        return {
+          wildcardTag: '{}'
+        }
+      }
+    },
     showSaveRule: {
       type: Boolean,
       default: true
@@ -249,8 +257,15 @@ export default {
       const startPosVal = elInput.value.slice(0, startPos)
       const endPosVal = elInput.value.slice(startPos, elInput.value.length)
 
+      const { wildcardTag } = this.wildcardConfig || {}
+      if (!wildcardTag) {
+        return false
+      }
+      const wildcardTagLeft = wildcardTag[0]
+      const wildcardTagRight = wildcardTag[1]
+
       if (keyCode === 39 && endPosVal) {
-        let endNum = endPosVal.indexOf('}')
+        let endNum = endPosVal.indexOf(wildcardTagRight)
         let char = endPosVal.substring(0, endNum + 1)
         if (titleList.includes(char)) {
           elInput.selectionStart = startPos + endNum
@@ -259,7 +274,7 @@ export default {
       }
 
       if (keyCode === 37 && startPosVal) {
-        let frontNum = startPosVal.lastIndexOf('{')
+        let frontNum = startPosVal.lastIndexOf(wildcardTagLeft)
         let char = startPosVal.substring(frontNum)
         if (titleList.includes(char)) {
           elInput.selectionStart = frontNum + 1
@@ -270,8 +285,8 @@ export default {
         // 新增判断：如果光标位置相等(没有选中文本)，那么执行删除通配符
         if (elInput.selectionStart === elInput.selectionEnd) {
           let lastChar = startPosVal.charAt(startPosVal.length - 1)
-          let frontNum = startPosVal.lastIndexOf('{')
-          if (lastChar === '}') {
+          let frontNum = startPosVal.lastIndexOf(wildcardTagLeft)
+          if (lastChar === wildcardTagRight) {
             let delChar = startPosVal.substring(frontNum)
             if (titleList.includes(delChar)) {
               elInput.selectionStart = startPosVal.length - delChar.length
@@ -315,14 +330,24 @@ export default {
     },
     changeKeyword(item) {
       let activeTitle = item.title
+
       let replaceName = ''
       if (this.keyword) {
         let index = this.keyword.indexOf(activeTitle)
+        const specialChars = '\\^$.|?*+()[]{}'
+        const regexStr = `([${specialChars
+          .split('')
+          .map(c => `\\${c}`)
+          .join('')}])`
+
         if (index === 0) {
-          replaceName = new RegExp(`${activeTitle}([${this.joinSymbol}]+)?`)
+          replaceName = new RegExp(
+            `${activeTitle.replace(new RegExp(regexStr, 'g'), '\\$1')}([${this.joinSymbol}]+)?`
+          )
         } else {
-          replaceName = new RegExp(`([${this.joinSymbol}]+)?${activeTitle}`)
-          activeTitle = `${this.joinSymbol}${activeTitle}`
+          replaceName = new RegExp(
+            `([${this.joinSymbol}]+)?${activeTitle.replace(new RegExp(regexStr, 'g'), '\\$1')}`
+          )
         }
       }
       if (this.keyword.includes(item.title) || this.keyword.includes(item.reg)) {
