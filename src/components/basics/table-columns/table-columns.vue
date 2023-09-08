@@ -1,25 +1,31 @@
 <template>
   <main :class="classes">
     <div :class="prefixCls + '-header'">
-      <div>
-        <span>可添加的指标</span>
-        <span
-          v-if="showAddCustom"
-          :class="prefixCls + '-header-add-custom'"
-          @click="handlerAddCustom">
-          + 添加自定义指标
-        </span>
-      </div>
+      <slot name="header">
+        <div>
+          <span>可添加的指标</span>
+          <span
+            v-if="showAddCustom"
+            :class="prefixCls + '-header-add-custom'"
+            @click="handlerAddCustom">
+            + 添加自定义指标
+          </span>
+        </div>
+      </slot>
+    </div>
+
+    <div>
       <Input
         v-model="keyword"
         search
         clearable
+        :class="prefixCls + '-keyword-class'"
         suffix="ios-search"
-        style="width: 200px"
         placeholder="请输入列名称搜索"
         @on-change="keywordChange"
         @on-clear="keywordClear"></Input>
     </div>
+
     <div :class="prefixCls + '-content'">
       <Spin
         v-if="loading"
@@ -28,7 +34,7 @@
         class="small-scroll-y"
         :class="prefixCls + '-nav-area-wrap'">
         <li
-          v-for="indicatType in data"
+          v-for="indicatType in listData"
           :key="indicatType.key"
           :class="prefixCls + '-nav-area-list'">
           <div :class="prefixCls + '-nav-area-list-label'">{{ indicatType.title }}</div>
@@ -50,7 +56,7 @@
         :class="prefixCls + '-view'">
         <template v-if="hasSearchResult">
           <div
-            v-for="indicatType in data"
+            v-for="indicatType in listData"
             :key="indicatType.key">
             <div
               v-for="indicatClassify in indicatType.children"
@@ -159,6 +165,7 @@ const prefixCls = prefix + 'table-columns'
 import editTitle from './components/edit-title.vue'
 import ryIcon from '../icon/icon.vue'
 import _isEqual from 'lodash/isEqual'
+import _cloneDeep from 'lodash/cloneDeep'
 
 let dataflat = []
 export default {
@@ -193,7 +200,8 @@ export default {
       keyword: '',
       currentNav: '',
       hookValue: [],
-      timer: null
+      timer: null,
+      listData: []
     }
   },
   computed: {
@@ -204,7 +212,7 @@ export default {
     },
     // 包含搜索数据
     hasSearchResult() {
-      return !this.flatArray(this.data).every(e => e.hide)
+      return !this.flatArray(this.listData).every(e => e.hide)
     }
   },
   watch: {
@@ -214,6 +222,13 @@ export default {
         this.setItemCheck()
         this.emitData()
       }
+    },
+    data: {
+      handler(val) {
+        this.listData = _cloneDeep(val)
+      },
+      deep: true,
+      immediate: true
     }
   },
   created() {
@@ -233,7 +248,7 @@ export default {
     keywordChange() {
       clearTimeout(this.timer)
       this.timer = setTimeout(() => {}, 500)
-      this.hookMap(this.data, item => {
+      this.hookMap(this.listData, item => {
         if (item.children && item.children.length) {
           item['hide'] = item.children.filter(f => f.hide).length === item.children.length
         } else {
@@ -323,7 +338,7 @@ export default {
     },
     // 设置选中状态
     setItemCheck() {
-      this.hookMap(this.data, item => {
+      this.hookMap(this.listData, item => {
         item['check'] = item.unlock || this.hookValue.includes(item.key)
         if (item.children && item.children.length) {
           item['check'] = item.children.every(({ check }) => check)

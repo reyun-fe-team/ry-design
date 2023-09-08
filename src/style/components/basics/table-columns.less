@@ -1,7 +1,6 @@
 @table-columns: ~'@{css-prefix}table-columns';
 
 .@{table-columns} {
-  // width: 630px;
   width: 750px;
 
   &-header {
@@ -14,15 +13,26 @@
     line-height: 40px;
     color: #151b39;
     background-color: #f9f9f9;
-    border: 1px solid #dcdee2;
+    border-top: 1px solid #dcdee2;
+    border-left: 1px solid #dcdee2;
+    border-right: 1px solid #dcdee2;
     justify-content: space-between;
     align-items: center;
 
+    >div {
+      position: relative;
+      width: 100%;
+    }
+
     &-add-custom {
+      position: absolute;
+      top: 50%;
+      right: 8px;
       margin-left: 10px;
       font-weight: normal;
       color: #3989fa;
       cursor: pointer;
+      transform: translateY(-50%);
     }
 
     .ivu-input {
@@ -30,10 +40,21 @@
     }
   }
 
+  &-keyword-class {
+    padding: 14px 11px;
+    border-top: 1px solid #e3e5e7;
+    border-left: 1px solid #e3e5e7;
+    border-right: 1px solid #e3e5e7;
+
+    .ivu-input-icon {
+      right: 11px;
+    }
+  }
+
   &-content {
     position: relative;
     display: flex;
-    height: 440px;
+    height: 380px;
     overflow-y: hidden;
   }
 
@@ -45,38 +66,43 @@
   }
 
   &-nav-area-list {
+    padding-bottom: 5px;
+    margin: 0 11px;
     margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+
+    &::marker {
+      content: '';
+    }
 
     &-label,
     &-item {
       height: 32px;
-      padding-left: 13px;
       line-height: 32px;
     }
 
     &-label {
-      color: #999;
+      padding-left: 9px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #000;
     }
 
     &-item {
       position: relative;
+      padding: 0 9px;
       color: #151b39;
       cursor: pointer;
+      border-radius: 4px;
+
+      &:hover {
+        color: #3989fa;
+      }
     }
 
     &-item-checked {
-      color: rgba(29, 113, 232, 100%);
       background: rgba(240, 246, 255, 100%);
-    }
-
-    &-item-checked::after {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 3px;
-      height: inherit;
-      background: rgba(57, 137, 250, 100%);
-      content: '';
+      background-color: #f3f3f3;
     }
   }
 
@@ -97,9 +123,7 @@
     }
 
     &-list {
-      border-bottom: 1px dashed #ddd;
-      padding-bottom: 24px;
-      margin-bottom: 24px;
+      // margin-bottom: 24px;
 
       .ivu-checkbox {
         margin-right: 4px;
@@ -107,9 +131,15 @@
       }
 
       &-checked-all {
+        height: 32px;
+        padding: 0 8px;
+        margin-bottom: 10px;
         font-weight: 600;
         line-height: 32px;
         color: #151b39;
+        background-color: #f4f5f9;
+        border: 1px solid #efefef;
+        border-radius: 4px;
       }
 
       &-content {
@@ -120,6 +150,7 @@
           display: flex;
           width: 240px;
           min-height: 32px;
+          padding-left: 10px;
           font-size: 12px;
           color: #151b39;
           align-items: center;
@@ -129,13 +160,14 @@
           }
 
           &-title {
-            padding-right: 3px;
-            word-break: break-all;
-            text-overflow: ellipsis;
             display: -webkit-box;
+            padding-right: 3px;
+            padding-left: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
-            overflow: hidden;
           }
 
           .ivu-checkbox-inner {
