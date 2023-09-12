@@ -198,18 +198,6 @@ const router = new VueRouter({
       component: resolve => require(['./routers/echo-container'], resolve)
     },
     {
-      path: '/image',
-      component: resolve => require(['./routers/image'], resolve)
-    },
-    {
-      path: '/image-group',
-      component: resolve => require(['./routers/image-group'], resolve)
-    },
-    {
-      path: '/space',
-      component: resolve => require(['./routers/space'], resolve)
-    },
-    {
       path: '/filter-list',
       component: resolve => require(['./routers/filter-list'], resolve)
     },
@@ -240,6 +228,10 @@ const router = new VueRouter({
     {
       path: '/filter-area',
       component: resolve => require(['./routers/filter-area'], resolve)
+    },
+    {
+      path: '/space',
+      component: resolve => require(['./routers/space'], resolve)
     }
   ]
 })
