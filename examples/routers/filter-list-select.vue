@@ -23,7 +23,8 @@
           :data="data"
           multiple
           filterable
-          :label-method="labelMethod">
+          :label-method="labelMethod"
+          @on-input-clear="onInputClear">
           <!-- <div
             slot="select-item"
             slot-scope="{ row, index }"
@@ -279,7 +280,10 @@ export default {
       })
       this.data = list
     },
-    handleClick() {}
+    handleClick() {},
+    onInputClear(val) {
+      console.log(val)
+    }
   }
 }
 </script>

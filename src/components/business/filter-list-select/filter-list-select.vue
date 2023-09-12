@@ -30,7 +30,8 @@
       :placement="placement"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange"
-      @on-click="handlerClick">
+      @on-click="handlerClick"
+      @on-input-clear="onInputClear">
       <rd-virtual-list
         ref="list"
         :class="[prefixCls + '-virtual-list', 'small-scroll-y']"
@@ -323,6 +324,9 @@ export default {
     },
     handlerClick(val) {
       this.$emit('on-click', val)
+    },
+    onInputClear(val) {
+      this.$emit('on-input-clear', val)
     }
   }
 }
