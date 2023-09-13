@@ -297,24 +297,30 @@ export default {
       this.$emit('on-visible-change', val)
     },
     movementChange() {
+      const value = this.geteEmitValue()
+      this.$emit('before-change', value)
       if (this.saveType === 'always-save' || !this.multiple) {
         // console.log('时时触发-emitChange')
         this.emitChange()
       }
     },
-    emitChange() {
+    geteEmitValue() {
       let emitValue = this.multiple ? _cloneDeep(this.current) : this.current[0]
       // Form 重置时，如果初始值是 null，也置为 null，而不是 []
-      if (Array.isArray(emitValue) && !emitValue.length && this.value === null) {
-        emitValue = null
-      } else if (emitValue === undefined && this.value === null) {
+      if (
+        (Array.isArray(emitValue) && !emitValue.length && this.value === null) ||
+        (emitValue === undefined && this.value === null)
+      ) {
         emitValue = null
       }
-      this.$emit('before-change', emitValue)
+      return emitValue
+    },
+    emitChange() {
       // console.log('更新-emitChange')
-      this.$emit('input', emitValue)
-      this.$emit('on-change', emitValue)
-      this.dispatch('FormItem', 'on-form-change', emitValue)
+      const value = this.geteEmitValue()
+      this.$emit('input', value)
+      this.$emit('on-change', value)
+      this.dispatch('FormItem', 'on-form-change', value)
     },
     handleInputClick(val) {
       this.$emit('on-click', val)
