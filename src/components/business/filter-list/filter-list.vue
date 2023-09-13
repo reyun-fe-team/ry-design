@@ -19,7 +19,7 @@
         :show-description="showDescription"
         :show-subtitle="showSubtitle"
         @on-clear="filterListInputChange"
-        @click.native="handlerInputClick"></filter-list-input>
+        @click.native="handleInputClick"></filter-list-input>
       <div
         slot="list"
         :class="prefixCls + '-body'">
@@ -263,8 +263,8 @@ export default {
       this.$emit('input', this.current)
       this.$emit('on-change', this.current)
     },
-    handlerInputClick() {
-      this.$emit('on-click', this.current)
+    handleInputClick() {
+      this.$emit('on-input-click', this.current)
     }
   }
 }
