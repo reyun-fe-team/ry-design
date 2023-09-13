@@ -14,7 +14,9 @@
           multiple
           show-select-option></rd-filter-list-select>
       </rd-prefix-container> -->
-      <div style="display: inline-block">
+      <div
+        v-if="false"
+        style="display: inline-block">
         多选-宽度自适应 {{ selectMultiple }} 事例：{{ selectMultiple }}
         <rd-filter-list-select
           v-model="selectMultiple"
@@ -24,7 +26,7 @@
           multiple
           filterable
           :label-method="labelMethod"
-          @on-input-clear="onInputClear"
+          @on-input-clear="handleInputClear"
           @on-change="handleChange">
           <!-- <div
             slot="select-item"
@@ -52,7 +54,7 @@
       </div>
 
       <div
-        v-if="false"
+        v-if="true"
         style="display: inline-block; margin-left: 380px">
         多选组 事例：{{ selectMultiple }}
         <rd-filter-list-select
@@ -282,7 +284,7 @@ export default {
       this.data = list
     },
     handleClick() {},
-    onInputClear(val) {
+    handleInputClear(val) {
       console.log(val)
     },
     handleChange(val) {

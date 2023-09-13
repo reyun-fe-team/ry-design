@@ -30,9 +30,9 @@
       :placement="placement"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange"
-      @on-input-click="handlerInputClick"
-      @on-input-clear="handlerInputClear"
-      @on-change="handlerFilterListChange">
+      @on-input-click="handleInputClick"
+      @on-input-clear="handleInputClear"
+      @on-change="handleFilterListChange">
       <rd-virtual-list
         ref="list"
         :class="[prefixCls + '-virtual-list', 'small-scroll-y']"
@@ -218,10 +218,6 @@ export default {
       }
       return style
     },
-    // pullCurrentWatch() {
-    //   // 其实程序做到这一步就可以监听到数据的变化了，再用JSON.parse做数据还原方便后边数据处理。
-    //   return JSON.parse(JSON.stringify(this.current))
-    // },
     getLine() {
       return this.filterData.map((item, idx) => ({
         uid: `key_${idx}`,
@@ -243,17 +239,6 @@ export default {
         // }
       }
     }
-    // pullCurrentWatch(now, before) {
-    //   const newValue = JSON.stringify(now)
-    //   const oldValue = JSON.stringify(before)
-    //   if (newValue !== oldValue) {
-    //     this.$emit('before-change', now)
-    //     if (this.saveType === 'always-save' || !this.multiple) {
-    //       // console.log('时时触发-emitChange')
-    //       this.emitChange()
-    //     }
-    //   }
-    // }
   },
   mounted() {
     const data = this.getInitialValue()
@@ -306,15 +291,14 @@ export default {
     },
     handleVisibleChange(val) {
       if (!val && this.saveType === 'leave-save' && this.multiple) {
-        console.log('离开触发-emitChange')
+        // console.log('离开触发-emitChange')
         this.emitChange()
       }
       this.$emit('on-visible-change', val)
     },
     movementChange() {
       if (this.saveType === 'always-save' || !this.multiple) {
-        console.log('时时触发-emitChange')
-
+        // console.log('时时触发-emitChange')
         this.emitChange()
       }
     },
@@ -327,18 +311,18 @@ export default {
         emitValue = null
       }
       this.$emit('before-change', emitValue)
-      console.log('更新-emitChange')
+      // console.log('更新-emitChange')
       this.$emit('input', emitValue)
       this.$emit('on-change', emitValue)
       this.dispatch('FormItem', 'on-form-change', emitValue)
     },
-    handlerInputClick(val) {
+    handleInputClick(val) {
       this.$emit('on-click', val)
     },
-    handlerInputClear(val) {
+    handleInputClear(val) {
       this.$emit('on-input-clear', val)
     },
-    handlerFilterListChange() {
+    handleFilterListChange() {
       this.movementChange()
     }
   }
