@@ -2,7 +2,7 @@
   <div>
     <h2>filter-list-select事例</h2>
     <section>
-      <!-- <rd-prefix-container v-if="false">
+      <rd-prefix-container v-if="true">
         <span slot="prepend">投放账户</span>
         <rd-filter-list-select
           v-model="selectMultiple"
@@ -11,9 +11,10 @@
           :height="200"
           :width="200"
           filterable
+          clearable
           multiple
-          show-select-option></rd-filter-list-select>
-      </rd-prefix-container> -->
+          @on-change="handleChange"></rd-filter-list-select>
+      </rd-prefix-container>
       <div
         v-if="false"
         style="display: inline-block">
@@ -60,6 +61,7 @@
         <rd-filter-list-select
           v-model="selectMultiple"
           transfer
+          clearable
           placement="bottom-start"
           :input-width="400"
           :width="200"
@@ -71,7 +73,8 @@
           save-type="leave-save"
           label="多选"
           @before-change="beforeChange"
-          @on-click="handleClick">
+          @on-click="handleClick"
+          @on-change="handleChange">
           <div slot="search-operate">
             <span style="color: #3989faff">刷新</span>
             <span style="margin-right: 10px; color: #3989faff">应用管理</span>
@@ -288,7 +291,7 @@ export default {
       console.log(val)
     },
     handleChange(val) {
-      console.log('接手on-change', val)
+      console.log('接收到on-change', val)
     }
   }
 }

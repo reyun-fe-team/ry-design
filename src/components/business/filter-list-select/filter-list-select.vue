@@ -326,6 +326,9 @@ export default {
       this.$emit('on-click', val)
     },
     handleInputClear(val) {
+      if (this.saveType === 'leave-save' && this.multiple) {
+        this.emitChange()
+      }
       this.$emit('on-input-clear', val)
     },
     handleFilterListChange() {
