@@ -264,7 +264,7 @@ export default {
       this.$emit('on-change', this.current)
     },
     handlerInputClick() {
-      this.$emit('on-click', this.current)
+      this.$emit('on-input-click', this.current)
     }
   }
 }

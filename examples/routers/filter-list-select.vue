@@ -24,7 +24,8 @@
           multiple
           filterable
           :label-method="labelMethod"
-          @on-input-clear="onInputClear">
+          @on-input-clear="onInputClear"
+          @on-change="handleChange">
           <!-- <div
             slot="select-item"
             slot-scope="{ row, index }"
@@ -51,7 +52,7 @@
       </div>
 
       <div
-        v-if="true"
+        v-if="false"
         style="display: inline-block; margin-left: 380px">
         多选组 事例：{{ selectMultiple }}
         <rd-filter-list-select
@@ -183,7 +184,7 @@
 export default {
   data() {
     return {
-      selectMultiple: ['1-00-value'],
+      selectMultiple: ['1-00-value', '1-01-value'],
       selectRadio: '',
       groupList: [],
       formValidate: {
@@ -283,6 +284,9 @@ export default {
     handleClick() {},
     onInputClear(val) {
       console.log(val)
+    },
+    handleChange(val) {
+      console.log('接手on-change', val)
     }
   }
 }

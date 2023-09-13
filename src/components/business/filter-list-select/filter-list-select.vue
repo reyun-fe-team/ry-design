@@ -30,8 +30,9 @@
       :placement="placement"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange"
-      @on-click="handlerClick"
-      @on-input-clear="onInputClear">
+      @on-input-click="handlerInputClick"
+      @on-input-clear="handlerInputClear"
+      @on-change="handlerFilterListChange">
       <rd-virtual-list
         ref="list"
         :class="[prefixCls + '-virtual-list', 'small-scroll-y']"
@@ -217,10 +218,10 @@ export default {
       }
       return style
     },
-    pullCurrentWatch() {
-      // 其实程序做到这一步就可以监听到数据的变化了，再用JSON.parse做数据还原方便后边数据处理。
-      return JSON.parse(JSON.stringify(this.current))
-    },
+    // pullCurrentWatch() {
+    //   // 其实程序做到这一步就可以监听到数据的变化了，再用JSON.parse做数据还原方便后边数据处理。
+    //   return JSON.parse(JSON.stringify(this.current))
+    // },
     getLine() {
       return this.filterData.map((item, idx) => ({
         uid: `key_${idx}`,
@@ -241,18 +242,18 @@ export default {
         //   this.dispatch('FormItem', 'on-form-change', this.publicValue)
         // }
       }
-    },
-    pullCurrentWatch(now, before) {
-      const newValue = JSON.stringify(now)
-      const oldValue = JSON.stringify(before)
-      if (newValue !== oldValue) {
-        this.$emit('before-change', now)
-        if (this.saveType === 'always-save' || !this.multiple) {
-          // console.log('时时触发-emitChange')
-          this.emitChange()
-        }
-      }
     }
+    // pullCurrentWatch(now, before) {
+    //   const newValue = JSON.stringify(now)
+    //   const oldValue = JSON.stringify(before)
+    //   if (newValue !== oldValue) {
+    //     this.$emit('before-change', now)
+    //     if (this.saveType === 'always-save' || !this.multiple) {
+    //       // console.log('时时触发-emitChange')
+    //       this.emitChange()
+    //     }
+    //   }
+    // }
   },
   mounted() {
     const data = this.getInitialValue()
@@ -287,19 +288,6 @@ export default {
       }
       return initialValue
     },
-    emitChange() {
-      let emitValue = this.multiple ? _cloneDeep(this.current) : this.current[0]
-      // Form 重置时，如果初始值是 null，也置为 null，而不是 []
-      if (Array.isArray(emitValue) && !emitValue.length && this.value === null) {
-        emitValue = null
-      } else if (emitValue === undefined && this.value === null) {
-        emitValue = null
-      }
-      // console.log('更新数据-emitChange')
-      this.$emit('input', emitValue)
-      this.$emit('on-change', emitValue)
-      this.dispatch('FormItem', 'on-form-change', emitValue)
-    },
     queryChange(val) {
       this.query = val
     },
@@ -314,19 +302,44 @@ export default {
         this.current = [value]
         this.$refs['filter-list'].closeDropdown()
       }
+      this.movementChange()
     },
     handleVisibleChange(val) {
       if (!val && this.saveType === 'leave-save' && this.multiple) {
-        // console.log('离开触发-emitChange')
+        console.log('离开触发-emitChange')
         this.emitChange()
       }
       this.$emit('on-visible-change', val)
     },
-    handlerClick(val) {
+    movementChange() {
+      if (this.saveType === 'always-save' || !this.multiple) {
+        console.log('时时触发-emitChange')
+
+        this.emitChange()
+      }
+    },
+    emitChange() {
+      let emitValue = this.multiple ? _cloneDeep(this.current) : this.current[0]
+      // Form 重置时，如果初始值是 null，也置为 null，而不是 []
+      if (Array.isArray(emitValue) && !emitValue.length && this.value === null) {
+        emitValue = null
+      } else if (emitValue === undefined && this.value === null) {
+        emitValue = null
+      }
+      this.$emit('before-change', emitValue)
+      console.log('更新-emitChange')
+      this.$emit('input', emitValue)
+      this.$emit('on-change', emitValue)
+      this.dispatch('FormItem', 'on-form-change', emitValue)
+    },
+    handlerInputClick(val) {
       this.$emit('on-click', val)
     },
-    onInputClear(val) {
+    handlerInputClear(val) {
       this.$emit('on-input-clear', val)
+    },
+    handlerFilterListChange() {
+      this.movementChange()
     }
   }
 }
