@@ -2,7 +2,7 @@
   <div>
     <h2>filter-list-select事例</h2>
     <section>
-      <!-- <rd-prefix-container v-if="false">
+      <rd-prefix-container v-if="true">
         <span slot="prepend">投放账户</span>
         <rd-filter-list-select
           v-model="selectMultiple"
@@ -11,10 +11,13 @@
           :height="200"
           :width="200"
           filterable
+          clearable
           multiple
-          show-select-option></rd-filter-list-select>
-      </rd-prefix-container> -->
-      <div style="display: inline-block">
+          @on-change="handleChange"></rd-filter-list-select>
+      </rd-prefix-container>
+      <div
+        v-if="false"
+        style="display: inline-block">
         多选-宽度自适应 {{ selectMultiple }} 事例：{{ selectMultiple }}
         <rd-filter-list-select
           v-model="selectMultiple"
@@ -23,7 +26,9 @@
           :data="data"
           multiple
           filterable
-          :label-method="labelMethod">
+          :label-method="labelMethod"
+          @on-input-clear="handleInputClear"
+          @on-change="handleChange">
           <!-- <div
             slot="select-item"
             slot-scope="{ row, index }"
@@ -56,6 +61,7 @@
         <rd-filter-list-select
           v-model="selectMultiple"
           transfer
+          clearable
           placement="bottom-start"
           :input-width="400"
           :width="200"
@@ -67,7 +73,8 @@
           save-type="leave-save"
           label="多选"
           @before-change="beforeChange"
-          @on-click="handleClick">
+          @on-click="handleClick"
+          @on-change="handleChange">
           <div slot="search-operate">
             <span style="color: #3989faff">刷新</span>
             <span style="margin-right: 10px; color: #3989faff">应用管理</span>
@@ -182,7 +189,7 @@
 export default {
   data() {
     return {
-      selectMultiple: ['1-00-value'],
+      selectMultiple: ['1-00-value', '1-01-value'],
       selectRadio: '',
       groupList: [],
       formValidate: {
@@ -279,7 +286,13 @@ export default {
       })
       this.data = list
     },
-    handleClick() {}
+    handleClick() {},
+    handleInputClear(val) {
+      console.log(val)
+    },
+    handleChange(val) {
+      console.log('接收到on-change', val)
+    }
   }
 }
 </script>
