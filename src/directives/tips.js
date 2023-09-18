@@ -3,6 +3,8 @@ import { Tooltip } from 'view-design'
 
 // 悬浮的z-index = 1060 + tooltipZIndex
 let tooltipZIndex = 5000
+// 悬浮的props收集的集合
+let tooltipOptionsMap = {}
 
 function hasDoc() {
   return typeof window !== 'undefined' && 'document' in window
@@ -20,7 +22,13 @@ function createTooltip(target, options = {}) {
     },
     extends: Tooltip
   }
-  const tooltip = new Vue({
+  const RyTooltipProps = Vue.observable({
+    ...options,
+    transfer: true,
+    theme: 'light',
+    reference: target
+  })
+  const RyTooltipCom = new Vue({
     el: document.createElement('div'),
     render(h) {
       let contentChild = null
@@ -30,21 +38,12 @@ function createTooltip(target, options = {}) {
         let renderDom = options.contentRender(h, options)
         contentChild = h('div', { slot: 'content', class: 'v-tooltip-content-slot' }, [renderDom])
       }
-      return h(
-        RyTooltip,
-        {
-          props: {
-            ...options,
-            transfer: true,
-            theme: 'light',
-            reference: target
-          }
-        },
-        [contentChild]
-      )
+      return h(RyTooltip, { props: RyTooltipProps }, [contentChild])
     }
   })
-  return tooltip.$children[0]
+  const RyTooltipContentCom = RyTooltipCom.$children[0]
+  tooltipOptionsMap[RyTooltipContentCom._uid] = RyTooltipProps
+  return RyTooltipContentCom
 }
 
 function showTooltip(event) {
@@ -95,21 +94,24 @@ const directive = {
     // 性能有损耗
     const tooltipRef = el._tooltipRef
     if (tooltipRef) {
-      const popper = tooltipRef.$refs.popper
-      if (popper && hasDoc()) {
-        document.body.removeChild(popper)
+      const _uid = tooltipRef._uid
+      const notUpdate = ['transfer', 'theme', 'reference']
+      const nowOptions = tooltipOptionsMap[_uid]
+      for (const key in binding.value) {
+        if (!notUpdate.includes(key)) {
+          nowOptions[key] = binding.value[key]
+        }
       }
-      delete el._tooltipRef
     }
   },
   // 销毁组件（触发一次）
   unbind(el) {
     const tooltipRef = el._tooltipRef
     if (tooltipRef) {
-      tooltipRef.$nextTick(() => {
-        tooltipRef.handleClosePopper()
-        tooltipRef.$destroy()
-      })
+      // 删除对应的配置数据
+      delete tooltipOptionsMap[tooltipRef._uid]
+      tooltipRef.handleClosePopper()
+      tooltipRef.$destroy()
     }
     // 删除属性
     delete el._tooltipOption
