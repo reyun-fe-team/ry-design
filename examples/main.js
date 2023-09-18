@@ -18,6 +18,10 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     {
+      path: '/vTooltips',
+      component: resolve => require(['./routers/vTooltips'], resolve)
+    },
+    {
       path: '/transfer',
       component: resolve => require(['./routers/transfer.vue'], resolve)
     },
