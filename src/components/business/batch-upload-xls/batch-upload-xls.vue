@@ -60,7 +60,7 @@
                   {{ fileName ? fileName : `${accept}文件` }}
                 </p>
                 <p
-                  class="overflow-ellipsis line-clamp-two"
+                  class="rd-overflow-ellipsis rd-line-clamp-two"
                   :class="[prefixCls + '-upload-file-content-file-name-text']">
                   {{ fileName ? fileName : `${accept}文件` }}
                 </p>

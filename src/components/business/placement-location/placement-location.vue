@@ -1,28 +1,42 @@
 <template>
-  <div :class="prefixCls">
+  <div :class="classes">
+    <placement-location-node
+      v-if="showAll && !showEmpty"
+      :value="checkedAll"
+      label="全选"
+      :disabled="disabledCheckedAll"
+      show-checkbox
+      multiple
+      @on-change="toggleSelectAll"></placement-location-node>
     <div
-      v-for="option in data"
+      v-for="(option, index) in data"
       :key="option.label">
       <placement-location-node
         v-model="option.checked"
         :label="option.label"
         :show-checkbox="showCheckbox"
-        :disabled="option.disabled"
-        :multiple="multiple"
+        :disabled="option._disabled || option.disabled"
+        multiple
+        :class="classesTitle(index)"
         @on-change="handlTitleChange(option)"></placement-location-node>
       <div
-        v-if="option.children && option.children.length"
-        :class="prefixCls + '-body'">
+        v-if="option.expand && option.children && option.children.length"
+        :class="prefixCls + '-children'">
         <placement-location-node
           v-for="(item, childrenIndex) in option.children"
           :key="item.value"
           v-model="item.checked"
           :label="item.label"
           show-checkbox
-          :disabled="item.disabled"
+          :disabled="item._disabled || item.disabled"
           :multiple="getChildrenMultiple(option)"
-          @on-change="handleChildrenChange(option, childrenIndex)"></placement-location-node>
+          @on-change="handleChildrenChange(option, item, childrenIndex)"></placement-location-node>
       </div>
+    </div>
+    <div
+      v-if="showEmpty"
+      :class="prefixCls + '-empty'">
+      {{ emptyText }}
     </div>
   </div>
 </template>
@@ -30,9 +44,12 @@
 import { prefix } from '../../../config.js'
 const prefixCls = prefix + 'placement-location'
 import placementLocationNode from './placement-location-node'
+import Emitter from '@src/mixins/emitter'
+
 export default {
   name: prefixCls,
   components: { placementLocationNode },
+  mixins: [Emitter],
   props: {
     data: {
       type: Array,
@@ -42,55 +59,227 @@ export default {
       type: Boolean,
       default: false
     },
-    multiple: {
+    emptyText: {
+      type: String,
+      default: '暂无数据'
+    },
+    showBorder: {
+      type: Boolean,
+      default: true
+    },
+    value: {
+      type: Array,
+      default: () => []
+    },
+    showAll: {
       type: Boolean,
       default: false
     }
   },
   data() {
+    let value = this.value
+    if (value === null) {
+      value = []
+    }
     return {
-      prefixCls: prefixCls
+      prefixCls: prefixCls,
+      selectAll: false,
+      disabledCheckedAll: false,
+      currentValue: value,
+      isChangeValueInTree: false // 如果是点击 Tree 里改变的数据，临时置为 true，避免在 watch 的 value 中重复修改 Select 数据
     }
   },
-  methods: {
-    getChildrenMultiple(data) {
-      if (!data.childrenRule) {
-        return this.multiple
+  computed: {
+    showEmpty() {
+      return !this.data.length
+    },
+    classes() {
+      return [`${this.prefixCls}`, { [`${prefixCls}-border`]: this.showBorder }]
+    },
+
+    checkedAll() {
+      const valid = this.data.some(val => {
+        if (this.showCheckbox && !val.checked) {
+          return true
+        } else if (val.expand && val.children && val.children.length) {
+          return val.children.some(item => {
+            return !item.checked
+          })
+        } else {
+          return false
+        }
+      })
+      return !valid
+    }
+  },
+  watch: {
+    value() {
+      if (this.isChangeValueInTree) {
+        this.isChangeValueInTree = false
+      } else {
+        this.currentValue = this.value
+        this.handleUpdateNodes()
       }
-      return data.childrenRule.multiple || false
+      this.currentValue = this.value
+    },
+    data() {
+      if (this.isChangeValueInTree) {
+        this.isChangeValueInTree = false
+      } else {
+        this.handleUpdateNodes()
+      }
+    }
+  },
+  mounted() {
+    this.handleUpdateNodes()
+  },
+  methods: {
+    classesTitle(index) {
+      const weight = this.data.some(val => val.children && val.children.length)
+      return [
+        { [`${prefixCls}-weight`]: weight, [`${prefixCls}-title`]: this.showAll || index !== 0 }
+      ]
+    },
+    getChildrenMultiple(data) {
+      return data.childrenRule && 'multiple' in data.childrenRule
+        ? data.childrenRule.multiple
+        : true
     },
     handlTitleChange(data) {
-      // console.log(data)
-      if (!this.showCheckbox || !data.children || !data.children.length) {
+      if (!this.showCheckbox) {
+        return
+      }
+      if (data.children && data.children.length) {
+        // 子集是判断||多选
+        const multiple = this.getChildrenMultiple(data)
+        // 更新子集
+        data.children.forEach((val, index) => {
+          if (multiple) {
+            val.checked = data.checked
+          } else if (!multiple && !data.checked) {
+            // 单选也需要全部取消
+            val.checked = false
+          } else if (!multiple) {
+            // 单选默认选中第一个
+            val.checked = index === 0
+          }
+        })
+      }
+      this.handleUpdateSelectValue()
+      this.$emit('on-title-click', this.currentValue, data)
+    },
+    handleChildrenChange(data, childData, childrenIndex) {
+      this.disabledCheckedAll = false
+      if (childData.disabledValues && childData.disabledValues.length) {
+        this.data.forEach(val => {
+          val._disabled = true
+          val.checked = false
+          if (val.children && val.children.length) {
+            val.children.forEach(item => {
+              let disabled = false
+              if (item.disabled) {
+                disabled = true
+              } else if (childData.checked) {
+                disabled = childData.disabledValues.includes(item.value)
+                if (disabled) {
+                  this.disabledCheckedAll = true
+                }
+              }
+              item._disabled = disabled
+            })
+          }
+        })
+
+        this.handleUpdateSelectValue()
+        this.$emit('on-chillren-click', childData, this.currentValue, data)
         return
       }
       const multiple = this.getChildrenMultiple(data)
-      // 更新子集
-      data.children.forEach((val, index) => {
-        if (multiple) {
-          val.checked = data.checked
-        } else if (!multiple && !data.checked) {
-          // 单选也需要全部取消
-          val.checked = false
-        } else if (!multiple) {
-          // 单选默认选中第一个
-          val.checked = index === 0
+      const isUpdateTitle = this.isUpdateTitle(data)
+      if (multiple) {
+        if (isUpdateTitle) {
+          // 更新父节点
+          data.checked = data.children.every(val => val.checked)
+        }
+      } else {
+        // 单选-更新兄弟节点
+        data.children.forEach((val, index) => {
+          if (!val.disabled) {
+            val.checked = childrenIndex === index
+          }
+        })
+        if (isUpdateTitle) {
+          // 更新父节点
+          data.checked = data.children.some(val => val.checked)
+        }
+      }
+      this.handleUpdateSelectValue()
+      this.$emit('on-chillren-click', childData, this.currentValue, data)
+    },
+    // 是否更新父节点
+    isUpdateTitle(data) {
+      return !data.disabled && this.showCheckbox
+    },
+    // 更新value
+    handleUpdateSelectValue() {
+      let list = []
+      this.data.forEach(item => {
+        if (item.checked && item.value) {
+          list.push(item.value)
+        }
+        if (item.children && item.children.length) {
+          item.children.forEach(val => {
+            if (val.checked) {
+              list.push(val.value)
+            }
+          })
+        }
+      })
+      this.currentValue = list
+      this.isChangeValueInTree = true
+      this.$emit('input', this.currentValue)
+      this.$emit('on-change', this.currentValue)
+      this.dispatch('FormItem', 'on-form-change', this.currentValue)
+    },
+    // 初始化数据源
+    handleUpdateNodes() {
+      this.data.forEach(item => {
+        if (this.showCheckbox && this.currentValue.includes(item.value)) {
+          item.checked = true
+        }
+        if (item.children && item.children.length) {
+          item.children.forEach(val => {
+            if (this.currentValue.includes(val.value)) {
+              val.checked = true
+            }
+          })
+          if (this.showCheckbox && item.children.some(val => val.checked)) {
+            item.checked = true
+          }
         }
       })
     },
-    handleChildrenChange(data, childrenIndex) {
-      const multiple = this.getChildrenMultiple(data)
-      if (multiple) {
-        // 更新父节点
-        data.checked = data.children.every(val => val.checked)
-      } else {
-        // 更新兄弟节点
-        data.children.forEach((val, index) => {
-          val.checked = childrenIndex === index
-        })
-
-        // 更新父节点
-        data.checked = data.children.some(val => val.checked)
+    toggleSelectAll(checked) {
+      console.log({ checked })
+      this.data.forEach(item => {
+        if (this.showCheckbox) {
+          if (checked && !item.disabled && !item._disabled) {
+            item.checked = true
+          } else if (!checked) {
+            item.checked = false
+          }
+        }
+        if (item.children && item.children.length) {
+          item.children.forEach(val => {
+            if (!val.disabled && !val._disabled && item.expand) {
+              val.checked = checked
+            }
+          })
+        }
+      })
+      this.handleUpdateSelectValue()
+      if (this.showCheckbox) {
+        this.$emit('on-title-click', this.currentValue, [])
       }
     }
   }

@@ -7,12 +7,15 @@
         <Checkbox
           v-if="multiple"
           :disabled="disabled"
-          :value="currentCheck"></Checkbox>
+          :value="currentChecked"></Checkbox>
         <Radio
           v-if="!multiple"
-          v-model="currentCheck"></Radio>
+          v-model="currentChecked"
+          :disabled="disabled"></Radio>
       </template>
-      <div :class="prefixCls + '-item-text'">
+      <div
+        :class="prefixCls + '-item-text'"
+        :title="label">
         {{ label }}
       </div>
     </div>
@@ -48,7 +51,7 @@ export default {
   data() {
     return {
       prefixCls: prefixCls,
-      currentCheck: this.value
+      currentChecked: this.value
     }
   },
   computed: {
@@ -56,32 +59,32 @@ export default {
       return [
         `${prefixCls}-item`,
         {
-          [`${prefixCls}-item-hover`]: this.showCheckbox
+          [`${prefixCls}-item-select`]: this.showCheckbox && !this.disabled,
+          [`${prefixCls}-item-disabled`]: this.showCheckbox && this.disabled
         }
       ]
     }
   },
   watch: {
     value(value) {
-      this.currentCheck = value
+      this.currentChecked = value
     }
   },
   methods: {
     handleClick() {
-      if (!this.showCheckbox) {
+      if (!this.showCheckbox || this.disabled) {
         return
       }
       if (this.multiple) {
-        this.currentCheck = !this.currentCheck
+        this.currentChecked = !this.currentChecked
       } else {
-        if (this.currentCheck) {
+        if (this.currentChecked) {
           return
         }
-        this.currentCheck = true
+        this.currentChecked = true
       }
-      console.log(this.currentCheck)
-      this.$emit('input', this.currentCheck)
-      this.$emit('on-change', this.currentCheck)
+      this.$emit('input', this.currentChecked)
+      this.$emit('on-change', this.currentChecked)
     }
   }
 }
