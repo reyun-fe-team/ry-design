@@ -260,7 +260,6 @@ export default {
       })
     },
     toggleSelectAll(checked) {
-      console.log({ checked })
       this.data.forEach(item => {
         if (this.showCheckbox) {
           if (checked && !item.disabled && !item._disabled) {
@@ -279,7 +278,7 @@ export default {
       })
       this.handleUpdateSelectValue()
       if (this.showCheckbox) {
-        this.$emit('on-title-click', this.currentValue, [])
+        this.$emit('on-on-select-all', this.currentValue)
       }
     }
   }

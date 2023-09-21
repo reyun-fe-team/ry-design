@@ -21,7 +21,8 @@
       :data="dataToutiao"
       show-checkbox
       show-all
-      @on-title-click="onTitleClick"></rd-placement-location>
+      @on-title-click="onTitleClick"
+      @on-on-select-all="onTitleClick"></rd-placement-location>
     <h2 style="margin: 16px 0">广点通-广告位置{{ valueGdtPosition }}</h2>
     <rd-placement-location
       v-model="valueGdtPosition"
