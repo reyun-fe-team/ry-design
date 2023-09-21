@@ -96,7 +96,6 @@ export default {
     classes() {
       return [`${this.prefixCls}`, { [`${prefixCls}-border`]: this.showBorder }]
     },
-
     checkedAll() {
       const valid = this.data.some(val => {
         if (this.showCheckbox && !val.checked) {
@@ -244,17 +243,16 @@ export default {
     // 初始化数据源
     handleUpdateNodes() {
       this.data.forEach(item => {
-        if (this.showCheckbox && this.currentValue.includes(item.value)) {
-          item.checked = true
-        }
+        item.checked = this.showCheckbox && this.currentValue.includes(item.value)
         if (item.children && item.children.length) {
           item.children.forEach(val => {
-            if (this.currentValue.includes(val.value)) {
-              val.checked = true
-            }
+            val.checked = this.currentValue.includes(val.value)
           })
-          if (this.showCheckbox && item.children.some(val => val.checked)) {
-            item.checked = true
+          const multiple = this.getChildrenMultiple(item)
+          if (!multiple) {
+            item.checked = this.showCheckbox && item.children.some(val => val.checked)
+          } else {
+            item.checked = this.showCheckbox && item.children.every(val => val.checked)
           }
         }
       })
