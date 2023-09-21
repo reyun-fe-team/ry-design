@@ -1,17 +1,16 @@
 * {
   box-sizing: border-box;
-
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0%);
 }
 
-*:before,
-*:after {
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 body {
-  color: @text-color;
   font-size: @font-size-base;
+  color: @text-color;
 }
 
 body,
@@ -71,10 +70,10 @@ input::-ms-reveal {
 a {
   color: @link-color;
   text-decoration: none;
+  cursor: pointer;
   background: transparent;
   outline: none;
   transition: color @transition-time ease;
-  cursor: pointer;
 
   &:hover {
     color: @link-hover-color;
@@ -92,14 +91,7 @@ a {
 
   &[disabled] {
     color: #ccc;
-    cursor: @cursor-disabled;
     pointer-events: none;
+    cursor: @cursor-disabled;
   }
-}
-
-.rd-line-clamp {
-  display: -webkit-box;
-  overflow: hidden;
-
-  -webkit-box-orient: vertical;
 }

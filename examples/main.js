@@ -236,6 +236,10 @@ const router = new VueRouter({
     {
       path: '/space',
       component: resolve => require(['./routers/space'], resolve)
+    },
+    {
+      path: '/placement-location',
+      component: resolve => require(['./routers/placement-location'], resolve)
     }
   ]
 })
