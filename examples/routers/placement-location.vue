@@ -24,6 +24,8 @@
       @on-title-click="onTitleClick"
       @on-on-select-all="onTitleClick"></rd-placement-location>
     <h2 style="margin: 16px 0">广点通-广告位置{{ valueGdtPosition }}</h2>
+    <div @click="updateValue">点击设置空</div>
+    <div @click="updateValueAdd">点击添加</div>
     <rd-placement-location
       v-model="valueGdtPosition"
       :data="dataGdtPosition"
@@ -254,6 +256,12 @@ export default {
           })
         }
       }
+    },
+    updateValue() {
+      this.valueGdtPosition = []
+    },
+    updateValueAdd() {
+      this.valueGdtPosition.push('微信新闻插件')
     }
   }
 }
