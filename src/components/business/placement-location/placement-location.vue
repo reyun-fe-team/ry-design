@@ -9,7 +9,7 @@
       multiple
       @on-change="toggleSelectAll"></placement-location-node>
     <div
-      v-for="(option, index) in data"
+      v-for="(option, titleIndex) in data"
       :key="option.label">
       <placement-location-node
         v-model="option.checked"
@@ -17,20 +17,20 @@
         :show-checkbox="showCheckbox"
         :disabled="option._disabled || option.disabled"
         multiple
-        :class="classesTitle(index)"
+        :class="classesTitle(titleIndex)"
         @on-change="handlTitleChange(option)"></placement-location-node>
       <div
         v-if="option.expand && option.children && option.children.length"
         :class="prefixCls + '-children'">
         <placement-location-node
-          v-for="(item, childrenIndex) in option.children"
+          v-for="item in option.children"
           :key="item.value"
           v-model="item.checked"
           :label="item.label"
           show-checkbox
           :disabled="item._disabled || item.disabled"
           :multiple="getChildrenMultiple(option)"
-          @on-change="handleChildrenChange(option, item, childrenIndex)"></placement-location-node>
+          @on-change="handleChildrenChange(option, item, titleIndex)"></placement-location-node>
       </div>
     </div>
     <div
@@ -74,6 +74,10 @@ export default {
     showAll: {
       type: Boolean,
       default: false
+    },
+    multiple: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -140,9 +144,10 @@ export default {
       ]
     },
     getChildrenMultiple(data) {
-      return data.childrenRule && 'multiple' in data.childrenRule
-        ? data.childrenRule.multiple
-        : true
+      if (data.childrenRule && 'multiple' in data.childrenRule) {
+        return data.childrenRule.multiple
+      }
+      return this.multiple
     },
     handlTitleChange(data) {
       if (!this.showCheckbox) {
@@ -153,26 +158,27 @@ export default {
         const multiple = this.getChildrenMultiple(data)
         // 更新子集
         data.children.forEach((val, index) => {
-          if (multiple) {
-            val.checked = data.checked
-          } else if (!multiple && !data.checked) {
-            // 单选也需要全部取消
-            val.checked = false
-          } else if (!multiple) {
-            // 单选默认选中第一个
-            val.checked = index === 0
+          if (val && !val.disabled && !val._disabled) {
+            if (multiple) {
+              val.checked = data.checked
+            } else if (!multiple && !data.checked) {
+              // 单选也需要全部取消
+              val.checked = false
+            } else if (!multiple) {
+              // 单选默认选中第一个
+              val.checked = index === 0
+            }
           }
         })
       }
       this.handleUpdateSelectValue()
       this.$emit('on-title-click', this.currentValue, data)
     },
-    handleChildrenChange(data, childData, childrenIndex) {
+    handleChildrenChange(data, childData, titleIndex) {
       this.disabledCheckedAll = false
-      if (childData.disabledValues && childData.disabledValues.length) {
+      // 处理特殊场景,选中一条指定置灰其他
+      if (childData.disabledValues && childData.disabledValues.length && this.multiple) {
         this.data.forEach(val => {
-          val._disabled = true
-          val.checked = false
           if (val.children && val.children.length) {
             val.children.forEach(item => {
               let disabled = false
@@ -188,10 +194,6 @@ export default {
             })
           }
         })
-
-        this.handleUpdateSelectValue()
-        this.$emit('on-chillren-click', childData, this.currentValue, data)
-        return
       }
       const multiple = this.getChildrenMultiple(data)
       const isUpdateTitle = this.isUpdateTitle(data)
@@ -201,10 +203,15 @@ export default {
           data.checked = data.children.every(val => val.checked)
         }
       } else {
-        // 单选-更新兄弟节点
-        data.children.forEach((val, index) => {
-          if (!val.disabled) {
-            val.checked = childrenIndex === index
+        this.data.forEach((item, index) => {
+          // 处理全体单选和局部单选的场景
+          if (!this.multiple || (item.value === data.value && index === titleIndex)) {
+            // 二级节点单选场景-更新兄弟节点
+            item.children.forEach(val => {
+              if (!val.disabled && !val._disabled) {
+                val.checked = val.value === childData.value
+              }
+            })
           }
         })
         if (isUpdateTitle) {
