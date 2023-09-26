@@ -38,6 +38,14 @@
       :class="prefixCls + '-empty'">
       {{ emptyText }}
     </div>
+    <Spin
+      v-if="loading"
+      fix>
+      <Icon
+        type="ios-loading"
+        size="18"
+        :class="prefixCls + '-loading'"></Icon>
+    </Spin>
   </div>
 </template>
 <script>
@@ -76,6 +84,10 @@ export default {
       default: false
     },
     multiple: {
+      type: Boolean,
+      default: true
+    },
+    loading: {
       type: Boolean,
       default: true
     }

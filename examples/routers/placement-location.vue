@@ -21,6 +21,7 @@
       :data="dataToutiao"
       show-checkbox
       show-all
+      :loading="loading"
       @on-title-click="onTitleClick"
       @on-on-select-all="onTitleClick"></rd-placement-location>
     <h2 style="margin: 16px 0">广点通-广告位置{{ valueGdtPosition }}</h2>
@@ -46,7 +47,9 @@
       v-model="valueGdtCreativeRadio"
       :data="dataGdtCreativeRadioPart"></rd-placement-location>
     <h2 style="margin: 16px 0">没有数据的场景</h2>
-    <rd-placement-location style="margin-top: 16px"></rd-placement-location>
+    <rd-placement-location
+      style="margin-top: 16px"
+      :loading="loading"></rd-placement-location>
   </div>
 </template>
 
@@ -54,6 +57,7 @@
 export default {
   data() {
     return {
+      loading: true,
       valueToutiao: [],
       valueGdtPosition: [],
       valueGdtCreative: [],
@@ -468,6 +472,9 @@ export default {
   },
   mounted() {
     this.dataGdtPosition = this.dataGdtPosition1
+    setTimeout(() => {
+      this.loading = false
+    }, 2000)
   },
   methods: {
     onTitleClick(value) {
