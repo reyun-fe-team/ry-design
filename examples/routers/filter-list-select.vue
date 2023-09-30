@@ -11,9 +11,22 @@
           :height="200"
           :width="200"
           filterable
+          transfer
+          show-select-option
           clearable
           multiple
-          @on-change="handleChange"></rd-filter-list-select>
+          show-action
+          action-text="若没找到您所投放的小游戏，可"
+          action-button-text="添加小游戏"
+          :action-rule-validate="actionRuleValidate"
+          @on-active-ok="handleActiveOk"
+          @on-change="handleChange">
+          <!-- <div
+            slot="footer"
+            class="dingyi">
+            自定义footer
+          </div> -->
+        </rd-filter-list-select>
       </rd-prefix-container>
       <div
         v-if="false"
@@ -58,6 +71,7 @@
         v-if="true"
         style="display: inline-block; margin-left: 380px">
         多选组 事例：{{ selectMultiple }}
+        <!-- :group-name-list="groupNameList" -->
         <rd-filter-list-select
           v-model="selectMultiple"
           transfer
@@ -72,9 +86,12 @@
           multiple
           save-type="leave-save"
           label="多选"
-          @before-change="beforeChange"
+          show-action
+          action-button-text="添加小游戏"
+          :action-rule-validate="actionRuleValidate"
           @on-click="handleClick"
-          @on-change="handleChange">
+          @on-change="handleChange"
+          @on-active-ok="handleActiveOk">
           <div slot="search-operate">
             <span style="color: #3989faff">刷新</span>
             <span style="margin-right: 10px; color: #3989faff">应用管理</span>
@@ -204,7 +221,23 @@ export default {
         app: [{ required: true, message: '请选择应用', trigger: 'change' }],
         app1: [{ required: true, type: 'array', message: '请选择应用1', trigger: 'change' }]
       },
-      data: []
+      data: [],
+      activeValue: '',
+      actionRuleValidate: {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (value === '') {
+            callback(
+              new Error(
+                '请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写'
+              )
+            )
+          } else {
+            callback()
+          }
+        },
+        trigger: 'change'
+      }
     }
   },
   computed: {
@@ -284,14 +317,39 @@ export default {
         })
         list = [...list, ...val.children]
       })
-      this.data = list
+      setTimeout(() => {
+        this.data = list
+      }, 1000)
     },
     handleClick() {},
     handleInputClear(val) {
       console.log(val)
     },
     handleChange(val) {
-      console.log('接收到on-change', val)
+      // console.log('接收到on-change', val)
+    },
+    handleActiveOk(label) {
+      this.activeValue = label
+      const value = `${label}`
+      this.data.unshift({
+        value,
+        label,
+        newLabel: label,
+        disabled: false,
+        description: label,
+        src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/e3b/a68/69c/e3ba6869c4593eaaa7984e0f555d9517-small.jpg',
+        isDefault: false,
+        subtitle: label
+      })
+      this.selectMultiple.unshift(value)
+    },
+    beforeActionOk(label) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          console.log('模拟接口', label)
+          resolve()
+        })
+      })
     }
   }
 }

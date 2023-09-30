@@ -54,10 +54,7 @@ export default {
         return []
       }
     },
-    width: {
-      type: [String, Number],
-      default: 180
-    },
+    width: [String, Number],
     height: [Number, String],
     maxHeight: [Number, String],
     minHeight: [Number, String],

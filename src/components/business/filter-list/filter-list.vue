@@ -20,51 +20,57 @@
         :show-subtitle="showSubtitle"
         @on-clear="filterListInputChange"
         @click.native="handleInputClick"></filter-list-input>
-      <div
-        slot="list"
-        :class="prefixCls + '-body'">
-        <div
-          :class="prefixCls + '-body-panel'"
-          :style="panelStyle">
+      <div slot="list">
+        <div :class="prefixCls + '-body'">
           <div
-            v-if="filterable"
-            :class="prefixCls + '-body-panel-search'">
-            <Input
-              v-model="queryValue"
-              :placeholder="filterPlaceholder">
-              <Icon
-                slot="prefix"
-                type="ios-search" />
-              <Icon
-                v-show="!!query"
-                slot="suffix"
-                type="ios-close"
-                :class="prefixCls + '-body-panel-search-clear'"
-                size="20"
-                @click="onClearSearch" />
-            </Input>
-            <slot name="search-operate"></slot>
-          </div>
-          <div :class="prefixCls + '-body-content'">
-            <slot v-if="!notFound"></slot>
+            :class="prefixCls + '-body-panel'"
+            :style="panelStyle">
             <div
-              v-if="notFound"
-              :class="prefixCls + '-body-not-found'">
-              {{ notFoundText }}
+              v-if="filterable"
+              :class="prefixCls + '-body-panel-search'">
+              <Input
+                v-model="queryValue"
+                :placeholder="filterPlaceholder">
+                <Icon
+                  slot="prefix"
+                  type="ios-search" />
+                <Icon
+                  v-show="!!query"
+                  slot="suffix"
+                  type="ios-close"
+                  :class="prefixCls + '-body-panel-search-clear'"
+                  size="20"
+                  @click="onClearSearch" />
+              </Input>
+              <slot name="search-operate"></slot>
+            </div>
+            <div :class="prefixCls + '-body-content'">
+              <slot v-if="!notFound"></slot>
+              <div
+                v-if="notFound"
+                :class="prefixCls + '-body-not-found'">
+                {{ notFoundText }}
+              </div>
             </div>
           </div>
+          <filter-list-option
+            v-if="showSelectOption"
+            ref="filter-list-option"
+            v-model="current"
+            :filterable="filterable"
+            :width="optionWidth"
+            :height="heightOption"
+            :max-height="maxHeightOption"
+            :min-height="minHeightOption"
+            :data="optionData"
+            @on-change="optionChange"></filter-list-option>
         </div>
-        <filter-list-option
-          v-if="showSelectOption"
-          ref="filter-list-option"
-          v-model="current"
-          :filterable="filterable"
-          :width="optionWidth"
-          :height="heightOption"
-          :max-height="maxHeightOption"
-          :min-height="minHeightOption"
-          :data="optionData"
-          @on-change="optionChange"></filter-list-option>
+        <div
+          v-if="showFooter"
+          :class="prefixCls + '-footer-border'"
+          :style="styleFooter">
+          <slot name="footer"></slot>
+        </div>
       </div>
     </filter-list-panel>
   </div>
@@ -126,7 +132,10 @@ export default {
       default: 320
     },
     minHeight: [Number, String],
-    optionWidth: [String, Number],
+    optionWidth: {
+      type: [String, Number],
+      default: 180
+    },
     filterable: {
       type: Boolean,
       default: false
@@ -221,6 +230,18 @@ export default {
     },
     minHeightOption() {
       return this.filterable ? this.minHeight : this.minHeight - (this.refHeight || 0)
+    },
+    showFooter() {
+      return this.$scopedSlots.footer
+    },
+    styleFooter() {
+      let width = parseInt(this.inputWidth)
+      if (this.showSelectOption && this.optionWidth) {
+        width = width + parseInt(this.optionWidth)
+      }
+      return {
+        width: `${width}px`
+      }
     }
   },
   watch: {
@@ -265,6 +286,9 @@ export default {
     },
     handleInputClick() {
       this.$emit('on-input-click', this.current)
+    },
+    updateDropdown() {
+      this.$refs['list-panel'].updateDropdown()
     }
   }
 }

@@ -7,6 +7,75 @@
   &-virtual-list {
     overflow-y: auto
   }
+
+  &-action {
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+    &-start {
+      display: flex;
+      width: 100%;
+      padding: 0 10px;
+      line-height: 32px;
+
+      &-text {
+        display: inline-block;
+        color: #b1b1b1;
+      }
+
+      &-botton {
+        color: @link-color;
+        cursor: pointer;
+      }
+    }
+
+    &-body {
+      width: 100%;
+      padding: 0 4px;
+
+      .ivu-form-item {
+        width: 100%;
+        margin-bottom: 0
+      }
+
+      .ivu-form-item-content {
+        display: flex;
+        align-items: center;
+      }
+
+      .ivu-form-item-error-tip {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &-input {
+        height: 26px;
+        flex: 1;
+      }
+
+      .ivu-input {
+        height: 26px;
+      }
+
+      &-cancel {
+        margin: 0 10px;
+        cursor: pointer;
+      }
+
+      &-save {
+        margin-right: 6px;
+        color: @selected-color;
+        cursor: pointer;
+      }
+    }
+
+    &-error {
+      margin-bottom: 24px;
+    }
+  }
 }
 .@{filter-list-select-virtual} {
   &-item {
