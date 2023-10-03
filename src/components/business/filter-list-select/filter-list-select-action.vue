@@ -26,10 +26,18 @@
           ref="formItem"
           prop="value"
           :rules="actionRuleValidate">
-          <Input
-            v-model="formValidate.value"
-            :placeholder="placeholder"
-            :class="prefixCls + '-body-input'" />
+          <div :class="classInput">
+            <Input
+              ref="input"
+              v-model="formValidate.value"
+              :placeholder="placeholder" />
+            <div
+              v-if="!actionHideTotal"
+              :class="prefixCls + '-body-input-limit'">
+              {{ count }}/{{ actionTotal }}
+            </div>
+          </div>
+
           <div
             :class="prefixCls + '-body-cancel'"
             @click="handleCancel">
@@ -67,7 +75,21 @@ export default {
     },
     beforeActionOk: Function,
     actionRuleValidate: Object,
-    updateDropdown: Function
+    updateDropdown: Function,
+    actionCount: {
+      type: Function,
+      default: value => {
+        return value.length
+      }
+    },
+    actionTotal: {
+      type: Number,
+      default: 0
+    },
+    actionHideTotal: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -85,6 +107,17 @@ export default {
         `${this.prefixCls}-body`,
         {
           [`${this.prefixCls}-error`]: this.validateState === 'error'
+        }
+      ]
+    },
+    count() {
+      return this.actionCount(this.formValidate.value)
+    },
+    classInput() {
+      return [
+        `${this.prefixCls}-body-input`,
+        {
+          [`${this.prefixCls}-body-input-count`]: !this.actionHideTotal
         }
       ]
     }
@@ -107,11 +140,19 @@ export default {
     },
     handleAdd() {
       this.status = true
+      this.$nextTick(() => {
+        this.$refs.input.focus({
+          preventScroll: true
+        })
+      })
+
+      this.updateDropdown()
     },
     handleCancel() {
       this.status = false
       this.formValidate.value = ''
       this.validateState = 'success'
+      this.updateDropdown()
     },
     handleOk() {
       this.$refs.formValidate.validate(valid => {

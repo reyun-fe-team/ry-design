@@ -66,6 +66,9 @@
             :placeholder="actionPlaceholder"
             :action-text="actionText"
             :action-button-text="actionButtonText"
+            :action-count="actionCount"
+            :action-total="actionTotal"
+            :action-hide-total="actionHideTotal"
             @on-ok="handleActionOk"></rd-filter-list-select-action>
         </slot>
       </div>
@@ -181,7 +184,14 @@ export default {
     actionRuleValidate: Object,
     actionPlaceholder: String,
     actionText: String,
-    actionButtonText: String
+    actionButtonText: String,
+    actionCount: Function,
+    actionTotal: Number,
+    actionHideTotal: Boolean,
+    showItemDelete: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -212,7 +222,15 @@ export default {
                 description: row.description,
                 showSubtitle: true,
                 subtitle: row.subtitle,
-                showTitle: true
+                showTitle: true,
+                showDelete: this.showItemDelete && !row.disabled
+              },
+              on: {
+                'on-delete': () => {
+                  if (!row.disabled) {
+                    this.$emit('on-item-delete', { row, index })
+                  }
+                }
               }
             },
             describeSlot ? describeSlot({ row, index }) : null
@@ -317,7 +335,10 @@ export default {
         }
       } else {
         this.current = [value]
-        this.$refs['filter-list'].closeDropdown()
+        // 单选选中后当saveType时时关闭时候要关闭Dropdown
+        if (this.saveType === 'always-save') {
+          this.$refs['filter-list'].closeDropdown()
+        }
       }
       this.movementChange()
     },

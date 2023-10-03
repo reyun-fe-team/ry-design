@@ -52,8 +52,27 @@
       }
 
       &-input {
-        height: 26px;
+        position: relative;
         flex: 1;
+       
+
+        &-limit {
+          position: absolute;
+          top: 50%;
+          right: 0;
+          z-index: 1;
+          margin-right: 5px;
+          line-height: 26px;
+          color: #999;
+          text-align: right;
+          transform: translateY(-50%);
+        }
+
+        &-count {
+          .ivu-input {
+            padding-right: 60px;
+          }
+        }
       }
 
       .ivu-input {

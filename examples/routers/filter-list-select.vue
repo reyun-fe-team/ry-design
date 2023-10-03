@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>filter-list-select事例</h2>
+    <h2>filter-list-select事例 {{ selectMultiple }}</h2>
     <section>
       <rd-prefix-container v-if="true">
         <span slot="prepend">投放账户</span>
@@ -19,11 +19,16 @@
           action-text="若没找到您所投放的小游戏，可"
           action-button-text="添加小游戏"
           :action-rule-validate="actionRuleValidate"
+          :action-count="actionCountFn"
+          :action-total="actionTotal"
+          show-item-delete
+          :action-hide-total="false"
           @on-active-ok="handleActiveOk"
-          @on-change="handleChange">
+          @on-change="handleChange"
+          @on-item-delete="handleItemDelete">
           <!-- <div
             slot="footer"
-            class="dingyi">
+            >
             自定义footer
           </div> -->
         </rd-filter-list-select>
@@ -89,6 +94,8 @@
           show-action
           action-button-text="添加小游戏"
           :action-rule-validate="actionRuleValidate"
+          :action-count="actionCountFn"
+          :action-total="actionTotal"
           @on-click="handleClick"
           @on-change="handleChange"
           @on-active-ok="handleActiveOk">
@@ -128,10 +135,14 @@
         <rd-filter-list-select
           v-model="selectRadio"
           :max-height="256"
+          show-item-delete
           clearable
+          filterable
           show-image
           :data="data"
-          label="单选"></rd-filter-list-select>
+          save-type="leave-save"
+          label="单选-leave-save"
+          @on-item-delete="handleItemDeleteRadio"></rd-filter-list-select>
       </div>
 
       <div style="display: inline-block; margin-left: 380px">
@@ -232,12 +243,15 @@ export default {
                 '请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写'
               )
             )
+          } else if (this.actionCountFn(value) > this.actionTotal) {
+            callback(new Error(`长度不可大于${this.actionTotal}`))
           } else {
             callback()
           }
         },
         trigger: 'change'
-      }
+      },
+      actionTotal: 120
     }
   },
   computed: {
@@ -350,6 +364,26 @@ export default {
           resolve()
         })
       })
+    },
+    actionCountFn(value) {
+      if (typeof value === 'string') {
+        return value.split('').reduce((total, cur) => {
+          return (total += /^[\u4e00-\u9fa5。？！，、；：“”（）《》￥——……【】‘’]$/.test(cur)
+            ? 1
+            : 0.5)
+        }, 0)
+      }
+      return 0
+    },
+    handleItemDelete({ row, index }) {
+      this.selectMultiple = this.selectMultiple.filter(val => val !== row.value)
+      this.data.splice(index, 1)
+    },
+    handleItemDeleteRadio({ row, index }) {
+      if (this.selectRadio === row.value) {
+        this.selectRadio = ''
+      }
+      this.data.splice(index, 1)
     }
   }
 }
