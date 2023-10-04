@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>filter-list-select事例</h2>
+    <h2>filter-list-select事例 {{ selectMultiple }}</h2>
     <section>
       <rd-prefix-container v-if="true">
         <span slot="prepend">投放账户</span>
@@ -11,9 +11,27 @@
           :height="200"
           :width="200"
           filterable
+          transfer
+          show-select-option
           clearable
           multiple
-          @on-change="handleChange"></rd-filter-list-select>
+          show-action
+          action-text="若没找到您所投放的小游戏，可"
+          action-button-text="添加小游戏"
+          :action-rule-validate="actionRuleValidate"
+          :action-count="actionCountFn"
+          :action-total="actionTotal"
+          show-item-delete
+          :action-hide-total="false"
+          @on-active-ok="handleActiveOk"
+          @on-change="handleChange"
+          @on-item-delete="handleItemDelete">
+          <!-- <div
+            slot="footer"
+            >
+            自定义footer
+          </div> -->
+        </rd-filter-list-select>
       </rd-prefix-container>
       <div
         v-if="false"
@@ -58,6 +76,7 @@
         v-if="true"
         style="display: inline-block; margin-left: 380px">
         多选组 事例：{{ selectMultiple }}
+        <!-- :group-name-list="groupNameList" -->
         <rd-filter-list-select
           v-model="selectMultiple"
           transfer
@@ -72,9 +91,14 @@
           multiple
           save-type="leave-save"
           label="多选"
-          @before-change="beforeChange"
+          show-action
+          action-button-text="添加小游戏"
+          :action-rule-validate="actionRuleValidate"
+          :action-count="actionCountFn"
+          :action-total="actionTotal"
           @on-click="handleClick"
-          @on-change="handleChange">
+          @on-change="handleChange"
+          @on-active-ok="handleActiveOk">
           <div slot="search-operate">
             <span style="color: #3989faff">刷新</span>
             <span style="margin-right: 10px; color: #3989faff">应用管理</span>
@@ -111,10 +135,14 @@
         <rd-filter-list-select
           v-model="selectRadio"
           :max-height="256"
+          show-item-delete
           clearable
+          filterable
           show-image
           :data="data"
-          label="单选"></rd-filter-list-select>
+          save-type="leave-save"
+          label="单选-leave-save"
+          @on-item-delete="handleItemDeleteRadio"></rd-filter-list-select>
       </div>
 
       <div style="display: inline-block; margin-left: 380px">
@@ -204,7 +232,26 @@ export default {
         app: [{ required: true, message: '请选择应用', trigger: 'change' }],
         app1: [{ required: true, type: 'array', message: '请选择应用1', trigger: 'change' }]
       },
-      data: []
+      data: [],
+      activeValue: '',
+      actionRuleValidate: {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (value === '') {
+            callback(
+              new Error(
+                '请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写请填写'
+              )
+            )
+          } else if (this.actionCountFn(value) > this.actionTotal) {
+            callback(new Error(`长度不可大于${this.actionTotal}`))
+          } else {
+            callback()
+          }
+        },
+        trigger: 'change'
+      },
+      actionTotal: 120
     }
   },
   computed: {
@@ -284,14 +331,59 @@ export default {
         })
         list = [...list, ...val.children]
       })
-      this.data = list
+      setTimeout(() => {
+        this.data = list
+      }, 1000)
     },
     handleClick() {},
     handleInputClear(val) {
       console.log(val)
     },
     handleChange(val) {
-      console.log('接收到on-change', val)
+      // console.log('接收到on-change', val)
+    },
+    handleActiveOk(label) {
+      this.activeValue = label
+      const value = `${label}`
+      this.data.unshift({
+        value,
+        label,
+        newLabel: label,
+        disabled: false,
+        description: label,
+        src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/e3b/a68/69c/e3ba6869c4593eaaa7984e0f555d9517-small.jpg',
+        isDefault: false,
+        subtitle: label
+      })
+      this.selectMultiple.unshift(value)
+    },
+    beforeActionOk(label) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          console.log('模拟接口', label)
+          resolve()
+        })
+      })
+    },
+    actionCountFn(value) {
+      if (typeof value === 'string') {
+        return value.split('').reduce((total, cur) => {
+          return (total += /^[\u4e00-\u9fa5。？！，、；：“”（）《》￥——……【】‘’]$/.test(cur)
+            ? 1
+            : 0.5)
+        }, 0)
+      }
+      return 0
+    },
+    handleItemDelete({ row, index }) {
+      this.selectMultiple = this.selectMultiple.filter(val => val !== row.value)
+      this.data.splice(index, 1)
+    },
+    handleItemDeleteRadio({ row, index }) {
+      if (this.selectRadio === row.value) {
+        this.selectRadio = ''
+      }
+      this.data.splice(index, 1)
     }
   }
 }

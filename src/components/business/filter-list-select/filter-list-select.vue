@@ -52,6 +52,26 @@
       <template slot="search-operate">
         <slot name="search-operate"></slot>
       </template>
+      <div
+        slot="footer"
+        @click.stop>
+        <slot
+          name="footer"
+          @click.stop>
+          <rd-filter-list-select-action
+            v-if="currentShowAction"
+            :before-action-ok="beforeActionOk"
+            :action-rule-validate="actionRuleValidate"
+            :update-dropdown="updateDropdown"
+            :placeholder="actionPlaceholder"
+            :action-text="actionText"
+            :action-button-text="actionButtonText"
+            :action-count="actionCount"
+            :action-total="actionTotal"
+            :action-hide-total="actionHideTotal"
+            @on-ok="handleActionOk"></rd-filter-list-select-action>
+        </slot>
+      </div>
     </rd-filter-list>
   </div>
 </template>
@@ -65,6 +85,7 @@ import { oneOf } from '@src/util/assist.js'
 import Emitter from '@src/mixins/emitter'
 import virtualComponent from './filter-list-select-virtual.vue'
 import rdFilterListDescribe from '../filter-list/filter-list-describe'
+import rdFilterListSelectAction from './filter-list-select-action'
 
 const checkValuesNotEqual = (value, values) => {
   const strValue = JSON.stringify(value)
@@ -73,6 +94,7 @@ const checkValuesNotEqual = (value, values) => {
 }
 export default {
   name: prefixCls,
+  components: { rdFilterListSelectAction },
   mixins: [Emitter],
   props: {
     data: {
@@ -119,7 +141,7 @@ export default {
     height: [Number, String],
     maxHeight: {
       type: [Number, String],
-      default: 320
+      default: 290
     },
     minHeight: [Number, String],
     inputWidth: [String, Number],
@@ -153,7 +175,23 @@ export default {
     },
     transfer: Boolean,
     beforeChange: Function,
-    placement: String
+    placement: String,
+    showAction: {
+      type: Boolean,
+      default: false
+    },
+    beforeActionOk: Function,
+    actionRuleValidate: Object,
+    actionPlaceholder: String,
+    actionText: String,
+    actionButtonText: String,
+    actionCount: Function,
+    actionTotal: Number,
+    actionHideTotal: Boolean,
+    showItemDelete: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -161,6 +199,7 @@ export default {
       current: [],
       query: '',
       virtualComponent,
+      planeVisible: false,
       renderItem: (h, { row, index }) => {
         let node = null
         const itemSlot = this.$scopedSlots['select-item']
@@ -183,7 +222,15 @@ export default {
                 description: row.description,
                 showSubtitle: true,
                 subtitle: row.subtitle,
-                showTitle: true
+                showTitle: true,
+                showDelete: this.showItemDelete && !row.disabled
+              },
+              on: {
+                'on-delete': () => {
+                  if (!row.disabled) {
+                    this.$emit('on-item-delete', { row, index })
+                  }
+                }
               }
             },
             describeSlot ? describeSlot({ row, index }) : null
@@ -223,6 +270,12 @@ export default {
         uid: `key_${idx}`,
         ...item
       }))
+    },
+    showFooter() {
+      return this.$scopedSlots.footer
+    },
+    currentShowAction() {
+      return this.showAction && !this.showFooter && this.planeVisible
     }
   },
   watch: {
@@ -234,9 +287,6 @@ export default {
           const data = this.getInitialValue()
           this.current = data
         })
-        // if (!this.multiple) {
-        //   this.dispatch('FormItem', 'on-form-change', this.publicValue)
-        // }
       }
     }
   },
@@ -285,11 +335,15 @@ export default {
         }
       } else {
         this.current = [value]
-        this.$refs['filter-list'].closeDropdown()
+        // 单选选中后当saveType时时关闭时候要关闭Dropdown
+        if (this.saveType === 'always-save') {
+          this.$refs['filter-list'].closeDropdown()
+        }
       }
       this.movementChange()
     },
     handleVisibleChange(val) {
+      this.planeVisible = val
       if (!val && this.saveType === 'leave-save' && this.multiple) {
         // console.log('离开触发-emitChange')
         this.emitChange()
@@ -333,6 +387,12 @@ export default {
     },
     handleFilterListChange() {
       this.movementChange()
+    },
+    handleActionOk(val) {
+      this.$emit('on-active-ok', val)
+    },
+    updateDropdown() {
+      this.$refs['filter-list'].updateDropdown()
     }
   }
 }
