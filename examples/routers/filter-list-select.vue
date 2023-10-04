@@ -23,7 +23,7 @@
           :action-total="actionTotal"
           show-item-delete
           :action-hide-total="false"
-          @on-active-ok="handleActiveOk"
+          @on-action-ok="handleActionOk"
           @on-change="handleChange"
           @on-item-delete="handleItemDelete">
           <!-- <div
@@ -98,7 +98,7 @@
           :action-total="actionTotal"
           @on-click="handleClick"
           @on-change="handleChange"
-          @on-active-ok="handleActiveOk">
+          @on-action-ok="handleActionOk">
           <div slot="search-operate">
             <span style="color: #3989faff">刷新</span>
             <span style="margin-right: 10px; color: #3989faff">应用管理</span>
@@ -233,7 +233,7 @@ export default {
         app1: [{ required: true, type: 'array', message: '请选择应用1', trigger: 'change' }]
       },
       data: [],
-      activeValue: '',
+      actionValue: '',
       actionRuleValidate: {
         required: true,
         validator: (rule, value, callback) => {
@@ -342,8 +342,8 @@ export default {
     handleChange(val) {
       // console.log('接收到on-change', val)
     },
-    handleActiveOk(label) {
-      this.activeValue = label
+    handleActionOk(label) {
+      this.actionValue = label
       const value = `${label}`
       this.data.unshift({
         value,

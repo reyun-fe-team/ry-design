@@ -389,7 +389,7 @@ export default {
       this.movementChange()
     },
     handleActionOk(val) {
-      this.$emit('on-active-ok', val)
+      this.$emit('on-action-ok', val)
     },
     updateDropdown() {
       this.$refs['filter-list'].updateDropdown()
