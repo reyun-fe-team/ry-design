@@ -23,6 +23,7 @@
           :action-total="actionTotal"
           show-item-delete
           :action-hide-total="false"
+          :before-action-ok="beforeActionOk"
           @on-action-ok="handleActionOk"
           @on-change="handleChange"
           @on-item-delete="handleItemDelete">
@@ -358,12 +359,13 @@ export default {
       this.selectMultiple.unshift(value)
     },
     beforeActionOk(label) {
-      return new Promise(resolve => {
+      return new Promise((resolve, reject) => {
         setTimeout(() => {
-          console.log('模拟接口', label)
+          console.log('模拟接口', label, reject)
           resolve()
-        })
+        }, 2000)
       })
+      // return false
     },
     actionCountFn(value) {
       if (typeof value === 'string') {

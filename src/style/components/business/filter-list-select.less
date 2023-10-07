@@ -32,7 +32,7 @@
 
     &-body {
       width: 100%;
-      padding: 0 4px;
+      padding: 0 10px 0 4px;
 
       .ivu-form-item {
         width: 100%;
@@ -85,9 +85,24 @@
       }
 
       &-save {
-        margin-right: 6px;
-        color: @selected-color;
-        cursor: pointer;
+        position: relative;
+        width: 24px;
+        height: 32px;
+        
+        &-text {
+          color: @selected-color;
+          cursor: pointer;
+        }
+      }
+
+      &-loading {
+        position: absolute;
+        top: 1px;
+        left: 0;
+
+        &-icon {
+          animation: rdSpin 1s linear infinite;
+        }
       }
     }
 
