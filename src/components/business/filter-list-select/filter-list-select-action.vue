@@ -43,10 +43,21 @@
             @click="handleCancel">
             取消
           </div>
-          <div
-            :class="prefixCls + '-body-save'"
-            @click="handleOk">
-            确认
+          <div :class="prefixCls + '-body-save'">
+            <div
+              v-if="!loading"
+              :class="prefixCls + '-body-save-text'"
+              @click="handleOk">
+              确认
+            </div>
+            <Spin
+              v-if="loading"
+              :class="prefixCls + '-body-loading'">
+              <Icon
+                type="ios-loading"
+                size="18"
+                :class="prefixCls + '-body-loading-icon'"></Icon>
+            </Spin>
           </div>
         </FormItem>
       </Form>
@@ -98,7 +109,8 @@ export default {
         value: ''
       },
       status: false,
-      validateState: 'success'
+      validateState: 'success',
+      loading: false
     }
   },
   computed: {
@@ -165,10 +177,16 @@ export default {
           }
           const before = this.beforeActionOk(this.formValidate.value)
           if (before && before.then) {
-            before.then(() => {
-              this.$emit('on-ok', this.formValidate.value)
-              this.handleCancel()
-            })
+            this.loading = true
+            before
+              .then(() => {
+                this.loading = false
+                this.$emit('on-ok', this.formValidate.value)
+                this.handleCancel()
+              })
+              .catch(() => {
+                this.loading = false
+              })
           } else if (before !== false) {
             this.$emit('on-ok', this.formValidate.value)
             this.handleCancel()
