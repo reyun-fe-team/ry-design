@@ -212,7 +212,7 @@ export default {
       if (multiple) {
         if (isUpdateTitle) {
           // 更新父节点
-          data.checked = data.children.every(val => val.checked)
+          data.checked = data.children.some(val => val.checked)
         }
       } else {
         this.data.forEach((item, index) => {
@@ -267,11 +267,9 @@ export default {
           item.children.forEach(val => {
             val.checked = this.currentValue.includes(val.value)
           })
-          const multiple = this.getChildrenMultiple(item)
-          if (!multiple) {
-            item.checked = this.showCheckbox && item.children.some(val => val.checked)
-          } else {
-            item.checked = this.showCheckbox && item.children.every(val => val.checked)
+          debugger
+          if (!item.value && this.showCheckbox) {
+            item.checked = item.children.some(val => val.checked)
           }
         }
       })
