@@ -44,6 +44,8 @@
     <rd-placement-location
       v-if="true"
       v-model="valueGdtCreativeCur"
+      show-checkbox
+      show-all
       :multiple="false"
       :data="dataGdtCreativeCur"></rd-placement-location>
     <h2 style="margin: 16px 0">广点通-创意形式-局部单选{{ valueGdtCreativeRadio }}</h2>
