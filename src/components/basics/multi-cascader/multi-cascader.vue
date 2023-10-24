@@ -723,14 +723,14 @@ export default {
         this.$emit('remove-tag', label, value)
         return
       }
-      let targetNode = _find(this.selectedNodes, { value })
+      let targetNode = _find(this.selectedNodes, { value: `${value}` })
       // 不是只显示选中的
       if (!this.onlyShowChecked) {
         let vArr = value.split(this.separator) || []
         // 最后一个值
         let vLast = vArr.at(-1) || ''
         if (vLast) {
-          targetNode = _find(this.selectedNodes, { [this.valueKey]: vLast })
+          targetNode = _find(this.selectedNodes, { [this.valueKey]: `${vLast}` })
         }
       }
       targetNode && (targetNode.checked = false)

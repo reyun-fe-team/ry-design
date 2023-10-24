@@ -72,7 +72,7 @@ export default class Node {
       this.store.nodesMap[this.id] = this
       this.store.nodeList.push(this)
       // eslint-disable-next-line no-self-assign
-      this[store.valueKey] = this[store.valueKey]
+      this[store.valueKey] = `${this[store.valueKey]}`
     }
     children.forEach(child => {
       this.insertChild(child)

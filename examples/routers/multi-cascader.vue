@@ -25,6 +25,16 @@
       :max-tag-count="1"
       @getLables="getLables"></rd-multi-cascader>
 
+    <p>ads案例</p>
+    <rd-multi-cascader
+      v-model="selectReviewUser"
+      :max-request="2"
+      label-lv="last"
+      label-key="name"
+      :separator="cascaderSeparator"
+      style="width: 320px"
+      :data="reviewUserList"></rd-multi-cascader>
+
     <p>label相同的</p>
     <rd-multi-cascader
       v-model="sameLabelValues"
@@ -38,6 +48,35 @@
 export default {
   data() {
     return {
+      selectReviewUser: [],
+      // 用特殊字符分开防止名称中有相同值，分割时有误
+      cascaderSeparator: '-@@-',
+      reviewUserList: [
+        {
+          children: [
+            {
+              name: '宇宙3',
+              value: 2472
+            }
+          ],
+          role: 'MANAGER',
+          roleName: '优化经理',
+          name: '优化经理',
+          value: 'MANAGER'
+        },
+        {
+          children: [
+            {
+              name: '宇宙4',
+              value: 2288
+            }
+          ],
+          role: 'OPERATE',
+          roleName: '优化师',
+          name: '优化师',
+          value: 'OPERATE'
+        }
+      ],
       // 同步的
       allListLabels: ['资源-组件交互文档', '指南-设计原则', '指南-导航'],
       allListModel: ['ziyuan-jiaohu', 'zhinan-shejiyuanze', 'zhinan-daohang'],
