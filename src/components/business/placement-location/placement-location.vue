@@ -267,7 +267,6 @@ export default {
           item.children.forEach(val => {
             val.checked = this.currentValue.includes(val.value)
           })
-          debugger
           if (!item.value && this.showCheckbox) {
             item.checked = item.children.some(val => val.checked)
           }
@@ -285,7 +284,8 @@ export default {
         }
         if (item.children && item.children.length) {
           item.children.forEach(val => {
-            if (!val.disabled && !val._disabled && item.expand) {
+            const multiple = this.getChildrenMultiple(val)
+            if (!val.disabled && !val._disabled && multiple) {
               val.checked = checked
             }
           })
