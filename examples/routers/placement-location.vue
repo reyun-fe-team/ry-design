@@ -68,7 +68,7 @@ export default {
       loading: true,
       valueToutiao: [],
       valueGdtPosition: [],
-      valueGdtCreative: [],
+      valueGdtCreative: ['格子广告'],
       valueGdtCreativeCur: [],
       valueGdtCreativeRadio: [],
       valueGdtCreativeRadioPart: [],
@@ -359,7 +359,7 @@ export default {
               value: '格子广告',
               disabledValues: [
                 '横版三小图 3:2',
-                // '激励浏览广告',
+                '激励浏览广告',
                 '横版小图 3:2',
                 '方形大图 1:1',
                 '竖版大图 9:16',
