@@ -261,17 +261,35 @@ export default {
     },
     // 初始化数据源
     handleUpdateNodes() {
+      let disabledValues = []
       this.data.forEach(item => {
         item.checked = this.showCheckbox && this.currentValue.includes(item.value)
         if (item.children && item.children.length) {
           item.children.forEach(val => {
             val.checked = this.currentValue.includes(val.value)
+            if (val.checked && val.disabledValues) {
+              disabledValues = [...disabledValues, ...val.disabledValues]
+            }
           })
           if (!item.value && this.showCheckbox) {
             item.checked = item.children.some(val => val.checked)
           }
         }
       })
+      // 初始化处理disabledValues
+      if (disabledValues.length) {
+        this.data.forEach(item => {
+          item.checked = this.showCheckbox && this.currentValue.includes(item.value)
+          if (item.children && item.children.length) {
+            item.children.forEach(val => {
+              val._disabled = val.disabled || disabledValues.includes(val.value)
+            })
+            if (!item.value && this.showCheckbox) {
+              item.checked = item.children.some(val => val.checked)
+            }
+          }
+        })
+      }
     },
     toggleSelectAll(checked) {
       this.data.forEach(item => {
