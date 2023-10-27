@@ -206,9 +206,13 @@ export default {
       // 初始化处理disabledValues
       this.data.forEach(item => {
         item.checked = this.showCheckbox && this.currentValue.includes(item.value)
+        const multiple = this.getChildrenMultiple(item)
+
         if (item.children && item.children.length) {
           item.children.forEach(val => {
-            val._disabled = val.disabled || disabledValues.includes(val.value)
+            if (!val.disabled && multiple) {
+              val._disabled = val.disabled || disabledValues.includes(val.value)
+            }
             val.checked = this.currentValue.includes(val.value)
           })
           if (!item.value && this.showCheckbox) {
@@ -251,9 +255,7 @@ export default {
       this.data.forEach(val => {
         if (val.children && val.children.length) {
           val.children.forEach(item => {
-            if (item.disabled) {
-              item._disabled = true
-            } else {
+            if (!item.disabled && multiple) {
               const disabled = disabledValues.includes(item.value)
               if (disabled) {
                 this.disabledCheckedAll = true
