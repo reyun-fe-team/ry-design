@@ -268,14 +268,12 @@ export default {
   mounted() {
     for (let i = 0; i < 3; i++) {
       let children = []
-      for (let j = 0; j < 20; j++) {
+      for (let j = 0; j < 100; j++) {
         const value = `${i.toString(36)}${j}`
         children.push({
-          value: `${i + 1}-${value}-value`,
-          label: `天安门上太阳升${
-            i + 1
-          }-${value} (beijin-description)adeawkdehkqjwehjkqwkjehqjkwehjkqwheqwkehkjqehkjqweqhkwejk`,
-          newLabel: `天安门上太阳升${i + 1}-${value}`,
+          value: `${j + 1}-${value}-value`,
+          label: `${j + 1}-天安门上太阳升-${value} (beijin-description)`,
+          newLabel: `天安门上太阳升${j + 1}-${value}`,
           disabled: [2, 4, 6, 7].includes(j) ? true : false,
           description: '天安门上太阳升beijin-description',
           src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/e3b/a68/69c/e3ba6869c4593eaaa7984e0f555d9517-small.jpg',
