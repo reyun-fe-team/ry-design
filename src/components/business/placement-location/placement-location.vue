@@ -248,7 +248,6 @@ export default {
       }
       this.handleUpdateSelectValue()
       const disabledValues = this.getDisabledValues()
-      console.log(disabledValues)
 
       this.disabledCheckedAll = false
       // 处理特殊场景,选中一条指定置灰其他
