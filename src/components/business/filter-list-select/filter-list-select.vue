@@ -40,7 +40,6 @@
         data-key="uid"
         :data-sources="getLine"
         :extra-props="{
-          filterData,
           groupNameList,
           current,
           multiple,
@@ -267,7 +266,7 @@ export default {
     },
     getLine() {
       return this.filterData.map((item, idx) => ({
-        uid: `key_${idx}`,
+        uid: `key_${idx}_${item.value}`,
         ...item
       }))
     },
@@ -325,6 +324,7 @@ export default {
     },
     queryChange(val) {
       this.query = val
+      this.$refs['list'] && this.$refs['list'].scrollToIndex(0)
     },
     handleClick({ value }) {
       if (this.multiple) {
