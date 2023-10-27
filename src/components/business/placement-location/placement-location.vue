@@ -186,27 +186,38 @@ export default {
       this.handleUpdateSelectValue()
       this.$emit('on-title-click', this.currentValue, data)
     },
-    handleChildrenChange(data, childData, titleIndex) {
-      this.disabledCheckedAll = false
-      // 处理特殊场景,选中一条指定置灰其他
-      if (childData.disabledValues && childData.disabledValues.length && this.multiple) {
-        this.data.forEach(val => {
-          if (val.children && val.children.length) {
-            val.children.forEach(item => {
-              let disabled = false
-              if (item.disabled) {
-                disabled = true
-              } else if (childData.checked) {
-                disabled = childData.disabledValues.includes(item.value)
-                if (disabled) {
-                  this.disabledCheckedAll = true
-                }
-              }
-              item._disabled = disabled
-            })
+    getDisabledValues() {
+      return this.data.reduce((list, item) => {
+        if (item.children && item.children.length) {
+          item.children.forEach(val => {
+            let checked = this.currentValue.includes(val.value)
+            if (checked && val.disabledValues) {
+              list = [...list, ...val.disabledValues]
+            }
+          })
+        }
+        return list
+      }, [])
+    },
+    // 初始化数据源
+    handleUpdateNodes() {
+      const disabledValues = this.getDisabledValues()
+
+      // 初始化处理disabledValues
+      this.data.forEach(item => {
+        item.checked = this.showCheckbox && this.currentValue.includes(item.value)
+        if (item.children && item.children.length) {
+          item.children.forEach(val => {
+            val._disabled = val.disabled || disabledValues.includes(val.value)
+            val.checked = this.currentValue.includes(val.value)
+          })
+          if (!item.value && this.showCheckbox) {
+            item.checked = item.children.some(val => val.checked)
           }
-        })
-      }
+        }
+      })
+    },
+    handleChildrenChange(data, childData, titleIndex) {
       const multiple = this.getChildrenMultiple(data)
       const isUpdateTitle = this.isUpdateTitle(data)
       if (multiple) {
@@ -232,6 +243,26 @@ export default {
         }
       }
       this.handleUpdateSelectValue()
+      const disabledValues = this.getDisabledValues()
+      console.log(disabledValues)
+
+      this.disabledCheckedAll = false
+      // 处理特殊场景,选中一条指定置灰其他
+      this.data.forEach(val => {
+        if (val.children && val.children.length) {
+          val.children.forEach(item => {
+            if (item.disabled) {
+              item._disabled = true
+            } else {
+              const disabled = disabledValues.includes(item.value)
+              if (disabled) {
+                this.disabledCheckedAll = true
+              }
+              item._disabled = disabled
+            }
+          })
+        }
+      })
       this.$emit('on-chillren-click', childData, this.currentValue, data)
     },
     // 是否更新父节点
@@ -258,38 +289,6 @@ export default {
       this.$emit('input', this.currentValue)
       this.$emit('on-change', this.currentValue)
       this.dispatch('FormItem', 'on-form-change', this.currentValue)
-    },
-    // 初始化数据源
-    handleUpdateNodes() {
-      let disabledValues = []
-      this.data.forEach(item => {
-        item.checked = this.showCheckbox && this.currentValue.includes(item.value)
-        if (item.children && item.children.length) {
-          item.children.forEach(val => {
-            val.checked = this.currentValue.includes(val.value)
-            if (val.checked && val.disabledValues) {
-              disabledValues = [...disabledValues, ...val.disabledValues]
-            }
-          })
-          if (!item.value && this.showCheckbox) {
-            item.checked = item.children.some(val => val.checked)
-          }
-        }
-      })
-      // 初始化处理disabledValues
-      if (disabledValues.length) {
-        this.data.forEach(item => {
-          item.checked = this.showCheckbox && this.currentValue.includes(item.value)
-          if (item.children && item.children.length) {
-            item.children.forEach(val => {
-              val._disabled = val.disabled || disabledValues.includes(val.value)
-            })
-            if (!item.value && this.showCheckbox) {
-              item.checked = item.children.some(val => val.checked)
-            }
-          }
-        })
-      }
     },
     toggleSelectAll(checked) {
       this.data.forEach(item => {
