@@ -69,8 +69,8 @@ export default {
       valueToutiao: [],
       valueGdtPosition: [],
       valueGdtCreative: ['格子广告'],
-      valueGdtCreativeCur: [],
-      valueGdtCreativeRadio: [],
+      valueGdtCreativeCur: ['格子广告'],
+      valueGdtCreativeRadio: ['格子广告'],
       valueGdtCreativeRadioPart: [],
       dataEmpty: [],
       dataToutiao: [
