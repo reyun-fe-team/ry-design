@@ -7,6 +7,7 @@
       :disabled="disabledCheckedAll"
       show-checkbox
       multiple
+      :class="classesAll"
       @on-change="toggleSelectAll"></placement-location-node>
     <div
       v-for="(option, titleIndex) in data"
@@ -125,6 +126,10 @@ export default {
         }
       })
       return !valid
+    },
+    classesAll() {
+      const weight = this.data.some(val => val.children && val.children.length)
+      return [{ [`${prefixCls}-weight`]: weight }]
     }
   },
   watch: {
