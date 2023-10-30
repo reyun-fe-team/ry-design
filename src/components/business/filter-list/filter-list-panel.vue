@@ -87,11 +87,7 @@ export default {
       // 打开后需要更新位置，防止出现展示区域不够时被遮挡的问题
       // 只有在开启transfer时有效
       if (this.visible && this.transfer) {
-        const drop = this.$refs.Dropdown.$refs.drop
-        if (drop) {
-          // 更新位置 - popper.update
-          drop.update()
-        }
+        this.updateDropdown()
       }
       this.$emit('on-visible-change', val)
     },
@@ -104,6 +100,13 @@ export default {
         return
       }
       this.visible = false
+    },
+    updateDropdown() {
+      const drop = this.$refs.Dropdown.$refs.drop
+      if (drop) {
+        // 更新位置 - popper.update
+        drop.update()
+      }
     }
   }
 }

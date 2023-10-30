@@ -31,6 +31,12 @@
       </p>
     </section>
     <slot></slot>
+    <rd-icon
+      v-if="showDelete"
+      color="rgba(87, 91, 101, 1)"
+      type="ry-icon-text-delete"
+      :class="prefixCls + '-clear'"
+      @click.native.stop="handleDelete"></rd-icon>
   </div>
 </template>
 
@@ -73,6 +79,10 @@ export default {
     showTitle: {
       type: Boolean,
       default: false
+    },
+    showDelete: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -88,6 +98,11 @@ export default {
         style.height = `${height}px`
       }
       return style
+    }
+  },
+  methods: {
+    handleDelete() {
+      this.$emit('on-delete')
     }
   }
 }
