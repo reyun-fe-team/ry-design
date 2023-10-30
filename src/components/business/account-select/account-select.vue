@@ -27,7 +27,7 @@
             :value="el.value"
             :label="el.label">
             <div
-              class="overflow-ellipsis"
+              class="rd-overflow-ellipsis"
               :title="el.label"
               :style="contentStyle">
               {{ el.label }}
@@ -54,7 +54,7 @@
           :value="el.value"
           :label="el.label">
           <div
-            class="overflow-ellipsis"
+            class="rd-overflow-ellipsis"
             :title="el.label"
             :style="contentStyle">
             {{ el.label }}
