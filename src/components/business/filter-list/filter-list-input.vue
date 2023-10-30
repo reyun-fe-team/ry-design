@@ -3,11 +3,15 @@
     :class="classes"
     :style="styles">
     <div
-      v-if="label && label.trim()"
-      ref="prefixRef"
+      v-if="showInputSlot"
       :class="prefixCls + '-label'">
-      {{ `${label}` }}
+      <slot name="input-slot">
+        <template>
+          {{ label }}
+        </template>
+      </slot>
     </div>
+
     <div :class="prefixCls + '-body'">
       <div
         v-if="isPlaceholder"
@@ -126,6 +130,9 @@ export default {
         uuid = uuid + labe + description
       }
       return uuid
+    },
+    showInputSlot() {
+      return (this.label && this.label.trim()) || this.$scopedSlots['input-slot']
     }
   },
   watch: {

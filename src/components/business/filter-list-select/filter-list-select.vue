@@ -33,6 +33,11 @@
       @on-input-click="handleInputClick"
       @on-input-clear="handleInputClear"
       @on-change="handleFilterListChange">
+      <template
+        v-if="$scopedSlots['input-slot']"
+        slot="input-slot">
+        <slot name="input-slot"></slot>
+      </template>
       <rd-virtual-list
         ref="list"
         :class="[prefixCls + '-virtual-list', 'small-scroll-y']"
