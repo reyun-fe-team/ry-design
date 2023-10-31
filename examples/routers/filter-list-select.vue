@@ -99,7 +99,7 @@
           @on-click="handleClick"
           @on-change="handleChange"
           @on-action-ok="handleActionOk">
-          <template slot="input-slot">
+          <template slot="input-label">
             <!-- 多选 -->
             <Icon type="md-cloud" />
           </template>

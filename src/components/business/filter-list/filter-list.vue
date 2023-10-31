@@ -21,9 +21,9 @@
         @on-clear="filterListInputChange"
         @click.native="handleInputClick">
         <template
-          v-if="$scopedSlots['input-slot']"
-          slot="input-slot">
-          <slot name="input-slot"></slot>
+          v-if="$scopedSlots['input-label']"
+          slot="input-label">
+          <slot name="input-label"></slot>
         </template>
       </filter-list-input>
       <div slot="list">
