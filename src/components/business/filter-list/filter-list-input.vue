@@ -5,7 +5,7 @@
     <div
       v-if="showInputSlot"
       :class="prefixCls + '-label'">
-      <slot name="input-slot">
+      <slot name="input-label">
         <template>
           {{ label }}
         </template>
@@ -132,7 +132,7 @@ export default {
       return uuid
     },
     showInputSlot() {
-      return (this.label && this.label.trim()) || this.$scopedSlots['input-slot']
+      return (this.label && this.label.trim()) || this.$scopedSlots['input-label']
     }
   },
   watch: {
