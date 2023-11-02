@@ -19,7 +19,13 @@
         :show-description="showDescription"
         :show-subtitle="showSubtitle"
         @on-clear="filterListInputChange"
-        @click.native="handleInputClick"></filter-list-input>
+        @click.native="handleInputClick">
+        <template
+          v-if="$scopedSlots['input-label']"
+          slot="input-label">
+          <slot name="input-label"></slot>
+        </template>
+      </filter-list-input>
       <div slot="list">
         <div :class="prefixCls + '-body'">
           <div

@@ -91,7 +91,6 @@
           :group-name-list="groupNameList"
           multiple
           save-type="leave-save"
-          label="多选"
           show-action
           action-button-text="添加小游戏"
           :action-rule-validate="actionRuleValidate"
@@ -100,6 +99,10 @@
           @on-click="handleClick"
           @on-change="handleChange"
           @on-action-ok="handleActionOk">
+          <template slot="input-label">
+            <!-- 多选 -->
+            <Icon type="md-cloud" />
+          </template>
           <div slot="search-operate">
             <span style="color: #3989faff">刷新</span>
             <span style="margin-right: 10px; color: #3989faff">应用管理</span>
