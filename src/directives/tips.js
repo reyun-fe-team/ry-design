@@ -1,13 +1,34 @@
 import Vue from 'vue'
 import { Tooltip } from 'view-design'
 
-// 渲染dom的ID
-let tooltipDomId = ''
+// 悬浮的z-index = 1060 + tooltipZIndex
+let tooltipZIndex = 5000
+// 悬浮的props收集的集合
+let tooltipOptionsMap = {}
+
+function hasDoc() {
+  return typeof window !== 'undefined' && 'document' in window
+}
 
 function createTooltip(target, options = {}) {
-  tooltipDomId = 'v-tooltip-' + +new Date()
-  const MyTooltip = { props: { reference: null }, extends: Tooltip }
-  const tooltip = new Vue({
+  const RyTooltip = {
+    props: { reference: null },
+    methods: {
+      // 改写悬浮事件
+      handleShowPopper() {
+        Tooltip.methods.handleShowPopper.call(this)
+        this.tIndex = tooltipZIndex++
+      }
+    },
+    extends: Tooltip
+  }
+  const RyTooltipProps = Vue.observable({
+    ...options,
+    transfer: true,
+    theme: 'light',
+    reference: target
+  })
+  const RyTooltipCom = new Vue({
     el: document.createElement('div'),
     render(h) {
       let contentChild = null
@@ -17,22 +38,12 @@ function createTooltip(target, options = {}) {
         let renderDom = options.contentRender(h, options)
         contentChild = h('div', { slot: 'content', class: 'v-tooltip-content-slot' }, [renderDom])
       }
-      return h(
-        MyTooltip,
-        {
-          id: tooltipDomId,
-          props: {
-            ...options,
-            transfer: true,
-            theme: 'light',
-            reference: target
-          }
-        },
-        [contentChild]
-      )
+      return h(RyTooltip, { props: RyTooltipProps }, [contentChild])
     }
   })
-  return tooltip.$children[0]
+  const RyTooltipContentCom = RyTooltipCom.$children[0]
+  tooltipOptionsMap[RyTooltipContentCom._uid] = RyTooltipProps
+  return RyTooltipContentCom
 }
 
 function showTooltip(event) {
@@ -43,13 +54,14 @@ function showTooltip(event) {
     let tooltipRef = el._tooltipRef
     if (!tooltipRef) {
       tooltipRef = createTooltip(el, tooltipOption)
+      const popper = tooltipRef.$refs.popper
+      if (popper && hasDoc()) {
+        popper.classList.add('ry-tooltip-directives')
+      }
       el._tooltipRef = tooltipRef
     }
-
     // 打开浮层
-    tooltipRef.$nextTick(() => {
-      tooltipRef.handleShowPopper()
-    })
+    tooltipRef.handleShowPopper()
   }
 }
 
@@ -58,30 +70,48 @@ function hideTooltip(event) {
   const tooltipRef = el._tooltipRef
   if (tooltipRef) {
     // 关闭浮层
-    tooltipRef.$nextTick(() => {
-      tooltipRef.handleClosePopper()
-    })
+    tooltipRef.handleClosePopper()
   }
 }
 
 const directive = {
+  // 绑定（触发一次）
   bind(el, binding) {
     el._tooltipOption = binding.value
     el.addEventListener('mouseenter', showTooltip)
     el.addEventListener('mouseleave', hideTooltip)
   },
-  unbind(el) {
-    // 销毁组件
+  // 组件更新
+  componentUpdated(el, binding) {
+    // 更新数据和事件
+    el._tooltipOption = binding.value
+    el.removeEventListener('mouseenter', showTooltip)
+    el.removeEventListener('mouseleave', hideTooltip)
+    el.addEventListener('mouseenter', showTooltip)
+    el.addEventListener('mouseleave', hideTooltip)
+    // 存在已经创建的实例，干掉直接重新创建，更新最新数据
+    // 如果已经创建过了很多个实例，下次会重复创建
+    // 性能有损耗
     const tooltipRef = el._tooltipRef
     if (tooltipRef) {
-      tooltipRef.$nextTick(() => {
-        tooltipRef.handleClosePopper()
-        tooltipRef.$destroy()
-        if (typeof window !== 'undefined' && 'document' in window) {
-          const dom = document.getElementById(tooltipDomId)
-          dom && document.body.removeChild(dom)
+      const _uid = tooltipRef._uid
+      const notUpdate = ['transfer', 'theme', 'reference']
+      const nowOptions = tooltipOptionsMap[_uid]
+      for (const key in binding.value) {
+        if (!notUpdate.includes(key)) {
+          nowOptions[key] = binding.value[key]
         }
-      })
+      }
+    }
+  },
+  // 销毁组件（触发一次）
+  unbind(el) {
+    const tooltipRef = el._tooltipRef
+    if (tooltipRef) {
+      // 删除对应的配置数据
+      delete tooltipOptionsMap[tooltipRef._uid]
+      tooltipRef.handleClosePopper()
+      tooltipRef.$destroy()
     }
     // 删除属性
     delete el._tooltipOption
