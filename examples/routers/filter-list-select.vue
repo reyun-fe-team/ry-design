@@ -160,7 +160,7 @@
     </section>
 
     <Form
-      v-if="false"
+      v-if="true"
       ref="formValidate"
       style="margin-top: 250px"
       :model="formValidate"
