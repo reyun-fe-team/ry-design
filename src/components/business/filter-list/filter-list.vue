@@ -71,10 +71,10 @@
             :data="optionData"
             @on-change="optionChange"></filter-list-option>
         </div>
+        <!-- :style="styleFooter" -->
         <div
           v-if="showFooter"
-          :class="prefixCls + '-footer-border'"
-          :style="styleFooter">
+          :class="prefixCls + '-footer-border'">
           <slot name="footer"></slot>
         </div>
       </div>
@@ -184,8 +184,7 @@ export default {
       if (this.width) {
         const width = parseInt(this.width)
         style.width = `${width}px`
-      }
-      if (this.inputWidth) {
+      } else if (this.inputWidth) {
         const width = parseInt(this.inputWidth)
         style.minWidth = `${width}px`
       }
@@ -239,16 +238,19 @@ export default {
     },
     showFooter() {
       return this.$scopedSlots.footer
-    },
-    styleFooter() {
-      let width = parseInt(this.inputWidth)
-      if (this.showSelectOption && this.optionWidth) {
-        width = width + parseInt(this.optionWidth)
-      }
-      return {
-        width: `${width}px`
-      }
     }
+    // styleFooter() {
+    //   let width = parseInt(this.inputWidth)
+    //   if (this.width) {
+    //     width = parseInt(this.width)
+    //   }
+    //   if (this.showSelectOption && this.optionWidth) {
+    //     width = width + parseInt(this.optionWidth)
+    //   }
+    //   return {
+    //     width: `${width}px`
+    //   }
+    // }
   },
   watch: {
     value: {
