@@ -9,7 +9,7 @@
           placement="bottom-end"
           :data="data"
           :height="200"
-          :width="200"
+          width="200"
           filterable
           transfer
           show-select-option
@@ -83,8 +83,6 @@
           transfer
           clearable
           placement="bottom-start"
-          :input-width="400"
-          :width="200"
           filterable
           show-select-option
           :data="data"
