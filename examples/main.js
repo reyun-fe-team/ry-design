@@ -249,6 +249,10 @@ const router = new VueRouter({
     {
       path: '/placement-location',
       component: resolve => require(['./routers/placement-location'], resolve)
+    },
+    {
+      path: '/business-related-products',
+      component: resolve => require(['./routers/business-related-products'], resolve)
     }
   ]
 })
