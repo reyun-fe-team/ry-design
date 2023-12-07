@@ -9,16 +9,18 @@
 <!-- https://adsdesk.yuque.com/znb2iu/uqhtkg/cee1qnpk2fn4mwpk -->
 <template>
   <div :class="prefixCls">
-    <div
-      v-show="value"
-      ref="transfer-body"
-      v-transfer-dom
-      :data-transfer="transfer"
-      :transfer="transfer"
-      :class="[prefixCls + '-body']">
-      <!-- 内容展示区 -->
-      <transition name="fade">
-        <div :class="[prefixCls + '-body-content']">
+    <transition name="fade">
+      <div
+        v-show="value"
+        ref="transfer-body"
+        v-transfer-dom
+        :data-transfer="transfer"
+        :transfer="transfer"
+        :class="[prefixCls + '-body']">
+        <!-- 内容展示区 -->
+        <div
+          v-if="value"
+          :class="[prefixCls + '-body-content']">
           <!-- 关闭按钮 -->
           <rd-icon
             type="ry-icon-modal-close"
@@ -42,8 +44,8 @@
             :poster="poster"
             :src="src"></preview-video>
         </div>
-      </transition>
-    </div>
+      </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -83,6 +85,12 @@ export default {
     type: {
       type: String,
       default: 'IMAGE'
+    },
+    transitionNames: {
+      type: Array,
+      default() {
+        return ['ease', 'fade']
+      }
     }
   },
   data() {
