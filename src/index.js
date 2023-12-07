@@ -58,6 +58,7 @@ import FormSelectIndicator from './components/business/form-select-indicator'
 import FilterLisCascader from './components/business/filter-list-cascader'
 import FilterArea from './components/business/filter-area'
 import PlacementLocation from './components/business/placement-location'
+import ErrorPreventModal from './components/business/error-prevent-modal'
 
 import ViewUI from 'view-design'
 
@@ -153,7 +154,8 @@ const components = [
   FilterLisCascader,
   FilterArea,
   Space,
-  PlacementLocation
+  PlacementLocation,
+  ErrorPreventModal
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -231,5 +233,6 @@ export default {
   FilterListSelect,
   FilterLisCascader,
   Space,
-  PlacementLocation
+  PlacementLocation,
+  ErrorPreventModal
 }
