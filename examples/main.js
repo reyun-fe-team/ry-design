@@ -240,6 +240,10 @@ const router = new VueRouter({
     {
       path: '/placement-location',
       component: resolve => require(['./routers/placement-location'], resolve)
+    },
+    {
+      path: '/error-prevent-modal',
+      component: resolve => require(['./routers/error-prevent-modal'], resolve)
     }
   ]
 })
