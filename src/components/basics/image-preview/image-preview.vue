@@ -1,9 +1,9 @@
 <!--
  * @Author: 杨玉峰 yangyufeng@mobvista.com
  * @Date: 2023-02-23 13:57:53
- * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2023-03-01 13:54:28
- * @FilePath: /ry-design/src/components/basics/image-preview/image-preview.vue
+ * @LastEditors: pengfei.liu
+ * @LastEditTime: 2023-12-08 10:38:41
+ * @FilePath: ~@src~@components~@basics~@image-preview~@image-preview.vue
  * @Description: 预览图片
 -->
 <!-- https://adsdesk.yuque.com/znb2iu/uqhtkg/cee1qnpk2fn4mwpk -->
@@ -84,12 +84,6 @@ export default {
     type: {
       type: String,
       default: 'IMAGE'
-    },
-    transitionNames: {
-      type: Array,
-      default() {
-        return ['ease', 'fade']
-      }
     }
   },
   data() {
