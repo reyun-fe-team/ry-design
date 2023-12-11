@@ -1,24 +1,26 @@
 <!--
  * @Author: 杨玉峰 yangyufeng@mobvista.com
  * @Date: 2023-02-23 13:57:53
- * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2023-03-01 13:54:28
- * @FilePath: /ry-design/src/components/basics/image-preview/image-preview.vue
+ * @LastEditors: pengfei.liu
+ * @LastEditTime: 2023-12-08 10:38:41
+ * @FilePath: ~@src~@components~@basics~@image-preview~@image-preview.vue
  * @Description: 预览图片
 -->
 <!-- https://adsdesk.yuque.com/znb2iu/uqhtkg/cee1qnpk2fn4mwpk -->
 <template>
   <div :class="prefixCls">
-    <div
-      v-show="value"
-      ref="transfer-body"
-      v-transfer-dom
-      :data-transfer="transfer"
-      :transfer="transfer"
-      :class="[prefixCls + '-body']">
-      <!-- 内容展示区 -->
-      <transition name="fade">
-        <div :class="[prefixCls + '-body-content']">
+    <transition name="fade">
+      <div
+        v-show="value"
+        ref="transfer-body"
+        v-transfer-dom
+        :data-transfer="transfer"
+        :transfer="transfer"
+        :class="[prefixCls + '-body']">
+        <!-- 内容展示区 -->
+        <div
+          v-if="value"
+          :class="[prefixCls + '-body-content']">
           <!-- 关闭按钮 -->
           <Icon
             type="md-close"
@@ -41,8 +43,8 @@
             :poster="poster"
             :src="src"></preview-video>
         </div>
-      </transition>
-    </div>
+      </div>
+    </transition>
   </div>
 </template>
 <script>
