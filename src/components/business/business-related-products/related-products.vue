@@ -4,22 +4,136 @@
  * @Description: 标准业务类组件-关联投产品
 -->
 <template>
-  <div :class="classes">标准业务类组件-关联投产品</div>
+  <div :class="classes">
+    <rd-account-list
+      :height="height"
+      v-bind="accountOptions"
+      :data-list="formDataList"
+      @on-change="getActiveAccount">
+      <RelatedProductsSelector :key="activeAccountId"></RelatedProductsSelector>
+    </rd-account-list>
+  </div>
 </template>
 <script>
 import { prefix } from '../../../config.js'
 const prefixCls = prefix + 'related-products'
 import Emitter from '@src/mixins/emitter'
+import _cloneDeep from 'lodash/cloneDeep'
+import RelatedProductsSelector from './related-products-selector'
+
 export default {
   name: prefixCls,
+  components: { RelatedProductsSelector },
   mixins: [Emitter],
-  props: {},
-  data() {
-    return {
-      classes: {}
+  props: {
+    // 选择的数据
+    // [
+    //   // 账号-名称，id，子集
+    //   { label: '', value: '', children: [
+    //       // 产品库-名称，id，子集
+    //       { label: '', value: '', children: [
+    //           // 产品-名称，id，子集
+    //           { label: '', value: '' }
+    //         ]}
+    //     ]}
+    // ]
+    value: {
+      type: Array,
+      default: () => []
+    },
+    // 容器高度
+    height: {
+      type: String,
+      default: '540px'
+    },
+    // 账号选择组件的属性
+    accountOptions: {
+      type: Object,
+      default: () => {
+        return {
+          itemId: 'value',
+          itemName: 'label',
+          id: 'advertiserId'
+        }
+      },
+      validator: function (value) {
+        let keys = ['id', 'itemId', 'itemName']
+        let pass = true
+        for (const key in value) {
+          const valid =
+            Object.hasOwnProperty.call(value, key) &&
+            keys.includes(key) &&
+            typeof value[key] === 'string'
+
+          if (!valid) {
+            pass = false
+            break
+          }
+        }
+        return pass
+      }
+    },
+    // 账号数据(包含 label，value 字段)
+    accounts: {
+      type: Array,
+      default: () => []
     }
   },
-  computed: {},
-  methods: {}
+  data() {
+    return {
+      classes: {},
+      formDataList: [],
+      // 选择的账号id
+      activeAccountId: ''
+    }
+  },
+  computed: {
+    // 账号的数据id
+    accountValues() {
+      return this.accounts.filter(item => item.value)
+    },
+    valueString() {
+      return JSON.stringify(this.value)
+    }
+  },
+  watch: {
+    // 账号变化
+    accountValues: {
+      deep: true,
+      handler() {
+        this.init()
+      }
+    },
+    // 数据变化
+    valueString() {
+      this.init()
+    }
+  },
+  created() {
+    this.init()
+  },
+  methods: {
+    init() {
+      let initialValue = []
+      for (let index = 0; index < this.accounts.length; index++) {
+        let element = this.accounts[index]
+        let find = this.value.find(item => `${element.value}` === `${item.value}`)
+        if (find) {
+          // 计算最后一级的数量
+          let num = find.children.reduce((t, c) => {
+            return t + c.children.length
+          }, 0)
+          initialValue.push({ ...element, value: find.value, num })
+        } else {
+          initialValue.push({ ...element, num: 0 })
+        }
+      }
+      this.formDataList = _cloneDeep(initialValue)
+    },
+    // 切换账号
+    getActiveAccount(accountId) {
+      this.activeAccountId = accountId
+    }
+  }
 }
 </script>
