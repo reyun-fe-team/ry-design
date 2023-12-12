@@ -426,6 +426,7 @@ export default {
             .filter(data => data.disabled && this.current.indexOf(data.value) > -1)
             .map(data => data.value)
       this.current = values
+      this.movementChange()
     }
   }
 }
