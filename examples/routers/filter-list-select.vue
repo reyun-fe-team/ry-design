@@ -2,7 +2,7 @@
   <div>
     <h2>filter-list-select事例 {{ selectMultiple }}</h2>
     <section>
-      <rd-prefix-container v-if="true">
+      <rd-prefix-container v-if="false">
         <span slot="prepend">投放账户</span>
         <rd-filter-list-select
           v-model="selectMultiple"
@@ -35,7 +35,7 @@
         </rd-filter-list-select>
       </rd-prefix-container>
       <div
-        v-if="false"
+        v-if="true"
         style="display: inline-block">
         多选-宽度自适应 {{ selectMultiple }} 事例：{{ selectMultiple }}
         <rd-filter-list-select
@@ -46,6 +46,7 @@
           multiple
           filterable
           :label-method="labelMethod"
+          select-all
           @on-input-clear="handleInputClear"
           @on-change="handleChange">
           <!-- <div
@@ -339,7 +340,7 @@ export default {
     handleInputClear(val) {
       console.log(val)
     },
-    handleChange(val) {
+    handleChange() {
       // console.log('接收到on-change', val)
     },
     handleActionOk(label) {

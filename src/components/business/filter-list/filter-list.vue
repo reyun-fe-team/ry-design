@@ -140,7 +140,7 @@ export default {
     minHeight: [Number, String],
     optionWidth: {
       type: [String, Number],
-      default: 180
+      default: 200
     },
     filterable: {
       type: Boolean,
