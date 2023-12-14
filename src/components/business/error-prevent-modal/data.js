@@ -15,7 +15,7 @@ export const columns = [
     minWidth: 180,
     render: (h, params) => {
       let row = params.row[params.column.key]
-      return h('span', { class: row.error ? [errorClass] : '' }, row.text)
+      return h('span', { class: row.error ? [errorClass] : '' }, row.message)
     }
   },
   {
@@ -24,7 +24,7 @@ export const columns = [
     minWidth: 180,
     render: (h, params) => {
       let row = params.row[params.column.key]
-      return h('span', { class: row.error ? [errorClass] : '' }, row.text)
+      return h('span', { class: row.error ? [errorClass] : '' }, row.message)
     }
   },
   {
@@ -33,7 +33,7 @@ export const columns = [
     minWidth: 180,
     render: (h, params) => {
       let row = params.row[params.column.key]
-      return h('span', { class: row.error ? [errorClass] : '' }, row.text)
+      return h('span', { class: row.error ? [errorClass] : '' }, row.message)
     }
   },
   {
@@ -42,17 +42,19 @@ export const columns = [
     minWidth: 180,
     render: (h, params) => {
       let row = params.row[params.column.key]
-      let len = row.text.length
-      if (len === 0) {
-        return h('span', '-')
-      }
+      return h('span', { class: row.error ? [errorClass] : '' }, row.message)
 
-      let group = []
-      row.text.forEach((e, i) => {
-        let unit = len !== i + 1 ? '、' : ''
-        group.push(h('span', { class: e.error ? [errorClass] : '' }, e.text + unit))
-      })
-      return h('div', [group])
+      // let len = row.text.length
+      // if (len === 0) {
+      //   return h('span', '-')
+      // }
+
+      // let group = []
+      // row.text.forEach((e, i) => {
+      //   let unit = len !== i + 1 ? '、' : ''
+      //   group.push(h('span', { class: e.error ? [errorClass] : '' }, e.text + unit))
+      // })
+      // return h('div', [group])
     }
   },
   {
@@ -61,17 +63,19 @@ export const columns = [
     minWidth: 180,
     render: (h, params) => {
       let row = params.row[params.column.key]
-      let len = row.text.length
-      if (len === 0) {
-        return h('span', '-')
-      }
+      return h('span', { class: row.error ? [errorClass] : '' }, row.message)
 
-      let group = []
-      row.text.forEach((e, i) => {
-        let unit = len !== i + 1 ? '、' : ''
-        group.push(h('span', { class: e.error ? [errorClass] : '' }, e.text + unit))
-      })
-      return h('div', [group])
+      // let len = row.text.length
+      // if (len === 0) {
+      //   return h('span', '-')
+      // }
+
+      // let group = []
+      // row.text.forEach((e, i) => {
+      //   let unit = len !== i + 1 ? '、' : ''
+      //   group.push(h('span', { class: e.error ? [errorClass] : '' }, e.text + unit))
+      // })
+      // return h('div', [group])
     }
   },
   {
@@ -80,18 +84,20 @@ export const columns = [
     minWidth: 180,
     render: (h, params) => {
       let row = params.row[params.column.key]
-      let len = row.text.length
-      if (len === 0) {
-        return h('span', '-')
-      }
+      return h('span', { class: row.error ? [errorClass] : '' }, row.message)
 
-      let group = []
-      row.text.forEach((e, i) => {
-        let unit = len !== i + 1 ? '、' : ''
-        group.push(h('span', { class: e.error ? [errorClass] : '' }, e.text + unit))
-      })
+      // let len = row.text.length
+      // if (len === 0) {
+      //   return h('span', '-')
+      // }
 
-      return h('div', [group])
+      // let group = []
+      // row.text.forEach((e, i) => {
+      //   let unit = len !== i + 1 ? '、' : ''
+      //   group.push(h('span', { class: e.error ? [errorClass] : '' }, e.text + unit))
+      // })
+
+      // return h('div', [group])
     }
   },
   {
@@ -100,17 +106,19 @@ export const columns = [
     minWidth: 180,
     render: (h, params) => {
       let row = params.row[params.column.key]
-      let len = row.text.length
-      if (len === 0) {
-        return h('span', '-')
-      }
+      return h('span', { class: row.error ? [errorClass] : '' }, row.message)
 
-      let group = []
-      row.text.forEach((e, i) => {
-        let unit = len !== i + 1 ? '、' : ''
-        group.push(h('span', { class: e.error ? [errorClass] : '' }, e.text + unit))
-      })
-      return h('div', [group])
+      // let len = row.text.length
+      // if (len === 0) {
+      //   return h('span', '-')
+      // }
+
+      // let group = []
+      // row.text.forEach((e, i) => {
+      //   let unit = len !== i + 1 ? '、' : ''
+      //   group.push(h('span', { class: e.error ? [errorClass] : '' }, e.text + unit))
+      // })
+      // return h('div', [group])
     }
   }
 ]
