@@ -4,13 +4,19 @@
  * @Description: 标准业务类组件-关联投产品
 -->
 <template>
-  <div :class="classes">
+  <div :class="[prefixCls]">
     <rd-account-list
       :height="height"
       v-bind="accountOptions"
       :data-list="formDataList"
       @on-change="getActiveAccount">
-      <RelatedProductsSelector :key="activeAccountId"></RelatedProductsSelector>
+      <RelatedProductsSelector
+        :key="activeAccountId"
+        :mutil-library="mutilLibrary"
+        :active-account-id="activeAccountId"
+        :active-form-item="activeFormItem"
+        :on-search-product="onSearchProduct"
+        :on-search-product-library="onSearchProductLibrary"></RelatedProductsSelector>
     </rd-account-list>
   </div>
 </template>
@@ -26,17 +32,22 @@ export default {
   components: { RelatedProductsSelector },
   mixins: [Emitter],
   props: {
+    // 商品库多选
+    mutilLibrary: {
+      type: Boolean,
+      default: false
+    },
+    // 搜索产品
+    onSearchProduct: {
+      type: Function,
+      require: true
+    },
+    // 搜索产品库
+    onSearchProductLibrary: {
+      type: Function,
+      require: true
+    },
     // 选择的数据
-    // [
-    //   // 账号-名称，id，子集
-    //   { label: '', value: '', children: [
-    //       // 产品库-名称，id，子集
-    //       { label: '', value: '', children: [
-    //           // 产品-名称，id，子集
-    //           { label: '', value: '' }
-    //         ]}
-    //     ]}
-    // ]
     value: {
       type: Array,
       default: () => []
@@ -81,10 +92,12 @@ export default {
   },
   data() {
     return {
-      classes: {},
+      prefixCls,
       formDataList: [],
       // 选择的账号id
-      activeAccountId: ''
+      activeAccountId: '',
+      // 当前数据
+      activeFormItem: { value: '', children: [] }
     }
   },
   computed: {
@@ -133,6 +146,7 @@ export default {
     // 切换账号
     getActiveAccount(accountId) {
       this.activeAccountId = accountId
+      this.activeFormItem = this.formDataList.find(o => o.value === accountId)
     }
   }
 }
