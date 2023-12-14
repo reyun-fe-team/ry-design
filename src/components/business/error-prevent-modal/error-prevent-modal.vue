@@ -4,7 +4,7 @@
     <rd-modals
       v-model="modalVisible"
       diy-slot-footer
-      title="防出错提示"
+      title="防出错提示9"
       :width="1920"
       :closable="false">
       <div
@@ -55,13 +55,12 @@ import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'error-prevent-modal'
 
 import { columns } from './data'
-import { mockRuleList } from './mock'
-import { errorPreventValidate } from './utils'
+
 export default {
   name: prefixCls,
   props: {
-    // 获取规则列表
-    getRuleList1: {
+    // 请求接口：校验函数
+    validateDataFn: {
       type: Function,
       default: () => {}
     }
@@ -76,26 +75,24 @@ export default {
     }
   },
   methods: {
-    async onErrorPrevent({ paramsRuleList, validateDataList, callback }) {
-      // 测试：返回promise.reject，应该阻断流程
+    async onErrorPrevent({ paramsData, callback }) {
       // return Promise.reject(new Error('测试：返回promise.reject，应该阻断流程'))
+      this.mediaCode = paramsData.mediaCodes[0]
 
-      this.mediaCode = paramsRuleList.mediaCodes[0]
+      let validateData = paramsData
+      validateData.data = this.transformValidateDataList(paramsData.data)
       // 请求接口
-      let ruleList = await this.getRuleList(paramsRuleList)
-      let result = errorPreventValidate({ ruleList, validateDataList })
+      let result = await this.validateDataFn(validateData)
 
-      console.log('------------------------')
-      console.log('最终的校验结果', result)
+      console.log('后端校验结果', result)
 
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          // let isError = Math.floor(Math.random() * 10) % 2 === 0
-          let isError = result.message
+          let isError = result.length
           if (isError) {
             reject(new Error('测试错误'))
-            this.columns = this.getTableColumns(validateDataList)
-            this.errorTableList = result.table
+            this.columns = this.getTableColumns(validateData.data)
+            this.errorTableList = result
             this.modalVisible = true
           } else {
             this.modalVisible = false
@@ -107,23 +104,50 @@ export default {
       })
     },
 
-    // 获取规则列表
-    getRuleList(data) {
-      console.log('获取规则列表-参数', data)
-      console.log('---------------------------------')
-
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(mockRuleList)
-        }, 1000)
-      })
-    },
     // 根据要校验的数据，获取表头范围
     getTableColumns(data) {
       let keys = Object.keys(data[0])
       return columns.filter(f => f.isFixed || keys.includes(f.key))
     },
-    //
+    // 转换标准数据
+    transformValidateDataList(dataList) {
+      console.log('转换标准数据--之前', dataList)
+
+      // 1. 过滤标准数据的value为undefined
+      // 2. 过滤标准数据的value值为array的空、undefined、null
+      // 3. 过滤标准数据的value在strictKeys(更严格)范围字段不可以为[]
+      let strictKeys = [
+        'bid',
+        'bidGoal',
+        'deepBid',
+        'deepBidGoal',
+        'roiBid',
+        'roiBidGoal',
+        'goal',
+        'deepGoal'
+      ]
+      const filteredArr = _.map(dataList, obj => _.pickBy(obj, value => value !== undefined))
+      const modifiedArr = _.map(filteredArr, obj =>
+        _.mapValues(obj, value => {
+          if (_.isArray(value)) {
+            return _.filter(value, v => !_.includes([undefined, '', null], v))
+          }
+          return value
+        })
+      )
+      let result = modifiedArr.map(obj => {
+        return Object.fromEntries(
+          Object.entries(obj).filter(
+            ([key, value]) =>
+              !(strictKeys.includes(key) && Array.isArray(value) && value.length === 0)
+          )
+        )
+      })
+      console.log('转换标准数据--之后', result)
+
+      return result
+    },
+
     handleOk() {
       this.modalVisible = false
     },
