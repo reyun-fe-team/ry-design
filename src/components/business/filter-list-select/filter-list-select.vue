@@ -1,83 +1,86 @@
 <template>
-  <div>
-    <rd-filter-list
-      ref="filter-list"
-      v-model="current"
-      :real-data="realData"
-      :data="data"
-      :label="label"
-      :trigger="trigger"
-      :query="query"
-      :not-found-text="notFoundText"
-      :not-found="!filterData.length"
-      :input-width="inputWidth"
-      :input-height="inputHeight"
-      :option-width="optionWidth"
-      :width="width"
-      :height="height"
-      :max-height="maxHeight"
-      :min-height="minHeight"
-      :filterable="filterable"
-      :show-select-option="showSelectOption"
-      :clearable="clearable"
-      :show-image="showImage"
-      :show-description="showDescription"
-      :show-subtitle="showSubtitle"
-      :input-placeholder="inputPlaceholder"
-      :filter-placeholder="filterPlaceholder"
-      :disabled="disabled"
-      :transfer="transfer"
-      :placement="placement"
-      @query-change="queryChange"
-      @on-visible-change="handleVisibleChange"
-      @on-input-click="handleInputClick"
-      @on-input-clear="handleInputClear"
-      @on-change="handleFilterListChange">
-      <template
-        v-if="$scopedSlots['input-label']"
-        slot="input-label">
-        <slot name="input-label"></slot>
-      </template>
-      <rd-virtual-list
-        ref="list"
-        :class="[prefixCls + '-virtual-list', 'small-scroll-y']"
-        :style="mainStyles"
-        data-key="uid"
-        :data-sources="getLine"
-        :extra-props="{
-          groupNameList,
-          current,
-          multiple,
-          renderItem
-        }"
-        :data-component="virtualComponent"
-        v-on="$listeners"
-        @on-click="handleClick"></rd-virtual-list>
-      <template slot="search-operate">
-        <slot name="search-operate"></slot>
-      </template>
-      <div
-        slot="footer"
+  <rd-filter-list
+    ref="filter-list"
+    v-model="current"
+    :real-data="realData"
+    :data="data"
+    :label="label"
+    :trigger="trigger"
+    :query="query"
+    :not-found-text="notFoundText"
+    :not-found="!filterData.length"
+    :input-width="inputWidth"
+    :input-height="inputHeight"
+    :option-width="optionWidth"
+    :width="width"
+    :height="height"
+    :max-height="maxHeight"
+    :min-height="minHeight"
+    :filterable="filterable"
+    :show-select-option="showSelectOption"
+    :clearable="clearable"
+    :show-image="showImage"
+    :show-description="showDescription"
+    :show-subtitle="showSubtitle"
+    :input-placeholder="inputPlaceholder"
+    :filter-placeholder="filterPlaceholder"
+    :disabled="disabled"
+    :transfer="transfer"
+    :placement="placement"
+    @query-change="queryChange"
+    @on-visible-change="handleVisibleChange"
+    @on-input-click="handleInputClick"
+    @on-input-clear="handleInputClear"
+    @on-change="handleFilterListChange">
+    <template
+      v-if="$scopedSlots['input-label']"
+      slot="input-label">
+      <slot name="input-label"></slot>
+    </template>
+    <!-- 全选 -->
+    <rd-filter-list-select-all
+      v-if="selectAll && multiple"
+      :checked-all="checkedAll"
+      @on-checked-all="toggleSelectAll"></rd-filter-list-select-all>
+    <rd-virtual-list
+      ref="list"
+      :class="[prefixCls + '-virtual-list', 'small-scroll-y']"
+      :style="mainStyles"
+      data-key="uid"
+      :data-sources="getLine"
+      :extra-props="{
+        groupNameList,
+        current,
+        multiple,
+        renderItem
+      }"
+      :data-component="virtualComponent"
+      v-on="$listeners"
+      @on-click="handleClick"></rd-virtual-list>
+    <template slot="search-operate">
+      <slot name="search-operate"></slot>
+    </template>
+    <div
+      slot="footer"
+      @click.stop>
+      <slot
+        name="footer"
         @click.stop>
-        <slot
-          name="footer"
-          @click.stop>
-          <rd-filter-list-select-action
-            v-if="currentShowAction"
-            :before-action-ok="beforeActionOk"
-            :action-rule-validate="actionRuleValidate"
-            :update-dropdown="updateDropdown"
-            :placeholder="actionPlaceholder"
-            :action-text="actionText"
-            :action-button-text="actionButtonText"
-            :action-count="actionCount"
-            :action-total="actionTotal"
-            :action-hide-total="actionHideTotal"
-            @on-ok="handleActionOk"></rd-filter-list-select-action>
-        </slot>
-      </div>
-    </rd-filter-list>
-  </div>
+        <rd-filter-list-select-action
+          v-if="currentShowAction"
+          :before-action-ok="beforeActionOk"
+          :action-rule-validate="actionRuleValidate"
+          :update-dropdown="updateDropdown"
+          :placeholder="actionPlaceholder"
+          :action-text="actionText"
+          :action-button-text="actionButtonText"
+          :action-count="actionCount"
+          :action-total="actionTotal"
+          :action-hide-total="actionHideTotal"
+          @on-ok="handleActionOk"></rd-filter-list-select-action>
+      </slot>
+    </div>
+  </rd-filter-list>
 </template>
 
 <script>
@@ -90,7 +93,7 @@ import Emitter from '@src/mixins/emitter'
 import virtualComponent from './filter-list-select-virtual.vue'
 import rdFilterListDescribe from '../filter-list/filter-list-describe'
 import rdFilterListSelectAction from './filter-list-select-action'
-
+import rdFilterListSelectAll from './filter-list-select-all'
 const checkValuesNotEqual = (value, values) => {
   const strValue = JSON.stringify(value)
   const strValues = JSON.stringify(values)
@@ -98,7 +101,7 @@ const checkValuesNotEqual = (value, values) => {
 }
 export default {
   name: prefixCls,
-  components: { rdFilterListSelectAction },
+  components: { rdFilterListSelectAction, rdFilterListSelectAll },
   mixins: [Emitter],
   props: {
     data: {
@@ -195,6 +198,10 @@ export default {
     showItemDelete: {
       type: Boolean,
       default: false
+    },
+    selectAll: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -280,6 +287,17 @@ export default {
     },
     currentShowAction() {
       return this.showAction && !this.showFooter && this.planeVisible
+    },
+    validKeysCount() {
+      return this.filterData
+        .filter(data => !data.disabled && this.current.indexOf(data.value) > -1)
+        .map(data => data.value).length
+    },
+    checkedAll() {
+      return (
+        this.filterData.filter(data => !data.disabled).length === this.validKeysCount &&
+        this.validKeysCount !== 0
+      )
     }
   },
   watch: {
@@ -398,6 +416,17 @@ export default {
     },
     updateDropdown() {
       this.$refs['filter-list'].updateDropdown()
+    },
+    toggleSelectAll(status) {
+      const values = status
+        ? this.filterData
+            .filter(data => !data.disabled || this.current.indexOf(data.value) > -1)
+            .map(data => data.value)
+        : this.filterData
+            .filter(data => data.disabled && this.current.indexOf(data.value) > -1)
+            .map(data => data.value)
+      this.current = values
+      this.movementChange()
     }
   }
 }
