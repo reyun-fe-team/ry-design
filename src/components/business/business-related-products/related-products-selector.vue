@@ -42,12 +42,14 @@ export default {
     // 搜索产品
     onSearchProduct: {
       type: Function,
-      require: true
+      require: true,
+      default: null
     },
     // 搜索产品库
     onSearchProductLibrary: {
       type: Function,
-      require: true
+      require: true,
+      default: null
     }
   },
   data() {

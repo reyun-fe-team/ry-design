@@ -151,12 +151,14 @@ export default {
     // 搜索产品
     onSearchProduct: {
       type: Function,
-      require: true
+      require: true,
+      default: null
     },
     // 搜索产品库
     onSearchProductLibrary: {
       type: Function,
-      require: true
+      require: true,
+      default: null
     },
     // 选择的数据
     value: {
@@ -172,6 +174,26 @@ export default {
     mutilProduct: {
       type: Boolean,
       default: true
+    },
+    // 商品库placeholder
+    libraryPlaceholder: {
+      type: String,
+      default: ''
+    },
+    // 商品placeholder
+    productPlaceholder: {
+      type: String,
+      default: ''
+    },
+    // 商品资产ID 的 key
+    assetIdKey: {
+      type: String,
+      default: 'assetId'
+    },
+    // 商品库 分类 的 key
+    tagKey: {
+      type: String,
+      default: 'tag'
     }
   },
   data() {
