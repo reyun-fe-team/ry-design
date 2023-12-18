@@ -30,7 +30,6 @@
           v-for="item in errorTableList"
           :key="item.id"
           style="margin-bottom: 15px">
-          >
           <p>{{ item.name }}({{ item.id }})</p>
           <Table
             :columns="columns"
@@ -76,7 +75,6 @@ export default {
   data() {
     return {
       prefixCls,
-      mediaCode: '',
       columns: [],
       modalVisible: false,
       errorTableList: []
@@ -85,7 +83,6 @@ export default {
   methods: {
     async onErrorPrevent({ paramsData, callback }) {
       // return Promise.reject(new Error('测试：返回promise.reject，应该阻断流程'))
-      this.mediaCode = paramsData.mediaCodes[0]
 
       let validateData = paramsData
       validateData.data = this.transformValidateDataList(paramsData.data)
@@ -163,9 +160,7 @@ export default {
 
     handleOk() {
       this.modalVisible = false
-    },
-    handelCancel() {
-      this.modalVisible = false
+      this.$emit('on-ok')
     }
   }
 }
