@@ -53,6 +53,14 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'error-prevent-modal'
+import {
+  map as _map,
+  pickBy as _pickBy,
+  mapValues as _mapValues,
+  isArray as _isArray,
+  filter as _filter,
+  includes as _includes
+} from 'lodash'
 
 import { columns } from './data'
 
@@ -122,15 +130,15 @@ export default {
         'deepBid',
         'deepBidGoal',
         'roiBid',
-        'roiBidGoal',
+        'roiGoal',
         'goal',
         'deepGoal'
       ]
-      const filteredArr = _.map(dataList, obj => _.pickBy(obj, value => value !== undefined))
-      const modifiedArr = _.map(filteredArr, obj =>
-        _.mapValues(obj, value => {
-          if (_.isArray(value)) {
-            return _.filter(value, v => !_.includes([undefined, '', null], v))
+      const filteredArr = _map(dataList, obj => _pickBy(obj, value => value !== undefined))
+      const modifiedArr = _map(filteredArr, obj =>
+        _mapValues(obj, value => {
+          if (_isArray(value)) {
+            return _filter(value, v => !_includes([undefined, '', null, 0], v))
           }
           return value
         })
