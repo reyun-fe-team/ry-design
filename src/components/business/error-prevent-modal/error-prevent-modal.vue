@@ -1,28 +1,27 @@
 <template>
   <div v-if="modalVisible">
-    <!-- 1950 -->
     <rd-modals
       v-model="modalVisible"
       diy-slot-footer
-      title="防出错提示9"
-      :width="1920"
+      title="防出错提示"
+      :width="950"
       :closable="false">
       <div
         slot="content"
         :class="prefixCls + '-content'">
-        <div class="m-b-20">
+        <div style="margin-bottom: 20px">
           <p>
             <Icon
               type="md-alert"
               color="#FA9404"
-              class="m-r-5" />
+              :class="prefixCls + '-icon-alert'" />
             <span>配置内容与防出错设置不一致，请修改广告设置</span>
           </p>
           <p>
             <Icon
               type="md-alert"
               color="#FA9404"
-              class="m-r-5" />
+              :class="prefixCls + '-icon-alert'" />
             <span>若需修改防出错内容，请联系管理员或优化经理修改</span>
           </p>
         </div>
@@ -30,7 +29,8 @@
         <div
           v-for="item in errorTableList"
           :key="item.id"
-          class="m-b-15">
+          style="margin-bottom: 15px">
+          >
           <p>{{ item.name }}({{ item.id }})</p>
           <Table
             :columns="columns"
@@ -62,7 +62,7 @@ import {
   includes as _includes
 } from 'lodash'
 
-import { columns } from './data'
+import { columnsMap, mockColumns } from './data'
 
 export default {
   name: prefixCls,
@@ -89,8 +89,11 @@ export default {
 
       let validateData = paramsData
       validateData.data = this.transformValidateDataList(paramsData.data)
+      // TODO: 接口未联调，需要处理数据
       // 请求接口
       let result = await this.validateDataFn(validateData)
+      // 表头配置
+      let tHead = mockColumns
 
       console.log('后端校验结果', result)
 
@@ -99,23 +102,25 @@ export default {
           let isError = result.length
           if (isError) {
             reject(new Error('测试错误'))
-            this.columns = this.getTableColumns(validateData.data)
+            this.columns = this.getTableColumns(tHead)
             this.errorTableList = result
             this.modalVisible = true
           } else {
             this.modalVisible = false
             callback && callback()
             resolve()
-            this.$Message.success('测试成功')
           }
         }, 1000)
       })
     },
 
     // 根据要校验的数据，获取表头范围
-    getTableColumns(data) {
-      let keys = Object.keys(data[0])
-      return columns.filter(f => f.isFixed || keys.includes(f.key))
+    getTableColumns(columns) {
+      return columns.map(e => {
+        let item = columnsMap.get(e.key)
+        item.title = e.title
+        return item
+      })
     },
     // 转换标准数据
     transformValidateDataList(dataList) {
