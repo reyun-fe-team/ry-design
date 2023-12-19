@@ -19,6 +19,7 @@
         <rd-text-emoj-input
           ref="emojInput"
           :key="`emoj-${index}`"
+          :show-limit="showLimit"
           :value="value[index] || ''"
           :is-edit="middle.activeClass === index"
           :class="[
@@ -84,11 +85,17 @@ export default {
     rdTextEmojInput
   },
   props: {
+    showLimit: {
+      type: Boolean,
+      default: true
+    },
     source: {
       type: Object,
       default: () => {}
     },
+    // eslint-disable-next-line vue/require-default-prop
     index: Number,
+    // eslint-disable-next-line vue/require-default-prop
     item: Number,
     middle: {
       type: Object,

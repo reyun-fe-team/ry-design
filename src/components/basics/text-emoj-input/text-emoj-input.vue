@@ -16,16 +16,19 @@
       :class="prefixCls + '-placeholder'">
       {{ placeholder }}
     </div>
-    <div
-      v-show="isEdit"
-      :class="prefixCls + '-ln-wrap'">
-      <div :class="prefixCls + '-ln-wrap-l'">{{ totalln }}/{{ maxLength }}</div>
-      <div :class="prefixCls + '-ln-wrap-r'">
-        <Icon
-          type="md-close"
-          @click="onClear"></Icon>
+    <!-- 文字长度 -->
+    <template v-if="showLimit">
+      <div
+        v-show="isEdit"
+        :class="prefixCls + '-ln-wrap'">
+        <div :class="prefixCls + '-ln-wrap-l'">{{ totalln }}/{{ maxLength }}</div>
+        <div :class="prefixCls + '-ln-wrap-r'">
+          <Icon
+            type="md-close"
+            @click="onClear"></Icon>
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -39,6 +42,11 @@ const prefixCls = prefix + 'text-emoj-input'
 export default {
   name: prefixCls,
   props: {
+    // 显示文字长度
+    showLimit: {
+      type: Boolean,
+      default: true
+    },
     /**
      * @description 验证插入文档标记的校验规则
      * @param {string} value html标记内容
@@ -412,10 +420,11 @@ export default {
     },
     // 计算输入框的输入长度
     calcInputLength() {
-      if (!this.richEditRef) {
+      if (!this.richEditRef || !this.showLimit) {
         this.totalln = 0
         return
       }
+
       let copyDom = document.createElement('div')
       // 需要匹配换行符替换为空
       copyDom.innerHTML = this.richEditRef.innerHTML.replaceAll('&nbsp;', '')
