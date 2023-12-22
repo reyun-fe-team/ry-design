@@ -30,9 +30,9 @@
           v-for="item in errorTableList"
           :key="item.id"
           style="margin-bottom: 15px">
-          >
           <p>{{ item.name }}({{ item.id }})</p>
           <Table
+            border
             :columns="columns"
             :data="item.tBody">
             <template #position></template>
@@ -62,7 +62,7 @@ import {
   includes as _includes
 } from 'lodash'
 
-import { columnsMap, mockColumns } from './data'
+import { columnsMap } from './data'
 
 export default {
   name: prefixCls,
@@ -76,7 +76,6 @@ export default {
   data() {
     return {
       prefixCls,
-      mediaCode: '',
       columns: [],
       modalVisible: false,
       errorTableList: []
@@ -84,26 +83,23 @@ export default {
   },
   methods: {
     async onErrorPrevent({ paramsData, callback }) {
-      // return Promise.reject(new Error('测试：返回promise.reject，应该阻断流程'))
-      this.mediaCode = paramsData.mediaCodes[0]
-
       let validateData = paramsData
       validateData.data = this.transformValidateDataList(paramsData.data)
-      // TODO: 接口未联调，需要处理数据
       // 请求接口
       let result = await this.validateDataFn(validateData)
       // 表头配置
-      let tHead = mockColumns
-
-      console.log('后端校验结果', result)
+      // 开发模式
+      let tHead = result.tHead
+      let tBody = result.result
+      let validateKeys = Object.keys(validateData.data[0])
 
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          let isError = result.length
+          let isError = tBody.length
           if (isError) {
             reject(new Error('测试错误'))
-            this.columns = this.getTableColumns(tHead)
-            this.errorTableList = result
+            this.columns = this.getTableColumns(tHead, validateKeys)
+            this.errorTableList = tBody
             this.modalVisible = true
           } else {
             this.modalVisible = false
@@ -115,8 +111,13 @@ export default {
     },
 
     // 根据要校验的数据，获取表头范围
-    getTableColumns(columns) {
-      return columns.map(e => {
+    getTableColumns(columns, validateKeys) {
+      let keys = ['objectLabel', 'accountLabel', ...validateKeys]
+      if (validateKeys.includes('roiBid')) {
+        keys.push('deepBid')
+      }
+      let hasColumns = columns.filter(e => keys.includes(e.key))
+      return hasColumns.map(e => {
         let item = columnsMap.get(e.key)
         item.title = e.title
         return item
@@ -163,9 +164,7 @@ export default {
 
     handleOk() {
       this.modalVisible = false
-    },
-    handelCancel() {
-      this.modalVisible = false
+      this.$emit('on-ok')
     }
   }
 }
