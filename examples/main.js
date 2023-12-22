@@ -249,6 +249,10 @@ const router = new VueRouter({
     {
       path: '/placement-location',
       component: resolve => require(['./routers/placement-location'], resolve)
+    },
+    {
+      path: '/text-input-list-manage',
+      component: resolve => require(['./routers/text-input-list-manage'], resolve)
     }
   ]
 })
