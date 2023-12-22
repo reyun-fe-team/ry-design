@@ -63,7 +63,7 @@ export default {
     // 是否支持转译 例如< > 转译成&lt; &gt;
     isTransform: {
       type: Boolean,
-      default: true
+      default: false
     },
     // 传入的默认文本（通用文本内容）
     value: {
@@ -74,7 +74,7 @@ export default {
     // 是否能使用html标记
     canUseHtml: {
       type: Boolean,
-      default: true
+      default: false
     },
     // 是否单行显示
     isSingleLine: {
@@ -126,8 +126,6 @@ export default {
   watch: {
     value(n, o) {
       if (n === o) {
-        console.log('watch---text-emoj-input ', this.value)
-
         return
       }
       this.$nextTick(() => {

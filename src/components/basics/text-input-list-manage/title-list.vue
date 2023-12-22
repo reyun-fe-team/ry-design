@@ -163,7 +163,7 @@ export default {
     // 是否支持转译 例如< > 转译成&lt; &gt;
     isTransform: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data() {
