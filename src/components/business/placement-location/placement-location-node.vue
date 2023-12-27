@@ -15,8 +15,12 @@
       </template>
       <div
         :class="prefixCls + '-item-text'"
-        :title="label">
-        {{ label }}
+        :style="itemStyles">
+        <slot
+          name="select-item"
+          :row="row">
+          <span :title="label">{{ label }}</span>
+        </slot>
       </div>
     </div>
   </div>
@@ -46,6 +50,18 @@ export default {
     label: {
       type: String,
       default: '朋友圈'
+    },
+    row: {
+      type: Object,
+      default: () => {}
+    },
+    itemWidth: {
+      type: [Number, String],
+      default: ''
+    },
+    itemMinWidth: {
+      type: [Number, String],
+      default: ''
     }
   },
   data() {
@@ -63,6 +79,18 @@ export default {
           [`${prefixCls}-item-disabled`]: this.showCheckbox && this.disabled
         }
       ]
+    },
+    itemStyles() {
+      let style = {}
+      if (this.itemWidth) {
+        const itemWidth = parseInt(this.itemWidth)
+        style.width = `${itemWidth}px`
+      }
+      if (this.itemMinWidth) {
+        const itemMinWidth = parseInt(this.itemMinWidth)
+        style.minWidth = `${itemMinWidth}px`
+      }
+      return style
     }
   },
   watch: {
