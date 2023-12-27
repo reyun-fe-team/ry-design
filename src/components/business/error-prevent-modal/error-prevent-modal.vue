@@ -30,7 +30,7 @@
           v-for="item in errorTableList"
           :key="item.id"
           style="margin-bottom: 15px">
-          <p>{{ item.name }}({{ item.id }})</p>
+          <p style="margin-bottom: 3px">规则名称(ID): {{ item.name }}({{ item.id }})</p>
           <Table
             border
             :columns="columns"
@@ -88,7 +88,6 @@ export default {
       // 请求接口
       let result = await this.validateDataFn(validateData)
       // 表头配置
-      // 开发模式
       let tHead = result.tHead
       let tBody = result.result
       let validateKeys = Object.keys(validateData.data[0])
