@@ -279,9 +279,10 @@ export default {
         data: [
           {
             position: ['10'],
-            roiSource: 'goal',
+            // roiSource: 'goal',
             goal: ['191'],
             roiBid: [33],
+            cpxBid: [33],
             budgetPlan: [500, 500, 500, 500, 555, 500, 500],
             isPlanDay: true,
             budgetAd: [111, 222, 222, 111, 222, 221, 222],

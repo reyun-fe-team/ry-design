@@ -114,6 +114,9 @@ export default {
     getTableColumns(columns, firstValidate) {
       let validateKeys = Object.keys(firstValidate)
       let keys = ['objectLabel', 'accountLabel', ...validateKeys]
+      if (validateKeys.includes('cpxBid')) {
+        keys.push('bid')
+      }
       if (validateKeys.includes('roiBid')) {
         keys.push('deepBid')
       }
