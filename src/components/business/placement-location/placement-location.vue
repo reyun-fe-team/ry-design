@@ -345,7 +345,7 @@ export default {
       })
       this.handleUpdateSelectValue()
       if (this.showCheckbox) {
-        this.$emit('on-on-select-all', this.currentValue)
+        this.$emit('on-select-all', this.currentValue)
       }
     }
   }
