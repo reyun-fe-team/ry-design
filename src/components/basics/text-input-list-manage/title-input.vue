@@ -226,7 +226,7 @@ export default {
           : getPlainText(stringHtml)
       }
       this.saveSelection()
-      this.$emit('input', oiginalText)
+      // this.$emit('input', oiginalText)
       this.$emit('on-change', {
         currentData,
         keyInputEvent: e,
