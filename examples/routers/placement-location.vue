@@ -25,7 +25,7 @@
       :loading="loading"
       :item-min-width="62"
       @on-title-click="onTitleClick"
-      @on-on-select-all="onTitleClick">
+      @on-select-all="onTitleClick">
       <template
         slot="select-item"
         slot-scope="{ row }">
