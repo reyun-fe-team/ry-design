@@ -275,19 +275,17 @@ export default {
       this.$refs.refErrorPreventModal.modalVisible = true
       const paramsData = {
         mediaCodes: ['kuaishou'],
-        mediaAccountIds: ['24788891', '24788890'],
+        mediaAccountIds: ['24788890'],
         data: [
           {
-            position: ['1'],
-            goal: ['180'],
-            deepGoal: ['3'],
-            bid: [2],
-            deepBid: [111],
-            roiBid: [null],
-            budgetPlan: [],
-            isPlanDay: false,
-            budgetAd: [],
-            isAdDay: false
+            position: ['10'],
+            roiSource: 'goal',
+            goal: ['191'],
+            roiBid: [33],
+            budgetPlan: [500, 500, 500, 500, 555, 500, 500],
+            isPlanDay: true,
+            budgetAd: [111, 222, 222, 111, 222, 221, 222],
+            isAdDay: true
           }
         ]
       }

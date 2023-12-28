@@ -85,6 +85,7 @@ export default {
     async onErrorPrevent({ paramsData, callback }) {
       let validateData = paramsData
       validateData.data = this.transformValidateDataList(paramsData.data)
+      validateData.keys = Object.keys(validateData.data[0])
       // 请求接口
       let result = await this.validateDataFn(validateData)
       // 表头配置
@@ -116,10 +117,10 @@ export default {
       if (validateKeys.includes('roiBid')) {
         keys.push('deepBid')
       }
-      if (firstValidate.roiBid === 'goal') {
+      if (firstValidate.roiSource === 'goal') {
         keys.push('bid')
       }
-      if (firstValidate.roiBid === 'deepGoal') {
+      if (firstValidate.roiSource === 'deepGoal') {
         keys.push('deepBid')
       }
       let hasKeys = [...new Set(keys)]
