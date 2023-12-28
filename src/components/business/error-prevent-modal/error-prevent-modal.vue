@@ -90,14 +90,14 @@ export default {
       // 表头配置
       let tHead = result.tHead
       let tBody = result.result
-      let validateKeys = Object.keys(validateData.data[0])
+      let firstValidate = validateData.data[0]
 
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           let isError = tBody.length
           if (isError) {
             reject(new Error('测试错误'))
-            this.columns = this.getTableColumns(tHead, validateKeys)
+            this.columns = this.getTableColumns(tHead, firstValidate)
             this.errorTableList = tBody
             this.modalVisible = true
           } else {
@@ -110,12 +110,20 @@ export default {
     },
 
     // 根据要校验的数据，获取表头范围
-    getTableColumns(columns, validateKeys) {
+    getTableColumns(columns, firstValidate) {
+      let validateKeys = Object.keys(firstValidate)
       let keys = ['objectLabel', 'accountLabel', ...validateKeys]
       if (validateKeys.includes('roiBid')) {
         keys.push('deepBid')
       }
-      let hasColumns = columns.filter(e => keys.includes(e.key))
+      if (firstValidate.roiBid === 'goal') {
+        keys.push('bid')
+      }
+      if (firstValidate.roiBid === 'deepGoal') {
+        keys.push('deepBid')
+      }
+      let hasKeys = [...new Set(keys)]
+      let hasColumns = columns.filter(e => hasKeys.includes(e.key))
       return hasColumns.map(e => {
         let item = columnsMap.get(e.key)
         item.title = e.title
