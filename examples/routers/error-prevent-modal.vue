@@ -27,12 +27,12 @@ const mockData = {
           budgetAd: {
             error: true,
             key: 'budgetAd',
-            message: '介于 : 0.01 ~ 0.01 元'
+            message: '不限预算：不可用</br>介于 : 0.01 ~ 0.01 元'
           },
           budgetPlan: {
             error: true,
             key: 'budgetPlan',
-            message: '介于 : 0.01 ~ 0.01 元'
+            message: '不限预算：不可用</br>介于 : 0.01 ~ 0.01 元'
           },
           deepBid: {
             error: false,

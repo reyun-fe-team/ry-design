@@ -141,7 +141,12 @@ export const columnsMap = new Map([
       minWidth: 180,
       render: (h, params) => {
         let row = params.row[params.column.key]
-        return h('span', { class: row.error ? [errorClass] : '' }, row.message)
+        return h('span', {
+          class: row.error ? [errorClass] : '',
+          domProps: {
+            innerHTML: `${row.message}`
+          }
+        })
 
         // let len = row.text.length
         // if (len === 0) {
@@ -166,7 +171,12 @@ export const columnsMap = new Map([
       minWidth: 180,
       render: (h, params) => {
         let row = params.row[params.column.key]
-        return h('span', { class: row.error ? [errorClass] : '' }, row.message)
+        return h('span', {
+          class: row.error ? [errorClass] : '',
+          domProps: {
+            innerHTML: `${row.message}`
+          }
+        })
 
         // let len = row.text.length
         // if (len === 0) {
