@@ -94,19 +94,17 @@ export default {
       let firstValidate = validateData.data[0]
 
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          let isError = tBody.length
-          if (isError) {
-            reject(new Error('测试错误'))
-            this.columns = this.getTableColumns(tHead, firstValidate)
-            this.errorTableList = tBody
-            this.modalVisible = true
-          } else {
-            this.modalVisible = false
-            callback && callback()
-            resolve()
-          }
-        }, 1000)
+        let isError = tBody.length
+        if (isError) {
+          reject(new Error('测试错误'))
+          this.columns = this.getTableColumns(tHead, firstValidate)
+          this.errorTableList = tBody
+          this.modalVisible = true
+        } else {
+          this.modalVisible = false
+          callback && callback()
+          resolve()
+        }
       })
     },
 
@@ -147,7 +145,7 @@ export default {
         'deepBid',
         'deepBidGoal',
         'roiBid',
-        'roiGoal',
+        'roiBidGoal',
         'goal',
         'deepGoal'
       ]
