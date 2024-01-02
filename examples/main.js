@@ -253,6 +253,10 @@ const router = new VueRouter({
     {
       path: '/text-input-list-manage',
       component: resolve => require(['./routers/text-input-list-manage'], resolve)
+    },
+    {
+      path: '/error-prevent-modal',
+      component: resolve => require(['./routers/error-prevent-modal'], resolve)
     }
   ]
 })
