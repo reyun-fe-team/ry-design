@@ -157,8 +157,13 @@ const components = [
   FilterArea,
   Space,
   PlacementLocation,
+<<<<<<< HEAD
   ErrorPreventModal,
   TextInputListManage
+=======
+  TextInputListManage,
+  ErrorPreventModal
+>>>>>>> master
 ]
 const directives = {
   'line-clamp': lineClamp,

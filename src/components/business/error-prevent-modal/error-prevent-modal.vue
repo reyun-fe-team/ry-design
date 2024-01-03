@@ -134,8 +134,6 @@ export default {
     },
     // 转换标准数据
     transformValidateDataList(dataList) {
-      console.log('转换标准数据--之前', dataList)
-
       // 1. 过滤标准数据的value为undefined
       // 2. 过滤标准数据的value值为array的空、undefined、null
       // 3. 过滤标准数据的value在strictKeys(更严格)范围字段不可以为[]
@@ -166,8 +164,6 @@ export default {
           )
         )
       })
-      console.log('转换标准数据--之后', result)
-
       return result
     },
 
