@@ -37,6 +37,11 @@
       @click.stop="handlePreview">
       <img :src="previewTipSrc" />
     </div>
+    <div
+      v-if="showNum"
+      :class="prefixCls + '-num'">
+      {{ num }}
+    </div>
     <slot></slot>
   </div>
 </template>
@@ -138,6 +143,14 @@ export default {
     },
     // 懒加载
     lazy: {
+      type: Boolean,
+      default: false
+    },
+    num: {
+      type: Number,
+      default: 0
+    },
+    showNum: {
       type: Boolean,
       default: false
     }
