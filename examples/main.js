@@ -248,6 +248,10 @@ const router = new VueRouter({
     {
       path: '/text-input-list-manage',
       component: resolve => require(['./routers/text-input-list-manage'], resolve)
+    },
+    {
+      path: '/v-dragging',
+      component: resolve => require(['./routers/v-dragging'], resolve)
     }
   ]
 })
