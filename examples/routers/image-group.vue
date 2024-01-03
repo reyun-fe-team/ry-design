@@ -22,6 +22,8 @@
     <h2>横版图片</h2>
     <section style="display: flex">
       <rd-image-group
+        show-num
+        :num="1"
         style="margin: 0 24px 0 0"
         :size="1"
         :data="hengImage"
@@ -30,6 +32,8 @@
       <rd-image-group
         style="margin: 0 24px 0 0"
         :size="2"
+        show-num
+        :num="2"
         :data="hengImage"
         :width="216"
         :height="120"></rd-image-group>
