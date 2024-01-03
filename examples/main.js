@@ -242,7 +242,6 @@ const router = new VueRouter({
       component: resolve => require(['./routers/placement-location'], resolve)
     },
     {
-<<<<<<< HEAD
       path: '/error-prevent-modal',
       component: resolve => require(['./routers/error-prevent-modal'], resolve)
     },
@@ -253,14 +252,6 @@ const router = new VueRouter({
     {
       path: '/v-dragging',
       component: resolve => require(['./routers/v-dragging'], resolve)
-=======
-      path: '/text-input-list-manage',
-      component: resolve => require(['./routers/text-input-list-manage'], resolve)
-    },
-    {
-      path: '/error-prevent-modal',
-      component: resolve => require(['./routers/error-prevent-modal'], resolve)
->>>>>>> master
     }
   ]
 })
