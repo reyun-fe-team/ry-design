@@ -257,6 +257,10 @@ const router = new VueRouter({
     {
       path: '/error-prevent-modal',
       component: resolve => require(['./routers/error-prevent-modal'], resolve)
+    },
+    {
+      path: '/carousel-previewer',
+      component: resolve => require(['./routers/carousel-previewer'], resolve)
     }
   ]
 })

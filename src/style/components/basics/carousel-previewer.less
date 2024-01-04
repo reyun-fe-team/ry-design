@@ -1,0 +1,145 @@
+@carousel-previewer: ~'@{css-prefix}carousel-previewer';
+
+.@{carousel-previewer} {
+  &-image {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 75vmax;
+    height: 75vmin;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+
+    &-img {
+      border-radius: 8px;
+      border: 1px solid #ffffff;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    &-desc {
+      margin-top: 35px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #FFFFFF;
+      line-height: 22px;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+  }
+
+  &-touch-active {
+    cursor: grabbing !important;
+  }
+
+  &-ctrl-wrap {
+    cursor: grab;
+    width: 100%;
+    height: 90px;
+    overflow: auto hidden;
+    margin: 0 auto;
+    margin-bottom: 32px;
+    // 兼容Firefox
+    scrollbar-width: none;
+
+
+    // 兼容Chrome
+    &::-webkit-scrollbar {
+      display: none
+    }
+  }
+
+  &-ctrl {
+    margin: 0 auto;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    &-active {
+      border: 4px solid #3A88FA;
+    }
+
+    &-btn {
+      width: 90px;
+      height: 90px;
+      background: #F5F6F7;
+      border-radius: 4px;
+      margin: 0 10px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        border: 4px solid #3A88FA;
+      }
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+    }
+  }
+
+  &-body {
+    width: 100%;
+    z-index: 9;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+
+    &-content {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      flex: 1;
+    }
+  }
+
+  &-close {
+    color: #c1c1c1;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 40px;
+    cursor: pointer;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+
+  &-btn {
+    z-index: 10;
+    --carousel-previewer-btn-position: 70px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #c1c1c1;
+    font-size: 60px;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+
+  &-btns-prev {
+    left: var(--carousel-previewer-btn-position);
+  }
+
+  &-btns-next {
+    right: var(--carousel-previewer-btn-position);
+  }
+}
