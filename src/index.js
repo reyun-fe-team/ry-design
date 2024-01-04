@@ -34,6 +34,7 @@ import DropdownPanel from './components/basics/dropdown-panel'
 import Indicator from './components/basics/indicator'
 import Empty from './components/basics/empty'
 import Space from './components/basics/space'
+import CarouselPreviewer from './components/basics/carousel-previewer'
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
@@ -158,7 +159,8 @@ const components = [
   Space,
   PlacementLocation,
   TextInputListManage,
-  ErrorPreventModal
+  ErrorPreventModal,
+  CarouselPreviewer
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -239,5 +241,6 @@ export default {
   FilterLisCascader,
   Space,
   PlacementLocation,
-  ErrorPreventModal
+  ErrorPreventModal,
+  CarouselPreviewer
 }

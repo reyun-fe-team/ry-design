@@ -252,6 +252,14 @@ const router = new VueRouter({
     {
       path: '/v-dragging',
       component: resolve => require(['./routers/v-dragging'], resolve)
+    },
+    {
+      path: '/error-prevent-modal',
+      component: resolve => require(['./routers/error-prevent-modal'], resolve)
+    },
+    {
+      path: '/carousel-previewer',
+      component: resolve => require(['./routers/carousel-previewer'], resolve)
     }
   ]
 })
