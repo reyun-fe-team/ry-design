@@ -1,6 +1,7 @@
 <template>
   <div
     v-show="value"
+    ref="transfer-body"
     v-transfer-dom
     :class="[prefixCls]"
     :data-transfer="transfer"
@@ -32,11 +33,41 @@
           <!-- 图片容器 -->
           <div :class="[prefixCls + '-image']">
             <!-- 图片 -->
-            <img
+            <div
+              v-if="type === 'IMAGE'"
+              :class="[prefixCls + '-image-wrap']">
+              <img
+                :class="[prefixCls + '-image-img']"
+                :src="newCurrent[urlKey]"
+                @error="handleImageLoadError" />
+              <!-- 音乐 -->
+              <div
+                v-if="audioUrl"
+                :class="[prefixCls + '-image-audio']">
+                <audio
+                  ref="audio"
+                  :class="[prefixCls + '-audio']"
+                  :src="audioUrl"
+                  @ended="handleEnded"></audio>
+                <!-- 按钮 -->
+                <div
+                  :style="audioBtnStyle"
+                  :class="[prefixCls + '-image-audio-icon']"
+                  @click.stop="handleClickPlay"></div>
+              </div>
+            </div>
+            <!-- 视频 -->
+            <CarouselVideoPreviewer
+              v-if="type === 'VIDEO'"
+              :poster="newCurrent[posterKey]"
               :src="newCurrent[urlKey]"
-              @error="handleImageLoadError" />
+              :class="[prefixCls + '-image-video']"></CarouselVideoPreviewer>
             <!-- 描述 -->
-            <div :class="[prefixCls + '-image-desc']">{{ newCurrent[descKey] }}</div>
+            <div
+              v-if="newCurrent[descKey]"
+              :class="[prefixCls + '-image-desc']">
+              {{ newCurrent[descKey] }}
+            </div>
           </div>
         </div>
         <!-- 底部控制条 -->
@@ -74,6 +105,9 @@
 import { prefix } from '@src/config.js'
 import _debounce from 'lodash/debounce'
 import ImageError from '@src/images/image/image-error.png'
+import CarouselVideoPreviewer from './carousel-video-previewer'
+import videoPlay from '@src/images/image-preview/video-play.svg'
+import videoPause from '@src/images/image-preview/video-pause.svg'
 
 const prefixCls = prefix + 'carousel-previewer'
 // 底部按钮的实际宽度
@@ -81,7 +115,15 @@ const scrollAmount = 110
 
 export default {
   name: prefixCls,
+  components: {
+    CarouselVideoPreviewer
+  },
   props: {
+    type: {
+      type: String,
+      // VIDEO
+      default: 'IMAGE'
+    },
     data: {
       type: Array,
       default: () => []
@@ -105,7 +147,7 @@ export default {
       type: String,
       default: 'uuid'
     },
-    // 图片URL (图片展示区使用)
+    // 图片或视频的URL (图片展示区使用)
     urlKey: {
       type: String,
       default: 'previewUrl'
@@ -119,6 +161,16 @@ export default {
     descKey: {
       type: String,
       default: 'fileName'
+    },
+    // 视频封面图
+    posterKey: {
+      type: String,
+      default: 'poster'
+    },
+    // 音频地址
+    audioUrl: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -126,6 +178,7 @@ export default {
       prefixCls,
       newCurrent: null,
       currentIndex: null,
+      isAudioPlay: false,
       touchData: {
         isDown: false,
         startX: 0,
@@ -135,16 +188,48 @@ export default {
       }
     }
   },
+  computed: {
+    // 音频播放按钮样式
+    audioBtnStyle() {
+      return {
+        'background-image': `url(${this.isAudioPlay ? videoPause : videoPlay})`,
+        'background-repeat': 'no-repeat',
+        'background-position': 'center center',
+        'background-size': '100% 100%'
+      }
+    }
+  },
   watch: {
     value: {
       immediate: true,
-      handler() {
+      handler: async function () {
         this.newCurrent = this.current || this.data[0]
         this.currentIndex = this.data.indexOf(this.newCurrent)
+        await this.$nextTick()
+        let zIndex = this.getMaxZIndex()
+        this.$refs['transfer-body'].style.zIndex = this.value ? zIndex : ''
       }
     }
   },
   methods: {
+    // 音频播放
+    playAudio() {
+      this.isAudioPlay = true
+      let audioRef = this.$refs.audio
+      audioRef && audioRef.play()
+    },
+    // 音频暂停
+    pauseAudio() {
+      this.isAudioPlay = false
+      let audioRef = this.$refs.audio
+      audioRef && audioRef.pause()
+    },
+    // 获取最大的z-index， 记住要在页面渲染完毕执行
+    getMaxZIndex() {
+      let allEles = document.getElementsByTagName('*')
+      let arr = [...allEles].map(e => +window.getComputedStyle(e).zIndex || 0)
+      return arr.length ? Math.max(...arr) + 1 : 0
+    },
     // 向左滚动
     scrollLeft(count = 1) {
       let scrollview = this.$refs.scrollview
@@ -154,6 +239,14 @@ export default {
     scrollRight(count = 1) {
       let scrollview = this.$refs.scrollview
       scrollview.scrollLeft += count * scrollAmount
+    },
+    // 点击播放按钮
+    handleClickPlay() {
+      !this.isAudioPlay ? this.playAudio() : this.pauseAudio()
+    },
+    // 播放完毕,继续播放
+    handleEnded() {
+      this.playAudio()
     },
     // 图片加载失败
     handleImageLoadError(event) {
@@ -173,6 +266,7 @@ export default {
     },
     // 关闭
     handleClose() {
+      this.pauseAudio()
       this.$emit('input', false)
     },
     // 上一张
