@@ -74,8 +74,9 @@ import { UTable, UTableColumn } from 'umy-ui'
 import lineClamp from './directives/line-clamp'
 import clickOutside from './directives/click-out-side'
 import transferDom from './directives/transfer-dom'
-import tooltip from './directives/tooltip'
 import { vDragging, $dragging } from './directives/dragging'
+// directivesCreateFuncs
+import createTooltip from './directives/tooltip'
 
 // util
 import { setIviewMessage } from './util/message'
@@ -166,8 +167,10 @@ const directives = {
   'line-clamp': lineClamp,
   'click-outside': clickOutside,
   'transfer-dom': transferDom,
-  tooltip: tooltip,
   dragging: vDragging
+}
+const directivesCreateFuncs = {
+  tooltip: createTooltip
 }
 
 const install = function (Vue) {
@@ -178,6 +181,9 @@ const install = function (Vue) {
     Vue.directive(key, directives[key])
   })
   Vue.prototype.$dragging = $dragging
+  Object.keys(directivesCreateFuncs).forEach(key => {
+    Vue.directive(key, directivesCreateFuncs[key](Vue))
+  })
   setIviewMessage(Vue)
 }
 
