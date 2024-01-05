@@ -74,9 +74,9 @@ import { UTable, UTableColumn } from 'umy-ui'
 import lineClamp from './directives/line-clamp'
 import clickOutside from './directives/click-out-side'
 import transferDom from './directives/transfer-dom'
-import { vDragging, $dragging } from './directives/dragging'
 // directivesCreateFuncs
 import createTooltip from './directives/tooltip'
+import createDragging from './directives/dragging'
 
 // util
 import { setIviewMessage } from './util/message'
@@ -163,14 +163,18 @@ const components = [
   ErrorPreventModal,
   CarouselPreviewer
 ]
+
+// 对象式-指令
 const directives = {
   'line-clamp': lineClamp,
   'click-outside': clickOutside,
-  'transfer-dom': transferDom,
-  dragging: vDragging
+  'transfer-dom': transferDom
 }
+
+// 函数式-创建指令对象
 const directivesCreateFuncs = {
-  tooltip: createTooltip
+  tooltip: createTooltip,
+  dragging: createDragging
 }
 
 const install = function (Vue) {
@@ -180,7 +184,6 @@ const install = function (Vue) {
   Object.keys(directives).forEach(key => {
     Vue.directive(key, directives[key])
   })
-  Vue.prototype.$dragging = $dragging
   Object.keys(directivesCreateFuncs).forEach(key => {
     Vue.directive(key, directivesCreateFuncs[key](Vue))
   })
