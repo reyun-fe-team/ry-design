@@ -261,6 +261,10 @@ const router = new VueRouter({
     {
       path: '/carousel-previewer',
       component: resolve => require(['./routers/carousel-previewer'], resolve)
+    },
+    {
+      path: '/v-dragging',
+      component: resolve => require(['./routers/v-dragging'], resolve)
     }
   ]
 })

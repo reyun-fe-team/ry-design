@@ -76,6 +76,7 @@ import clickOutside from './directives/click-out-side'
 import transferDom from './directives/transfer-dom'
 // directivesCreateFuncs
 import createTooltip from './directives/tooltip'
+import createDragging from './directives/dragging'
 
 // util
 import { setIviewMessage } from './util/message'
@@ -169,6 +170,7 @@ const directives = {
 }
 const directivesCreateFuncs = {
   tooltip: createTooltip
+  // dragging: createDragging
 }
 
 const install = function (Vue) {
