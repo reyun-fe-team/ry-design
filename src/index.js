@@ -74,7 +74,8 @@ import { UTable, UTableColumn } from 'umy-ui'
 import lineClamp from './directives/line-clamp'
 import clickOutside from './directives/click-out-side'
 import transferDom from './directives/transfer-dom'
-import tips from './directives/tips'
+// directivesCreateFuncs
+import createTooltip from './directives/tooltip'
 
 // util
 import { setIviewMessage } from './util/message'
@@ -164,8 +165,10 @@ const components = [
 const directives = {
   'line-clamp': lineClamp,
   'click-outside': clickOutside,
-  'transfer-dom': transferDom,
-  tooltip: tips
+  'transfer-dom': transferDom
+}
+const directivesCreateFuncs = {
+  tooltip: createTooltip
 }
 
 const install = function (Vue) {
@@ -175,7 +178,9 @@ const install = function (Vue) {
   Object.keys(directives).forEach(key => {
     Vue.directive(key, directives[key])
   })
-
+  Object.keys(directivesCreateFuncs).forEach(key => {
+    Vue.directive(key, directivesCreateFuncs[key](Vue))
+  })
   setIviewMessage(Vue)
 }
 
