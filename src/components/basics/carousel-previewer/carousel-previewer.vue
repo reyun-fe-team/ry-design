@@ -1,14 +1,14 @@
 <template>
   <div
     v-show="value"
-    ref="transfer-body"
     v-transfer-dom
-    :class="[prefixCls]"
+    :class="[prefixCls, { [transferClassName]: transfer }]"
     :data-transfer="transfer"
     :transfer="transfer">
     <transition name="fade">
       <div
         v-if="value"
+        ref="transferBody"
         :class="[prefixCls + '-body']">
         <!-- 内容 -->
         <div :class="[prefixCls + '-body-content']">
@@ -141,6 +141,11 @@ export default {
       type: Boolean,
       default: true
     },
+    // 开启 transfer 时，给浮层添加额外的 class 名称
+    transferClassName: {
+      type: String,
+      default: ''
+    },
     // -----字段的 key----
     // 唯一Id
     idKey: {
@@ -207,7 +212,7 @@ export default {
         this.currentIndex = this.data.indexOf(this.newCurrent)
         await this.$nextTick()
         let zIndex = this.getMaxZIndex()
-        this.$refs['transfer-body'].style.zIndex = this.value ? zIndex : ''
+        this.$refs.transferBody.style.zIndex = this.value ? zIndex : ''
       }
     }
   },
@@ -268,6 +273,7 @@ export default {
     handleClose() {
       this.pauseAudio()
       this.$emit('input', false)
+      this.$emit('on-close')
     },
     // 上一张
     handlePrev() {
