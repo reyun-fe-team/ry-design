@@ -211,8 +211,11 @@ export default {
         this.newCurrent = this.current || this.data[0]
         this.currentIndex = this.data.indexOf(this.newCurrent)
         await this.$nextTick()
-        let zIndex = this.getMaxZIndex()
-        this.$refs.transferBody.style.zIndex = this.value ? zIndex : ''
+        // value === true => transferBody 渲染
+        if (this.value) {
+          let transferBody = this.$refs.transferBody
+          transferBody && (transferBody.style.zIndex = this.getMaxZIndex())
+        }
       }
     }
   },
