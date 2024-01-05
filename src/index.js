@@ -163,14 +163,18 @@ const components = [
   ErrorPreventModal,
   CarouselPreviewer
 ]
+
+// 对象式-指令
 const directives = {
   'line-clamp': lineClamp,
   'click-outside': clickOutside,
   'transfer-dom': transferDom
 }
+
+// 函数式-创建指令对象
 const directivesCreateFuncs = {
-  tooltip: createTooltip
-  // dragging: createDragging
+  tooltip: createTooltip,
+  dragging: createDragging
 }
 
 const install = function (Vue) {
