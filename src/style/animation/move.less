@@ -17,6 +17,10 @@
 .move-motion(move-left, rdMoveLeft);
 .move-motion(move-right, rdMoveRight);
 
+// carousel-previewer 切换动画
+.move-motion(move-carousel-previewer-left, rdMoveCarouselPreviewerLeft);
+.move-motion(move-carousel-previewer-right, rdMoveCarouselPreviewerRight);
+
 @keyframes rdMoveDownIn {
   0% {
     transform-origin: 0 0;
@@ -164,6 +168,55 @@
     height: 0;
     padding: 0;
     margin-bottom: 0;
+    opacity: 0;
+  }
+}
+
+// carousel-previewer 切换动画
+@keyframes rdMoveCarouselPreviewerLeftIn {
+  0% {
+    margin-left: 100%;
+    opacity: 0;
+  }
+
+  100% {
+    margin-left: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes rdMoveCarouselPreviewerLeftOut {
+  0% {
+    margin-left: 0;
+    opacity: 1;
+  }
+
+  100% {
+    margin-left: -100%;
+    opacity: 0;
+  }
+}
+
+@keyframes rdMoveCarouselPreviewerRightIn {
+  0% {
+    opacity: 0;
+    margin-left: -100%;
+  }
+
+  100% {
+    opacity: 1;
+    margin-left: 0;
+  }
+}
+
+@keyframes rdMoveCarouselPreviewerRightOut {
+  0% {
+    margin-left: 0;
+    opacity: 1;
+  }
+
+  100% {
+    margin-left: 100%;
     opacity: 0;
   }
 }
