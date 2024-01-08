@@ -7,7 +7,6 @@
       type="IMAGE"
       :data="imageData"
       thumbnail-key="previewUrl"
-      audio-url="https://dl.stream.qqmusic.qq.com/RS02061u18bu37wpHO.mp3?guid=6897187216&vkey=43045C29DD863381E60F8D833370717632A63FC3AC0A6D04A9F468B1A40637EEA9BDE30A18407AC86C664047FDAFAF810499486B85AA6BC9&uin=&fromtag=120052"
       :current="currentImage"
       @on-close="handleImageClose"></rd-carousel-previewer>
     <br />
@@ -16,7 +15,6 @@
       type="VIDEO"
       :data="videoData"
       thumbnail-key="previewUrl"
-      audio-url="https://dl.stream.qqmusic.qq.com/RS02061u18bu37wpHO.mp3?guid=6897187216&vkey=43045C29DD863381E60F8D833370717632A63FC3AC0A6D04A9F468B1A40637EEA9BDE30A18407AC86C664047FDAFAF810499486B85AA6BC9&uin=&fromtag=120052"
       @on-close="handleVideoClose"></rd-carousel-previewer>
   </div>
 </template>

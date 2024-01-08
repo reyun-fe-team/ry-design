@@ -30,45 +30,49 @@
               :class="[prefixCls + '-btns-next', prefixCls + '-btn']"
               @click="handleNext"></Icon>
           </div>
-          <!-- 图片容器 -->
-          <div :class="[prefixCls + '-image']">
-            <!-- 图片 -->
-            <div
-              v-if="type === 'IMAGE'"
-              :class="[prefixCls + '-image-wrap']">
-              <img
-                :class="[prefixCls + '-image-img']"
-                :src="newCurrent[urlKey]"
-                @error="handleImageLoadError" />
-              <!-- 音乐 -->
-              <div
-                v-if="audioUrl"
-                :class="[prefixCls + '-image-audio']">
-                <audio
-                  ref="audio"
-                  :class="[prefixCls + '-audio']"
-                  :src="audioUrl"
-                  @ended="handleEnded"></audio>
-                <!-- 按钮 -->
-                <div
-                  :style="audioBtnStyle"
-                  :class="[prefixCls + '-image-audio-icon']"
-                  @click.stop="handleClickPlay"></div>
-              </div>
-            </div>
-            <!-- 视频 -->
-            <CarouselVideoPreviewer
-              v-if="type === 'VIDEO'"
-              :poster="newCurrent[posterKey]"
-              :src="newCurrent[urlKey]"
-              :class="[prefixCls + '-image-video']"></CarouselVideoPreviewer>
-            <!-- 描述 -->
-            <div
-              v-if="newCurrent[descKey]"
-              :class="[prefixCls + '-image-desc']">
-              {{ newCurrent[descKey] }}
-            </div>
+          <!-- 描述 -->
+          <div
+            v-if="newCurrent[descKey]"
+            :class="[prefixCls + '-desc']">
+            {{ newCurrent[descKey] }}
           </div>
+          <transition :name="moveMotionName">
+            <!-- 图片容器 -->
+            <div
+              :key="currentUuid"
+              :class="[prefixCls + '-image']">
+              <!-- 图片 -->
+              <div
+                v-if="type === 'IMAGE'"
+                :class="[prefixCls + '-image-wrap']">
+                <img
+                  :class="[prefixCls + '-image-img']"
+                  :src="newCurrent[urlKey]"
+                  @error="handleImageLoadError" />
+                <!-- 音乐 -->
+                <div
+                  v-if="audioUrl"
+                  :class="[prefixCls + '-image-audio']">
+                  <audio
+                    ref="audio"
+                    :class="[prefixCls + '-audio']"
+                    :src="audioUrl"
+                    @ended="handleEnded"></audio>
+                  <!-- 按钮 -->
+                  <div
+                    :style="audioBtnStyle"
+                    :class="[prefixCls + '-image-audio-icon']"
+                    @click.stop="handleClickPlay"></div>
+                </div>
+              </div>
+              <!-- 视频 -->
+              <CarouselVideoPreviewer
+                v-if="type === 'VIDEO'"
+                :poster="newCurrent[posterKey]"
+                :src="newCurrent[urlKey]"
+                :class="[prefixCls + '-image-video']"></CarouselVideoPreviewer>
+            </div>
+          </transition>
         </div>
         <!-- 底部控制条 -->
         <div
@@ -103,6 +107,7 @@
 </template>
 <script>
 import { prefix } from '@src/config.js'
+import { genID } from '@src/util/assist'
 import _debounce from 'lodash/debounce'
 import ImageError from '@src/images/image/image-error.png'
 import CarouselVideoPreviewer from './carousel-video-previewer'
@@ -149,6 +154,7 @@ export default {
     // -----字段的 key----
     // 唯一Id
     idKey: {
+      require: true,
       type: String,
       default: 'uuid'
     },
@@ -181,9 +187,18 @@ export default {
   data() {
     return {
       prefixCls,
+      currentUuid: '',
       newCurrent: null,
       currentIndex: null,
       isAudioPlay: false,
+      // 动画名称
+      moveMotionName: '',
+      moveMotion: {
+        // 下一张 - 向左
+        left: 'move-carousel-previewer-left',
+        // 上一张 - 向右
+        right: 'move-carousel-previewer-right'
+      },
       touchData: {
         isDown: false,
         startX: 0,
@@ -210,6 +225,7 @@ export default {
       handler: async function () {
         this.newCurrent = this.current || this.data[0]
         this.currentIndex = this.data.indexOf(this.newCurrent)
+        this.currentUuid = genID(20)
         await this.$nextTick()
         // value === true => transferBody 渲染
         if (this.value) {
@@ -238,15 +254,43 @@ export default {
       let arr = [...allEles].map(e => +window.getComputedStyle(e).zIndex || 0)
       return arr.length ? Math.max(...arr) + 1 : 0
     },
+    // 滚动多少距离
+    scrollByDistance(distance, duration) {
+      let currentTime = 0
+      // 一帧的时间
+      const increment = 20
+      const scrollview = this.$refs.scrollview
+      const change = distance / (duration / increment)
+
+      const animateScroll = () => {
+        currentTime += increment
+        // 横向滚动多少距离
+        scrollview.scrollBy(change, 0)
+        if (currentTime < duration) {
+          window.requestAnimationFrame(animateScroll)
+        }
+      }
+      animateScroll()
+    },
     // 向左滚动
     scrollLeft(count = 1) {
-      let scrollview = this.$refs.scrollview
-      scrollview.scrollLeft -= count * scrollAmount
+      // 指定滚动n个距离
+      const distance = count * scrollAmount
+      // 动画持续时间，单位：毫秒
+      const duration = 300
+      if (distance > 0) {
+        this.scrollByDistance(-distance, duration)
+      }
     },
     // 向右滚动
     scrollRight(count = 1) {
-      let scrollview = this.$refs.scrollview
-      scrollview.scrollLeft += count * scrollAmount
+      // 指定滚动n个距离
+      const distance = count * scrollAmount
+      // 动画持续时间，单位：毫秒
+      const duration = 300
+      if (distance > 0) {
+        this.scrollByDistance(distance, duration)
+      }
     },
     // 点击播放按钮
     handleClickPlay() {
@@ -262,10 +306,26 @@ export default {
     },
     // 切换图片
     handleChangeImg(item, index) {
-      this.newCurrent = item
       const deltaIndex = index - this.currentIndex
+      if (deltaIndex === 0) {
+        return
+      }
+
+      // 动画方向
+      if (deltaIndex > 0) {
+        // 向左
+        this.moveMotionName = this.moveMotion.left
+      } else {
+        // 向右
+        this.moveMotionName = this.moveMotion.right
+      }
+
+      // 赋值数据
+      this.newCurrent = item
       this.currentIndex = index
-      // 点击的是下一个
+      this.currentUuid = genID(20)
+
+      // 执行动画
       if (deltaIndex > 0) {
         this.scrollRight(deltaIndex)
       } else {
@@ -284,8 +344,12 @@ export default {
       if (index < 0) {
         return
       }
+      // 向右
+      this.moveMotionName = this.moveMotion.right
+
       this.currentIndex = index
       this.newCurrent = this.data[this.currentIndex]
+      this.currentUuid = genID(20)
       this.scrollLeft()
     },
     // 下一张
@@ -295,23 +359,26 @@ export default {
       if (index > lastIndex) {
         return
       }
+      // 向左
+      this.moveMotionName = this.moveMotion.left
+
       this.currentIndex = index
       this.newCurrent = this.data[this.currentIndex]
+      this.currentUuid = genID(20)
       this.scrollRight()
     },
     // 鼠标滚动
     handleScrollviewWheel: _debounce(function (event) {
-      let scrollview = this.$refs.scrollview
       // 阻止默认的滚动行为
       event.preventDefault()
       // 根据滚轮事件的 deltaY 属性判断滚轮方向
       // 向左滚动
       if (event.deltaY < 0) {
-        scrollview.scrollLeft -= scrollAmount
+        this.scrollByDistance(-scrollAmount, 300)
       }
       // 向右滚动
       else {
-        scrollview.scrollLeft += scrollAmount
+        this.scrollByDistance(scrollAmount, 300)
       }
     }, 167),
     // 开始拖拽

@@ -49,13 +49,13 @@
 
   &-voice {
     position: absolute;
-    left: -40px;
+    left: -45px;
     top: 0;
-    font-size: 18px;
+    font-size: 30px;
     background: #000c;
     border-radius: 2px;
     cursor: pointer;
-    padding: 0 3px;
+    padding: 0 5px;
     color: #ffffff;
   }
 
@@ -66,10 +66,17 @@
   &-image {
     position: absolute;
     left: 50%;
+
+    // 居中
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 75vmax;
-    height: 75vmin;
+
+    // 顶部 60px
+    // top: 60px;
+    // transform: translateX(-50%);
+
+    max-width: 60vmax;
+    height: 60vmin;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,15 +113,7 @@
       max-height: 100%;
     }
 
-    &-desc {
-      margin-top: 35px;
-      font-size: 16px;
-      font-weight: 500;
-      color: #FFFFFF;
-      line-height: 22px;
-      word-wrap: break-word;
-      white-space: pre-wrap;
-    }
+
   }
 
   &-audio {
@@ -179,6 +178,23 @@
     }
   }
 
+  &-desc {
+    z-index: 10;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 100%;
+    min-height: 22px;
+    line-height: 22px;
+    text-align: center;
+    margin: 35px 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #FFFFFF;
+    word-wrap: break-word;
+  }
+
   &-body {
     width: 100%;
     z-index: 9;
@@ -189,6 +205,7 @@
     flex-direction: column;
 
     &-content {
+      --carousel-previewer-btn-position: 70px;
       position: relative;
       overflow: hidden;
       width: 100%;
@@ -199,8 +216,8 @@
   &-close {
     color: #c1c1c1;
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: var(--carousel-previewer-btn-position);
+    top: 30px;
     font-size: 40px;
     cursor: pointer;
 
@@ -211,7 +228,6 @@
 
   &-btn {
     z-index: 10;
-    --carousel-previewer-btn-position: 70px;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
