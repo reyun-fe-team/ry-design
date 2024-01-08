@@ -36,11 +36,11 @@
             :class="[prefixCls + '-desc']">
             {{ newCurrent[descKey] }}
           </div>
-          <transition
-            :key="newCurrent[idKey]"
-            name="slide-left">
+          <transition :name="moveMotionName">
             <!-- 图片容器 -->
-            <div :class="[prefixCls + '-image']">
+            <div
+              :key="currentUuid"
+              :class="[prefixCls + '-image']">
               <!-- 图片 -->
               <div
                 v-if="type === 'IMAGE'"
@@ -107,7 +107,7 @@
 </template>
 <script>
 import { prefix } from '@src/config.js'
-import { easeInOutQuad } from '@src/util/assist'
+import { genID } from '@src/util/assist'
 import _debounce from 'lodash/debounce'
 import ImageError from '@src/images/image/image-error.png'
 import CarouselVideoPreviewer from './carousel-video-previewer'
@@ -154,6 +154,7 @@ export default {
     // -----字段的 key----
     // 唯一Id
     idKey: {
+      require: true,
       type: String,
       default: 'uuid'
     },
@@ -186,9 +187,18 @@ export default {
   data() {
     return {
       prefixCls,
+      currentUuid: '',
       newCurrent: null,
       currentIndex: null,
       isAudioPlay: false,
+      // 动画名称
+      moveMotionName: '',
+      moveMotion: {
+        // 下一张 - 向左
+        left: 'move-carousel-previewer-left',
+        // 上一张 - 向右
+        right: 'move-carousel-previewer-right'
+      },
       touchData: {
         isDown: false,
         startX: 0,
@@ -215,6 +225,7 @@ export default {
       handler: async function () {
         this.newCurrent = this.current || this.data[0]
         this.currentIndex = this.data.indexOf(this.newCurrent)
+        this.currentUuid = genID(20)
         await this.$nextTick()
         // value === true => transferBody 渲染
         if (this.value) {
@@ -245,18 +256,16 @@ export default {
     },
     // 滚动多少距离
     scrollByDistance(distance, duration) {
-      const start = 0
-      const change = distance - start
-      const increment = 10
-      const scrollview = this.$refs.scrollview
-
       let currentTime = 0
+      // 一帧的时间
+      const increment = 20
+      const scrollview = this.$refs.scrollview
+      const change = distance / (duration / increment)
 
       const animateScroll = () => {
         currentTime += increment
-        const distanceChange = easeInOutQuad(currentTime, start, change, duration)
         // 横向滚动多少距离
-        scrollview.scrollBy(distanceChange, 0)
+        scrollview.scrollBy(change, 0)
         if (currentTime < duration) {
           window.requestAnimationFrame(animateScroll)
         }
@@ -297,10 +306,26 @@ export default {
     },
     // 切换图片
     handleChangeImg(item, index) {
-      this.newCurrent = item
       const deltaIndex = index - this.currentIndex
+      if (deltaIndex === 0) {
+        return
+      }
+
+      // 动画方向
+      if (deltaIndex > 0) {
+        // 向左
+        this.moveMotionName = this.moveMotion.left
+      } else {
+        // 向右
+        this.moveMotionName = this.moveMotion.right
+      }
+
+      // 赋值数据
+      this.newCurrent = item
       this.currentIndex = index
-      // 点击的是下一个
+      this.currentUuid = genID(20)
+
+      // 执行动画
       if (deltaIndex > 0) {
         this.scrollRight(deltaIndex)
       } else {
@@ -319,8 +344,12 @@ export default {
       if (index < 0) {
         return
       }
+      // 向右
+      this.moveMotionName = this.moveMotion.right
+
       this.currentIndex = index
       this.newCurrent = this.data[this.currentIndex]
+      this.currentUuid = genID(20)
       this.scrollLeft()
     },
     // 下一张
@@ -330,23 +359,26 @@ export default {
       if (index > lastIndex) {
         return
       }
+      // 向左
+      this.moveMotionName = this.moveMotion.left
+
       this.currentIndex = index
       this.newCurrent = this.data[this.currentIndex]
+      this.currentUuid = genID(20)
       this.scrollRight()
     },
     // 鼠标滚动
     handleScrollviewWheel: _debounce(function (event) {
-      let scrollview = this.$refs.scrollview
       // 阻止默认的滚动行为
       event.preventDefault()
       // 根据滚轮事件的 deltaY 属性判断滚轮方向
       // 向左滚动
       if (event.deltaY < 0) {
-        scrollview.scrollLeft -= scrollAmount
+        this.scrollByDistance(-scrollAmount, 300)
       }
       // 向右滚动
       else {
-        scrollview.scrollLeft += scrollAmount
+        this.scrollByDistance(scrollAmount, 300)
       }
     }, 167),
     // 开始拖拽

@@ -49,13 +49,13 @@
 
   &-voice {
     position: absolute;
-    left: -40px;
+    left: -45px;
     top: 0;
-    font-size: 18px;
+    font-size: 30px;
     background: #000c;
     border-radius: 2px;
     cursor: pointer;
-    padding: 0 3px;
+    padding: 0 5px;
     color: #ffffff;
   }
 
@@ -66,9 +66,16 @@
   &-image {
     position: absolute;
     left: 50%;
+
+    // 居中
     top: 50%;
     transform: translate(-50%, -50%);
-    max-width: 70vmax;
+
+    // 顶部 60px
+    // top: 60px;
+    // transform: translateX(-50%);
+
+    max-width: 60vmax;
     height: 60vmin;
     display: flex;
     align-items: center;
@@ -198,6 +205,7 @@
     flex-direction: column;
 
     &-content {
+      --carousel-previewer-btn-position: 70px;
       position: relative;
       overflow: hidden;
       width: 100%;
@@ -208,8 +216,8 @@
   &-close {
     color: #c1c1c1;
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: var(--carousel-previewer-btn-position);
+    top: 30px;
     font-size: 40px;
     cursor: pointer;
 
@@ -220,7 +228,6 @@
 
   &-btn {
     z-index: 10;
-    --carousel-previewer-btn-position: 70px;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
