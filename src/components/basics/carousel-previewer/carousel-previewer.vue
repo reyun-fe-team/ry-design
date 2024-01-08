@@ -30,45 +30,49 @@
               :class="[prefixCls + '-btns-next', prefixCls + '-btn']"
               @click="handleNext"></Icon>
           </div>
-          <!-- 图片容器 -->
-          <div :class="[prefixCls + '-image']">
-            <!-- 图片 -->
-            <div
-              v-if="type === 'IMAGE'"
-              :class="[prefixCls + '-image-wrap']">
-              <img
-                :class="[prefixCls + '-image-img']"
-                :src="newCurrent[urlKey]"
-                @error="handleImageLoadError" />
-              <!-- 音乐 -->
-              <div
-                v-if="audioUrl"
-                :class="[prefixCls + '-image-audio']">
-                <audio
-                  ref="audio"
-                  :class="[prefixCls + '-audio']"
-                  :src="audioUrl"
-                  @ended="handleEnded"></audio>
-                <!-- 按钮 -->
-                <div
-                  :style="audioBtnStyle"
-                  :class="[prefixCls + '-image-audio-icon']"
-                  @click.stop="handleClickPlay"></div>
-              </div>
-            </div>
-            <!-- 视频 -->
-            <CarouselVideoPreviewer
-              v-if="type === 'VIDEO'"
-              :poster="newCurrent[posterKey]"
-              :src="newCurrent[urlKey]"
-              :class="[prefixCls + '-image-video']"></CarouselVideoPreviewer>
-            <!-- 描述 -->
-            <div
-              v-if="newCurrent[descKey]"
-              :class="[prefixCls + '-image-desc']">
-              {{ newCurrent[descKey] }}
-            </div>
+          <!-- 描述 -->
+          <div
+            v-if="newCurrent[descKey]"
+            :class="[prefixCls + '-desc']">
+            {{ newCurrent[descKey] }}
           </div>
+          <transition
+            :key="newCurrent[idKey]"
+            name="slide-left">
+            <!-- 图片容器 -->
+            <div :class="[prefixCls + '-image']">
+              <!-- 图片 -->
+              <div
+                v-if="type === 'IMAGE'"
+                :class="[prefixCls + '-image-wrap']">
+                <img
+                  :class="[prefixCls + '-image-img']"
+                  :src="newCurrent[urlKey]"
+                  @error="handleImageLoadError" />
+                <!-- 音乐 -->
+                <div
+                  v-if="audioUrl"
+                  :class="[prefixCls + '-image-audio']">
+                  <audio
+                    ref="audio"
+                    :class="[prefixCls + '-audio']"
+                    :src="audioUrl"
+                    @ended="handleEnded"></audio>
+                  <!-- 按钮 -->
+                  <div
+                    :style="audioBtnStyle"
+                    :class="[prefixCls + '-image-audio-icon']"
+                    @click.stop="handleClickPlay"></div>
+                </div>
+              </div>
+              <!-- 视频 -->
+              <CarouselVideoPreviewer
+                v-if="type === 'VIDEO'"
+                :poster="newCurrent[posterKey]"
+                :src="newCurrent[urlKey]"
+                :class="[prefixCls + '-image-video']"></CarouselVideoPreviewer>
+            </div>
+          </transition>
         </div>
         <!-- 底部控制条 -->
         <div
@@ -103,6 +107,7 @@
 </template>
 <script>
 import { prefix } from '@src/config.js'
+import { easeInOutQuad } from '@src/util/assist'
 import _debounce from 'lodash/debounce'
 import ImageError from '@src/images/image/image-error.png'
 import CarouselVideoPreviewer from './carousel-video-previewer'
@@ -238,15 +243,45 @@ export default {
       let arr = [...allEles].map(e => +window.getComputedStyle(e).zIndex || 0)
       return arr.length ? Math.max(...arr) + 1 : 0
     },
+    // 滚动多少距离
+    scrollByDistance(distance, duration) {
+      const start = 0
+      const change = distance - start
+      const increment = 10
+      const scrollview = this.$refs.scrollview
+
+      let currentTime = 0
+
+      const animateScroll = () => {
+        currentTime += increment
+        const distanceChange = easeInOutQuad(currentTime, start, change, duration)
+        // 横向滚动多少距离
+        scrollview.scrollBy(distanceChange, 0)
+        if (currentTime < duration) {
+          window.requestAnimationFrame(animateScroll)
+        }
+      }
+      animateScroll()
+    },
     // 向左滚动
     scrollLeft(count = 1) {
-      let scrollview = this.$refs.scrollview
-      scrollview.scrollLeft -= count * scrollAmount
+      // 指定滚动n个距离
+      const distance = count * scrollAmount
+      // 动画持续时间，单位：毫秒
+      const duration = 300
+      if (distance > 0) {
+        this.scrollByDistance(-distance, duration)
+      }
     },
     // 向右滚动
     scrollRight(count = 1) {
-      let scrollview = this.$refs.scrollview
-      scrollview.scrollLeft += count * scrollAmount
+      // 指定滚动n个距离
+      const distance = count * scrollAmount
+      // 动画持续时间，单位：毫秒
+      const duration = 300
+      if (distance > 0) {
+        this.scrollByDistance(distance, duration)
+      }
     },
     // 点击播放按钮
     handleClickPlay() {

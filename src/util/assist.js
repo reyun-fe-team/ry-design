@@ -277,6 +277,7 @@ export function removeClass(el, cls) {
 export function isEmptyElement(c) {
   return !(c.tag || (c.text && c.text.trim() !== ''))
 }
+
 /*filter empty element*/
 export function filterEmpty() {
   var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : []
@@ -284,4 +285,14 @@ export function filterEmpty() {
   return children.filter(function (c) {
     return !isEmptyElement(c)
   })
+}
+
+// 缓动函数
+export function easeInOutQuad(t, b, c, d) {
+  t /= d / 2
+  if (t < 1) {
+    return (c / 2) * t * t + b
+  }
+  t--
+  return (-c / 2) * (t * (t - 2) - 1) + b
 }
