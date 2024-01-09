@@ -118,6 +118,16 @@
           lazy />
       </div>
     </div>
+
+    <h2 style="margin-top: 24px">音乐</h2>
+    <rd-image
+      src="https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/fd6/f7a/f5d/fd6f7af5dd140f355d40aa8f87ebb3f1-small.jpg"
+      fit="contain"
+      width="216px"
+      height="120px"
+      audio-url="https://ads-material.tos-cn-beijing.volces.com/tos_oss/uploadV4File/b402/4731/30c7/b402473130c79fdc8ec88f5f244fc796.mp3"
+      preview
+      preview-tip></rd-image>
   </div>
 </template>
 
