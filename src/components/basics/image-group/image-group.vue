@@ -183,7 +183,7 @@ export default {
   },
   computed: {
     urlKey() {
-      if (this.previewSrc) {
+      if (this.data.some(val => val.previewSrc)) {
         return 'previewSrc'
       }
       return 'src'
