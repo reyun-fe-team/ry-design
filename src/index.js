@@ -17,6 +17,7 @@ import TableMultiInputs from './components/basics/table-multi-inputs'
 import TextEmojInput from './components/basics/text-emoj-input'
 import Icon from './components/basics/icon'
 import { TextInputList, VirtualList } from './components/basics/text-input-list'
+import TextInputListManage from './components/basics/text-input-list-manage'
 import Wildcard from './components/basics/wildcard'
 import CascaderTransfer from './components/basics/cascader-transfer'
 import Exception from './components/basics/exception'
@@ -58,6 +59,7 @@ import FormSelectIndicator from './components/business/form-select-indicator'
 import FilterLisCascader from './components/business/filter-list-cascader'
 import FilterArea from './components/business/filter-area'
 import PlacementLocation from './components/business/placement-location'
+import ErrorPreventModal from './components/business/error-prevent-modal'
 
 import ViewUI from 'view-design'
 
@@ -153,7 +155,9 @@ const components = [
   FilterLisCascader,
   FilterArea,
   Space,
-  PlacementLocation
+  PlacementLocation,
+  TextInputListManage,
+  ErrorPreventModal
 ]
 const directives = {
   'line-clamp': lineClamp,
@@ -180,6 +184,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default {
   version: process.env.VERSION,
   install,
+  TextInputListManage,
   Transfer,
   MultiCascader,
   PrefixContainer,
@@ -231,5 +236,6 @@ export default {
   FilterListSelect,
   FilterLisCascader,
   Space,
-  PlacementLocation
+  PlacementLocation,
+  ErrorPreventModal
 }
