@@ -4,22 +4,22 @@
     :class="classes"
     :style="imageGroupStyles">
     <rd-image
-      v-for="(option, initialIndex) in currenData"
+      v-for="(option, initialIndex) in currentData"
       :key="option.src + '_' + initialIndex"
       :src="option.src"
-      :preview-src="option.previewSrc"
       fit="contain"
-      :preview="preview"
+      :preview-src="option.previewSrc || option.src"
+      :preview="openCover"
       :preview-tip="previewTip || option.previewTip"
       :class="classImage"
       :style="imageStyles"
-      :type="currentType(initialIndex)"
+      :type="option._type"
       :alt="option.src"
       :preview-tip-width="previewTipWidth"
       :video-sign="videoSign"
       :is-cursor="isCursor"
       :lazy="lazy"
-      @on-preview-click="onPreviewClick(option, initialIndex)"
+      @on-preview-click="onPreviewClick(option, initialIndex, option._type)"
       @click.native="handleClick(option, initialIndex)"></rd-image>
     <div
       v-if="showDelete"
@@ -40,9 +40,20 @@
     <div
       v-if="showNum"
       :class="prefixCls + '-num'">
-      {{ num }}
+      {{ num || currentSize }}
     </div>
     <slot></slot>
+    <template v-if="preview">
+      <rd-carousel-previewer
+        v-model="imagePreviewModal"
+        :type="previewType.toUpperCase()"
+        :data="previewData"
+        :url-key="urlKey"
+        poster-key="src"
+        :current="currentImage"
+        thumbnail-key="src"
+        :audio-url="audioUrl"></rd-carousel-previewer>
+    </template>
   </div>
 </template>
 <script>
@@ -153,18 +164,52 @@ export default {
     showNum: {
       type: Boolean,
       default: false
+    },
+    // 音频地址
+    audioUrl: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
       prefixCls,
       videoPlay,
-      imageAmplify
+      imageAmplify,
+      imagePreviewModal: false,
+      currentImage: null,
+      previewType: this.type
     }
   },
   computed: {
-    currenData() {
-      return this.data.slice(0, this.size)
+    urlKey() {
+      if (this.previewSrc) {
+        return 'previewSrc'
+      }
+      return 'src'
+    },
+    currentSize() {
+      return this.size > 6 ? 6 : this.size
+    },
+    currentData() {
+      return this.data.slice(0, this.currentSize).map((val, index) => {
+        const _type = this.currentType(index)
+        return {
+          uuid: index,
+          ...val,
+          _type
+        }
+      })
+    },
+    previewData() {
+      return this.data.map((val, index) => {
+        const _type = this.currentType(index)
+        return {
+          uuid: index,
+          ...val,
+          _type
+        }
+      })
     },
     classes() {
       return [
@@ -177,8 +222,8 @@ export default {
       ]
     },
     classImage() {
-      let { size } = this
-      const groupSize = size === 3 ? `${this.positionType}-3` : size
+      let { currentSize } = this
+      const groupSize = currentSize === 3 ? `${this.positionType}-3` : currentSize
       return [`${prefixCls}-pic`, `${prefixCls}-pic-${groupSize}`]
     },
     imageGroupStyles() {
@@ -215,11 +260,22 @@ export default {
     currentType(index) {
       return this.openCover && index === 1 ? 'image' : this.type
     },
-    onPreviewClick(data, initialIndex) {
+    onPreviewClick(data, initialIndex, type) {
+      const { preview } = this
+      if (preview && !this.openCover) {
+        this.imagePreviewModal = true
+        this.currentImage = this.currentData[initialIndex]
+        this.previewType = type
+      }
       this.$emit('on-preview-click', data, initialIndex)
     },
     handlePreview() {
-      this.$emit('on-preview-group-click', this.currenData)
+      const { preview } = this
+      if (preview) {
+        this.imagePreviewModal = true
+        this.previewType = this.type
+      }
+      this.$emit('on-preview-group-click', this.currentData)
     },
     handleDelete() {
       this.$emit('on-delete')

@@ -14,7 +14,7 @@
       v-model="visibleVideo"
       type="VIDEO"
       :data="videoData"
-      thumbnail-key="previewUrl"
+      thumbnail-key="thumbnail"
       @on-close="handleVideoClose"></rd-carousel-previewer>
   </div>
 </template>
