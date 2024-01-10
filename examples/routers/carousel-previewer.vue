@@ -1,9 +1,10 @@
 <template>
   <div>
-    <Button @click="handleImageClick">展示Iamge预览</Button>
+    <Button @click="handleImageClick">展示Image预览</Button>
     <Button @click="handleVideoClick">展示Video预览</Button>
     <rd-carousel-previewer
       v-model="visibleImage"
+      :audio-url="audioUrl"
       type="IMAGE"
       :data="imageData"
       thumbnail-key="previewUrl"
@@ -22,6 +23,8 @@
 export default {
   data() {
     return {
+      audioUrl:
+        'https://ads-material.tos-cn-beijing.volces.com/tos_oss/uploadV4File/47f6/21c2/aa7e/47f621c2aa7e6bda46b280e2a026cbb9.m4a',
       visibleImage: false,
       visibleVideo: false,
       imageData: [
@@ -290,7 +293,7 @@ export default {
       this.currentImage = this.imageData[4]
     },
     handleImageClose() {
-      alert('展示Iamge预览 close')
+      alert('展示Image预览 close')
       this.visibleImage = false
       this.currentImage = null
     },
