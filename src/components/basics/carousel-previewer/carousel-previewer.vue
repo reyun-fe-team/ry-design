@@ -36,6 +36,22 @@
             :class="[prefixCls + '-desc']">
             {{ newCurrent[descKey] }}
           </div>
+          <!-- 音乐 -->
+          <div
+            v-if="type === 'IMAGE'"
+            :class="[prefixCls + '-image-audio']">
+            <audio
+              v-if="audioUrl"
+              ref="audio"
+              :class="[prefixCls + '-audio']"
+              :src="audioUrl"
+              @ended="handleEnded"></audio>
+            <!-- 按钮 -->
+            <div
+              :style="audioBtnStyle"
+              :class="[prefixCls + '-image-audio-icon']"
+              @click.stop="handleClickPlay"></div>
+          </div>
           <transition :name="moveMotionName">
             <!-- 图片容器 -->
             <div
@@ -49,21 +65,6 @@
                   :class="[prefixCls + '-image-img']"
                   :src="newCurrent[urlKey]"
                   @error="handleImageLoadError" />
-                <!-- 音乐 -->
-                <div
-                  v-if="audioUrl"
-                  :class="[prefixCls + '-image-audio']">
-                  <audio
-                    ref="audio"
-                    :class="[prefixCls + '-audio']"
-                    :src="audioUrl"
-                    @ended="handleEnded"></audio>
-                  <!-- 按钮 -->
-                  <div
-                    :style="audioBtnStyle"
-                    :class="[prefixCls + '-image-audio-icon']"
-                    @click.stop="handleClickPlay"></div>
-                </div>
               </div>
               <!-- 视频 -->
               <CarouselVideoPreviewer
@@ -182,6 +183,11 @@ export default {
     audioUrl: {
       type: String,
       default: ''
+    },
+    // 图片轮播时间间隔 ms
+    carouselPictureTime: {
+      type: Number,
+      default: 1500
     }
   },
   data() {
@@ -205,7 +211,8 @@ export default {
         scrollLeft: 0,
         longPressTimer: null,
         longPressTimes: 300
-      }
+      },
+      carouselPicturesTimer: null
     }
   },
   computed: {
@@ -292,9 +299,31 @@ export default {
         this.scrollByDistance(distance, duration)
       }
     },
+    // 开始轮播图片
+    startRotatingPictures() {
+      if (this.type === 'IMAGE') {
+        clearInterval(this.carouselPicturesTimer)
+        this.carouselPicturesTimer = setInterval(() => {
+          this.handleNext()
+        }, this.carouselPictureTime)
+      }
+    },
+    // 结束轮播图片
+    endRotatingPictures() {
+      if (this.type === 'IMAGE') {
+        clearInterval(this.carouselPicturesTimer)
+        this.carouselPicturesTimer = null
+      }
+    },
     // 点击播放按钮
     handleClickPlay() {
-      !this.isAudioPlay ? this.playAudio() : this.pauseAudio()
+      if (this.isAudioPlay) {
+        this.pauseAudio()
+        this.endRotatingPictures()
+      } else {
+        this.playAudio()
+        this.startRotatingPictures()
+      }
     },
     // 播放完毕,继续播放
     handleEnded() {
@@ -331,41 +360,68 @@ export default {
       } else {
         this.scrollLeft(-deltaIndex)
       }
+
+      // 重新计时轮播
+      this.startRotatingPictures()
     },
     // 关闭
     handleClose() {
       this.pauseAudio()
+      this.endRotatingPictures()
       this.$emit('input', false)
       this.$emit('on-close')
     },
     // 上一张
     handlePrev() {
       let index = this.currentIndex - 1
+      let lastIndex = this.data.length - 1
       if (index < 0) {
-        return
+        // 最后一张
+        index = lastIndex
       }
       // 向右
       this.moveMotionName = this.moveMotion.right
 
+      const deltaIndex = index - this.currentIndex
       this.currentIndex = index
       this.newCurrent = this.data[this.currentIndex]
       this.currentUuid = genID(20)
-      this.scrollLeft()
+
+      // 最后一张
+      if (this.currentIndex === lastIndex) {
+        this.scrollRight(deltaIndex)
+      } else {
+        this.scrollLeft(-deltaIndex)
+      }
+
+      // 重新计时轮播
+      this.startRotatingPictures()
     },
     // 下一张
     handleNext() {
       let index = this.currentIndex + 1
       let lastIndex = this.data.length - 1
       if (index > lastIndex) {
-        return
+        // 第一张
+        index = 0
       }
       // 向左
       this.moveMotionName = this.moveMotion.left
 
+      const deltaIndex = index - this.currentIndex
       this.currentIndex = index
       this.newCurrent = this.data[this.currentIndex]
       this.currentUuid = genID(20)
-      this.scrollRight()
+
+      // 第一张
+      if (this.currentIndex === 0) {
+        this.scrollLeft(-deltaIndex)
+      } else {
+        this.scrollRight(deltaIndex)
+      }
+
+      // 重新计时轮播
+      this.startRotatingPictures()
     },
     // 鼠标滚动
     handleScrollviewWheel: _debounce(function (event) {
