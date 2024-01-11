@@ -5,7 +5,7 @@
     <rd-text-input-list-manage
       v-model="list"
       style="height: 270px"
-      :max-line="10" />
+      :max-line="1000" />
   </div>
 </template>
 

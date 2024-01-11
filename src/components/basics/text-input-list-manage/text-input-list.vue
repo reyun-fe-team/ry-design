@@ -5,119 +5,134 @@
       :class="prefixCls + '-virtual-list'"
       :data-key="'uid'"
       :data-sources="getLine"
-      :extra-props="{ ...$attrs, middle, maxLine, errorList, value }"
-      :data-component="itemComponent"
-      v-on="$listeners"
-      @enter-over-length="enterOverLength"
-      @paste-over-length="pasteOverLength"
-      @handlerKeydown="handlerKeydown"
-      @middle="middleChange"
-      @on-error="onInputError"
-      @itemClick="itemClick"
-      @on-change="handlerChange" />
+      :extra-props="extraProps"
+      :data-component="ItemComponent"
+      v-on="$listeners" />
   </div>
 </template>
 <script>
-import Item from './title-list'
+import ItemComponent from './title-list'
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'text-input-list'
 export default {
   name: prefixCls + '-manage',
-  components: {
-    Item
-  },
   props: {
     // 最大行数
     maxLine: {
       type: Number,
-      default: 10
+      default: 30
     },
     value: {
       type: Array,
       default: () => []
+    },
+    // 文本字符最小长度
+    minLength: {
+      type: Number,
+      default: 6
+    },
+    // 文本字符最大长度
+    maxLength: {
+      type: Number,
+      default: 30
+    },
+    placeholder: {
+      type: String,
+      default: '请输入或粘贴创意标题，每行一标题，敲击回车换行'
+    },
+    // 文本计算方法.默认每个文字算2个字符
+    calcTextFn: {
+      type: Function,
+      default: text => text.replaceAll(/[^\x00-\xff]/g, '**').length
+    },
+    validFn: {
+      type: Function,
+      default: null
     }
   },
   data() {
     return {
       prefixCls,
-      itemChild: null,
-      itemComponent: Item,
+      ItemComponent,
+      // 当前数据计数器
       middle: {
         preActiveClass: null,
-        activeClass: null,
-        middleData: [
-          {
-            id: 1,
-            value: ''
-          }
-        ]
+        activeClass: null
       },
-      errorList: []
+      // 错误信息
+      errorList: [],
+      // 事件
+      emits: {
+        'on-enter-over-length': this.handleEnterOverLength,
+        'on-paste-over-length': this.handlePasteOverLength,
+        'on-middle-change': this.handleMiddleChange,
+        'on-error': this.handleError,
+        'on-change': this.handleChange
+      },
+      currentInput: null
     }
   },
   computed: {
+    extraProps() {
+      let { $props, middle, emits } = this
+      return { ...$props, middle, emits }
+    },
     getLine() {
-      return Array(this.maxLine)
-        .fill('')
-        .map((item, idx) => ({
-          uid: `key_${idx}`,
-          index: idx,
-          item: idx + 1,
+      let arr = []
+      for (let index = 0; index < this.maxLine; index++) {
+        arr.push({
+          uid: `key_${index}`,
+          index,
+          item: index + 1,
           maxLine: this.maxLine
-        }))
+        })
+      }
+      return arr
     }
   },
   watch: {
-    'middle.activeClass'(cur, pre) {
-      this.middle.preActiveClass = pre
-    },
-    value(cur) {
-      if (cur.length === 0 && this.middle.activeClass !== null) {
-        this.errorList = []
-        this.itemChild = null
+    value: {
+      deep: true,
+      handler(cur) {
+        if (cur.length === 0 && this.middle.activeClass !== null) {
+          this.errorList = []
+        }
       }
     }
   },
   methods: {
-    middleChange(middle) {
+    handleMiddleChange(middle) {
       this.middle = middle
+      let { activeClass } = this.middle
+      this.$emit('on-middle-change', this.middle)
+
+      let currentVirtualItem = this.$refs.list.$children.find(item => item.index === activeClass)
+      if (currentVirtualItem) {
+        this.currentInput = currentVirtualItem.$children[0]
+      }
+
+      if (this.currentInput) {
+        this.currentInput.$refs.Input.focus()
+      }
     },
-    onInputError(index, error) {
-      this.$set(this.errorList, index, error)
+    handleError(index, error) {
+      this.errorList.splice(index, 0, error)
       this.$emit('on-error', index, error)
     },
-    handlerKeydown(index) {
-      this.$refs.list.scrollToIndex(index - 5)
-      setTimeout(() => {
-        const prevIndex = this.$children[0].$children.findIndex(item => item.index === index)
-        const emojInput = this.$children[0].$children[prevIndex].$children[0].$refs.emojInput
-        this.itemChild = this.$children[0].$children[prevIndex].$children[0]
-        emojInput.$el.click()
-        emojInput.focus('end')
-      })
-    },
     // 回车超出可编辑的列表长度
-    enterOverLength(index) {
-      this.$emit('enter-over-length', index)
+    handleEnterOverLength(index) {
+      this.$emit('on-enter-over-length', index)
     },
     // 复制粘贴超出可编辑的列表返回超出的内容
-    pasteOverLength(data) {
-      this.$emit('paste-over-length', data)
+    handlePasteOverLength(data) {
+      this.$emit('on-paste-over-length', data)
     },
-    handlerChange(val) {
+    handleChange(val) {
       this.$emit('on-change', val)
-    },
-    getItem() {
-      return this.itemChild || (this.$children[0] && this.$children[0].$children[0].$children[0])
-    },
-    getValue() {
-      return this.getItem().getValue()
+      this.$emit('input', val)
     },
     insertText(val) {
-      this.getItem().insertText(val)
-    },
-    itemClick(child) {
-      this.itemChild = child
+      this.currentInput.insertTextAtCursor(val)
     }
   }
 }

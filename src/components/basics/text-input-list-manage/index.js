@@ -1,9 +1,7 @@
-import TextInputList from './text-input-list'
-import VirtualList from './virtual-list'
+import TextInputListManage from './text-input-list'
 
-TextInputList.install = function (Vue) {
-  Vue.component(TextInputList.name, TextInputList)
+TextInputListManage.install = function (Vue) {
+  Vue.component(TextInputListManage.name, TextInputListManage)
 }
 
-export { TextInputList, VirtualList }
-export default TextInputList
+export default TextInputListManage

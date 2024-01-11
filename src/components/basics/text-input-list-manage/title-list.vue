@@ -1,72 +1,30 @@
 <template>
-  <div
-    :class="prefixCls + '-content'"
-    @click="listItemClick">
-    <!-- 行号 -->
+  <div :class="prefixCls + '-content'">
     <div :class="prefixCls + '-line'">
-      <div
-        :class="[
-          prefixCls + '-left-list',
-          middle.activeClass === index ? prefixCls + '-left-list-active' : '',
-          isHaveError(index) ? prefixCls + '-is-error' : ''
-        ]">
-        <span :class="[isHaveError(index) ? prefixCls + '-error-left' : '']">
+      <!-- 行号 -->
+      <div :class="lineNumberClasses">
+        <span :class="{ [prefixCls + '-error-left']: isHaveError(index) }">
           {{ index + 1 }}
         </span>
       </div>
-
+      <!-- 输入 -->
       <div :class="prefixCls + '-right-list'">
         <title-input
-          ref="emojInput"
-          :key="`emoj-${index}`"
-          :value="value[index] || ''"
-          :is-edit="middle.activeClass === index"
-          :class="[
-            middle.activeClass === index ? prefixCls + '-right-list-active' : '',
-            isHaveError(index) ? prefixCls + '-is-error' : ''
-          ]"
+          ref="Input"
+          :key="index"
+          :value="value[index]"
+          :class="lineInputClasses"
           :placeholder="placeholder"
-          :transform-html2-text="transformHtml2Text"
-          :transform-text2-html="transformText2Html"
-          :is-transform="isTransform"
           :calc-text-fn="calcTextFn"
-          :valid-fn="validFn"
+          :valid-fn="calcValidResult"
           :max-length="maxLength"
           :min-length="minLength"
-          @on-keydown="handlerKeydown($event, index)"
-          @on-clear="handlerClear(index)"
-          @on-paste="handlerPaste($event, index)"
           @input="val => handleEmitInput(val, index)"
-          @click.native="onClickEditorLine(index)"
-          @error="status => onError(status, index)"></title-input>
-        <div
-          v-if="(useEmoj || useEnter) && middle.activeClass === index"
-          :class="prefixCls + '-btn-wrap'"
-          @click.stop>
-          <Poptip
-            v-if="useEmoj"
-            v-model="showEmojPan"
-            transfer
-            :transfer-class-name="prefixCls + '-poptip'"
-            placement="bottom-end">
-            <img src="../../../images/text-input-list/add-emoji.png" />
-            <div
-              slot="content"
-              :class="prefixCls + '-panel-wrap'">
-              <img
-                v-for="(item, index) in emojiList"
-                :key="index"
-                :class="prefixCls + '-item-common'"
-                :src="item.url"
-                @click="insertFace(item)" />
-            </div>
-          </Poptip>
-
-          <img
-            v-if="useEnter"
-            src="../../../images/text-input-list/add-line-feed.png"
-            @click="insertEnter(index)" />
-        </div>
+          @on-foucs="val => handlerFocus(val, index)"
+          @on-keydown="val => handlerKeydown(val, index)"
+          @on-clear="handlerClear(index)"
+          @on-paste="val => handlerPaste(val, index)"
+          @on-error="val => handleError(val, index)"></title-input>
       </div>
     </div>
   </div>
@@ -88,8 +46,14 @@ export default {
       type: Object,
       default: () => {}
     },
-    index: Number,
-    item: Number,
+    index: {
+      type: Number,
+      default: null
+    },
+    item: {
+      type: Number,
+      default: null
+    },
     middle: {
       type: Object,
       default: () => {}
@@ -113,182 +77,160 @@ export default {
       type: Number,
       default: 10
     },
-    // 最大换行数
-    maxEnter: {
-      type: Number,
-      default: 3
-    },
-    // 最大表情添加数
-    maxEmoji: {
-      type: Number,
-      default: 4
-    },
-    // 可以使用表情
-    useEmoj: {
-      type: Boolean,
-      default: true
-    },
-    // 可以使用换行
-    useEnter: {
-      type: Boolean,
-      default: true
-    },
-    // emoji表情列表
-    emojiList: {
-      type: Array,
-      default: () => []
-    },
     // 错误列表
     errorList: {
       type: Array,
       default: () => []
     },
-    // 文本计算方法
-    calcTextFn: {
-      type: Function,
-      default: text => {
-        // 默认每个文字算2个字符
-        const copyText = text.replaceAll(/[^\x00-\xff]/g, '**')
-        return copyText.length
-      }
-    },
     placeholder: {
       type: String,
-      default: '请输入或粘贴创意标题，每行一标题，敲击回车换行'
+      default: ''
+    },
+    // 文本计算方法.默认每个文字算2个字符
+    calcTextFn: {
+      type: Function,
+      default: null
     },
     // 错误校验方法
-    propsValidFn: {
-      type: Function
+    validFn: {
+      type: Function,
+      default: null
     },
-    // 是否支持转译 例如< > 转译成&lt; &gt;
-    isTransform: {
-      type: Boolean,
-      default: false
+    emits: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
     return {
-      prefixCls,
-      addLineFeedIcon: require('../../../images/text-input-list/line-feed.png'),
-      faceIcon: '',
-      showEmojPan: false,
-      isError: false
+      prefixCls
     }
   },
   computed: {
+    lineInputClasses() {
+      let { isHaveError, index, isCurrentLine } = this
+      return {
+        [prefixCls + '-right-list-active']: isCurrentLine,
+        [prefixCls + '-is-error']: isHaveError(index)
+      }
+    },
+    lineNumberClasses() {
+      let { isCurrentLine, isHaveError, index } = this
+      return [
+        prefixCls + '-left-list',
+        {
+          [prefixCls + '-left-list-active']: isCurrentLine,
+          [prefixCls + '-is-error']: isHaveError(index)
+        }
+      ]
+    },
+    isCurrentLine() {
+      let { middle, index } = this
+      return middle.activeClass === index
+    },
     errors() {
       return this.errorList[this.index] || []
-    },
-    curEmojInput() {
-      return this.$refs.emojInput
-    },
-    isHaveError() {
-      return function (index) {
-        if (this.errorList[index]) {
-          return !!this.errorList[index].length
-        }
-        return false
-      }
-    }
-  },
-  watch: {
-    value(cur) {
-      console.log('watch---value', cur)
-      if (cur.length === 0) {
-        this.curEmojInput.formatValue()
-      }
     }
   },
   methods: {
+    isHaveError(index) {
+      if (this.errorList[index]) {
+        return this.errorList[index].length > 0
+      }
+      return false
+    },
+    // 事件派发
+    dispatch(eventName, ...argv) {
+      let fn = this.emits[eventName]
+      fn && fn(...argv)
+    },
+    // 聚焦
+    handlerFocus(e, activeClass) {
+      if (activeClass !== this.middle.activeClass) {
+        this.dispatch('on-middle-change', {
+          preActiveClass: this.middle.activeClass,
+          activeClass
+        })
+      }
+    },
+    // 按键
     handlerKeydown({ keyDownEvent, disableInputFn }, index) {
       // 回车换行
       if (keyDownEvent.keyCode === 13) {
         disableInputFn()
-        const curIndex = index + 1
-        if (curIndex >= this.maxLine) {
+        const currentIndex = index + 1
+
+        if (currentIndex >= this.maxLine) {
           // 回车后超出可编辑的长度
-          this.dispatch('enter-over-length', curIndex)
+          this.dispatch('on-enter-over-length', currentIndex)
           return
         }
-        // this.$refs.emojInput.blur()
-        this.listItemClick()
-        this.dispatch('handlerKeydown', curIndex)
-        this.dispatch('middle', { ...this.middle, activeClass: curIndex })
-      }
-    },
-    handlerClear(index) {
-      const copyValue = JSON.parse(JSON.stringify(this.value))
-      copyValue.splice(index, 1)
-      this.dispatch('input', copyValue)
-      this.dispatch('on-change', copyValue)
-      this.$nextTick(() => {
-        this.curEmojInput.formatValue()
-        this.curEmojInput.focus('end')
-      })
-    },
-    transformHtml2Text(html) {
-      return html
-    },
-    transformText2Html(text) {
-      return text
-    },
-    getFaceHtml(icon, type, name) {
-      const str = `<img style="pointer-events: none; margin-left: 4px; vertical-align: middle; " src="${icon}" draggable="false" width="16" height="16" data-type="${type}" data-name="${name}">`
-      return str
-    },
-    insertEnter() {
-      // 如果输入框内不存在内容，不允许点击换行符
-      if (!this.curEmojInput.getValue()) {
-        this.$Message.error('请先输入文本内容')
-        return
-      }
-      if (this.curEmojInput.getEnters() >= this.maxEnter) {
-        this.$Message.error(`最多能插入${this.maxEnter + 1}个换行`)
-        return
-      }
-      let html = `${this.getFaceHtml(this.addLineFeedIcon, 'enter', '[回车]')}<br>&nbsp;`
-      this.curEmojInput.insertHtmlMark(html)
-    },
-    insertFace(val) {
-      if (this.curEmojInput.getEmojiNum() >= this.maxEmoji) {
-        this.$Message.warning(`建议不超过${this.maxEmoji}个表情包`)
-        return
-      }
-      this.faceIcon = val.url
-      let html = this.getFaceHtml(this.faceIcon, 'emoj', val.value)
-      this.curEmojInput.insertHtmlMark(html)
-    },
-    // 插入文本
-    insertText(text) {
-      const com = this.$refs.emojInput
-      if (this.middle.preActiveClass === null && this.middle.activeClass === null) {
-        com.$el.click()
-        this.$nextTick(() => {
-          com.insertText(text)
+
+        this.dispatch('on-middle-change', {
+          preActiveClass: this.middle.activeClass,
+          activeClass: currentIndex
         })
-        return
       }
-      com.insertText(text)
     },
-    dispatch(event, ...argv) {
-      this.$parent.$parent.$emit(event, ...argv)
+    // 清空
+    handlerClear(index) {
+      const newValue = [...this.value]
+      newValue.splice(index, 1)
+      this.dispatch('on-input', newValue)
+      this.dispatch('on-change', newValue)
     },
-    // 向外抛出 input 事件，改变绑定数据
+    // 输入事件
     handleEmitInput(value, index) {
-      console.log('handleEmitInput')
       if (this.value[index] === value) {
         return
       }
-      const copyValue = [...this.value]
-      copyValue[index] = value || ''
-      this.dispatch('input', copyValue)
-      this.dispatch('on-change', copyValue)
+
+      const newValue = [...this.value]
+      newValue[index] = value || ''
+      this.dispatch('on-input', newValue)
+      this.dispatch('on-change', newValue)
     },
     // 粘贴
     handlerPaste(event, index) {
-      let itemList = event.clipboardData.items
       // 超出可编辑的列表长度
       let overLength = []
+      this.getClipboardData(event, arr => {
+        let newValue = JSON.parse(JSON.stringify(this.value))
+        arr.forEach((o, i) => {
+          // 首行 叠加
+          if (i === 0) {
+            // 再光标位置插入复制的文案
+            newValue[index] = !newValue[index] ? o : newValue[index] + o
+          }
+
+          // 插入新行
+          if (i > 0) {
+            newValue.splice(index + i, 0, o)
+          }
+
+          // 校验 && 超出最大行数
+          if (newValue.length > this.maxLine) {
+            overLength.push(o)
+            this.dispatch('on-paste-over-length', overLength)
+          }
+          // 校验 && 文案
+          else {
+            if (o) {
+              const count = this.calcWordCount(o)
+              const error = this.calcValidResult(count, o)
+              this.dispatch('on-error', index + i, error)
+            }
+          }
+        })
+        // 截取
+        newValue = newValue.slice(0, this.maxLine)
+        this.dispatch('on-input', newValue)
+        this.dispatch('on-change', newValue)
+      })
+    },
+    // 获取剪切板内容
+    getClipboardData(event, cb) {
+      let itemList = event.clipboardData.items
       for (let i = 0; i < itemList.length; i++) {
         let item = itemList[i]
         if (item.kind === 'string' && item.type.match('text/plain')) {
@@ -299,38 +241,17 @@ export default {
               .split(splitReg)
               .filter(o => o)
 
-            let newValue = JSON.parse(JSON.stringify(this.value))
-            arr.forEach((o, i) => {
-              // 首行 叠加
-              if (i === 0) {
-                // 再光标位置插入复制的文案
-                // this.insertText(o)
-                newValue[index] = !newValue[index] ? o : newValue[index] + o
-              }
-              // 插入新行
-              if (i > 0) {
-                newValue.splice(index + i, 0, o)
-              }
-              // 校验 && 超出最大行数
-              if (newValue.length > this.maxLine) {
-                overLength.push(o)
-                this.dispatch('paste-over-length', overLength)
-              }
-              // 校验 && 文案
-              else {
-                o && this.dispatch('on-error', index + i, this.validFn(this.calcInputLength(o), o))
-              }
-            })
-            // 截取
-            newValue = newValue.slice(0, this.maxLine)
-            this.dispatch('input', newValue)
-            this.dispatch('on-change', newValue)
+            cb && cb(arr)
           })
         }
       }
     },
-    // 计算输入框的输入长度
-    calcInputLength(text) {
+    // 错误
+    handleError(errors, index) {
+      this.dispatch('on-error', index, [...this.errors, ...errors])
+    },
+    // 计算字数
+    calcWordCount(text) {
       if (!text) {
         return 0
       }
@@ -352,37 +273,32 @@ export default {
       )
       return textLn + emojLn
     },
-    // 点击编辑行
-    onClickEditorLine(index) {
-      const el = this.$refs.emojInput
-      this.dispatch('middle', { ...this.middle, activeClass: index })
-      this.$nextTick(() => {
-        el.focus()
-      })
-    },
-    // 错误类型
-    validFn(ln, value) {
+    // 计算验证
+    calcValidResult(ln, value) {
       let errors = []
-      if (ln && (ln > this.maxLength || ln < this.minLength)) {
+      // 长度
+      if (!isNaN(ln) && (ln > this.maxLength || ln < this.minLength)) {
         errors.push('lengthError')
       }
-      if (typeof this.propsValidFn === 'function') {
-        const allErrors = this.propsValidFn(value, this.index)
+
+      // 其他
+      if (typeof this.validFn === 'function') {
+        const allErrors = this.validFn(value, this.index)
         errors = [...errors, ...allErrors]
       }
       return errors
     },
-    listItemClick() {
-      this.dispatch('itemClick', this)
-    },
-    onError(errors, index) {
-      setTimeout(() => {
-        this.dispatch('on-error', index, errors.length ? [...this.errors, ...errors] : [])
-      })
-    },
-    getValue() {
-      const com = this.$refs.emojInput
-      return com.getValue()
+    // 插入文本
+    insertText(text) {
+      const com = this.$refs.Input
+      if (this.middle.preActiveClass === null && this.middle.activeClass === null) {
+        com.$el.click()
+        this.$nextTick(() => {
+          com.insertText(text)
+        })
+        return
+      }
+      com.insertText(text)
     }
   }
 }
