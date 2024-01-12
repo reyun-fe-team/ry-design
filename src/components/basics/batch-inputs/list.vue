@@ -3,19 +3,25 @@
     <rd-virtual-list
       ref="list"
       :class="prefixCls + '-virtual-list'"
-      :data-key="'uid'"
+      data-key="uid"
       :data-sources="getLine"
       :extra-props="extraProps"
-      :data-component="ItemComponent"
-      v-on="$listeners" />
+      :data-component="Row"
+      v-on="$listeners"></rd-virtual-list>
   </div>
 </template>
 <script>
-import ItemComponent from './title-list'
+import Row from './row'
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'text-input-list'
+import { getKey } from '@src/util/assist'
+const prefixCls = prefix + 'batch-inputs'
 export default {
-  name: prefixCls + '-manage',
+  name: prefixCls,
+  provide() {
+    return {
+      root: this
+    }
+  },
   props: {
     // 最大行数
     maxLine: {
@@ -43,6 +49,7 @@ export default {
     // 文本计算方法.默认每个文字算2个字符
     calcTextFn: {
       type: Function,
+      // eslint-disable-next-line no-control-regex
       default: text => text.replaceAll(/[^\x00-\xff]/g, '**').length
     },
     validFn: {
@@ -52,8 +59,9 @@ export default {
   },
   data() {
     return {
+      // 每行的渲染组件
+      Row,
       prefixCls,
-      ItemComponent,
       // 当前数据计数器
       middle: {
         preActiveClass: null,
@@ -74,14 +82,16 @@ export default {
   },
   computed: {
     extraProps() {
-      let { $props, middle, emits } = this
+      let { $props, middle, emits, $slots } = this
+      console.log('this: ', this.$scopedSlots)
+      console.log('$slots: ', $slots)
       return { ...$props, middle, emits }
     },
     getLine() {
       let arr = []
       for (let index = 0; index < this.maxLine; index++) {
         arr.push({
-          uid: `key_${index}`,
+          uid: getKey(),
           index,
           item: index + 1,
           maxLine: this.maxLine

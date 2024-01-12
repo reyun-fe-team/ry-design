@@ -251,8 +251,8 @@ const router = new VueRouter({
       component: resolve => require(['./routers/placement-location'], resolve)
     },
     {
-      path: '/text-input-list-manage',
-      component: resolve => require(['./routers/text-input-list-manage'], resolve)
+      path: '/batch-inputs',
+      component: resolve => require(['./routers/batch-inputs'], resolve)
     },
     {
       path: '/error-prevent-modal',

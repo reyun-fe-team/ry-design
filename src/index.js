@@ -18,7 +18,7 @@ import TextEmojInput from './components/basics/text-emoj-input'
 import Icon from './components/basics/icon'
 import TextInputList from './components/basics/text-input-list'
 import VirtualList from './components/basics/virtual-list'
-import TextInputListManage from './components/basics/text-input-list-manage'
+import BatchInputs from './components/basics/batch-inputs'
 import Wildcard from './components/basics/wildcard'
 import CascaderTransfer from './components/basics/cascader-transfer'
 import Exception from './components/basics/exception'
@@ -157,7 +157,7 @@ const components = [
   FilterArea,
   Space,
   PlacementLocation,
-  TextInputListManage,
+  BatchInputs,
   ErrorPreventModal
 ]
 const directives = {
@@ -185,7 +185,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default {
   version: process.env.VERSION,
   install,
-  TextInputListManage,
+  BatchInputs,
   Transfer,
   MultiCascader,
   PrefixContainer,

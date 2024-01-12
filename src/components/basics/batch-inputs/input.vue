@@ -33,10 +33,10 @@
 <script>
 import { typeOf } from '../../../util/assist'
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'text-emoj-input'
+const prefixCls = prefix + 'batch-inputs-row-input'
 
 export default {
-  name: prefixCls + '-manage',
+  name: prefixCls,
   props: {
     value: {
       require: true,
@@ -100,18 +100,8 @@ export default {
     // 输入事件
     handlerInput(keyInputEvent) {
       keyInputEvent.stopPropagation()
-
       this.$emit('input', this.currentValue)
-      this.$emit('on-change', {
-        currentData: this.currentValue,
-        oiginalText: this.currentValue,
-        // 输入事件
-        keyInputEvent,
-        // 输入框的html 内容
-        stringHtml: keyInputEvent.target.value,
-        // 禁用输入。一些场景去禁用。
-        disableInputFn: () => keyInputEvent.preventDefault()
-      })
+      this.$emit('on-change', this.currentValue)
     },
     // 粘贴(禁止粘贴文件和图片)
     handlerPaste(event) {
@@ -169,18 +159,29 @@ export default {
 
     // ----------公共方法---------
     insertTextAtCursor(textToInsert) {
+      const insertedTextLength = textToInsert.length
+      if (insertedTextLength < 1) {
+        return
+      }
+
       const input = this.$refs.Input
       const selectionStart = input.selectionStart
       const selectionEnd = input.selectionEnd
       const inputValue = input.value
       const before = inputValue.substring(0, selectionStart)
       const after = inputValue.substring(selectionEnd)
-      input.value = before + textToInsert + after
-      // 重新设置光标位置
-      const position = selectionStart + textToInsert.length
-      input.setSelectionRange(position, position)
 
+      input.value = before + textToInsert + after
       this.currentValue = input.value
+      this.$emit('input', this.currentValue)
+      this.$emit('on-change', this.currentValue)
+
+      // 使用 requestAnimationFrame 确保在下一帧渲染前执行
+      window.requestAnimationFrame(() => {
+        // 重新设置光标位置（将光标移动到插入文字的末尾）
+        const position = selectionStart + insertedTextLength
+        input.setSelectionRange(position, position)
+      })
     },
     // 计算字数
     calcWordCount() {

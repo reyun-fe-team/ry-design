@@ -1,11 +1,17 @@
-
 <template>
   <div style="margin: 20px">
     {{ list }}
-    <rd-text-input-list-manage
+    <rd-batch-inputs
       v-model="list"
       style="height: 270px"
-      :max-line="1000" />
+      :max-line="1000">
+      <template #end="{ insertText }">
+        <div>
+          <Button @click="insertWord(insertText)">插入动态词包</Button>
+          <Button @click="insertFace(insertText)">插入表情包</Button>
+        </div>
+      </template>
+    </rd-batch-inputs>
   </div>
 </template>
 
@@ -213,6 +219,12 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    insertWord(fn) {
+      fn('{{' + new Date().getSeconds() + '}}')
+    },
+    insertFace(fn) {}
   }
 }
 </script>

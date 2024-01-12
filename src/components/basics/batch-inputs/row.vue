@@ -3,13 +3,13 @@
     <div :class="prefixCls + '-line'">
       <!-- 行号 -->
       <div :class="lineNumberClasses">
-        <span :class="{ [prefixCls + '-error-left']: isHaveError(index) }">
+        <span :class="{ [prefixCls + '-error-left']: isHaveError }">
           {{ index + 1 }}
         </span>
       </div>
       <!-- 输入 -->
       <div :class="prefixCls + '-right-list'">
-        <title-input
+        <row-input
           ref="Input"
           :key="index"
           :value="value[index]"
@@ -24,7 +24,14 @@
           @on-keydown="val => handlerKeydown(val, index)"
           @on-clear="handlerClear(index)"
           @on-paste="val => handlerPaste(val, index)"
-          @on-error="val => handleError(val, index)"></title-input>
+          @on-error="val => handleError(val, index)"></row-input>
+
+        <!-- 每一行的最尾端 slot -->
+        <div
+          v-if="endSlotProps.renderFunction"
+          :class="[prefixCls + '-btn-wrap']">
+          <end-slot v-bind="endSlotProps"></end-slot>
+        </div>
       </div>
     </div>
   </div>
@@ -32,15 +39,18 @@
 
 <script>
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'text-input-list'
+import rowInput from './input'
+import endSlot from './slots/end'
 
-import titleInput from './title-input'
-import { getSplitReg } from '../../../util/text-emoj-input'
+const prefixCls = prefix + 'batch-inputs'
 
 export default {
+  name: prefixCls + '-row',
   components: {
-    titleInput
+    rowInput,
+    endSlot
   },
+  inject: ['root'],
   props: {
     source: {
       type: Object,
@@ -108,37 +118,41 @@ export default {
   },
   computed: {
     lineInputClasses() {
-      let { isHaveError, index, isCurrentLine } = this
+      let { isHaveError, isCurrentLine } = this
       return {
         [prefixCls + '-right-list-active']: isCurrentLine,
-        [prefixCls + '-is-error']: isHaveError(index)
+        [prefixCls + '-is-error']: isHaveError
       }
     },
     lineNumberClasses() {
-      let { isCurrentLine, isHaveError, index } = this
+      let { isCurrentLine, isHaveError } = this
       return [
         prefixCls + '-left-list',
         {
           [prefixCls + '-left-list-active']: isCurrentLine,
-          [prefixCls + '-is-error']: isHaveError(index)
+          [prefixCls + '-is-error']: isHaveError
         }
       ]
+    },
+    isHaveError() {
+      let { index, errorList } = this
+      return errorList[index] && errorList[index].length > 0
     },
     isCurrentLine() {
       let { middle, index } = this
       return middle.activeClass === index
     },
-    errors() {
+    endSlotProps() {
+      const renderFunction = this.root.$scopedSlots['end']
+      const { source, index, value, insertText } = this
+      return { source, index, value, renderFunction, insertText }
+    },
+    // 当前的错误
+    currentErrors() {
       return this.errorList[this.index] || []
     }
   },
   methods: {
-    isHaveError(index) {
-      if (this.errorList[index]) {
-        return this.errorList[index].length > 0
-      }
-      return false
-    },
     // 事件派发
     dispatch(eventName, ...argv) {
       let fn = this.emits[eventName]
@@ -231,6 +245,18 @@ export default {
     // 获取剪切板内容
     getClipboardData(event, cb) {
       let itemList = event.clipboardData.items
+
+      function getSplitReg(str) {
+        if (str.indexOf('\\r\\n') > -1) {
+          return /\\r\\n/
+        } else if (str.indexOf('\\r') > -1) {
+          return /\\r/
+        } else if (str.indexOf('\\n') > -1) {
+          return /\\n/
+        }
+        return /\\r\\n/
+      }
+
       for (let i = 0; i < itemList.length; i++) {
         let item = itemList[i]
         if (item.kind === 'string' && item.type.match('text/plain')) {
@@ -248,7 +274,7 @@ export default {
     },
     // 错误
     handleError(errors, index) {
-      this.dispatch('on-error', index, [...this.errors, ...errors])
+      this.dispatch('on-error', index, [...this.currentErrors, ...errors])
     },
     // 计算字数
     calcWordCount(text) {
@@ -290,15 +316,7 @@ export default {
     },
     // 插入文本
     insertText(text) {
-      const com = this.$refs.Input
-      if (this.middle.preActiveClass === null && this.middle.activeClass === null) {
-        com.$el.click()
-        this.$nextTick(() => {
-          com.insertText(text)
-        })
-        return
-      }
-      com.insertText(text)
+      this.$refs.Input.insertTextAtCursor(text)
     }
   }
 }
