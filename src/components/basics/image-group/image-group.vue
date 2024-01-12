@@ -46,6 +46,7 @@
     <template v-if="preview">
       <rd-carousel-previewer
         v-model="imagePreviewModal"
+        :carousel-picture-time="carouselTime"
         :type="previewType.toUpperCase()"
         :data="previewData"
         :url-key="urlKey"
@@ -169,6 +170,11 @@ export default {
     audioUrl: {
       type: String,
       default: ''
+    },
+    // 轮播的时间间隔
+    carouselTime: {
+      type: Number,
+      default: 2500
     }
   },
   data() {
