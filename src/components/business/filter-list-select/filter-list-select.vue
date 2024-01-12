@@ -88,6 +88,8 @@ import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-select'
 
 import _cloneDeep from 'lodash/cloneDeep'
+import _isEqual from 'lodash/isEqual'
+
 import { oneOf } from '@src/util/assist.js'
 import Emitter from '@src/mixins/emitter'
 import virtualComponent from './filter-list-select-virtual.vue'
@@ -367,7 +369,12 @@ export default {
     },
     handleVisibleChange(val) {
       this.planeVisible = val
-      if (!val && this.saveType === 'leave-save' && this.multiple) {
+      if (
+        !val &&
+        this.saveType === 'leave-save' &&
+        this.multiple &&
+        !_isEqual(this.current, this.value)
+      ) {
         // console.log('离开触发-emitChange')
         this.emitChange()
       }
