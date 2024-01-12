@@ -1,51 +1,49 @@
-/**
- * virtual list default component
- */
-
-import Virtual from './virtual'
-import Item from './virtual-list-item'
-import Slot from './virtual-list.solt'
-import { VirtualProps } from './props'
+// 虚拟列表
 import { prefix } from '@src/config.js'
+import Virtual from './Virtual'
+import Item from './components/item'
+import Slot from './components/solt'
+import { VirtualProps } from './props'
+
+const prefixCls = prefix + 'virtual-list'
+
+// 事件类型
 const EVENT_TYPE = {
   ITEM: 'item_resize',
   SLOT: 'slot_resize'
 }
+
+// slot 名称
 const SLOT_TYPE = {
-  HEADER: 'thead', // string value also use for aria role attribute
+  // 字符串值也用于aria角色属性
+  HEADER: 'thead',
   FOOTER: 'tfoot'
 }
 
-export default {
-  name: prefix + 'virtual-list',
+const VirtualList = {
+  name: prefixCls,
   props: VirtualProps,
-
   data() {
     return {
       range: null
     }
   },
-
   watch: {
     'dataSources.length'() {
       this.virtual.updateParam('uniqueIds', this.getUniqueIdFromDataSources())
       this.virtual.handleDataSourcesChange()
     },
-
     keeps(newValue) {
       this.virtual.updateParam('keeps', newValue)
       this.virtual.handleSlotSizeChange()
     },
-
     start(newValue) {
       this.scrollToIndex(newValue)
     },
-
     offset(newValue) {
       this.scrollToOffset(newValue)
     }
   },
-
   created() {
     this.isHorizontal = this.direction === 'horizontal'
     this.directionKey = this.isHorizontal ? 'scrollLeft' : 'scrollTop'
@@ -60,7 +58,6 @@ export default {
       this.$on(EVENT_TYPE.SLOT, this.onSlotResized)
     }
   },
-
   activated() {
     // set back offset when awake from keep-alive
     this.scrollToOffset(this.virtual.offset)
@@ -71,13 +68,11 @@ export default {
       })
     }
   },
-
   deactivated() {
     if (this.pageMode) {
       document.removeEventListener('scroll', this.onScroll)
     }
   },
-
   mounted() {
     // set position
     if (this.start) {
@@ -95,26 +90,23 @@ export default {
       })
     }
   },
-
   beforeDestroy() {
     this.virtual.destroy()
     if (this.pageMode) {
       document.removeEventListener('scroll', this.onScroll)
     }
   },
-
   methods: {
-    // get item size by id
+    // ----------- public method start -----------
+    // 按id获取项目大小
     getSize(id) {
       return this.virtual.sizes.get(id)
     },
-
-    // get the total number of stored (rendered) items
+    // 获取存储（渲染）项目的总数
     getSizes() {
       return this.virtual.sizes.size
     },
-
-    // return current scroll offset
+    // 返回当前滚动偏移t
     getOffset() {
       if (this.pageMode) {
         return document.documentElement[this.directionKey] || document.body[this.directionKey]
@@ -123,8 +115,7 @@ export default {
         return root ? Math.ceil(root[this.directionKey]) : 0
       }
     },
-
-    // return client viewport size
+    // 返回客户端视口大小
     getClientSize() {
       const key = this.isHorizontal ? 'clientWidth' : 'clientHeight'
       if (this.pageMode) {
@@ -134,8 +125,7 @@ export default {
         return root ? Math.ceil(root[key]) : 0
       }
     },
-
-    // return all scroll size
+    // 返回所有滚动大小
     getScrollSize() {
       const key = this.isHorizontal ? 'scrollWidth' : 'scrollHeight'
       if (this.pageMode) {
@@ -145,8 +135,7 @@ export default {
         return root ? Math.ceil(root[key]) : 0
       }
     },
-
-    // set current scroll position to a expectant offset
+    // 将当前滚动位置设置为预期偏移
     scrollToOffset(offset) {
       if (this.pageMode) {
         document.body[this.directionKey] = offset
@@ -158,10 +147,9 @@ export default {
         }
       }
     },
-
-    // set current scroll position to a expectant index
+    // 将当前滚动位置设置为预期索引
     scrollToIndex(index) {
-      // scroll to bottom
+      // 滚动到底部
       if (index >= this.dataSources.length - 1) {
         this.scrollToBottom()
       } else {
@@ -169,27 +157,25 @@ export default {
         this.scrollToOffset(offset)
       }
     },
-
-    // set current scroll position to bottom
+    // 将当前滚动位置设置为底部
     scrollToBottom() {
       const { shepherd } = this.$refs
       if (shepherd) {
         const offset = shepherd[this.isHorizontal ? 'offsetLeft' : 'offsetTop']
         this.scrollToOffset(offset)
 
-        // check if it's really scrolled to the bottom
-        // maybe list doesn't render and calculate to last range
-        // so we need retry in next event loop until it really at bottom
+        // 检查它是否真的滚动到了底部
+        // 可能列表没有渲染并计算到最后一个范围
+        // 所以我们需要在下一个事件循环中重试，直到它真正到达底部
         setTimeout(() => {
           if (this.getOffset() + this.getClientSize() + 1 < this.getScrollSize()) {
             this.scrollToBottom()
           }
-        }, 3)
+        }, 16.7)
       }
     },
-
-    // when using page mode we need update slot header size manually
-    // taking root offset relative to the browser as slot header size
+    // 使用页面模式时，我们需要手动更新槽头大小
+    // 将相对于浏览器的根偏移量作为槽头大小
     updatePageModeFront() {
       const { root } = this.$refs
       if (root) {
@@ -201,47 +187,41 @@ export default {
         this.virtual.updateParam('slotHeaderSize', offsetFront)
       }
     },
-
-    // reset all state back to initial
+    // 将所有状态重置回初始状态
     reset() {
       this.virtual.destroy()
       this.scrollToOffset(0)
       this.installVirtual()
     },
-
     // ----------- public method end -----------
-
+    // 初始化 Virtual
     installVirtual() {
-      this.virtual = new Virtual(
-        {
-          slotHeaderSize: 0,
-          slotFooterSize: 0,
-          keeps: this.keeps,
-          estimateSize: this.estimateSize,
-          buffer: Math.round(this.keeps / 3), // recommend for a third of keeps
-          uniqueIds: this.getUniqueIdFromDataSources()
-        },
-        this.onRangeChanged
-      )
+      const params = {
+        slotHeaderSize: 0,
+        slotFooterSize: 0,
+        keeps: this.keeps,
+        estimateSize: this.estimateSize,
+        // 建议保留三分之一
+        buffer: Math.round(this.keeps / 3),
+        uniqueIds: this.getUniqueIdFromDataSources()
+      }
+      this.virtual = new Virtual(params, this.onRangeChanged)
 
-      // sync initial range
+      // 同步初始范围
       this.range = this.virtual.getRange()
     },
-
     getUniqueIdFromDataSources() {
       const { dataKey } = this
       return this.dataSources.map(dataSource =>
         typeof dataKey === 'function' ? dataKey(dataSource) : dataSource[dataKey]
       )
     },
-
-    // event called when each item mounted or size changed
+    // 当每个项目安装或大小更改时调用的事件
     onItemResized(id, size) {
       this.virtual.saveSize(id, size)
       this.$emit('resized', id, size)
     },
-
-    // event called when slot mounted or size changed
+    // 插槽装入或大小更改时调用的事件
     onSlotResized(type, size, hasInit) {
       if (type === SLOT_TYPE.HEADER) {
         this.virtual.updateParam('slotHeaderSize', size)
@@ -253,18 +233,17 @@ export default {
         this.virtual.handleSlotSizeChange()
       }
     },
-
-    // here is the rerendering entry
+    // 这是重新招标的条目
     onRangeChanged(range) {
       this.range = range
     },
-
+    // 滚动监听
     onScroll(evt) {
       const offset = this.getOffset()
       const clientSize = this.getClientSize()
       const scrollSize = this.getScrollSize()
 
-      // iOS scroll-spring-back behavior will make direction mistake
+      // iOS滚动回弹行为会导致方向错误
       if (offset < 0 || offset + clientSize > scrollSize + 1 || !scrollSize) {
         return
       }
@@ -272,8 +251,7 @@ export default {
       this.virtual.handleScroll(offset)
       this.emitEvent(offset, clientSize, scrollSize, evt)
     },
-
-    // emit event in special position
+    // 特殊位置的发射事件
     emitEvent(offset, clientSize, scrollSize, evt) {
       this.$emit('scroll', evt, this.virtual.getRange())
 
@@ -286,10 +264,9 @@ export default {
         this.$emit('tobottom')
       }
     },
-
-    // get the real render slots based on range data
-    // in-place patch strategy will try to reuse components as possible
-    // so those components that are reused will not trigger lifecycle mounted
+    // 基于范围数据获取真实的渲染槽
+    // 就地补丁策略将尽量重用组件
+    // 所以那些被重用的组件不会触发生命周期挂载
     getRenderSlots(h) {
       const slots = []
       const { start, end } = this.range
@@ -339,9 +316,8 @@ export default {
       return slots
     }
   },
-
-  // render function, a closer-to-the-compiler alternative to templates
-  // https://vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth
+  // render函数，一种更接近编译器的模板替代方法
+  // https://cn.vuejs.org/guide/extras/render-function
   render(h) {
     const { header, footer } = this.$slots
     const { padFront, padBehind } = this.range
@@ -398,7 +374,7 @@ export default {
           {
             class: wrapClass,
             attrs: {
-              role: 'group'
+              role: `${prefix}virtual-list-group`
             },
             style: wrapperStyle
           },
@@ -434,3 +410,9 @@ export default {
     )
   }
 }
+
+VirtualList.install = function (Vue) {
+  Vue.component(VirtualList.name, VirtualList)
+}
+
+export default VirtualList
