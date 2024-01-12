@@ -334,7 +334,8 @@ export default {
     },
     // 开始轮播图片
     startRotatingPictures() {
-      if (this.type === 'IMAGE') {
+      // 图片，一张图以上
+      if (this.type === 'IMAGE' && this.data.length > 1) {
         clearInterval(this.carouselPicturesTimer)
         this.carouselPicturesTimer = setInterval(() => {
           this.handleNext()
