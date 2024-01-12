@@ -56,7 +56,8 @@
             <!-- 图片容器 -->
             <div
               :key="currentUuid"
-              :class="[prefixCls + '-image']">
+              :class="[prefixCls + '-image']"
+              :style="containerStyle">
               <!-- 图片 -->
               <div
                 v-if="type === 'IMAGE'"
@@ -108,7 +109,7 @@
 </template>
 <script>
 import { prefix } from '@src/config.js'
-import { genID } from '@src/util/assist'
+import { genID, typeOf } from '@src/util/assist'
 import _debounce from 'lodash/debounce'
 import ImageError from '@src/images/image/image-error.png'
 import CarouselVideoPreviewer from './carousel-video-previewer'
@@ -188,6 +189,16 @@ export default {
     carouselPictureTime: {
       type: Number,
       default: 1500
+    },
+    // 容器宽度
+    containerWidth: {
+      type: [Number, String],
+      default: 600
+    },
+    // 容器高度
+    containerHeight: {
+      type: [Number, String],
+      default: 600
     }
   },
   data() {
@@ -223,6 +234,28 @@ export default {
         'background-repeat': 'no-repeat',
         'background-position': 'center center',
         'background-size': '100% 100%'
+      }
+    },
+    // 容器样式
+    containerStyle() {
+      let { containerWidth: width, containerHeight: height } = this
+      // 比例单位
+      const units = ['vmax', 'vmin', 'vm', 'vh', '%']
+
+      function getValue(val) {
+        const isPx1 = typeOf(val) === 'string' && !units.some(unit => val.endsWith(unit))
+        const isPx2 = typeOf(val) === 'number'
+
+        if (isPx1 || isPx2) {
+          return val + 'px'
+        }
+
+        return val
+      }
+
+      return {
+        height: getValue(height),
+        maxWidth: getValue(width)
       }
     }
   },
@@ -361,8 +394,10 @@ export default {
         this.scrollLeft(-deltaIndex)
       }
 
-      // 重新计时轮播
-      this.startRotatingPictures()
+      // 在轮播中，重新计时轮播
+      if (this.isAudioPlay) {
+        this.startRotatingPictures()
+      }
     },
     // 关闭
     handleClose() {
@@ -394,8 +429,10 @@ export default {
         this.scrollLeft(-deltaIndex)
       }
 
-      // 重新计时轮播
-      this.startRotatingPictures()
+      // 在轮播中，重新计时轮播
+      if (this.isAudioPlay) {
+        this.startRotatingPictures()
+      }
     },
     // 下一张
     handleNext() {
@@ -420,8 +457,10 @@ export default {
         this.scrollRight(deltaIndex)
       }
 
-      // 重新计时轮播
-      this.startRotatingPictures()
+      // 在轮播中，重新计时轮播
+      if (this.isAudioPlay) {
+        this.startRotatingPictures()
+      }
     },
     // 鼠标滚动
     handleScrollviewWheel: _debounce(function (event) {

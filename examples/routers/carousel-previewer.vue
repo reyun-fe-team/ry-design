@@ -4,6 +4,9 @@
     <Button @click="handleVideoClick">展示Video预览</Button>
     <rd-carousel-previewer
       v-model="visibleImage"
+      :carousel-picture-time="3000"
+      container-height="600"
+      container-width="600"
       :audio-url="audioUrl"
       type="IMAGE"
       :data="imageData"
