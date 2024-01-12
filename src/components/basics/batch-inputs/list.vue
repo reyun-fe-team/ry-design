@@ -23,6 +23,11 @@ export default {
     }
   },
   props: {
+    // 显示文字长度
+    showLimit: {
+      type: Boolean,
+      default: true
+    },
     // 最大行数
     maxLine: {
       type: Number,
@@ -82,9 +87,7 @@ export default {
   },
   computed: {
     extraProps() {
-      let { $props, middle, emits, $slots } = this
-      console.log('this: ', this.$scopedSlots)
-      console.log('$slots: ', $slots)
+      let { $props, middle, emits } = this
       return { ...$props, middle, emits }
     },
     getLine() {

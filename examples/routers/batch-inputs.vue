@@ -3,12 +3,33 @@
     {{ list }}
     <rd-batch-inputs
       v-model="list"
+      show-limit
       style="height: 270px"
       :max-line="1000">
       <template #end="{ insertText }">
-        <div>
+        <div style="display: flex; align-items: center">
           <Button @click="insertWord(insertText)">插入动态词包</Button>
-          <Button @click="insertFace(insertText)">插入表情包</Button>
+          <Poptip
+            transfer
+            placement="bottom-end">
+            <img
+              :src="AddEmoji"
+              style="width: 20px" />
+            <div
+              slot="content"
+              style="max-width: 200px; display: flex; flex-wrap: wrap; max-height: 80px">
+              <img
+                v-for="(item, index) in emojiList"
+                :key="index"
+                style="width: 20px; margin: 10px"
+                :src="item.url"
+                @click="insertFace(insertText, item)" />
+            </div>
+          </Poptip>
+          <img
+            style="width: 20px"
+            :src="AddLineFeed"
+            @click="insertEnter(index)" />
         </div>
       </template>
     </rd-batch-inputs>
@@ -16,9 +37,13 @@
 </template>
 
 <script>
+import AddEmoji from '@src/images/text-input-list/add-emoji.png'
+import AddLineFeed from '@src/images/text-input-list//add-line-feed.png'
 export default {
   data() {
     return {
+      AddEmoji,
+      AddLineFeed,
       list: [],
       emojiList: [
         {
@@ -224,7 +249,8 @@ export default {
     insertWord(fn) {
       fn('{{' + new Date().getSeconds() + '}}')
     },
-    insertFace(fn) {}
+    insertFace(fn) {},
+    insertEnter(fn) {}
   }
 }
 </script>

@@ -12,6 +12,7 @@
         <row-input
           ref="Input"
           :key="index"
+          :show-limit="showLimit"
           :value="value[index]"
           :class="lineInputClasses"
           :placeholder="placeholder"
@@ -52,6 +53,11 @@ export default {
   },
   inject: ['root'],
   props: {
+    // 显示文字长度
+    showLimit: {
+      type: Boolean,
+      default: true
+    },
     source: {
       type: Object,
       default: () => {}

@@ -16,6 +16,7 @@
       @paste="handlerPaste" />
 
     <div
+      v-if="showLimit"
       v-show="isFounded"
       :class="[prefixCls + '-ln-wrap']">
       <!-- 字数 -->
@@ -42,6 +43,11 @@ export default {
       require: true,
       type: String,
       default: ''
+    },
+    // 显示文字长度
+    showLimit: {
+      type: Boolean,
+      default: true
     },
     placeholder: {
       type: String,
