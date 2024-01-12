@@ -22,6 +22,8 @@
     <h2>横版图片</h2>
     <section style="display: flex">
       <rd-image-group
+        show-num
+        :num="1"
         style="margin: 0 24px 0 0"
         :size="1"
         :data="hengImage"
@@ -30,6 +32,8 @@
       <rd-image-group
         style="margin: 0 24px 0 0"
         :size="2"
+        show-num
+        :num="2"
         :data="hengImage"
         :width="216"
         :height="120"></rd-image-group>
@@ -242,6 +246,7 @@
       show-delete
       :width="256"
       :height="120"
+      preview
       @on-preview-group-click="onPreviewGroupClick"
       @on-delete="onDelete"></rd-image-group>
 
@@ -259,7 +264,7 @@
       style="margin: 0 0 24px"
       :size="2"
       background="#fff"
-      :data="hengVideo"
+      :data="hengVideoCover"
       :width="216"
       type="video"
       preview-tip
@@ -345,6 +350,48 @@
         <div>无背景色，有圆角，padding：2px</div>
       </Col>
     </Row>
+    <h2>NUM</h2>
+    <section style="display: flex">
+      <rd-image-group
+        show-num
+        :num="6"
+        style="margin: 0 24px 0 0"
+        :size="6"
+        preview-tip
+        preview
+        :data="hengImage"
+        :width="216"
+        :height="120"></rd-image-group>
+    </section>
+    <h2>音乐-单独</h2>
+    <section style="display: flex">
+      <rd-image-group
+        show-num
+        :num="6"
+        style="margin: 0 24px 0 0"
+        :size="6"
+        preview-tip
+        preview
+        :data="hengImage"
+        :width="216"
+        :height="120"
+        audio-url="https://ads-material.tos-cn-beijing.volces.com/tos_oss/uploadV4File/b402/4731/30c7/b402473130c79fdc8ec88f5f244fc796.mp3"></rd-image-group>
+    </section>
+
+    <h2>音乐-整体</h2>
+    <section style="display: flex">
+      <rd-image-group
+        show-num
+        :num="hengImage.length"
+        style="margin: 0 24px 0 0"
+        :size="1"
+        preview
+        preview-group-tip
+        :data="hengImage"
+        :width="216"
+        :height="120"
+        audio-url="https://ads-material.tos-cn-beijing.volces.com/tos_oss/uploadV4File/b402/4731/30c7/b402473130c79fdc8ec88f5f244fc796.mp3"></rd-image-group>
+    </section>
   </div>
 </template>
 
@@ -385,28 +432,44 @@ export default {
       // 横版图片
       hengImage: [
         {
-          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg',
+          previewSrc:
+            'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
         },
         {
-          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg',
+          previewSrc:
+            'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
         },
         {
-          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg',
+          previewSrc:
+            'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
         },
         {
-          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg',
+          previewSrc:
+            'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
         },
         {
-          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg',
+          previewSrc:
+            'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
         },
         {
-          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg',
+          previewSrc:
+            'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
         },
         {
-          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg',
+          previewSrc:
+            'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
         },
         {
-          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
+          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg',
+          previewSrc:
+            'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/096/efc/40a/096efc40a46ae644b3ce89d501fae555-small.jpg'
         }
       ],
       shuImage: [
@@ -436,14 +499,14 @@ export default {
             'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/9a5/121/52a/9a512152a0991180d3783c7bc14c8129.mp4'
         },
         {
-          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/9a5/121/52a/9a512152a0991180d3783c7bc14c8129-small.jpg',
+          src: 'https://ads-material.tos-cn-beijing.volces.com/tos_oss/4bb2/4bce/f64d/4bb24bcef64d2d0686dabba49cdb3d09-small.jpg',
           previewSrc:
-            'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/9a5/121/52a/9a512152a0991180d3783c7bc14c8129.mp4'
+            'https://ads-material.tos-cn-beijing.volces.com/tos_oss/4bb2/4bce/f64d/4bb24bcef64d2d0686dabba49cdb3d09.mp4'
         },
         {
-          src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/9a5/121/52a/9a512152a0991180d3783c7bc14c8129-small.jpg',
+          src: 'https://ads-material.tos-cn-beijing.volces.com/tos_oss/d97c/8fb5/6f52/d97c8fb56f526bfc82690566ca7cc93e-small.jpg',
           previewSrc:
-            'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/9a5/121/52a/9a512152a0991180d3783c7bc14c8129.mp4'
+            'https://ads-material.tos-cn-beijing.volces.com/tos_oss/d97c/8fb5/6f52/d97c8fb56f526bfc82690566ca7cc93e.mp4'
         },
         {
           src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/9a5/121/52a/9a512152a0991180d3783c7bc14c8129-small.jpg',
