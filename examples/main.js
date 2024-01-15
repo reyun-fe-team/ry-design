@@ -265,6 +265,10 @@ const router = new VueRouter({
     {
       path: '/v-dragging',
       component: resolve => require(['./routers/v-dragging'], resolve)
+    },
+    {
+      path: '/cascader',
+      component: resolve => require(['./routers/cascader'], resolve)
     }
   ]
 })
