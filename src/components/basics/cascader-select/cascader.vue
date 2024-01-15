@@ -39,7 +39,7 @@
       </slot>
     </div>
     <transition name="transition-drop">
-      <Dropdown
+      <Drop
         v-show="visible"
         ref="drop"
         v-transfer-dom
@@ -79,14 +79,12 @@
             <li>{{ localeNotFoundText }}</li>
           </ul>
         </div>
-      </Dropdown>
+      </Drop>
     </transition>
   </div>
 </template>
 <script>
-// import iInput from '../input/input.vue'
-// import Drop from '../select/dropdown.vue'
-// import Icon from '../icon/icon.vue'
+import Drop from 'view-design/src/components/select/dropdown.vue'
 import Caspanel from './caspanel.vue'
 import clickOutside from '@src/directives/click-out-side'
 import TransferDom from '@src/directives/transfer-dom'
@@ -97,10 +95,10 @@ import mixinsForm from '@src/mixins/form'
 //TODO selectPrefixCls
 const selectPrefixCls = 'ivu-select'
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'cascader'
+const prefixCls = prefix + 'cascader-select'
 export default {
   name: prefixCls,
-  components: { Caspanel },
+  components: { Drop, Caspanel },
   directives: { clickOutside, TransferDom },
   mixins: [Emitter, mixinsForm],
   props: {
@@ -289,7 +287,6 @@ export default {
     // 3.4.0, global setting customArrow 有值时，arrow 赋值空
     arrowType() {
       let type = 'ios-arrow-down'
-      debugger
       if (this.$IVIEW) {
         if (this.$IVIEW.cascader.customArrow) {
           type = ''

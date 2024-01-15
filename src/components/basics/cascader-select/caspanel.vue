@@ -106,7 +106,7 @@ export default {
         return
       }
 
-      const cascader = findComponentUpward(this, 'Cascader')
+      const cascader = findComponentUpward(this, this.prefixCls)
       if (item.loading !== undefined && !item.children.length) {
         if (cascader && cascader.loadData) {
           cascader.loadData(item, () => {
@@ -137,7 +137,7 @@ export default {
 
       if (item.children && item.children.length) {
         this.sublist = item.children
-        this.dispatch('Cascader', 'on-result-change', {
+        this.dispatch(this.prefixCls, 'on-result-change', {
           lastValue: false,
           changeOnSelect: this.changeOnSelect,
           fromInit: fromInit
@@ -152,7 +152,7 @@ export default {
         }
       } else {
         this.sublist = []
-        this.dispatch('Cascader', 'on-result-change', {
+        this.dispatch(this.prefixCls, 'on-result-change', {
           lastValue: true,
           changeOnSelect: this.changeOnSelect,
           fromInit: fromInit

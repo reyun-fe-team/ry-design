@@ -1,9 +1,9 @@
+
 <template>
-  <div style="width: 200px; margin: 100px">
-    <rd-cascader
-      v-model="value1"
-      :data="data"></rd-cascader>
-  </div>
+  <rd-cascader-select
+    v-model="value1"
+    style="width: 200px"
+    :data="data"></rd-cascader-select>
 </template>
 <script>
 export default {

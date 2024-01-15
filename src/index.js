@@ -35,7 +35,7 @@ import Indicator from './components/basics/indicator'
 import Empty from './components/basics/empty'
 import Space from './components/basics/space'
 import CarouselPreviewer from './components/basics/carousel-previewer'
-import rdCascader from './components/basics/cascader'
+import CascaderSelect from './components/basics/cascader-select'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -164,8 +164,7 @@ const components = [
   TextInputListManage,
   ErrorPreventModal,
   CarouselPreviewer,
-  rdCascader,
-  rdCascader
+  CascaderSelect
 ]
 
 // 对象式-指令

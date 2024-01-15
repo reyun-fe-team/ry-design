@@ -267,8 +267,8 @@ const router = new VueRouter({
       component: resolve => require(['./routers/v-dragging'], resolve)
     },
     {
-      path: '/cascader',
-      component: resolve => require(['./routers/cascader'], resolve)
+      path: '/cascader-select',
+      component: resolve => require(['./routers/cascader-select'], resolve)
     }
   ]
 })
