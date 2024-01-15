@@ -39,7 +39,7 @@
       </slot>
     </div>
     <transition name="transition-drop">
-      <Drop
+      <Dropdown
         v-show="visible"
         ref="drop"
         v-transfer-dom
@@ -79,30 +79,30 @@
             <li>{{ localeNotFoundText }}</li>
           </ul>
         </div>
-      </Drop>
+      </Dropdown>
     </transition>
   </div>
 </template>
 <script>
-import iInput from '../input/input.vue'
-import Drop from '../select/dropdown.vue'
-import Icon from '../icon/icon.vue'
+// import iInput from '../input/input.vue'
+// import Drop from '../select/dropdown.vue'
+// import Icon from '../icon/icon.vue'
 import Caspanel from './caspanel.vue'
-import clickOutside from '../../directives/clickoutside'
-import TransferDom from '../../directives/transfer-dom'
-import { oneOf } from '../../utils/assist'
-import Emitter from '../../mixins/emitter'
-import Locale from '../../mixins/locale'
-import mixinsForm from '../../mixins/form'
+import clickOutside from '@src/directives/click-out-side'
+import TransferDom from '@src/directives/transfer-dom'
+import { oneOf } from '@src/util/assist.js'
+import Emitter from '@src/mixins/emitter'
+import mixinsForm from '@src/mixins/form'
 
-const prefixCls = 'ivu-cascader'
+//TODO selectPrefixCls
 const selectPrefixCls = 'ivu-select'
-
+import { prefix } from '@src/config.js'
+const prefixCls = prefix + 'cascader'
 export default {
-  name: 'Cascader',
-  components: { iInput, Drop, Icon, Caspanel },
+  name: prefixCls,
+  components: { Caspanel },
   directives: { clickOutside, TransferDom },
-  mixins: [Emitter, Locale, mixinsForm],
+  mixins: [Emitter, mixinsForm],
   props: {
     data: {
       type: Array,
@@ -234,7 +234,7 @@ export default {
     },
     localePlaceholder() {
       if (this.placeholder === undefined) {
-        return this.t('i.select.placeholder')
+        return '请选择'
       } else {
         return this.placeholder
       }
@@ -244,7 +244,7 @@ export default {
     },
     localeNotFoundText() {
       if (this.notFoundText === undefined) {
-        return this.t('i.select.noMatch')
+        return '无匹配数据'
       } else {
         return this.notFoundText
       }
@@ -289,7 +289,7 @@ export default {
     // 3.4.0, global setting customArrow 有值时，arrow 赋值空
     arrowType() {
       let type = 'ios-arrow-down'
-
+      debugger
       if (this.$IVIEW) {
         if (this.$IVIEW.cascader.customArrow) {
           type = ''
