@@ -1,7 +1,9 @@
 <template>
   <div style="margin: 20px">
-    {{ list }}
+    <p>{{ list }}</p>
+    <p><Button @click="insertAllWord">插入动态词包</Button></p>
     <rd-batch-inputs
+      ref="batch-inputs"
       v-model="list"
       show-limit
       style="height: 270px"
@@ -250,7 +252,10 @@ export default {
       fn('{{' + new Date().getSeconds() + '}}')
     },
     insertFace(fn) {},
-    insertEnter(fn) {}
+    insertEnter(fn) {},
+    insertAllWord() {
+      this.$refs['batch-inputs'].insertText('{{' + new Date().getSeconds() + '}}')
+    }
   }
 }
 </script>
