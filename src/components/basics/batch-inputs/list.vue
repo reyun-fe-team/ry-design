@@ -87,8 +87,8 @@ export default {
   },
   computed: {
     extraProps() {
-      let { $props, middle, emits } = this
-      return { ...$props, middle, emits }
+      let { $props, middle, emits, errorList } = this
+      return { ...$props, middle, emits, errorList }
     },
     getLine() {
       let arr = []
@@ -129,7 +129,7 @@ export default {
       }
     },
     handleError(index, error) {
-      this.errorList.splice(index, 0, error)
+      this.errorList.splice(index, 1, error)
       this.$emit('on-error', index, error)
     },
     // 回车超出可编辑的列表长度

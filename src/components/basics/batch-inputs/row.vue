@@ -141,8 +141,11 @@ export default {
       ]
     },
     isHaveError() {
-      let { index, errorList } = this
-      return errorList[index] && errorList[index].length > 0
+      let { currentErrors } = this
+      if (currentErrors) {
+        return currentErrors.length > 0
+      }
+      return false
     },
     isCurrentLine() {
       let { middle, index } = this
@@ -280,7 +283,9 @@ export default {
     },
     // 错误
     handleError(errors, index) {
-      this.dispatch('on-error', index, [...this.currentErrors, ...errors])
+      // 计算错误结果
+      let newErrors = [...new Set(errors)]
+      this.dispatch('on-error', index, newErrors)
     },
     // 计算字数
     calcWordCount(text) {
@@ -307,18 +312,19 @@ export default {
     },
     // 计算验证
     calcValidResult(ln, value) {
-      let errors = []
       // 长度
+      let lengthError = []
       if (!isNaN(ln) && (ln > this.maxLength || ln < this.minLength)) {
-        errors.push('lengthError')
+        lengthError.push('lengthError')
       }
 
       // 其他
+      let otherError = []
       if (typeof this.validFn === 'function') {
-        const allErrors = this.validFn(value, this.index)
-        errors = [...errors, ...allErrors]
+        otherError = this.validFn(value, this.index)
       }
-      return errors
+
+      return [...lengthError, ...otherError]
     },
     // 插入文本
     insertText(text) {
