@@ -35,6 +35,7 @@ import DropdownPanel from './components/basics/dropdown-panel'
 import Indicator from './components/basics/indicator'
 import Empty from './components/basics/empty'
 import Space from './components/basics/space'
+import CarouselPreviewer from './components/basics/carousel-previewer'
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
@@ -74,7 +75,9 @@ import { UTable, UTableColumn } from 'umy-ui'
 import lineClamp from './directives/line-clamp'
 import clickOutside from './directives/click-out-side'
 import transferDom from './directives/transfer-dom'
-import tips from './directives/tips'
+// directivesCreateFuncs
+import createTooltip from './directives/tooltip'
+import createDragging from './directives/dragging'
 
 // util
 import { setIviewMessage } from './util/message'
@@ -158,13 +161,21 @@ const components = [
   Space,
   PlacementLocation,
   BatchInputs,
-  ErrorPreventModal
+  ErrorPreventModal,
+  CarouselPreviewer
 ]
+
+// 对象式-指令
 const directives = {
   'line-clamp': lineClamp,
   'click-outside': clickOutside,
-  'transfer-dom': transferDom,
-  tooltip: tips
+  'transfer-dom': transferDom
+}
+
+// 函数式-创建指令对象
+const directivesCreateFuncs = {
+  tooltip: createTooltip,
+  dragging: createDragging
 }
 
 const install = function (Vue) {
@@ -174,7 +185,9 @@ const install = function (Vue) {
   Object.keys(directives).forEach(key => {
     Vue.directive(key, directives[key])
   })
-
+  Object.keys(directivesCreateFuncs).forEach(key => {
+    Vue.directive(key, directivesCreateFuncs[key](Vue))
+  })
   setIviewMessage(Vue)
 }
 
@@ -238,5 +251,6 @@ export default {
   FilterLisCascader,
   Space,
   PlacementLocation,
-  ErrorPreventModal
+  ErrorPreventModal,
+  CarouselPreviewer
 }

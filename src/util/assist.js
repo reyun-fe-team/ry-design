@@ -277,6 +277,7 @@ export function removeClass(el, cls) {
 export function isEmptyElement(c) {
   return !(c.tag || (c.text && c.text.trim() !== ''))
 }
+
 /*filter empty element*/
 export function filterEmpty() {
   var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : []
@@ -284,4 +285,45 @@ export function filterEmpty() {
   return children.filter(function (c) {
     return !isEmptyElement(c)
   })
+}
+
+// 缓动函数
+export function easeInOutQuad(t, b, c, d) {
+  t /= d / 2
+  if (t < 1) {
+    return (c / 2) * t * t + b
+  }
+  t--
+  return (-c / 2) * (t * (t - 2) - 1) + b
+}
+
+// 唯一标识
+export const genID = (length = 4) => {
+  const S4 = () => {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+  }
+  const getRandomArrayElements = (arr, count) => {
+    // eslint-disable-next-line
+    let shuffled = arr.slice(0),
+      i = arr.length,
+      min = i - count,
+      temp,
+      index
+    while (i-- > min) {
+      index = Math.floor((i + 1) * Math.random())
+      temp = shuffled[index]
+      shuffled[index] = shuffled[i]
+      shuffled[i] = temp
+    }
+    return shuffled.slice(min)
+  }
+  let s = ''
+  for (let index = 0; index < 10; index++) {
+    s += S4()
+  }
+  if (length > s.length) {
+    length = s.length
+  }
+  let gen = getRandomArrayElements(s.split(''), length).join('')
+  return gen
 }

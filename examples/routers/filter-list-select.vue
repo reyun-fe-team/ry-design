@@ -77,10 +77,9 @@
       <div
         v-if="true"
         style="display: inline-block; margin-left: 380px">
-        多选组 事例：{{ selectMultiple }}
-        <!-- :group-name-list="groupNameList" -->
+        多选组 事例：{{ formData.selectMultiple }}
         <rd-filter-list-select
-          v-model="selectMultiple"
+          v-model="formData.selectMultiple"
           transfer
           clearable
           placement="bottom-start"
@@ -220,6 +219,9 @@
 export default {
   data() {
     return {
+      formData: {
+        selectMultiple: []
+      },
       selectMultiple: ['1-00-value', '1-01-value'],
       selectRadio: '',
       groupList: [],
@@ -265,6 +267,14 @@ export default {
         params[key] = item.label
       })
       return params
+    }
+  },
+  watch: {
+    formData: {
+      handler(n, o) {
+        console.log(n, o)
+      },
+      deep: true
     }
   },
   mounted() {
@@ -340,8 +350,8 @@ export default {
     handleInputClear(val) {
       console.log(val)
     },
-    handleChange() {
-      // console.log('接收到on-change', val)
+    handleChange(val) {
+      console.log('接收到on-change', val)
     },
     handleActionOk(label) {
       this.actionValue = label

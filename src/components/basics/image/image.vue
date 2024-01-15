@@ -55,10 +55,14 @@
     </template>
 
     <template v-if="preview">
-      <rd-image-preview
+      <rd-carousel-previewer
         v-model="imagePreviewModal"
         :type="type.toUpperCase()"
-        :src="previewSrc || src"></rd-image-preview>
+        :data="previewData"
+        :audio-url="audioUrl"
+        thumbnail-key="src"
+        :url-key="urlKey"
+        poster-key="src"></rd-carousel-previewer>
     </template>
   </div>
 </template>
@@ -151,6 +155,15 @@ export default {
     isCursor: {
       type: Boolean,
       default: false
+    },
+    imageName: {
+      type: String,
+      default: ''
+    },
+    // 音频地址
+    audioUrl: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -218,6 +231,31 @@ export default {
         width:
           typeof this.videoSignWidth === 'number' ? `${this.videoSignWidth}px` : this.videoSignWidth
       }
+    },
+    previewData() {
+      if (this.type === 'image') {
+        return [
+          {
+            src: this.src,
+            previewSrc: this.previewSrc || this.src,
+            fileName: this.imageName
+          }
+        ]
+      }
+      return [
+        {
+          src: this.src,
+          previewSrc: this.previewSrc || this.src,
+          fileName: this.imageName,
+          poster: this.src
+        }
+      ]
+    },
+    urlKey() {
+      if (this.previewSrc) {
+        return 'previewSrc'
+      }
+      return 'src'
     }
   },
   mounted() {
@@ -258,9 +296,6 @@ export default {
       this.handleLazy()
     },
     handleImageLoad() {
-      // setTimeout(() => {
-      //   this.loading = false
-      // }, 3000)
       this.loading = false
       this.imageError = false
       this.$emit('on-load')
