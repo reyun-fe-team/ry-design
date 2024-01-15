@@ -3,6 +3,7 @@
     <input
       ref="Input"
       v-model="currentValue"
+      v-tooltip="tooltipOptions"
       type="text"
       style="width: 100%"
       :placeholder="placeholder"
@@ -16,17 +17,15 @@
       @paste="handlerPaste" />
 
     <div
-      v-if="showLimit"
-      v-show="isFounded"
+      v-if="showLimit && value.length > 0"
       :class="[prefixCls + '-ln-wrap']">
       <!-- 字数 -->
       <div :class="[prefixCls + '-ln-wrap-l']">{{ totalln }}/{{ maxLength }}</div>
       <!-- 清空 -->
-      <div :class="[prefixCls + '-ln-wrap-r']">
-        <Icon
-          type="md-close"
-          @click="handleClear"></Icon>
-      </div>
+      <Icon
+        :class="[prefixCls + '-ln-wrap-r']"
+        type="md-close"
+        @click="handleClear"></Icon>
     </div>
   </div>
 </template>
@@ -83,6 +82,17 @@ export default {
       currentValue: this.value || '',
       // 已输入的字符长度
       totalln: 0
+    }
+  },
+  computed: {
+    tooltipOptions() {
+      return this.currentValue
+        ? {
+            content: this.currentValue,
+            'max-width': 350,
+            placement: 'bottom-start'
+          }
+        : null
     }
   },
   watch: {
@@ -160,6 +170,8 @@ export default {
     // 清除
     handleClear() {
       this.currentValue = ''
+      this.$emit('input', this.currentValue)
+      this.$emit('on-change', this.currentValue)
       this.$emit('on-clear')
     },
 

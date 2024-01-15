@@ -6,12 +6,12 @@
       data-key="uid"
       :data-sources="getLine"
       :extra-props="extraProps"
-      :data-component="Row"
+      :data-component="VirtualItem"
       v-on="$listeners"></rd-virtual-list>
   </div>
 </template>
 <script>
-import Row from './row'
+import VirtualItem from './row'
 import { prefix } from '@src/config.js'
 import { getKey } from '@src/util/assist'
 const prefixCls = prefix + 'batch-inputs'
@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       // 每行的渲染组件
-      Row,
+      VirtualItem,
       prefixCls,
       // 当前数据计数器
       middle: {
@@ -106,12 +106,15 @@ export default {
   watch: {
     value: {
       deep: true,
-      handler(cur) {
-        if (cur.length === 0 && this.middle.activeClass !== null) {
+      handler() {
+        if (this.value.length === 0 && this.middle.activeClass !== null) {
           this.errorList = []
         }
       }
     }
+  },
+  mounted() {
+    this.$nextTick(() => this.getCurrentInput())
   },
   methods: {
     handleMiddleChange(middle) {
@@ -119,10 +122,7 @@ export default {
       let { activeClass } = this.middle
       this.$emit('on-middle-change', this.middle)
 
-      let currentVirtualItem = this.$refs.list.$children.find(item => item.index === activeClass)
-      if (currentVirtualItem) {
-        this.currentInput = currentVirtualItem.$children[0]
-      }
+      this.getCurrentInput(activeClass)
 
       if (this.currentInput) {
         this.currentInput.$refs.Input.focus()
@@ -144,8 +144,16 @@ export default {
       this.$emit('on-change', val)
       this.$emit('input', val)
     },
+    getCurrentInput(activeClass = 0) {
+      let currentVirtualItem = this.$refs.list.$children.find(item => item.index === activeClass)
+      if (currentVirtualItem) {
+        this.currentInput = currentVirtualItem.$children[0]
+      }
+    },
     insertText(val) {
-      this.currentInput.insertTextAtCursor(val)
+      if (this.currentInput && val) {
+        this.currentInput.insertText(val)
+      }
     }
   }
 }
