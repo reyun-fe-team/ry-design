@@ -86,13 +86,14 @@ export default {
   },
   computed: {
     tooltipOptions() {
-      return this.currentValue
-        ? {
-            content: this.currentValue,
-            'max-width': 350,
-            placement: 'bottom-start'
-          }
-        : null
+      const show = this.currentValue.length > 0
+      const option = {
+        compUpdatedVisible: show && this.isFounded,
+        content: this.currentValue,
+        'max-width': 350,
+        placement: 'bottom-start'
+      }
+      return show ? option : null
     }
   },
   watch: {
