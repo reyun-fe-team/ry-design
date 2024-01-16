@@ -1,110 +1,31 @@
 <template>
-  <div :class="prefixCls">
-    <template v-if="enableCss">
-      <Tooltip
-        v-if="tooltip"
-        :content="text"
-        :theme="theme"
-        :max-width="maxWidth"
-        :placement="placement"
-        :transfer="transfer"
-        :delay="delay">
-        <div v-line-clamp="lines">
-          <slot name="prefix"></slot>
-          <span
-            ref="text"
-            :class="[prefixCls + '-text']">
-            {{ text }}
-          </span>
-          <span
-            v-show="oversize"
-            ref="more"
-            :class="[prefixCls + '-more']">
-            <slot name="more">...</slot>
-          </span>
-          <slot name="suffix"></slot>
-        </div>
-      </Tooltip>
-      <div
-        v-else
-        v-line-clamp="lines">
-        <slot name="prefix"></slot>
-        <span
-          ref="text"
-          :class="[prefixCls + '-text']">
-          {{ text }}
-        </span>
-        <span
-          v-show="oversize"
-          ref="more"
-          :class="[prefixCls + '-more']">
-          <slot name="more">...</slot>
-        </span>
-        <slot name="suffix"></slot>
-      </div>
-    </template>
-    <template v-else>
-      <template v-if="computedReady">
-        <Tooltip
-          v-if="tooltip"
-          :content="text"
-          :theme="theme"
-          :max-width="maxWidth"
-          :placement="placement"
-          :transfer="transfer"
-          :delay="delay">
-          <slot name="prefix"></slot>
-          <span
-            ref="text"
-            :class="[prefixCls + '-text']">
-            {{ text }}
-          </span>
-          <span
-            v-show="oversize"
-            ref="more"
-            :class="[prefixCls + '-more']">
-            <slot name="more">...</slot>
-          </span>
-          <slot name="suffix"></slot>
-        </Tooltip>
-        <template v-else>
-          <slot name="prefix"></slot>
-          <span
-            ref="text"
-            :class="[prefixCls + '-text']">
-            {{ text }}
-          </span>
-          <span
-            v-show="oversize"
-            ref="more"
-            :class="[prefixCls + '-more']">
-            <slot name="more">...</slot>
-          </span>
-          <slot name="suffix"></slot>
-        </template>
-      </template>
-      <div
-        v-else
-        :class="[prefixCls + '-hidden']">
-        <slot name="prefix"></slot>
-        <span
-          ref="text"
-          :class="[prefixCls + '-text']">
-          {{ text }}
-        </span>
-        <span
-          v-show="oversize"
-          ref="more"
-          :class="[prefixCls + '-more']">
-          <slot name="more">...</slot>
-        </span>
-        <slot name="suffix"></slot>
-      </div>
-    </template>
+  <div
+    v-resize="autoResize ? handleResize : null"
+    v-line-clamp="enableCss ? lines : null"
+    v-tooltip="tooltipOptions"
+    :class="[prefixCls, { [prefixCls + '-hidden']: !computedReady && !enableCss }]">
+    <!-- 前缀 -->
+    <slot name="prefix"></slot>
+    <!-- 文字 -->
+    <span
+      ref="text"
+      :class="[prefixCls + '-text']">
+      {{ text }}
+    </span>
+    <!-- ...符号 -->
+    <span
+      v-show="oversize"
+      ref="more"
+      :class="[prefixCls + '-more']">
+      <slot name="more">...</slot>
+    </span>
+    <!-- 后缀 -->
+    <slot name="suffix"></slot>
   </div>
 </template>
 <script>
 import { oneOf, getStyle } from '@src/util/assist.js'
+import _throttle from 'lodash/throttle'
 
 const getStrFullLength = (str = '') =>
   str.split('').reduce((pre, cur) => {
@@ -141,17 +62,21 @@ export default {
       default: false
     },
     text: {
-      type: String
+      type: String,
+      default: ''
     },
     // 限制高度
+    // eslint-disable-next-line vue/require-default-prop
     height: {
       type: Number
     },
     // 限制行数，将换算为 height。如果设置了 height，则直接使用 height 计算
+    // eslint-disable-next-line vue/require-default-prop
     lines: {
       type: Number
     },
     // 按照指定长度截取
+    // eslint-disable-next-line vue/require-default-prop
     length: {
       type: Number
     },
@@ -160,7 +85,8 @@ export default {
       type: Boolean,
       default: false
     },
-    // todo 是否自动根据外层宽度动态改变
+    // 是否自动根据外层宽度动态改变
+    // 宽度变了，自动计算
     autoResize: {
       type: Boolean,
       default: false
@@ -178,7 +104,7 @@ export default {
     // 以下是 tooltip 部分选项
     transfer: {
       type: Boolean,
-      default: false
+      default: true
     },
     theme: {
       validator(value) {
@@ -218,19 +144,40 @@ export default {
     return {
       prefixCls,
       oversize: false,
-      computedReady: false, // 先隐形计算，计算好后，再根据配置显示
-      computedText: '' // 计算后的 text 内容
+      // 先隐形计算，计算好后，再根据配置显示
+      computedReady: false,
+      // 计算后的 text 内容
+      computedText: this.text,
+      // 自动计算后的 text 内容
+      autoComputedText: this.text,
+      // 容器宽高
+      container: { width: '', height: '' }
+    }
+  },
+  computed: {
+    tooltipOptions() {
+      let { tooltip, text, theme, maxWidth, placement, transfer, delay, oversize } = this
+      const options = {
+        content: text,
+        theme: theme,
+        maxWidth: maxWidth,
+        placement: placement,
+        transfer: transfer,
+        delay: delay
+      }
+      return tooltip && oversize ? options : null
+    },
+    initializedOptions() {
+      let { disabled, text, height, lines } = this
+      return { disabled, text, height, lines }
     }
   },
   watch: {
-    disabled() {
-      this.init()
-    },
-    text() {
-      this.init()
-    },
-    height() {
-      this.init()
+    initializedOptions: {
+      deep: true,
+      handler() {
+        this.init()
+      }
     }
   },
   mounted() {
@@ -239,12 +186,13 @@ export default {
   methods: {
     init() {
       if (!this.disabled && !this.enableCss) {
-        setTimeout(() => {
-          this.computeText()
+        this.$nextTick(() => {
+          this.autoResize ? this.autoComputeText() : this.computeText()
           this.limitShow()
         })
       }
     },
+    // 根据配置计算
     computeText() {
       this.oversize = false
       this.computedReady = false
@@ -273,7 +221,9 @@ export default {
                 ? cutStrByFullLength(text, this.length)
                 : text.slice(0, this.length)
             }
-          } else {
+          }
+          // 按照容器大小
+          else {
             if ($el.offsetHeight > height) {
               this.oversize = true
               $more.style.display = 'inline-block'
@@ -293,6 +243,43 @@ export default {
         this.computedText = text
       })
     },
+    // 自动计算，可根据高度动态计算
+    autoComputeText() {
+      const canCaclulate = !this.disabled && !this.enableCss
+      if (!canCaclulate) {
+        return
+      }
+
+      this.oversize = false
+      this.computedReady = false
+      this.$nextTick(() => {
+        let $text = this.$refs.text
+        let $el = this.$el
+        let $more = this.$refs.more
+        this.container = { width: parseInt($el.offsetWidth), height: parseInt($el.offsetHeight) }
+
+        let n = 1000
+
+        let getTextHeight = () => $text.offsetHeight
+        let getElHeight = () => $el.offsetHeight
+
+        // 容器太小
+        if (getElHeight() < getTextHeight()) {
+          this.oversize = true
+          $more.style.display = 'inline-block'
+
+          while (getElHeight() < getTextHeight() && n > 0) {
+            let lastIndex = this.autoComputedText.length - 1
+            this.autoComputedText = this.autoComputedText.substring(0, lastIndex)
+            $text.innerText = this.autoComputedText
+            n--
+          }
+        }
+
+        this.limitShow()
+      })
+    },
+    // 触发显示与隐藏
     limitShow() {
       this.computedReady = true
 
@@ -301,15 +288,32 @@ export default {
         let $el = this.$el
 
         if ($text) {
-          $text.innerText = this.computedText
-          if ($el.offsetHeight > this.height) {
-            this.$emit('on-hide')
-          } else {
-            this.$emit('on-show')
+          $text.innerText = this.autoResize ? this.autoComputedText : this.computedText
+          if (!this.autoResize) {
+            $el.offsetHeight > this.height ? this.$emit('on-hide') : this.$emit('on-show')
           }
         }
       })
-    }
+    },
+    // 元素宽高
+    handleResize: _throttle(
+      function (data) {
+        let { width, height } = this.container
+
+        // 没有设置过
+        if (!width || !height) {
+          this.autoComputeText()
+          return
+        }
+
+        // 宽高变了
+        if (width !== data.width || height !== data.height) {
+          this.autoComputeText()
+        }
+      },
+      150,
+      { leading: false }
+    )
   }
 }
 </script>
