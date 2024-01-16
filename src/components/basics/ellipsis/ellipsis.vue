@@ -1,8 +1,8 @@
 <template>
   <div
+    v-resize="autoResize ? handleResize : null"
     v-line-clamp="enableCss ? lines : null"
     v-tooltip="tooltipOptions"
-    v-resize="handleResize"
     :class="[prefixCls, { [prefixCls + '-hidden']: !computedReady && !enableCss }]">
     <!-- 前缀 -->
     <slot name="prefix"></slot>
@@ -85,7 +85,8 @@ export default {
       type: Boolean,
       default: false
     },
-    // todo 是否自动根据外层宽度动态改变
+    // 是否自动根据外层宽度动态改变
+    // 宽度变了，自动计算
     autoResize: {
       type: Boolean,
       default: false
@@ -146,7 +147,9 @@ export default {
       // 先隐形计算，计算好后，再根据配置显示
       computedReady: false,
       // 计算后的 text 内容
-      computedText: ''
+      computedText: '',
+      // 容器宽高
+      container: { width: '', height: '' }
     }
   },
   computed: {
@@ -163,17 +166,17 @@ export default {
       return tooltip && oversize ? options : null
     },
     initializedOptions() {
-      let { disabled, text, height } = this
-      return { disabled, text, height }
+      let { disabled, text, height, lines } = this
+      return { disabled, text, height, lines }
     }
   },
   watch: {
     initializedOptions() {
-      this.handleResize()
+      this.init()
     }
   },
   mounted() {
-    this.handleResize()
+    this.init()
   },
   methods: {
     init() {
@@ -215,15 +218,6 @@ export default {
           }
           // 按照容器大小
           else {
-            // 超出宽度
-            const containerWidth = $text.parentElement.clientWidth
-            const elementWidth = parseInt(window.getComputedStyle($text).width)
-            if (elementWidth > containerWidth) {
-              // 超出容器，执行相应操作
-              this.oversize = true
-              $more.style.display = 'inline-block'
-            }
-
             if ($el.offsetHeight > height) {
               this.oversize = true
               $more.style.display = 'inline-block'
@@ -260,7 +254,33 @@ export default {
         }
       })
     },
-    handleResize: _throttle(this.init, 150, { leading: false })
+    handleResize: _throttle(
+      function (el) {
+        let { width, height } = this.container
+        const elWidth = parseInt(el.clientWidth)
+        const elHeight = parseInt(el.clientHeight)
+
+        // 没有设置过
+        if (!width || !height) {
+          this.container = { width: elWidth, height: elHeight }
+          return
+        }
+
+        // 宽高没变
+        const isSameWh = width === elWidth && height === elHeight
+        if (isSameWh) {
+          return
+        }
+
+        // 宽高变了
+        if (!isSameWh) {
+          this.container = { width: elWidth, height: elHeight }
+          this.init()
+        }
+      },
+      150,
+      { leading: false }
+    )
   }
 }
 </script>
