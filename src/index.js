@@ -35,6 +35,7 @@ import Indicator from './components/basics/indicator'
 import Empty from './components/basics/empty'
 import Space from './components/basics/space'
 import CarouselPreviewer from './components/basics/carousel-previewer'
+import TreeSelect from './components/basics/tree-select'
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
@@ -161,7 +162,8 @@ const components = [
   PlacementLocation,
   TextInputListManage,
   ErrorPreventModal,
-  CarouselPreviewer
+  CarouselPreviewer,
+  TreeSelect
 ]
 
 // 对象式-指令
@@ -251,5 +253,6 @@ export default {
   Space,
   PlacementLocation,
   ErrorPreventModal,
-  CarouselPreviewer
+  CarouselPreviewer,
+  TreeSelect
 }
