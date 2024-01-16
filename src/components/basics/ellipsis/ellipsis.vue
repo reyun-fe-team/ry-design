@@ -233,7 +233,6 @@ export default {
                   $text.innerText = text = text.substring(0, Math.floor(text.length / 2))
                 } else {
                   $text.innerText = text = text.substring(0, text.length - 1)
-                  console.log('text: ', text)
                 }
                 n--
               }
@@ -250,7 +249,6 @@ export default {
       if (!canCaclulate) {
         return
       }
-      this.limitShow()
 
       this.oversize = false
       this.computedReady = false
@@ -277,6 +275,8 @@ export default {
             n--
           }
         }
+
+        this.limitShow()
       })
     },
     // 触发显示与隐藏
