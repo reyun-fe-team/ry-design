@@ -147,7 +147,9 @@ export default {
       // 先隐形计算，计算好后，再根据配置显示
       computedReady: false,
       // 计算后的 text 内容
-      computedText: '',
+      computedText: this.text,
+      // 自动计算后的 text 内容
+      autoComputedText: this.text,
       // 容器宽高
       container: { width: '', height: '' }
     }
@@ -171,8 +173,11 @@ export default {
     }
   },
   watch: {
-    initializedOptions() {
-      this.init()
+    initializedOptions: {
+      deep: true,
+      handler() {
+        this.init()
+      }
     }
   },
   mounted() {
@@ -182,11 +187,12 @@ export default {
     init() {
       if (!this.disabled && !this.enableCss) {
         this.$nextTick(() => {
-          this.computeText()
+          this.autoResize ? this.autoComputeText() : this.computeText()
           this.limitShow()
         })
       }
     },
+    // 根据配置计算
     computeText() {
       this.oversize = false
       this.computedReady = false
@@ -227,6 +233,7 @@ export default {
                   $text.innerText = text = text.substring(0, Math.floor(text.length / 2))
                 } else {
                   $text.innerText = text = text.substring(0, text.length - 1)
+                  console.log('text: ', text)
                 }
                 n--
               }
@@ -237,6 +244,42 @@ export default {
         this.computedText = text
       })
     },
+    // 自动计算，可根据高度动态计算
+    autoComputeText() {
+      const canCaclulate = !this.disabled && !this.enableCss
+      if (!canCaclulate) {
+        return
+      }
+      this.limitShow()
+
+      this.oversize = false
+      this.computedReady = false
+      this.$nextTick(() => {
+        let $text = this.$refs.text
+        let $el = this.$el
+        let $more = this.$refs.more
+        this.container = { width: parseInt($el.offsetWidth), height: parseInt($el.offsetHeight) }
+
+        let n = 1000
+
+        let getTextHeight = () => $text.offsetHeight
+        let getElHeight = () => $el.offsetHeight
+
+        // 容器太小
+        if (getElHeight() < getTextHeight()) {
+          this.oversize = true
+          $more.style.display = 'inline-block'
+
+          while (getElHeight() < getTextHeight() && n > 0) {
+            let lastIndex = this.autoComputedText.length - 1
+            this.autoComputedText = this.autoComputedText.substring(0, lastIndex)
+            $text.innerText = this.autoComputedText
+            n--
+          }
+        }
+      })
+    },
+    // 触发显示与隐藏
     limitShow() {
       this.computedReady = true
 
@@ -245,37 +288,27 @@ export default {
         let $el = this.$el
 
         if ($text) {
-          $text.innerText = this.computedText
-          if ($el.offsetHeight > this.height) {
-            this.$emit('on-hide')
-          } else {
-            this.$emit('on-show')
+          $text.innerText = this.autoResize ? this.autoComputedText : this.computedText
+          if (!this.autoResize) {
+            $el.offsetHeight > this.height ? this.$emit('on-hide') : this.$emit('on-show')
           }
         }
       })
     },
+    // 元素宽高
     handleResize: _throttle(
-      function (el) {
+      function (data) {
         let { width, height } = this.container
-        const elWidth = parseInt(el.clientWidth)
-        const elHeight = parseInt(el.clientHeight)
 
         // 没有设置过
         if (!width || !height) {
-          this.container = { width: elWidth, height: elHeight }
-          return
-        }
-
-        // 宽高没变
-        const isSameWh = width === elWidth && height === elHeight
-        if (isSameWh) {
+          this.autoComputeText()
           return
         }
 
         // 宽高变了
-        if (!isSameWh) {
-          this.container = { width: elWidth, height: elHeight }
-          this.init()
+        if (width !== data.width || height !== data.height) {
+          this.autoComputeText()
         }
       },
       150,

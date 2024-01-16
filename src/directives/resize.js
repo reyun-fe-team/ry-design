@@ -7,12 +7,18 @@ function removeListen(el) {
 }
 
 function addListen(el, binding) {
-  function resizeHandler(e) {
-    binding.value(e)
+  function resizeHandler(element) {
+    let data = { width: '', height: '' }
+    if (element) {
+      data.width = element.offsetWidth
+      data.height = element.offsetHeight
+    }
+    binding.value(data)
   }
 
   if (binding.value && typeof binding.value === 'function') {
     el.__resizeHandler__ = resizeHandler
+    // 创建一个元素大小调整检测器实例
     el.__observer__ = elementResizeDetectorMaker()
     el.__observer__.listenTo(el, resizeHandler)
   }
