@@ -5,7 +5,7 @@
       :class="prefixCls + '-virtual-list'"
       :data-key="'uid'"
       :data-sources="getLine"
-      :extra-props="{ ...$attrs, middle, maxLine, errorList, value }"
+      :extra-props="{ ...$attrs, middle, maxLine, errorList, value, showLimit }"
       :data-component="itemComponent"
       v-on="$listeners"
       @enter-over-length="enterOverLength"
@@ -24,9 +24,14 @@ const prefixCls = prefix + 'text-input-list'
 export default {
   name: prefixCls,
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     Item
   },
   props: {
+    showLimit: {
+      type: Boolean,
+      default: true
+    },
     // 最大行数
     maxLine: {
       type: Number,

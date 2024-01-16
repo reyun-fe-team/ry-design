@@ -1,6 +1,4 @@
-/**
- * props declaration for default, item and slot component
- */
+// default、item和slot组件的props声明
 
 export const VirtualProps = {
   dataKey: {
@@ -15,7 +13,6 @@ export const VirtualProps = {
     type: [Object, Function],
     required: true
   },
-
   keeps: {
     type: Number,
     default: 30
@@ -27,7 +24,6 @@ export const VirtualProps = {
     type: Number,
     default: 50
   },
-
   direction: {
     type: String,
     default: 'vertical' // the other value is horizontal
