@@ -1,10 +1,9 @@
-/**
- * virtual list core calculating center
- */
-
+// 虚拟列表核心计算中心
 const DIRECTION_TYPE = {
-  FRONT: 'FRONT', // scroll up or left
-  BEHIND: 'BEHIND' // scroll down or right
+  // scroll up or left
+  FRONT: 'FRONT',
+  // scroll down or right
+  BEHIND: 'BEHIND'
 }
 const CALC_TYPE = {
   INIT: 'INIT',
@@ -17,7 +16,6 @@ export default class Virtual {
   constructor(param, callUpdate) {
     this.init(param, callUpdate)
   }
-
   init(param, callUpdate) {
     // param data
     this.param = param
@@ -45,11 +43,9 @@ export default class Virtual {
     // this.__bsearchCalls = 0
     // this.__getIndexOffsetCalls = 0
   }
-
   destroy() {
     this.init(null, null)
   }
-
   // return current render range
   getRange() {
     const range = Object.create(null)
@@ -59,20 +55,16 @@ export default class Virtual {
     range.padBehind = this.range.padBehind
     return range
   }
-
   isBehind() {
     return this.direction === DIRECTION_TYPE.BEHIND
   }
-
   isFront() {
     return this.direction === DIRECTION_TYPE.FRONT
   }
-
   // return start index offset
   getOffset(start) {
     return (start < 1 ? 0 : this.getIndexOffset(start)) + this.param.slotHeaderSize
   }
-
   updateParam(key, value) {
     if (this.param && key in this.param) {
       // if uniqueIds change, find out deleted id and remove from size map
@@ -86,7 +78,6 @@ export default class Virtual {
       this.param[key] = value
     }
   }
-
   // save each size map by id
   saveSize(id, size) {
     this.sizes.set(id, size)
@@ -114,7 +105,6 @@ export default class Virtual {
       }
     }
   }
-
   // in some special situation (e.g. length change) we need to update in a row
   // try goiong to render next range by a leading buffer according to current direction
   handleDataSourcesChange() {
@@ -130,12 +120,10 @@ export default class Virtual {
 
     this.updateRange(this.range.start, this.getEndByStart(start))
   }
-
   // when slot size change, we also need force update
   handleSlotSizeChange() {
     this.handleDataSourcesChange()
   }
-
   // calculating range on scroll
   handleScroll(offset) {
     this.direction = offset < this.offset ? DIRECTION_TYPE.FRONT : DIRECTION_TYPE.BEHIND
@@ -151,7 +139,6 @@ export default class Virtual {
       this.handleBehind()
     }
   }
-
   // ----------- public method end -----------
 
   handleFront() {
@@ -165,7 +152,6 @@ export default class Virtual {
     const start = Math.max(overs - this.param.buffer, 0)
     this.checkRange(start, this.getEndByStart(start))
   }
-
   handleBehind() {
     const overs = this.getScrollOvers()
     // range should not change if scroll overs within buffer
@@ -175,7 +161,6 @@ export default class Virtual {
 
     this.checkRange(overs, this.getEndByStart(overs))
   }
-
   // return the pass overs according to current scroll offset
   getScrollOvers() {
     // if slot header exist, we need subtract its size
@@ -210,7 +195,6 @@ export default class Virtual {
 
     return low > 0 ? --low : 0
   }
-
   // return a scroll offset from given index, can efficiency be improved more here?
   // although the call frequency is very high, its only a superposition of numbers
   getIndexOffset(givenIndex) {
@@ -232,17 +216,14 @@ export default class Virtual {
 
     return offset
   }
-
   // is fixed size type
   isFixedType() {
     return this.calcType === CALC_TYPE.FIXED
   }
-
   // return the real last index
   getLastIndex() {
     return this.param.uniqueIds.length - 1
   }
-
   // in some conditions range is broke, we need correct it
   // and then decide whether need update to next range
   checkRange(start, end) {
@@ -262,7 +243,6 @@ export default class Virtual {
       this.updateRange(start, end)
     }
   }
-
   // setting to a new range and rerender
   updateRange(start, end) {
     this.range.start = start
@@ -271,14 +251,12 @@ export default class Virtual {
     this.range.padBehind = this.getPadBehind()
     this.callUpdate(this.getRange())
   }
-
   // return end base on start
   getEndByStart(start) {
     const theoryEnd = start + this.param.keeps - 1
     const truelyEnd = Math.min(theoryEnd, this.getLastIndex())
     return truelyEnd
   }
-
   // return total front offset
   getPadFront() {
     if (this.isFixedType()) {
@@ -287,7 +265,6 @@ export default class Virtual {
       return this.getIndexOffset(this.range.start)
     }
   }
-
   // return total behind offset
   getPadBehind() {
     const end = this.range.end
@@ -305,7 +282,6 @@ export default class Virtual {
       return (lastIndex - end) * this.getEstimateSize()
     }
   }
-
   // get the item estimate size
   getEstimateSize() {
     return this.isFixedType()

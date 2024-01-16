@@ -16,8 +16,9 @@ import Ellipsis from './components/basics/ellipsis'
 import TableMultiInputs from './components/basics/table-multi-inputs'
 import TextEmojInput from './components/basics/text-emoj-input'
 import Icon from './components/basics/icon'
-import { TextInputList, VirtualList } from './components/basics/text-input-list'
-import TextInputListManage from './components/basics/text-input-list-manage'
+import TextInputList from './components/basics/text-input-list'
+import VirtualList from './components/basics/virtual-list'
+import BatchInputs from './components/basics/batch-inputs'
 import Wildcard from './components/basics/wildcard'
 import CascaderTransfer from './components/basics/cascader-transfer'
 import Exception from './components/basics/exception'
@@ -160,7 +161,7 @@ const components = [
   FilterArea,
   Space,
   PlacementLocation,
-  TextInputListManage,
+  BatchInputs,
   ErrorPreventModal,
   CarouselPreviewer
 ]
@@ -199,7 +200,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default {
   version: process.env.VERSION,
   install,
-  TextInputListManage,
+  BatchInputs,
   Transfer,
   MultiCascader,
   PrefixContainer,

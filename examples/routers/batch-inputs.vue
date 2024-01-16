@@ -1,18 +1,51 @@
-
 <template>
   <div style="margin: 20px">
-    {{ list }}
-    <rd-text-input-list-manage
+    <p>{{ list }}</p>
+    <p><Button @click="insertAllWord">插入动态词包</Button></p>
+    <rd-batch-inputs
+      ref="batch-inputs"
       v-model="list"
+      show-limit
       style="height: 270px"
-      :max-line="10" />
+      :max-line="1000">
+      <template #end="{ insertText }">
+        <div style="display: flex; align-items: center">
+          <Button @click="insertWord(insertText)">插入动态词包</Button>
+          <Poptip
+            transfer
+            placement="bottom-end">
+            <img
+              :src="AddEmoji"
+              style="width: 20px" />
+            <div
+              slot="content"
+              style="max-width: 200px; display: flex; flex-wrap: wrap; max-height: 80px">
+              <img
+                v-for="(item, index) in emojiList"
+                :key="index"
+                style="width: 20px; margin: 10px"
+                :src="item.url"
+                @click="insertFace(insertText, item)" />
+            </div>
+          </Poptip>
+          <img
+            style="width: 20px"
+            :src="AddLineFeed"
+            @click="insertEnter(index)" />
+        </div>
+      </template>
+    </rd-batch-inputs>
   </div>
 </template>
 
 <script>
+import AddEmoji from '@src/images/text-input-list/add-emoji.png'
+import AddLineFeed from '@src/images/text-input-list//add-line-feed.png'
 export default {
   data() {
     return {
+      AddEmoji,
+      AddLineFeed,
       list: [],
       emojiList: [
         {
@@ -212,6 +245,16 @@ export default {
           url: 'https://tx2.a.yximgs.com/bs2/emotion/app_1580805626075_5xvw3rvaqjpqmcg.png'
         }
       ]
+    }
+  },
+  methods: {
+    insertWord(fn) {
+      fn('{{' + new Date().getSeconds() + '}}')
+    },
+    insertFace(fn) {},
+    insertEnter(fn) {},
+    insertAllWord() {
+      this.$refs['batch-inputs'].insertText('{{' + new Date().getSeconds() + '}}')
     }
   }
 }
