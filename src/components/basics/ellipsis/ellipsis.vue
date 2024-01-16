@@ -1,110 +1,31 @@
 <template>
-  <div :class="prefixCls">
-    <template v-if="enableCss">
-      <Tooltip
-        v-if="tooltip"
-        :content="text"
-        :theme="theme"
-        :max-width="maxWidth"
-        :placement="placement"
-        :transfer="transfer"
-        :delay="delay">
-        <div v-line-clamp="lines">
-          <slot name="prefix"></slot>
-          <span
-            ref="text"
-            :class="[prefixCls + '-text']">
-            {{ text }}
-          </span>
-          <span
-            v-show="oversize"
-            ref="more"
-            :class="[prefixCls + '-more']">
-            <slot name="more">...</slot>
-          </span>
-          <slot name="suffix"></slot>
-        </div>
-      </Tooltip>
-      <div
-        v-else
-        v-line-clamp="lines">
-        <slot name="prefix"></slot>
-        <span
-          ref="text"
-          :class="[prefixCls + '-text']">
-          {{ text }}
-        </span>
-        <span
-          v-show="oversize"
-          ref="more"
-          :class="[prefixCls + '-more']">
-          <slot name="more">...</slot>
-        </span>
-        <slot name="suffix"></slot>
-      </div>
-    </template>
-    <template v-else>
-      <template v-if="computedReady">
-        <Tooltip
-          v-if="tooltip"
-          :content="text"
-          :theme="theme"
-          :max-width="maxWidth"
-          :placement="placement"
-          :transfer="transfer"
-          :delay="delay">
-          <slot name="prefix"></slot>
-          <span
-            ref="text"
-            :class="[prefixCls + '-text']">
-            {{ text }}
-          </span>
-          <span
-            v-show="oversize"
-            ref="more"
-            :class="[prefixCls + '-more']">
-            <slot name="more">...</slot>
-          </span>
-          <slot name="suffix"></slot>
-        </Tooltip>
-        <template v-else>
-          <slot name="prefix"></slot>
-          <span
-            ref="text"
-            :class="[prefixCls + '-text']">
-            {{ text }}
-          </span>
-          <span
-            v-show="oversize"
-            ref="more"
-            :class="[prefixCls + '-more']">
-            <slot name="more">...</slot>
-          </span>
-          <slot name="suffix"></slot>
-        </template>
-      </template>
-      <div
-        v-else
-        :class="[prefixCls + '-hidden']">
-        <slot name="prefix"></slot>
-        <span
-          ref="text"
-          :class="[prefixCls + '-text']">
-          {{ text }}
-        </span>
-        <span
-          v-show="oversize"
-          ref="more"
-          :class="[prefixCls + '-more']">
-          <slot name="more">...</slot>
-        </span>
-        <slot name="suffix"></slot>
-      </div>
-    </template>
+  <div
+    v-line-clamp="enableCss ? lines : null"
+    v-tooltip="tooltipOptions"
+    v-resize="handleResize"
+    :class="[prefixCls, { [prefixCls + '-hidden']: !computedReady && !enableCss }]">
+    <!-- 前缀 -->
+    <slot name="prefix"></slot>
+    <!-- 文字 -->
+    <span
+      ref="text"
+      :class="[prefixCls + '-text']">
+      {{ text }}
+    </span>
+    <!-- ...符号 -->
+    <span
+      v-show="oversize"
+      ref="more"
+      :class="[prefixCls + '-more']">
+      <slot name="more">...</slot>
+    </span>
+    <!-- 后缀 -->
+    <slot name="suffix"></slot>
   </div>
 </template>
 <script>
 import { oneOf, getStyle } from '@src/util/assist.js'
+import _throttle from 'lodash/throttle'
 
 const getStrFullLength = (str = '') =>
   str.split('').reduce((pre, cur) => {
@@ -141,17 +62,21 @@ export default {
       default: false
     },
     text: {
-      type: String
+      type: String,
+      default: ''
     },
     // 限制高度
+    // eslint-disable-next-line vue/require-default-prop
     height: {
       type: Number
     },
     // 限制行数，将换算为 height。如果设置了 height，则直接使用 height 计算
+    // eslint-disable-next-line vue/require-default-prop
     lines: {
       type: Number
     },
     // 按照指定长度截取
+    // eslint-disable-next-line vue/require-default-prop
     length: {
       type: Number
     },
@@ -178,7 +103,7 @@ export default {
     // 以下是 tooltip 部分选项
     transfer: {
       type: Boolean,
-      default: false
+      default: true
     },
     theme: {
       validator(value) {
@@ -218,28 +143,42 @@ export default {
     return {
       prefixCls,
       oversize: false,
-      computedReady: false, // 先隐形计算，计算好后，再根据配置显示
-      computedText: '' // 计算后的 text 内容
+      // 先隐形计算，计算好后，再根据配置显示
+      computedReady: false,
+      // 计算后的 text 内容
+      computedText: ''
+    }
+  },
+  computed: {
+    tooltipOptions() {
+      let { tooltip, text, theme, maxWidth, placement, transfer, delay, oversize } = this
+      const options = {
+        content: text,
+        theme: theme,
+        maxWidth: maxWidth,
+        placement: placement,
+        transfer: transfer,
+        delay: delay
+      }
+      return tooltip && oversize ? options : null
+    },
+    initializedOptions() {
+      let { disabled, text, height } = this
+      return { disabled, text, height }
     }
   },
   watch: {
-    disabled() {
-      this.init()
-    },
-    text() {
-      this.init()
-    },
-    height() {
-      this.init()
+    initializedOptions() {
+      this.handleResize()
     }
   },
   mounted() {
-    this.init()
+    this.handleResize()
   },
   methods: {
     init() {
       if (!this.disabled && !this.enableCss) {
-        setTimeout(() => {
+        this.$nextTick(() => {
           this.computeText()
           this.limitShow()
         })
@@ -273,7 +212,18 @@ export default {
                 ? cutStrByFullLength(text, this.length)
                 : text.slice(0, this.length)
             }
-          } else {
+          }
+          // 按照容器大小
+          else {
+            // 超出宽度
+            const containerWidth = $text.parentElement.clientWidth
+            const elementWidth = parseInt(window.getComputedStyle($text).width)
+            if (elementWidth > containerWidth) {
+              // 超出容器，执行相应操作
+              this.oversize = true
+              $more.style.display = 'inline-block'
+            }
+
             if ($el.offsetHeight > height) {
               this.oversize = true
               $more.style.display = 'inline-block'
@@ -309,7 +259,8 @@ export default {
           }
         }
       })
-    }
+    },
+    handleResize: _throttle(this.init, 150, { leading: false })
   }
 }
 </script>
