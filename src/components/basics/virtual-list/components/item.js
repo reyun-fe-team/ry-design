@@ -1,12 +1,14 @@
 // wrapping for item
-import Wrapper from './wrapper'
-import { ItemProps } from './props'
+import { prefix } from '@src/config.js'
+import Wrapper from '../mixins/wrapper'
+import { ItemProps } from '../props'
+
+const prefixCls = prefix + 'virtual-list-item'
+
 export default {
-  name: 'VirtualListItem',
+  name: prefixCls,
   mixins: [Wrapper],
-
   props: ItemProps,
-
   render(h) {
     const {
       tag,
@@ -18,18 +20,15 @@ export default {
       uniqueKey,
       slotComponent
     } = this
-    const props = {
-      ...extraProps,
-      source,
-      index
-    }
+
+    const props = Object.assign({}, extraProps || {}, { source, index })
 
     return h(
       tag,
       {
         key: uniqueKey,
         attrs: {
-          role: 'listitem'
+          role: `${prefix}virtual-list-item`
         }
       },
       [
