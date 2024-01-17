@@ -1,64 +1,121 @@
 
 <template>
-  <rd-tree-select
-    v-model="value"
-    width="400"
-    multiple
-    show-select-option
-    show-checkbox
-    :data="data"></rd-tree-select>
-  <!-- <div>123</div> -->
+  <div>
+    多选事例:{{ value }}
+    <hr />
+    <rd-tree-select
+      v-model="value"
+      label="多选: "
+      multiple
+      show-select-option
+      show-checkbox
+      check-strictly
+      filterable
+      clearable
+      :data="data"
+      :max-height="300"
+      :max-width="500"></rd-tree-select>
+
+    单选事例:{{ value }}
+    <hr />
+    <rd-tree-select
+      v-model="valueRadio"
+      label="单选: "
+      check-strictly
+      filterable
+      clearable
+      :data="data"
+      :max-width="500"
+      :max-height="300"></rd-tree-select>
+  </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      value: [],
+      value: ['西瓜'],
+      valueRadio: '',
       data: [
         {
-          title: 'parent1',
+          title: '地球',
           expand: true,
-          value: 'parent1',
+          value: '地球',
           selected: false,
           checked: false,
           children: [
             {
-              title: 'parent 1-1',
+              title: '水果',
               expand: true,
-              value: 'parent1-1',
+              value: '水果',
               selected: false,
               checked: false,
               children: [
                 {
-                  title: 'leaf 1-1-1',
-                  value: 'leaf1',
+                  title: '西瓜',
+                  value: '西瓜',
                   selected: false,
-                  checked: false
+                  checked: false,
+                  children: [
+                    {
+                      title:
+                        '西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉',
+                      value: '西瓜肉',
+                      selected: false,
+                      checked: false
+                    },
+                    {
+                      title: '西瓜籽',
+                      value: '西瓜籽',
+                      selected: false,
+                      checked: false
+                    }
+                  ]
                 },
                 {
-                  title: 'leaf 1-1-2',
-                  value: 'leaf2',
+                  title: '香蕉',
+                  value: '香蕉',
                   selected: false,
                   checked: false
                 }
               ]
             },
             {
-              title: 'parent 1-2',
+              title: '北京',
               expand: true,
-              value: 'parent1-2',
+              value: '北京',
               selected: false,
               checked: false,
               children: [
                 {
-                  title: 'leaf 1-2-1',
-                  value: 'leaf3',
+                  title: '朝阳',
+                  value: '朝阳',
                   selected: false,
                   checked: false
                 },
                 {
-                  title: 'leaf 1-2-1',
-                  value: 'leaf4',
+                  title: '昌平',
+                  value: '昌平',
+                  selected: false,
+                  checked: false
+                }
+              ]
+            },
+            {
+              title: '上海',
+              expand: true,
+              value: '上海',
+              selected: false,
+              checked: false,
+              children: [
+                {
+                  title: '南京路',
+                  value: '南京路',
+                  selected: false,
+                  checked: false
+                },
+                {
+                  title: '外滩',
+                  value: '外滩',
                   selected: false,
                   checked: false
                 }

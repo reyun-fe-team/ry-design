@@ -12,14 +12,20 @@
     :transfer-class-name="transferClassName"
     hide-not-found
     :transfer="transfer"
-    @on-change="handleChange"
+    @on-change="emitChange"
     @on-open-change="handleOpenChange">
    
   </Select> -->
-    {{ currentValue }}
+    currentValue:{{ currentValue }}
+    <hr />
+    storeValue:{{ storeValue }}
+    <hr />
+    optionData:{{ optionData }}
+    <hr />
+    selectData:{{ selectData.length }}--{{ selectData }}
     <rd-filter-list
       ref="filter-list"
-      v-model="currentValue"
+      :value="realData"
       :real-data="realData"
       :data="optionData"
       :label="label"
@@ -35,7 +41,7 @@
       :max-height="maxHeight"
       :min-height="minHeight"
       :filterable="filterable"
-      :show-select-option="showSelectOption"
+      :show-select-option="showSelectOption && multiple"
       :clearable="clearable"
       :input-placeholder="inputPlaceholder"
       :filter-placeholder="filterPlaceholder"
@@ -46,26 +52,27 @@
       @on-input-click="handleInputClick"
       @on-input-clear="handleInputClear"
       @on-change="handleFilterListChange">
-      <Tree
-        :data="data"
-        :multiple="multiple"
-        check-strictly
-        :show-checkbox="multiple && showCheckbox"
-        check-directly
-        :load-data="loadData"
-        @on-select-change="handleSelectNode"
-        @on-check-change="handleSelectNode"></Tree>
+      <div
+        :style="panelStyle"
+        :class="prefixCls + '-body'">
+        <Tree
+          :data="data"
+          check-directly
+          :multiple="multiple"
+          :show-checkbox="multiple && showCheckbox"
+          :load-data="loadData"
+          @on-select-change="handleSelectNode"
+          @on-check-change="handleSelectNode"></Tree>
+      </div>
     </rd-filter-list>
   </div>
 </template>
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'tree-select'
-import _cloneDeep from 'lodash/cloneDeep'
+import _isEqual from 'lodash/isEqual'
 export default {
   name: prefixCls,
-  components: {},
-  mixins: [],
   props: {
     value: {
       type: [String, Number, Array]
@@ -129,7 +136,15 @@ export default {
     clearable: Boolean,
     inputPlaceholder: String,
     filterPlaceholder: String,
-    placement: String
+    placement: String,
+    checkStrictly: {
+      type: Boolean,
+      default: false
+    },
+    maxWidth: {
+      type: [String, Number],
+      default: ''
+    }
   },
   data() {
     let value = this.value
@@ -144,40 +159,65 @@ export default {
     return {
       currentValue: value,
       isChangeValueInTree: false, // 如果是点击 Tree 里改变的数据，临时置为 true，避免在 watch 的 value 中重复修改 Select 数据
-      isValueChangeByTree: false, // 多选时，用于判定是否是从 Select 的 Tag 关闭的标签
       isValueNull: false, // hack：解决 value 置为 null 时，$emit:input 不是 null
-      // filer-list
-      query: ''
+      query: '',
+      storeValue: [],
+      prefixCls
     }
   },
   computed: {
     valueToArray() {
-      return typeof this.currentValue === 'object' ? this.currentValue : [this.currentValue]
+      return typeof this.value === 'object' ? this.value : [this.value]
+    },
+    storeValueToArray() {
+      return typeof this.storeValue === 'object' ? this.storeValue : [this.storeValue]
     },
     isCheckboxUsable() {
       return this.multiple && this.showCheckbox
     },
-    transferClassName() {
-      return this.transfer ? 'ivu-tree-select-transfer' : ''
-    },
-    classes() {
-      return {
-        'ivu-tree-select-with-checkbox': this.showCheckbox
-      }
-    },
     realData() {
-      let value = this.value
-      if (value === null) {
-        if (this.multiple) {
-          value = []
-        } else {
-          value = ''
-        }
-      }
-      return _cloneDeep(value)
+      return this.optionData.map(val => val.value)
     },
     optionData() {
-      return []
+      let filter = []
+      let list = []
+      // parentValue[node leaf 父亲label]
+      this.selectData
+        .filter(val => val.parentValue !== 'node')
+        .forEach(val => {
+          const { parentValue } = val
+
+          if (parentValue !== 'leaf' && !filter.includes(parentValue)) {
+            filter.push(parentValue)
+            list.push(val)
+          } else if (parentValue === 'leaf') {
+            filter.push(val.value)
+            list.push(val)
+          }
+        })
+      return list
+    },
+    selectData() {
+      if (!this.storeValue.length) {
+        return []
+      }
+      let list = []
+      this.data.forEach(item => {
+        this.getOptionData(item, list)
+      })
+      return list
+    },
+    panelStyle() {
+      let style = {}
+      if (this.maxWidth) {
+        const maxWidth = parseInt(this.maxWidth)
+        style.maxWidth = `${maxWidth}px`
+      }
+      if (this.maxHeight) {
+        const maxHeight = parseInt(this.maxHeight)
+        style.maxHeight = `${maxHeight}px`
+      }
+      return style
     }
   },
   watch: {
@@ -194,123 +234,200 @@ export default {
             value = ''
           }
         }
-        this.currentValue = value
-        // TODO
-        // this.$refs.select.reset()
-        this.handleUpdateTreeNodes(this.data, true)
+
+        let list = []
+        this.handleUpdateTreeNodes({
+          data: this.data,
+          list,
+          checkStrictly: this.checkStrictly,
+          isInit: true
+        })
+        console.log(list, 'watch-value')
+        this.storeValue = list
       }
     },
-    data() {
-      if (this.isChangeValueInTree) {
-        this.isChangeValueInTree = false
-      } else {
-        // TODO
-        // this.$refs.select.reset()
-        this.handleUpdateTreeNodes(this.data, true)
+    data: {
+      handler(newVal, oldVal) {
+        if (this.isChangeValueInTree) {
+          this.isChangeValueInTree = false
+        } else if (!_isEqual(newVal, oldVal)) {
+          let list = []
+          this.handleUpdateTreeNodes({
+            data: this.data,
+            list,
+            checkStrictly: this.checkStrictly,
+            isInit: true
+          })
+          console.log(list, 'watch-data', _isEqual(newVal, oldVal))
+          this.storeValue = list
+        }
       }
     }
   },
   mounted() {
-    this.handleUpdateTreeNodes(this.data, true)
+    let list = []
+    this.handleUpdateTreeNodes({
+      data: this.data,
+      list,
+      checkStrictly: this.checkStrictly,
+      isInit: true
+    })
+    console.log(list, 'mounted')
+    this.storeValue = list
   },
   methods: {
+    getOptionData(item, list, info) {
+      const checked = this.storeValue.includes(item.value)
+      // 选中
+      if (checked) {
+        if (item.children && item.children.length) {
+          // 添加空的占位
+          list.push({
+            // 自己的
+            label: item.title,
+            // 自己的
+            value: item.value,
+            // 自己的
+            myLabel: item.title,
+            // 优选父节点
+            parentValue: 'node'
+          })
+          item.children.forEach(val => {
+            const _info = info || {
+              parentLabel: item.title,
+              parentValue: item.value
+            }
+
+            this.getOptionData(val, list, _info)
+          })
+        } else {
+          list.push({
+            // 优选父节点
+            label: info ? info.parentLabel : item.title,
+            // 自己的
+            value: item.value,
+            // 自己的
+            myLabel: item.title,
+            // 优选父节点
+            parentValue: info ? info.parentValue : 'leaf'
+          })
+        }
+      } else {
+        // 未选中
+        if (item.children && item.children.length) {
+          item.children.forEach(val => {
+            // 循环子集
+            this.getOptionData(val, list, info)
+          })
+        }
+      }
+    },
+    // 删除
+    handleFilterListChange(values) {
+      const list = this.optionData.filter(val => values.includes(val.value))
+
+      let newValues = []
+      list.forEach(item => {
+        if (item.parentValue === 'leaf') {
+          let find = this.selectData.find(val => val.value === item.value)
+          newValues.push(find.value)
+        } else {
+          let complete = this.selectData.filter(val => val.parentValue === item.parentValue)
+          // 找父节点
+          if (complete.length) {
+            let findParent = this.selectData.find(val => val.value === complete[0].parentValue)
+            if (findParent) {
+              complete.push(findParent)
+            }
+          }
+          const completeValues = complete.map(val => val.value)
+          newValues = [...newValues, ...completeValues]
+        }
+      })
+      this.storeValue = this.storeValue.filter(val => newValues.includes(val))
+      this.handleUpdateTreeNodes({ data: this.data })
+      this.isChangeValueInTree = true
+      this.emitChange()
+      console.log(newValues, 'leafData')
+    },
+    // tree click
     handleSelectNode(selectedNodes, currentNode) {
       if (this.multiple) {
         if (selectedNodes.length) {
-          this.currentValue = selectedNodes.map(item => item.value)
-
-          this.handleUpdateSelectValue(currentNode.value, currentNode.title)
+          this.storeValue = selectedNodes.map(item => item.value)
         } else {
-          this.currentValue = []
-          this.handleUpdateSelectValue('', '')
+          this.storeValue = []
         }
       } else {
         if (selectedNodes.length) {
           const node = selectedNodes[0]
-          this.currentValue = node.value
-
-          this.handleUpdateSelectValue(node.value, node.title)
+          this.storeValue = node.value
         } else {
-          this.currentValue = ''
-          this.handleUpdateSelectValue('', '')
+          this.storeValue = ''
         }
       }
-
       this.isChangeValueInTree = true
-      this.$emit('input:value', this.currentValue)
-      this.$emit('on-change', this.currentValue)
-      // TODO form
-      // this.handleFormItemChange('change', this.currentValue)
+      this.emitChange()
+      if (!this.multiple && (!currentNode.children || !currentNode.children.length)) {
+        this.closeDropdown()
+      }
     },
-    handleUpdateTreeNodes(data, isInit = false) {
+    // 更新tree
+    handleUpdateTreeNodes({ data, list, state = false, isInit = false, checkStrictly = false }) {
       /**
        * 当开启 showCheckbox 时，不能选择，只能勾选，且只有在多选时支持 showCheckbox 属性
        * */
+      const valueToArray = isInit ? this.valueToArray : this.storeValueToArray
       data.forEach(item => {
-        if (this.valueToArray.indexOf(item.value) >= 0) {
+        if (valueToArray.indexOf(item.value) >= 0 || (checkStrictly && state)) {
           if (this.isCheckboxUsable) {
             item.checked = true
           } else {
             item.selected = true
           }
-          this.handleUpdateSelectValue(item.value, item.title)
+          if (list) {
+            list.push(item.value)
+          }
+          if (item.children && item.children.length) {
+            this.handleUpdateTreeNodes({
+              data: item.children,
+              list,
+              state: true,
+              checkStrictly,
+              isInit
+            })
+          }
         } else {
           if (this.isCheckboxUsable) {
             item.checked = false
           } else {
             item.selected = false
           }
-        }
-
-        if (item.children && item.children.length) {
-          this.handleUpdateTreeNodes(item.children)
+          if (item.children && item.children.length) {
+            this.handleUpdateTreeNodes({ data: item.children, list, checkStrictly, isInit })
+          }
         }
       })
-
-      // Select 在 onOptionClick 方法中，如果是多选，会强制将 isFocused 设置为 true，初始时会有一个蓝框
-      if (isInit) {
-        // TODO
-        // this.$refs.select.isFocused = false
-      }
     },
-    handleUpdateSelectValue(value, label) {
-      if (value === '') {
-        // TODO
-        // this.$refs.select.reset()
-      } else {
-        this.isValueChangeByTree = true
-        // TODO
-        // this.$refs.select.onOptionClick({
-        //   value,
-        //   label
-        // })
+    emitChange() {
+      if (this.isValueNull) {
+        this.isValueNull = false
+        this.$emit('input', null)
+        return
       }
-    },
-    handleChange(value) {
-      if (this.isValueChangeByTree) {
-        this.isValueChangeByTree = false
-      } else {
-        this.currentValue = value
 
-        if (this.isValueNull) {
-          this.isValueNull = false
-          this.$emit('input:value', null)
-        } else {
-          this.$emit('input:value', value)
+      const values = this.optionData.map(val => {
+        if (val.parentValue === 'leaf') {
+          return val.value
+        } else if (val.parentValue !== 'node') {
+          return val.parentValue
         }
-
-        this.$emit('on-change', value)
-        this.handleFormItemChange('change', value)
-        // TODO
-        // this.$refs.select.reset()
-        this.handleUpdateTreeNodes(this.data, true)
-        this.$nextTick(() => {
-          this.isValueChangeByTree = false
-        })
-      }
-    },
-    handleOpenChange(status) {
-      this.$emit('on-open-change', status)
+      })
+      console.log('emit', values)
+      this.$emit('input', values)
+      this.$emit('on-change', values)
+      // TODO form
+      // this.handleFormItemChange('change', this.currentValue)
     },
     // filter
     queryChange(val) {
@@ -320,24 +437,13 @@ export default {
       this.$emit('on-click', val)
     },
     handleInputClear(val) {
-      debugger
-      // this.handleChange()
       this.$emit('on-input-clear', val)
     },
-    handleFilterListChange() {
-      debugger
-    },
     handleVisibleChange(val) {
-      // if (
-      //   !val &&
-      //   this.saveType === 'leave-save' &&
-      //   this.multiple &&
-      //   !_isEqual(this.current, this.value)
-      // ) {
-      //   // console.log('离开触发-emitChange')
-      //   this.emitChange()
-      // }
       this.$emit('on-visible-change', val)
+    },
+    closeDropdown() {
+      this.$refs['filter-list'].closeDropdown()
     }
   }
 }
