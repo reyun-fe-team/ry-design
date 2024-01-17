@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { typeOf } from '../../../util/assist'
+import { typeOf, insertInputTextAtCursor } from '@src/util/assist'
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'batch-inputs-row-input'
 
@@ -178,28 +178,11 @@ export default {
 
     // ----------公共方法---------
     insertTextAtCursor(textToInsert) {
-      const insertedTextLength = textToInsert.length
-      if (insertedTextLength < 1) {
-        return
-      }
-
       const input = this.$refs.Input
-      const selectionStart = input.selectionStart
-      const selectionEnd = input.selectionEnd
-      const inputValue = input.value
-      const before = inputValue.substring(0, selectionStart)
-      const after = inputValue.substring(selectionEnd)
-
-      input.value = before + textToInsert + after
-      this.currentValue = input.value
-      this.$emit('input', this.currentValue)
-      this.$emit('on-change', this.currentValue)
-
-      // 使用 requestAnimationFrame 确保在下一帧渲染前执行
-      window.requestAnimationFrame(() => {
-        // 重新设置光标位置（将光标移动到插入文字的末尾）
-        const position = selectionStart + insertedTextLength
-        input.setSelectionRange(position, position)
+      insertInputTextAtCursor(input, textToInsert, value => {
+        this.currentValue = value
+        this.$emit('input', this.currentValue)
+        this.$emit('on-change', this.currentValue)
       })
     },
     // 计算字数
