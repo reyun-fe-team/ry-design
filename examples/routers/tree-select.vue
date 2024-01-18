@@ -16,14 +16,11 @@
       :max-height="300"
       :max-width="500"></rd-tree-select>
 
-    单选事例:{{ value }}
+    单选事例:{{ valueRadio }}
     <hr />
     <rd-tree-select
       v-model="valueRadio"
       label="单选: "
-      check-strictly
-      filterable
-      clearable
       :data="data"
       :max-width="500"
       :max-height="300"></rd-tree-select>
@@ -34,7 +31,7 @@ export default {
   data() {
     return {
       value: ['西瓜'],
-      valueRadio: '',
+      valueRadio: '水果',
       data: [
         {
           title: '地球',
@@ -57,8 +54,7 @@ export default {
                   checked: false,
                   children: [
                     {
-                      title:
-                        '西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉',
+                      title: '西瓜肉',
                       value: '西瓜肉',
                       selected: false,
                       checked: false
