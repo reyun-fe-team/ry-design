@@ -3,12 +3,13 @@
 
 <template>
   <div>
-    <hr />
+    {{ querySelections }}
+    <!-- <hr />
     storeValue:{{ storeValue }}
     <hr />
     optionData:{{ optionData }}
-    <hr />
-    selectData:{{ selectData.length }}--{{ selectData }}
+    <hr /> -->
+    <!-- selectData:{{ selectData.length }}--{{ selectData }} -->
 
     <rd-filter-list
       ref="filter-list"
@@ -42,7 +43,13 @@
       <div
         :style="panelStyle"
         :class="prefixCls + '-body'">
+        <rd-tree-select-search-list
+          v-show="query.trim()"
+          :query-selections="querySelections"
+          @search-item-change="searchItemChange"></rd-tree-select-search-list>
         <Tree
+          v-show="!query.trim()"
+          ref="tree"
           :data="data"
           check-directly
           :multiple="multiple"
@@ -52,15 +59,16 @@
           @on-check-change="handleSelectNode"></Tree>
       </div>
     </rd-filter-list>
-    {{ data }}
   </div>
 </template>
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'tree-select'
 import _isEqual from 'lodash/isEqual'
+import RdTreeSelectSearchList from './tree-select-search-list'
 export default {
   name: prefixCls,
+  components: { RdTreeSelectSearchList },
   props: {
     value: {
       type: [String, Number, Array]
@@ -147,7 +155,7 @@ export default {
     return {
       isChangeValueInTree: false, // 如果是点击 Tree 里改变的数据，临时置为 true，避免在 watch 的 value 中重复修改 Select 数据
       isValueNull: false, // hack：解决 value 置为 null 时，$emit:input 不是 null
-      query: '',
+      query: '1',
       storeValue: [],
       prefixCls
     }
@@ -209,6 +217,114 @@ export default {
         style.maxHeight = `${maxHeight}px`
       }
       return style
+    },
+    querySelections() {
+      let selections = []
+      const { query } = this
+      function getSelections(arr, title, value) {
+        for (let i = 0; i < arr.length; i++) {
+          let item = arr[i]
+          item.__title = title ? title + ' / ' + item.title : item.title
+          item.__value = value ? value + ',' + item.value : item.value
+
+          if (item.title.indexOf(query) > -1) {
+            selections.push({
+              title: item.__title,
+              value: item.__value,
+              display: item.__title,
+              item: {
+                title: item.title,
+                value: item.value,
+                checked: item.checked,
+                selected: item.selected,
+                nodeKey: item.nodeKey
+              },
+              disabled: !!item.disabled
+            })
+          }
+
+          if (item.children && item.children.length) {
+            getSelections(item.children, item.__title, item.__value)
+            delete item.__title
+            delete item.__value
+            delete item._list
+          } else {
+            // selections.push({
+            //   title: item.__title,
+            //   value: item.__value,
+            //   display: item.__title,
+            //   item: {
+            //     title: item.title,
+            //     value: item.value,
+            //     checked: item.checked,
+            //     selected: item.selected,
+            //     nodeKey: item.nodeKey
+            //   },
+            //   disabled: !!item.disabled
+            // })
+          }
+        }
+      }
+      getSelections(this.data)
+      selections = selections
+        .filter(item => {
+          return item.title ? item.title.indexOf(this.query) > -1 : false
+        })
+        .map(item => {
+          item.display = item.display.replace(
+            new RegExp(this.query, 'g'),
+            `<span>${this.query}</span>`
+          )
+          return item
+        })
+      return selections
+    },
+    // querySelections() {
+    //   let selections = []
+    //   function getSelections(arr, title, value) {
+    //     for (let i = 0; i < arr.length; i++) {
+    //       let item = arr[i]
+    //       item.__title = title ? title + ' / ' + item.title : item.title
+    //       item.__value = value ? value + ',' + item.value : item.value
+
+    //       if (item.children && item.children.length) {
+    //         getSelections(item.children, item.__title, item.__value)
+    //         delete item.__title
+    //         delete item.__value
+    //         delete item._list
+    //       } else {
+    //         selections.push({
+    //           title: item.__title,
+    //           value: item.__value,
+    //           display: item.__title,
+    //           item: {
+    //             title: item.title,
+    //             value: item.value,
+    //             checked: item.checked,
+    //             selected: item.selected,
+    //             nodeKey: item.nodeKey
+    //           },
+    //           disabled: !!item.disabled
+    //         })
+    //       }
+    //     }
+    //   }
+    //   getSelections(this.data)
+    //   selections = selections
+    //     .filter(item => {
+    //       return item.title ? item.title.indexOf(this.query) > -1 : false
+    //     })
+    //     .map(item => {
+    //       item.display = item.display.replace(
+    //         new RegExp(this.query, 'g'),
+    //         `<span>${this.query}</span>`
+    //       )
+    //       return item
+    //     })
+    //   return selections
+    // },
+    curQuerySelections() {
+      return []
     }
   },
   watch: {
@@ -255,8 +371,30 @@ export default {
       }
     }
   },
+  created() {
+    // function deepFirstTraverse(node, callback) {
+    //   // 如果节点是叶子节点
+    //   if (!node.children || node.children.length === 0) {
+    //     callback(node)
+    //     return
+    //   }
+    //   // 遍历子节点
+    //   node.children.forEach(child => {
+    //     deepFirstTraverse(child, callback)
+    //   })
+    //   // 完成子节点遍历后处理该节点
+    //   callback(node)
+    // }
+    // this.data.forEach(item => {
+    //   // 使用
+    //   deepFirstTraverse(item, node => {
+    //     console.log(node.title, '---')
+    //   })
+    // })
+  },
   mounted() {
     let list = []
+
     this.handleUpdateTreeNodes({
       data: this.data,
       list,
@@ -267,6 +405,18 @@ export default {
     this.storeValue = list
   },
   methods: {
+    searchItemChange(index) {
+      const item = this.querySelections[index]
+
+      if (item.item.disabled) {
+        return false
+      }
+      this.$refs['tree'].handleCheck({
+        checked: !item.item.checked,
+        nodeKey: item.item.nodeKey
+      })
+      //this.query = ''
+    },
     getOptionData(item, list, info) {
       const checked = this.storeValue.includes(item.value)
       // 选中

@@ -1,8 +1,36 @@
 @tree-select: ~"@{css-prefix}tree-select";
+@tree-select-search-list: ~"@{css-prefix}tree-select-search-list";
 .@{tree-select} {
   &-body {
     padding: 8px;
     overflow-x: auto;
     .small-scroll-y();
+  }
+}
+
+.@{tree-select-search-list} {
+  li {
+    display: flex;
+    padding: 7px 16px;
+    margin: 0;
+    clear: both;
+    font-size: 14px !important;
+    line-height: normal;
+    color: #515a6e;
+    white-space: nowrap;
+    list-style: none;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    align-items: center;
+  }
+
+  span {
+    color: #ed4014;
+  }
+
+  &-not-found-tip {
+    padding: 5px 0;
+    color: #c5c8ce;
+    text-align: center;
   }
 }
