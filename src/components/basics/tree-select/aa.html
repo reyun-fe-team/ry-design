@@ -1,0 +1,125 @@
+<html>
+
+<script>
+const originalList = [
+  {
+    title: "地球",
+    expand: true,
+    value: "地球",
+    selected: false,
+    checked: false,
+    children: [
+      {
+        title: "水果1",
+        expand: true,
+        value: "水果",
+        selected: false,
+        checked: false,
+        children: [
+          {
+            title: "西瓜1",
+            value: "西瓜",
+            selected: false,
+            checked: false
+          },
+          {
+            title: "香蕉",
+            value: "香蕉",
+            selected: false,
+            checked: false
+          }
+        ]
+      },
+      {
+        title: "北京",
+        expand: true,
+        value: "北京",
+        selected: false,
+        checked: false,
+        children: [
+          {
+            title: "朝阳1",
+            value: "朝阳",
+            selected: false,
+            checked: false
+          },
+          {
+            title: "昌平",
+            value: "昌平",
+            selected: false,
+            checked: false
+          }
+        ]
+      },
+      {
+        title: "上海",
+        expand: true,
+        value: "上海",
+        selected: false,
+        checked: false,
+        children: [
+          {
+            title: "南京路",
+            value: "南京路",
+            selected: false,
+            checked: false
+          },
+          {
+            title: "外滩",
+            value: "外滩",
+            selected: false,
+            checked: false
+          }
+        ]
+      }
+    ]
+  }
+];
+
+// function filterTitleWithOne(node) {
+//   if (Array.isArray(node.children)) {
+//     node.children = node.children.filter(filterTitleWithOne);
+//   }
+//   return node.title.includes("1") || (Array.isArray(node.children) && node.children.length > 0);
+// }
+
+// const intermediateList = originalList.filter(filterTitleWithOne);
+
+// console.log(JSON.stringify(intermediateList));
+
+
+function filterTitleWithOne(node) {
+  if (!Array.isArray(node.children)) {
+    return node.title.includes("1");
+  }
+
+  const filteredChildren = node.children.filter(filterTitleWithOne);
+  if (filteredChildren.length > 0) {
+    node.filteredChildren = filteredChildren;
+  }
+  
+  return node.title.includes("1") || filteredChildren.length > 0;
+}
+
+const intermediateList = originalList.map(node => {
+  if (filterTitleWithOne(node)) {
+    const newNode = Object.assign({}, node);
+
+    if (node.filteredChildren) {
+      newNode.children = node.filteredChildren;
+    }
+
+    return newNode;
+  }
+}).filter(node => node !== undefined);
+
+const list1 = intermediateList;
+
+list1.splice(0,1)
+
+console.log(JSON.stringify(list1, null, 2));
+console.log(JSON.stringify(intermediateList, null, 2));
+
+</script>
+
+</html>

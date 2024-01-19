@@ -3,7 +3,7 @@
 
 <template>
   <div>
-    {{ querySelections }}
+    <!-- querySelections:{{ querySelections }} -->
     <!-- <hr />
     storeValue:{{ storeValue }}
     <hr />
@@ -43,14 +43,13 @@
       <div
         :style="panelStyle"
         :class="prefixCls + '-body'">
-        <rd-tree-select-search-list
+        <!-- <rd-tree-select-search-list
           v-show="query.trim()"
           :query-selections="querySelections"
-          @search-item-change="searchItemChange"></rd-tree-select-search-list>
+          @search-item-change="searchItemChange"></rd-tree-select-search-list> -->
         <Tree
-          v-show="!query.trim()"
           ref="tree"
-          :data="data"
+          :data="querySelections"
           check-directly
           :multiple="multiple"
           :show-checkbox="multiple && showCheckbox"
@@ -65,6 +64,7 @@
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'tree-select'
 import _isEqual from 'lodash/isEqual'
+import _cloneDeep from 'lodash/cloneDeep'
 import RdTreeSelectSearchList from './tree-select-search-list'
 export default {
   name: prefixCls,
@@ -219,112 +219,23 @@ export default {
       return style
     },
     querySelections() {
-      let selections = []
       const { query } = this
-      function getSelections(arr, title, value) {
-        for (let i = 0; i < arr.length; i++) {
-          let item = arr[i]
-          item.__title = title ? title + ' / ' + item.title : item.title
-          item.__value = value ? value + ',' + item.value : item.value
-
-          if (item.title.indexOf(query) > -1) {
-            selections.push({
-              title: item.__title,
-              value: item.__value,
-              display: item.__title,
-              item: {
-                title: item.title,
-                value: item.value,
-                checked: item.checked,
-                selected: item.selected,
-                nodeKey: item.nodeKey
-              },
-              disabled: !!item.disabled
-            })
-          }
-
-          if (item.children && item.children.length) {
-            getSelections(item.children, item.__title, item.__value)
-            delete item.__title
-            delete item.__value
-            delete item._list
-          } else {
-            // selections.push({
-            //   title: item.__title,
-            //   value: item.__value,
-            //   display: item.__title,
-            //   item: {
-            //     title: item.title,
-            //     value: item.value,
-            //     checked: item.checked,
-            //     selected: item.selected,
-            //     nodeKey: item.nodeKey
-            //   },
-            //   disabled: !!item.disabled
-            // })
-          }
+      // item.display = item.display.replace(new RegExp(this.query, 'g'), `<span>${this.query}</span>`)
+      function filterTitleWithOne(node) {
+        if (Array.isArray(node.children)) {
+          node.children = node.children.filter(filterTitleWithOne)
         }
+        return (
+          node.title.includes(query) || (Array.isArray(node.children) && node.children.length > 0)
+        )
       }
-      getSelections(this.data)
-      selections = selections
-        .filter(item => {
-          return item.title ? item.title.indexOf(this.query) > -1 : false
-        })
-        .map(item => {
-          item.display = item.display.replace(
-            new RegExp(this.query, 'g'),
-            `<span>${this.query}</span>`
-          )
-          return item
-        })
-      return selections
-    },
-    // querySelections() {
-    //   let selections = []
-    //   function getSelections(arr, title, value) {
-    //     for (let i = 0; i < arr.length; i++) {
-    //       let item = arr[i]
-    //       item.__title = title ? title + ' / ' + item.title : item.title
-    //       item.__value = value ? value + ',' + item.value : item.value
-
-    //       if (item.children && item.children.length) {
-    //         getSelections(item.children, item.__title, item.__value)
-    //         delete item.__title
-    //         delete item.__value
-    //         delete item._list
-    //       } else {
-    //         selections.push({
-    //           title: item.__title,
-    //           value: item.__value,
-    //           display: item.__title,
-    //           item: {
-    //             title: item.title,
-    //             value: item.value,
-    //             checked: item.checked,
-    //             selected: item.selected,
-    //             nodeKey: item.nodeKey
-    //           },
-    //           disabled: !!item.disabled
-    //         })
-    //       }
-    //     }
-    //   }
-    //   getSelections(this.data)
-    //   selections = selections
-    //     .filter(item => {
-    //       return item.title ? item.title.indexOf(this.query) > -1 : false
-    //     })
-    //     .map(item => {
-    //       item.display = item.display.replace(
-    //         new RegExp(this.query, 'g'),
-    //         `<span>${this.query}</span>`
-    //       )
-    //       return item
-    //     })
-    //   return selections
-    // },
-    curQuerySelections() {
-      return []
+      //const intermediateList = JSON.parse(JSON.stringify(this.data)).filter(filterTitleWithOne)
+      debugger
+      const intermediateList = this.data.filter(filterTitleWithOne)
+      console.log(intermediateList)
+      console.log('-------')
+      console.log(this.data)
+      return intermediateList
     }
   },
   watch: {
@@ -405,6 +316,23 @@ export default {
     this.storeValue = list
   },
   methods: {
+    treeEach(par) {
+      if (par.children && par.children.length) {
+        par.children = par.children.filter(item => {
+          item.title
+        })
+      }
+
+      // for (let i = 0; i < treeData.length; i++) {
+      //   const data = treeData[i]
+      //   callback(data, i, treeData, parent)
+
+      //   const children = getChildren(data)
+      //   if (isValidArray(children)) {
+      //     treeEach(children, callback, getChildren, data)
+      //   }
+      // }
+    },
     searchItemChange(index) {
       const item = this.querySelections[index]
 
