@@ -119,7 +119,7 @@ export default class TreeStore {
       const node = nodesMap[checkedKey]
 
       if (node) {
-        node.setChecked(true, !this.checkStrictly, this.deepDownCheck, this.deepUpCheck)
+        node.setChecked(true, !this.checkStrictly, this.deepUpCheck)
       }
     })
   }
@@ -128,7 +128,7 @@ export default class TreeStore {
     const defaultCheckedKeys = this.defaultCheckedKeys || []
 
     if (defaultCheckedKeys.indexOf(node.key) !== -1) {
-      node.setChecked(true, !this.checkStrictly, this.deepDownCheck, this.deepUpCheck)
+      node.setChecked(true, !this.checkStrictly, this.deepUpCheck)
     }
   }
 
@@ -245,14 +245,14 @@ export default class TreeStore {
     const allNodes = this._getAllNodes().sort((a, b) => b.level - a.level)
     const cache = Object.create(null)
     const keys = Object.keys(checkedKeys)
-    allNodes.forEach(node => node.setChecked(false, false, false, false))
+    allNodes.forEach(node => node.setChecked(false, false, false))
     for (let i = 0, j = allNodes.length; i < j; i++) {
       const node = allNodes[i]
       const nodeKey = node.data[key].toString()
       let checked = keys.indexOf(nodeKey) > -1
       if (!checked) {
         if (node.checked && !cache[nodeKey]) {
-          node.setChecked(false, false, false, false)
+          node.setChecked(false, false, false)
         }
         continue
       }
@@ -264,18 +264,18 @@ export default class TreeStore {
       }
       // TODO
       if (node.isLeaf || this.checkStrictly) {
-        node.setChecked(true, false, false, false)
+        node.setChecked(true, false, false)
         continue
       }
       node.setChecked(true, true, this.deepUpCheck)
 
       if (leafOnly) {
-        node.setChecked(false, false, false, false)
+        node.setChecked(false, false, false)
         const traverse = function (node) {
           const childNodes = node.childNodes
           childNodes.forEach(child => {
             if (!child.isLeaf) {
-              child.setChecked(false, false, false, false)
+              child.setChecked(false, false, false)
             }
             traverse(child)
           })
@@ -318,11 +318,11 @@ export default class TreeStore {
     })
   }
 
-  setChecked(data, checked, deep, deepDownCheck, deepUpCheck) {
+  setChecked(data, checked, deep, deepUpCheck) {
     const node = this.getNode(data)
 
     if (node) {
-      node.setChecked(!!checked, deep, deepDownCheck, deepUpCheck)
+      node.setChecked(!!checked, deep, deepUpCheck)
     }
   }
 

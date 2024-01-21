@@ -129,7 +129,7 @@ export default {
 
     const tree = this.tree
     if (!tree) {
-      console.warn('Can not find node\'s tree.')
+      console.warn("Can not find node's tree.")
     }
     const props = tree.props || {}
     const childrenKey = props['children'] || 'children'
@@ -202,12 +202,7 @@ export default {
       }
     },
     handleCheckChange(checked) {
-      this.node.setChecked(
-        checked,
-        !this.tree.checkStrictly,
-        this.tree.deepDownCheck,
-        this.tree.deepUpCheck
-      )
+      this.node.setChecked(checked, !this.tree.checkStrictly, this.tree.deepUpCheck)
       this.$nextTick(() => {
         const store = this.tree.store
         this.tree.$emit('check', this.node.data, {
