@@ -24,6 +24,8 @@ export default function (Vue) {
     }
     const RyTooltipProps = Vue.observable({
       ...options,
+      // 组件更新后设置创建 tooltip
+      compUpdatedVisible: false,
       transfer: true,
       theme: 'light',
       reference: target
@@ -74,6 +76,27 @@ export default function (Vue) {
     }
   }
 
+  function destroyTooltip(event) {
+    const el = event.target
+    const tooltipRef = el._tooltipRef
+    if (tooltipRef) {
+      // 销毁浮层
+      tooltipRef.$destroy()
+      // 删除对应的配置数据
+      next(() => {
+        delete el._tooltipOption
+        delete el._tooltipRef
+        delete tooltipOptionsMap[tooltipRef._uid]
+      })
+    }
+  }
+
+  function next(fn) {
+    Vue.nextTick(() => {
+      window.requestAnimationFrame(() => fn && fn())
+    })
+  }
+
   return {
     // 绑定（触发一次）
     bind(el, binding) {
@@ -102,6 +125,21 @@ export default function (Vue) {
             nowOptions[key] = binding.value[key]
           }
         }
+      }
+
+      // 自动展开或关闭（组件更新时触发）
+      if (binding.value && 'compUpdatedVisible' in binding.value) {
+        next(() => {
+          const isShow = binding.value.compUpdatedVisible === true
+          isShow ? showTooltip({ target: el }) : hideTooltip({ target: el })
+        })
+      }
+
+      // 销毁
+      if (!binding.value) {
+        next(() => {
+          destroyTooltip({ target: el })
+        })
       }
     },
     // 销毁组件（触发一次）

@@ -16,8 +16,9 @@ import Ellipsis from './components/basics/ellipsis'
 import TableMultiInputs from './components/basics/table-multi-inputs'
 import TextEmojInput from './components/basics/text-emoj-input'
 import Icon from './components/basics/icon'
-import { TextInputList, VirtualList } from './components/basics/text-input-list'
-import TextInputListManage from './components/basics/text-input-list-manage'
+import TextInputList from './components/basics/text-input-list'
+import VirtualList from './components/basics/virtual-list'
+import BatchInputs from './components/basics/batch-inputs'
 import Wildcard from './components/basics/wildcard'
 import CascaderTransfer from './components/basics/cascader-transfer'
 import Exception from './components/basics/exception'
@@ -36,6 +37,9 @@ import Empty from './components/basics/empty'
 import Space from './components/basics/space'
 import CarouselPreviewer from './components/basics/carousel-previewer'
 import TreeSelect from './components/basics/tree-select'
+import Tree from './components/basics/tree'
+import CollapseTransition from './components/basics/transitions/collapse-transition'
+
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
@@ -160,10 +164,12 @@ const components = [
   FilterArea,
   Space,
   PlacementLocation,
-  TextInputListManage,
+  BatchInputs,
   ErrorPreventModal,
   CarouselPreviewer,
-  TreeSelect
+  TreeSelect,
+  Tree,
+  CollapseTransition
 ]
 
 // 对象式-指令
@@ -199,7 +205,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default {
   version: process.env.VERSION,
   install,
-  TextInputListManage,
+  BatchInputs,
   Transfer,
   MultiCascader,
   PrefixContainer,
@@ -254,5 +260,7 @@ export default {
   PlacementLocation,
   ErrorPreventModal,
   CarouselPreviewer,
-  TreeSelect
+  TreeSelect,
+  Tree,
+  CollapseTransition
 }

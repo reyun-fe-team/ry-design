@@ -251,8 +251,8 @@ const router = new VueRouter({
       component: resolve => require(['./routers/placement-location'], resolve)
     },
     {
-      path: '/text-input-list-manage',
-      component: resolve => require(['./routers/text-input-list-manage'], resolve)
+      path: '/batch-inputs',
+      component: resolve => require(['./routers/batch-inputs'], resolve)
     },
     {
       path: '/error-prevent-modal',
@@ -269,6 +269,10 @@ const router = new VueRouter({
     {
       path: '/tree-select',
       component: resolve => require(['./routers/tree-select'], resolve)
+    },
+    {
+      path: '/tree',
+      component: resolve => require(['./routers/tree'], resolve)
     }
   ]
 })
