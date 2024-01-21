@@ -62,6 +62,10 @@ export default {
     },
     nodeKey: String,
     checkStrictly: Boolean,
+    deepUpCheck: {
+      type: Boolean,
+      default: false
+    },
     defaultExpandAll: Boolean,
     expandOnClickNode: {
       type: Boolean,
@@ -280,7 +284,6 @@ export default {
       } else {
         dropType = 'none'
       }
-      debugger
       const iconPosition = dropNode.$el
         .querySelector(prefixCls + '-node-expand-icon')
         .getBoundingClientRect()
@@ -411,11 +414,11 @@ export default {
       this.store.setCheckedNodes(nodes, leafOnly)
     },
 
-    setCheckedKeys(keys, leafOnly) {
+    setCheckedKeys(keys, leafOnly, deepUpCheck) {
       if (!this.nodeKey) {
         throw new Error('[Tree] nodeKey is required in setCheckedKeys')
       }
-      this.store.setCheckedKeys(keys, leafOnly)
+      this.store.setCheckedKeys(keys, leafOnly, deepUpCheck)
     },
 
     setChecked(data, checked, deep) {

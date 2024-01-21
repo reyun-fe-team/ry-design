@@ -69,6 +69,7 @@
             :max-height="maxHeightOption"
             :min-height="minHeightOption"
             :data="optionData"
+            :option-label-method="optionLabelMethod"
             @on-change="optionChange"></filter-list-option>
         </div>
         <!-- :style="styleFooter" -->
@@ -164,7 +165,8 @@ export default {
     showSubtitle: Boolean,
     disabled: Boolean,
     transfer: Boolean,
-    placement: String
+    placement: String,
+    optionLabelMethod: Function
   },
   data() {
     return {

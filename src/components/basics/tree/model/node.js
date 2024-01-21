@@ -22,13 +22,13 @@ export const getChildState = node => {
   return { all, none, allWithoutDisable, half: !all && !none }
 }
 
-const reInitChecked = function (node) {
+const reInitChecked = function (node, deepUpCheck) {
   if (node.childNodes.length === 0 || node.loading) {
     return
   }
 
   const { all, none, half } = getChildState(node.childNodes)
-  if (all) {
+  if (all || (deepUpCheck && half)) {
     node.checked = true
     node.indeterminate = false
   } else if (half) {
@@ -45,7 +45,7 @@ const reInitChecked = function (node) {
   }
 
   if (!node.store.checkStrictly) {
-    reInitChecked(parent)
+    reInitChecked(parent, deepUpCheck)
   }
 }
 
@@ -328,7 +328,7 @@ export default class Node {
       this.loadData(data => {
         if (data instanceof Array) {
           if (this.checked) {
-            this.setChecked(true, true)
+            this.setChecked(true, true, this.deepDownCheck, this.deepUpCheck)
           } else if (!this.store.checkStrictly) {
             reInitChecked(this)
           }
@@ -371,9 +371,20 @@ export default class Node {
     this.isLeaf = false
   }
 
-  setChecked(value, deep, recursion, passValue) {
+  setChecked(value, deep, deepDownCheck, deepUpCheck, recursion, passValue) {
     this.indeterminate = value === 'half'
-    this.checked = value === true
+    // this.checked = value === true
+    if (!deepUpCheck) {
+      this.checked = value === true
+    }
+
+    if (deepUpCheck) {
+      if (!recursion) {
+        this.checked = value === true
+      } else {
+        this.checked = false
+      }
+    }
 
     if (this.store.checkStrictly) {
       return
@@ -393,13 +404,17 @@ export default class Node {
           for (let i = 0, j = childNodes.length; i < j; i++) {
             const child = childNodes[i]
             passValue = passValue || value !== false
-            const isCheck = child.disabled ? child.checked : passValue
-            child.setChecked(isCheck, deep, true, passValue)
+
+            let isCheck = child.disabled ? child.checked : passValue
+
+            child.setChecked(isCheck, deep, deepDownCheck, deepUpCheck, true, passValue)
           }
-          const { half, all } = getChildState(childNodes)
-          if (!all) {
-            this.checked = all
-            this.indeterminate = half
+          if (!deepUpCheck) {
+            const { half, all } = getChildState(childNodes)
+            if (!all) {
+              this.checked = all
+              this.indeterminate = half
+            }
           }
         }
       }
@@ -409,7 +424,8 @@ export default class Node {
         this.loadData(
           () => {
             handleDescendants()
-            reInitChecked(this)
+
+            reInitChecked(this, deepUpCheck)
           },
           {
             checked: value !== false
@@ -427,7 +443,7 @@ export default class Node {
     }
 
     if (!recursion) {
-      reInitChecked(parent)
+      reInitChecked(parent, deepUpCheck)
     }
   }
 
