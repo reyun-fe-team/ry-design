@@ -191,6 +191,7 @@ export default {
       load: this.load,
       currentNodeKey: this.currentNodeKey,
       checkStrictly: this.checkStrictly,
+      deepUpCheck: this.deepUpCheck,
       checkDescendants: this.checkDescendants,
       defaultCheckedKeys: this.defaultCheckedKeys,
       defaultExpandedKeys: this.defaultExpandedKeys,
