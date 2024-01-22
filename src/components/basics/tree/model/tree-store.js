@@ -306,49 +306,16 @@ export default class TreeStore {
     this._setCheckedKeys(key, leafOnly, checkedKeys)
   }
 
-  setUpCheckedKeys(keys) {
+  deleteCheckedKeys(keys, deep = true, deepUpCheck = true) {
     const allNodes = this._getAllNodes().sort((a, b) => b.level - a.level)
-    // const cache = Object.create(null)
-    // const keys = Object.keys(checkedKeys)
-    // allNodes.forEach(node => node.setChecked(false, false, false))
     const key = this.key
     for (let i = 0, j = allNodes.length; i < j; i++) {
       const node = allNodes[i]
       const nodeKey = node.data[key].toString()
       let checked = keys.indexOf(nodeKey) > -1
       if (checked) {
-        // if (node.checked && !cache[nodeKey]) {
-        //   node.setChecked(false, false, false)
-        // }
-        node.setChecked(false, true, true)
-        // continue
+        node.setChecked(false, deep, deepUpCheck)
       }
-
-      // let parent = node.parent
-      // while (parent && parent.level > 0) {
-      //   cache[parent.data[key]] = true
-      //   parent = parent.parent
-      // }
-      // // TODO
-      // if (node.isLeaf || this.checkStrictly) {
-      //   node.setChecked(true, false, false)
-      //   continue
-      // }
-      // node.setChecked(true, true, this.deepUpCheck)
-
-      // if (leafOnly) {
-      //   node.setChecked(false, false, false)
-      //   const traverse = function (node) {
-      //     const childNodes = node.childNodes
-      //     childNodes.forEach(child => {
-      //       if (!child.isLeaf) {
-      //         child.setChecked(false, false, false)
-      //       }
-      //       traverse(child)
-      //     })
-      //   }
-      //   traverse(node)
-      // }
     }
   }
 

@@ -34,7 +34,7 @@ const reInitChecked = function (node, deepUpCheck) {
   } else if (half) {
     node.checked = false
     node.indeterminate = true
-  } else if (none) {
+  } else if (none && !deepUpCheck) {
     node.checked = false
     node.indeterminate = false
   }

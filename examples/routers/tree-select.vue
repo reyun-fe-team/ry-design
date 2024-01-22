@@ -1,6 +1,23 @@
 
 <template>
   <div>
+    多选事例-checkStrictly:{{ value }}
+    <hr />
+    <rd-tree-select
+      v-model="value"
+      label="多选checkStrictly : "
+      multiple
+      show-select-option
+      show-checkbox
+      check-strictly
+      filterable
+      clearable
+      :data="data"
+      :max-height="300"
+      :height="300"
+      :max-width="5000"
+      :option-label-method="labelMethod"></rd-tree-select>
+
     多选事例-向下:{{ valueDown }}
     <hr />
     <rd-tree-select
@@ -15,7 +32,7 @@
       :max-height="300"
       :height="300"
       :max-width="5000"
-      :option-label-method="parentLabelMethhod"></rd-tree-select>
+      :option-label-method="downLabelMethod"></rd-tree-select>
 
     多选事例-默认向上选中:{{ valueUp }}
     <hr />
@@ -50,6 +67,7 @@
 export default {
   data() {
     return {
+      value: [],
       valueDown: ['水果', '朝阳'],
       valueUp: [],
       valueRadio: '水果',
@@ -145,12 +163,15 @@ export default {
   },
   methods: {
     upOptionLabelMethod(row) {
-      return row.LabelStr
+      return row.label
       // return row.label
       //return row.parentLabel
     },
-    parentLabelMethhod(row) {
+    downLabelMethod(row) {
       return row.parentLabel
+    },
+    labelMethod(row) {
+      return row.label
     }
   }
 }

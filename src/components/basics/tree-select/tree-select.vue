@@ -7,7 +7,7 @@
     <hr />
     <!-- storeValue:{{ storeValue }} -->
     <hr />
-    <!-- optionData:{{ optionData }} -->
+    optionData:{{ optionData }}
     <hr />
     selectData:{{ selectData.length }}--
     <br />
@@ -78,9 +78,12 @@
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'tree-select'
 import _isEqual from 'lodash/isEqual'
-import _cloneDeep from 'lodash/cloneDeep'
+// import _cloneDeep from 'lodash/cloneDeep'
+import Emitter from '@src/mixins/emitter'
+
 export default {
   name: prefixCls,
+  mixins: [Emitter],
   props: {
     value: {
       type: [String, Number, Array]
@@ -212,19 +215,19 @@ export default {
         return []
       }
       let list = []
-      // parentValue[node leaf 父亲label]
+      // type[node leaf]
       let filter = []
       if (this.multiple) {
-        if (!this.deepUpCheck) {
+        if (this.checkStrictly) {
+          this.selectData.forEach(val => {
+            list.push(val)
+          })
+        } else if (!this.deepUpCheck) {
           this.selectData
-            .filter(val => val.parentValue !== 'node')
+            .filter(val => val.type !== 'node')
             .forEach(val => {
-              const { parentValue } = val
-              if (parentValue !== 'leaf' && !filter.includes(parentValue)) {
-                filter.push(parentValue)
-                list.push(val)
-              } else if (parentValue === 'leaf') {
-                filter.push(val.value)
+              if (!filter.includes(val.parentValue)) {
+                filter.push(val.parentValue)
                 list.push(val)
               }
             })
@@ -265,7 +268,6 @@ export default {
     },
     querySelections() {
       const { query } = this
-      // item.display = item.display.replace(new RegExp(this.query, 'g'), `<span>${this.query}</span>`)
       function filterTitleWithOne(node) {
         if (Array.isArray(node.children)) {
           node.children = node.children.filter(filterTitleWithOne)
@@ -274,16 +276,9 @@ export default {
           node.label.includes(query) || (Array.isArray(node.children) && node.children.length > 0)
         )
       }
-      //const intermediateList = JSON.parse(JSON.stringify(this.data)).filter(filterTitleWithOne)
       const intermediateList = this.data.filter(filterTitleWithOne)
-      console.log(intermediateList)
-      console.log('-------')
-      console.log(this.data)
       return intermediateList
     }
-    // checkStrictly() {
-    //   return !['click-down', 'click-up'].includes(this.selectType)
-    // }
   },
   watch: {
     value(val) {
@@ -331,7 +326,6 @@ export default {
   },
   mounted() {
     let list = []
-
     this.handleUpdateTreeNodes({
       data: this.data,
       list,
@@ -343,7 +337,13 @@ export default {
   methods: {
     getOptionData(item, list, info, parent, exclude) {
       const checked = this.storeValue.includes(item.value)
-      if (parent && checked && !exclude.includes(parent.value)) {
+      if (
+        !this.checkStrictly &&
+        !this.deepUpCheck &&
+        parent &&
+        checked &&
+        !exclude.includes(parent.value)
+      ) {
         exclude.push(parent.value)
       }
       if (info) {
@@ -416,9 +416,12 @@ export default {
     handleFilterListChange(values, oldValues) {
       const list = this.optionData.filter(val => values.includes(val.value))
       let newValues = []
-      if (!this.deepUpCheck) {
+      if (this.checkStrictly) {
+        this.storeValue = values
+        this.$refs.tree.setCheckedKeys(this.storeValue)
+      } else if (!this.deepUpCheck) {
         list.forEach(item => {
-          if (item.parentValue === 'leaf') {
+          if (item.type === 'leaf') {
             let find = this.selectData.find(val => val.value === item.value)
             newValues.push(find.value)
           } else {
@@ -437,9 +440,12 @@ export default {
         this.storeValue = this.storeValue.filter(val => newValues.includes(val))
         this.$refs.tree.setCheckedKeys(this.storeValue)
       } else {
-        newValues = list.map(val => val.value)
-        this.storeValue = this.storeValue.filter(val => newValues.includes(val))
-        this.$refs.tree.setUpCheckedKeys(oldValues)
+        // 底层选中
+        // newValues = list.map(val => val.value)
+        // this.storeValue = this.storeValue.filter(val => newValues.includes(val))
+        // 获取所有事选中状态的节点value
+        this.$refs.tree.deleteCheckedKeys(oldValues)
+        this.storeValue = this.$refs.tree.getCheckedKeys()
       }
 
       this.isChangeValueInTree = true
@@ -502,22 +508,23 @@ export default {
       let values = null
 
       if (this.multiple) {
-        values = this.optionData.map(val => {
-          if (val.parentValue === 'leaf') {
-            return val.value
-          } else if (val.parentValue !== 'node') {
-            return val.parentValue
-          }
-        })
+        if (this.checkStrictly) {
+          values = this.storeValue
+        } else if (!this.deepUpCheck) {
+          values = this.optionData
+            .filter(val => val.type === 'leaf')
+            .map(val => {
+              return val.parentValue
+            })
+        } else {
+          values = this.storeValue
+        }
       } else {
         values = this.storeValue[0]
       }
-
-      console.log('emit', values)
       this.$emit('input', values)
       this.$emit('on-change', values)
-      // TODO form
-      // this.handleFormItemChange('change', this.currentValue)
+      this.dispatch('FormItem', 'on-form-change', values)
     },
     // filter
     queryChange(val) {
