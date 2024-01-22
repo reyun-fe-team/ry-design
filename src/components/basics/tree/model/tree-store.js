@@ -306,7 +306,7 @@ export default class TreeStore {
     this._setCheckedKeys(key, leafOnly, checkedKeys)
   }
 
-  mySetCheckedKeys(keys) {
+  setUpCheckedKeys(keys) {
     const allNodes = this._getAllNodes().sort((a, b) => b.level - a.level)
     // const cache = Object.create(null)
     // const keys = Object.keys(checkedKeys)
