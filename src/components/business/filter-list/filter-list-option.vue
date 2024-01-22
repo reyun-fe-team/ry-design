@@ -38,6 +38,7 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-option'
+import _cloneDeep from 'lodash/cloneDeep'
 export default {
   name: prefixCls,
   components: {},
@@ -116,12 +117,13 @@ export default {
         return val !== items.value
       })
       this.$emit('input', this.current)
-      this.$emit('on-change', this.current)
+      this.$emit('on-change', this.current, [items.value])
     },
     handleClearAll() {
+      const oldValues = _cloneDeep(this.current)
       this.current = []
       this.$emit('input', this.current)
-      this.$emit('on-change', this.current)
+      this.$emit('on-change', this.current, oldValues)
     },
     // 提供方法
     getHeaderHeight() {

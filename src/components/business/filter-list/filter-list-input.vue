@@ -63,6 +63,7 @@ import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-input'
 import rdFilterListDescribe from './filter-list-describe'
 import { getKey } from '@src/util/assist'
+import _cloneDeep from 'lodash/cloneDeep'
 export default {
   name: prefixCls,
   components: { rdFilterListDescribe },
@@ -145,9 +146,10 @@ export default {
   },
   methods: {
     handleClear() {
+      const oldValues = _cloneDeep(this.current)
       this.current = []
       this.$emit('on-change', this.current)
-      this.$emit('on-clear', this.current)
+      this.$emit('on-clear', this.current, oldValues)
     }
   }
 }

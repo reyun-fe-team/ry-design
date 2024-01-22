@@ -413,7 +413,7 @@ export default {
       }
     },
     // 删除
-    handleFilterListChange(values) {
+    handleFilterListChange(values, oldValues) {
       const list = this.optionData.filter(val => values.includes(val.value))
       let newValues = []
       if (!this.deepUpCheck) {
@@ -434,17 +434,19 @@ export default {
             newValues = [...newValues, ...completeValues]
           }
         })
+        this.storeValue = this.storeValue.filter(val => newValues.includes(val))
+        this.$refs.tree.setCheckedKeys(this.storeValue)
       } else {
         newValues = list.map(val => val.value)
+        this.storeValue = this.storeValue.filter(val => newValues.includes(val))
+        this.$refs.tree.setUpCheckedKeys(oldValues)
       }
 
-      this.storeValue = this.storeValue.filter(val => newValues.includes(val))
-      this.$refs.tree.setCheckedKeys(this.storeValue)
       this.isChangeValueInTree = true
       this.emitChange()
     },
     // tree click
-    handleSelectNode(a, b) {
+    handleSelectNode() {
       if (this.multiple) {
         const selectedNodes = this.$refs.tree.getCheckedKeys()
         console.log('selectedNodes:selectedNodes', selectedNodes)
