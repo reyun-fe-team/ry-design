@@ -1,0 +1,73 @@
+@tree: ~"@{css-prefix}tree";
+.@{tree} {
+  position: relative;
+  color: #606266;
+  cursor: default;
+  background: #fff;
+
+  &-empty-block {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 60px;
+    text-align: center;
+  }
+
+  &-empty-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 12px;
+    color: #909399;
+    transform: translate(-50%, -50%);
+  }
+
+  &-drop-indicator {
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background-color: #409eff;
+  }
+
+  &-node-content {
+    display: flex;
+    align-items: center;
+    height: 26px;
+    cursor: pointer;
+  }
+
+  &-node-expand-icon {
+    margin-right: 4px;
+    font-size: 12px;
+    color: #c0c4cc;
+    cursor: pointer;
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-in-out;
+
+    &.expanded {
+      transform: rotate(90deg);
+    }
+
+    &.is-leaf {
+      color: transparent;
+      cursor: default;
+    }
+  }
+
+  &-node-loading-icon {
+    margin-right: 8px;
+    font-size: 12px;
+    color: #c0c4cc;
+  }
+
+  &-children {
+    overflow: hidden;
+    background-color: transparent;
+  }
+}
+
+.rd-tree-highlight-current .rd-tree-node.is-current > .rd-tree-node-content {
+  font-weight: 700;
+  color: #409eff;
+}

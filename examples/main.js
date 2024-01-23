@@ -260,6 +260,14 @@ const router = new VueRouter({
     {
       path: '/v-dragging',
       component: resolve => require(['./routers/v-dragging'], resolve)
+    },
+    {
+      path: '/tree-select',
+      component: resolve => require(['./routers/tree-select'], resolve)
+    },
+    {
+      path: '/tree',
+      component: resolve => require(['./routers/tree'], resolve)
     }
   ]
 })
