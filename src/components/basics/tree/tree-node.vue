@@ -202,7 +202,7 @@ export default {
       }
     },
     handleCheckChange(checked) {
-      this.node.setChecked(checked, !this.tree.checkStrictly, this.tree.deepUpCheck)
+      this.node.setChecked(checked, !this.tree.checkStrictly, this.tree.deepUpChecked)
       this.$nextTick(() => {
         const store = this.tree.store
         this.tree.$emit('check', this.node.data, {

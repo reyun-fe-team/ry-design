@@ -119,7 +119,7 @@ export default class TreeStore {
       const node = nodesMap[checkedKey]
 
       if (node) {
-        node.setChecked(true, !this.checkStrictly, this.deepUpCheck)
+        node.setChecked(true, !this.checkStrictly, this.deepUpChecked)
       }
     })
   }
@@ -128,7 +128,7 @@ export default class TreeStore {
     const defaultCheckedKeys = this.defaultCheckedKeys || []
 
     if (defaultCheckedKeys.indexOf(node.key) !== -1) {
-      node.setChecked(true, !this.checkStrictly, this.deepUpCheck)
+      node.setChecked(true, !this.checkStrictly, this.deepUpChecked)
     }
   }
 
@@ -267,7 +267,7 @@ export default class TreeStore {
         node.setChecked(true, false, false)
         continue
       }
-      node.setChecked(true, true, this.deepUpCheck)
+      node.setChecked(true, true, this.deepUpChecked)
 
       if (leafOnly) {
         node.setChecked(false, false, false)
@@ -306,7 +306,7 @@ export default class TreeStore {
     this._setCheckedKeys(key, leafOnly, checkedKeys)
   }
 
-  deleteCheckedKeys(keys, deep = true, deepUpCheck = true) {
+  deleteCheckedKeys(keys, deep = true, deepUpChecked = true) {
     const allNodes = this._getAllNodes().sort((a, b) => b.level - a.level)
     const key = this.key
     for (let i = 0, j = allNodes.length; i < j; i++) {
@@ -314,7 +314,7 @@ export default class TreeStore {
       const nodeKey = node.data[key].toString()
       let checked = keys.indexOf(nodeKey) > -1
       if (checked) {
-        node.setChecked(false, deep, deepUpCheck)
+        node.setChecked(false, deep, deepUpChecked)
       }
     }
   }
@@ -331,11 +331,11 @@ export default class TreeStore {
     })
   }
 
-  setChecked(data, checked, deep, deepUpCheck) {
+  setChecked(data, checked, deep, deepUpChecked) {
     const node = this.getNode(data)
 
     if (node) {
-      node.setChecked(!!checked, deep, deepUpCheck)
+      node.setChecked(!!checked, deep, deepUpChecked)
     }
   }
 

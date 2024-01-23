@@ -3,15 +3,15 @@
 
 <template>
   <div>
-    <!-- querySelections:{{ querySelections }} -->
+    <!-- querySelections:{{ querySelections }}
     <hr />
-    <!-- storeValue:{{ storeValue }} -->
+    storeValue:{{ storeValue }}
     <hr />
     optionData:{{ optionData }}
     <hr />
     selectData:{{ selectData.length }}--
     <br />
-    {{ selectData }}
+    {{ selectData }} -->
 
     <rd-filter-list
       ref="filter-list"
@@ -46,15 +46,6 @@
       <div
         :style="panelStyle"
         :class="prefixCls + '-body'">
-        <!-- <Tree
-          ref="tree"
-          :data="querySelections"
-          check-directly
-          :multiple="multiple"
-          :show-checkbox="multiple && showCheckbox"
-          :load-data="loadData"
-          @on-select-change="handleSelectNode"
-          @on-check-change="handleSelectNode"></Tree> -->
         <!-- check-strictly       highlight-current check-on-click-node-->
         <rd-tree
           ref="tree"
@@ -66,7 +57,7 @@
           :highlight-current="!multiple"
           :filter-node-method="filterNodeMethod"
           :check-on-click-node="false"
-          :deep-up-check="deepUpCheck"
+          :deep-up-check="deepUpChecked"
           :check-strictly="checkStrictly"
           @check="handleSelectNode"
           @current-change="currentChange"></rd-tree>
@@ -169,7 +160,7 @@ export default {
       type: String,
       default: 'click-down'
     },
-    deepUpCheck: {
+    deepUpChecked: {
       type: Boolean,
       default: false
     },
@@ -222,7 +213,7 @@ export default {
           this.selectData.forEach(val => {
             list.push(val)
           })
-        } else if (!this.deepUpCheck) {
+        } else if (!this.deepUpChecked) {
           this.selectData
             .filter(val => val.type !== 'node')
             .forEach(val => {
@@ -301,7 +292,7 @@ export default {
           list,
           isInit: true
         })
-        console.log(list, 'watch-value')
+        // console.log(list, 'watch-value')
         this.storeValue = list
         this.$refs.tree.setCheckedKeys(this.storeValue)
       }
@@ -317,7 +308,7 @@ export default {
             list,
             isInit: true
           })
-          console.log(list, 'watch-data', _isEqual(newVal, oldVal))
+          // console.log(list, 'watch-data', _isEqual(newVal, oldVal))
           this.storeValue = list
           this.$refs.tree.setCheckedKeys(this.storeValue)
         }
@@ -339,7 +330,7 @@ export default {
       const checked = this.storeValue.includes(item.value)
       if (
         !this.checkStrictly &&
-        !this.deepUpCheck &&
+        !this.deepUpChecked &&
         parent &&
         checked &&
         !exclude.includes(parent.value)
@@ -419,7 +410,7 @@ export default {
       if (this.checkStrictly) {
         this.storeValue = values
         this.$refs.tree.setCheckedKeys(this.storeValue)
-      } else if (!this.deepUpCheck) {
+      } else if (!this.deepUpChecked) {
         list.forEach(item => {
           if (item.type === 'leaf') {
             let find = this.selectData.find(val => val.value === item.value)
@@ -455,7 +446,7 @@ export default {
     handleSelectNode() {
       if (this.multiple) {
         const selectedNodes = this.$refs.tree.getCheckedKeys()
-        console.log('selectedNodes:selectedNodes', selectedNodes)
+        // console.log('selectedNodes:selectedNodes', selectedNodes)
         if (selectedNodes.length) {
           this.storeValue = selectedNodes
         } else {
@@ -510,7 +501,7 @@ export default {
       if (this.multiple) {
         if (this.checkStrictly) {
           values = this.storeValue
-        } else if (!this.deepUpCheck) {
+        } else if (!this.deepUpChecked) {
           values = this.optionData
             .filter(val => val.type === 'leaf')
             .map(val => {

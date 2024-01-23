@@ -62,7 +62,7 @@ export default {
     },
     nodeKey: String,
     checkStrictly: Boolean,
-    deepUpCheck: {
+    deepUpChecked: {
       type: Boolean,
       default: false
     },
@@ -191,7 +191,7 @@ export default {
       load: this.load,
       currentNodeKey: this.currentNodeKey,
       checkStrictly: this.checkStrictly,
-      deepUpCheck: this.deepUpCheck,
+      deepUpChecked: this.deepUpChecked,
       checkDescendants: this.checkDescendants,
       defaultCheckedKeys: this.defaultCheckedKeys,
       defaultExpandedKeys: this.defaultExpandedKeys,
@@ -415,11 +415,11 @@ export default {
       this.store.setCheckedNodes(nodes, leafOnly)
     },
 
-    setCheckedKeys(keys, leafOnly, deepUpCheck) {
+    setCheckedKeys(keys, leafOnly, deepUpChecked) {
       if (!this.nodeKey) {
         throw new Error('[Tree] nodeKey is required in setCheckedKeys')
       }
-      this.store.setCheckedKeys(keys, leafOnly, deepUpCheck)
+      this.store.setCheckedKeys(keys, leafOnly, deepUpChecked)
     },
 
     deleteCheckedKeys(keys) {
