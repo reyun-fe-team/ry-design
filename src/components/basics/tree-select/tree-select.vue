@@ -6,8 +6,8 @@
     <!-- querySelections:{{ querySelections }}
     <hr />
     storeValue:{{ storeValue }}
-    <hr />
-    optionData:{{ optionData }}
+    <hr /> -->
+    <!-- optionData:{{ optionData }}
     <hr />
     selectData:{{ selectData.length }}--
     <br />
@@ -338,7 +338,7 @@ export default {
         exclude.push(parent.value)
       }
       if (info) {
-        info.LabelStr = info.LabelStr + '/' + item.label
+        info.labelStr = info.labelStr + '/' + item.label
         info.valueStr = info.valueStr + '/' + item.value
       }
       // 选中
@@ -354,7 +354,7 @@ export default {
             parentValue: info ? info.parentValue : '',
             parentLabel: info ? info.parentLabel : '',
             type: 'node',
-            LabelStr: info ? info.LabelStr : item.label,
+            labelStr: info ? info.labelStr : item.label,
             valueStr: info ? info.valueStr : item.value
           })
           item.children.forEach(val => {
@@ -364,14 +364,14 @@ export default {
               _info = {
                 parentLabel: info.parentLabel,
                 parentValue: info.parentValue,
-                LabelStr: info.LabelStr,
+                labelStr: info.labelStr,
                 valueStr: info.valueStr
               }
             } else {
               _info = {
                 parentLabel: item.label,
                 parentValue: item.value,
-                LabelStr: item.label,
+                labelStr: item.label,
                 valueStr: item.value
               }
             }
@@ -389,7 +389,7 @@ export default {
             // 优选父节点
             parentValue: info ? info.parentValue : item.value,
             type: 'leaf',
-            LabelStr: info ? info.LabelStr : item.label,
+            labelStr: info ? info.labelStr : item.label,
             valueStr: info ? info.valueStr : item.value
           })
         }
