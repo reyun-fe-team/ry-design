@@ -54,8 +54,7 @@
         label: 'name'
       }"
       save-type="leave-save"
-      :option-label-method="upOptionLabelMethod"
-      select-type="click-up"></rd-tree-select>
+      :option-label-method="upOptionLabelMethod"></rd-tree-select>
 
     <!-- 单选事例1:{{ valueRadio1 }}
     <hr />

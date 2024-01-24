@@ -150,11 +150,6 @@ export default {
       type: String,
       default: 'value'
     },
-    selectType: {
-      // 'click-down' 1默认向下 2向上 'click-down' 3 不处理 'click-no'
-      type: String,
-      default: 'click-down'
-    },
     deepUpChecked: {
       type: Boolean,
       default: false
