@@ -57,7 +57,7 @@
           :highlight-current="!multiple"
           :filter-node-method="filterNodeMethod"
           :check-on-click-node="false"
-          :deep-up-check="deepUpChecked"
+          :deep-up-checked="deepUpChecked"
           :check-strictly="checkStrictly"
           @check="handleSelectNode"
           @current-change="currentChange"></rd-tree>
