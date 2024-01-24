@@ -1,8 +1,7 @@
 
 <template>
   <div>
-    <!-- 多选事例-checkStrictly:{{ value }}
-    <hr />
+    <h2>多选事例-checkStrictly:{{ value }}</h2>
     <rd-tree-select
       v-model="value"
       label="多选checkStrictly : "
@@ -15,11 +14,11 @@
       :data="data"
       :max-height="300"
       :height="300"
+      save-type="leave-save"
       :max-width="5000"
       :option-label-method="labelMethod"></rd-tree-select>
 
-    多选事例-向下-春福:{{ valueDown }}
-    <hr />
+    <h2 style="margin-top: 100px">多选事例-向下-春福:{{ valueDown }}</h2>
     <rd-tree-select
       v-model="valueDown"
       label="多选: "
@@ -32,10 +31,10 @@
       :max-height="300"
       :height="300"
       :max-width="5000"
-      :option-label-method="downLabelMethod"></rd-tree-select> -->
+      save-type="leave-save"
+      :option-label-method="downLabelMethod"></rd-tree-select>
 
-    多选事例-默认向上选中:{{ valueUp }}
-    <hr />
+    <h2 style="margin-top: 100px">多选事例-默认向上选中-周博用:{{ valueUp }}</h2>
     <rd-tree-select
       v-model="valueUp"
       label="多选: "
@@ -49,10 +48,16 @@
       :height="300"
       :max-width="5000"
       deep-up-checked
+      node-key="code"
+      :default-props="{
+        children: 'data',
+        label: 'name'
+      }"
+      save-type="leave-save"
       :option-label-method="upOptionLabelMethod"
       select-type="click-up"></rd-tree-select>
 
-    单选事例1:{{ valueRadio1 }}
+    <!-- 单选事例1:{{ valueRadio1 }}
     <hr />
     <rd-tree-select
       v-model="valueRadio1"
@@ -62,7 +67,7 @@
       check-strictly
       :data="data1"
       :max-width="500"
-      :max-height="300"></rd-tree-select>
+      :max-height="300"></rd-tree-select> -->
   </div>
 </template>
 <script>
@@ -249,7 +254,94 @@ export default {
           ]
         }
       ],
-      data2:[{ "id": "624", "label": "啧啧啧", "value": "624", "children": [ { "id": "625", "label": "走走走", "value": "625", "children": [ { "id": "627", "label": "啊啊啊", "value": "627" }, { "id": "628", "label": "我问问1", "value": "628", "children": [ { "id": "629", "label": "文如其人我确认我认为", "value": "629", "children": [ { "id": "631", "label": "qweeee", "value": "631" }, { "id": "632", "label": "hgjvgjhm", "value": "632" }, { "id": "633", "label": "jhgkghkbkj", "value": "633" } ] }, { "id": "630", "label": "q让我去而我额确认", "value": "630" } ] } ] }, { "id": "626", "label": "再找找", "value": "626" } ] }, { "id": "634", "label": "一级", "value": "634", "children": [ { "id": "635", "label": "二级", "value": "635", "children": [ { "id": "636", "label": "三级", "value": "636", "children": [ { "id": "637", "label": "四级", "value": "637", "children": [ { "id": "638", "label": "五级", "value": "638" }],
+      data2: [
+        {
+          name: '地球3',
+          expand: true,
+          code: '地球3',
+          selected: false,
+          checked: false,
+          data: [
+            {
+              name: '水果2',
+              expand: true,
+              code: '水果2',
+              selected: false,
+              checked: false,
+              data: [
+                {
+                  name: '西瓜2',
+                  code: '西瓜2',
+                  selected: false,
+                  checked: false,
+                  data: [
+                    {
+                      name: '西瓜肉',
+                      code: '西瓜肉',
+                      selected: false,
+                      checked: false
+                    },
+                    {
+                      name: '西瓜籽',
+                      code: '西瓜籽',
+                      selected: false,
+                      checked: false
+                    }
+                  ]
+                },
+                {
+                  name: '香蕉',
+                  code: '香蕉',
+                  selected: false,
+                  checked: false
+                }
+              ]
+            },
+            {
+              name: '北京',
+              expand: true,
+              code: '北京',
+              selected: false,
+              checked: false,
+              data: [
+                {
+                  name: '朝阳1',
+                  code: '朝阳',
+                  selected: false,
+                  checked: false
+                },
+                {
+                  name: '昌平',
+                  code: '昌平',
+                  selected: false,
+                  checked: false
+                }
+              ]
+            },
+            {
+              name: '上海',
+              expand: true,
+              code: '上海',
+              selected: false,
+              checked: false,
+              data: [
+                {
+                  name: '南京路',
+                  code: '南京路',
+                  selected: false,
+                  checked: false
+                },
+                {
+                  name: '外滩',
+                  code: '外滩',
+                  selected: false,
+                  checked: false
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   },
   methods: {

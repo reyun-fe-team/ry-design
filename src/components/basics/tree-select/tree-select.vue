@@ -3,11 +3,12 @@
 
 <template>
   <div>
-    <!-- querySelections:{{ querySelections }}
+    <!-- storeValue:{{ storeValue }}
     <hr />
-    storeValue:{{ storeValue }}
-    <hr /> -->
-    <!-- optionData:{{ optionData }}
+    querySelections:{{ querySelections }}
+
+    <hr />
+    optionData:{{ optionData }}
     <hr />
     selectData:{{ selectData.length }}--
     <br />
@@ -71,7 +72,7 @@ const prefixCls = prefix + 'tree-select'
 import _isEqual from 'lodash/isEqual'
 // import _cloneDeep from 'lodash/cloneDeep'
 import Emitter from '@src/mixins/emitter'
-
+import { oneOf } from '@src/util/assist.js'
 export default {
   name: prefixCls,
   mixins: [Emitter],
@@ -126,12 +127,6 @@ export default {
     },
     selectItemHeight: [String, Number],
     optionWidth: [String, Number],
-    filterNodeMethod: {
-      type: Function,
-      default(value, data) {
-        return data.label.includes(value)
-      }
-    },
     filterable: Boolean,
     showSelectOption: Boolean,
     clearable: Boolean,
@@ -168,7 +163,16 @@ export default {
       type: Boolean,
       default: false
     },
-    optionLabelMethod: Function
+    optionLabelMethod: Function,
+    saveType: {
+      type: String,
+      default: 'always-save',
+      //default: 'leave-save',
+      // 时时保存 always-save 离开保存leave-save
+      validator(value) {
+        return oneOf(value, ['always-save', 'leave-save'])
+      }
+    }
   },
   data() {
     let value = this.value
@@ -189,6 +193,14 @@ export default {
     }
   },
   computed: {
+    childrenKey() {
+      return this.defaultProps && this.defaultProps.children
+        ? this.defaultProps.children
+        : 'children'
+    },
+    labelKey() {
+      return this.defaultProps && this.defaultProps.label ? this.defaultProps.label : 'label'
+    },
     valueToArray() {
       return typeof this.value === 'object' ? this.value : [this.value]
     },
@@ -199,6 +211,7 @@ export default {
       return this.multiple && this.showCheckbox
     },
     realData() {
+      // 这里的value不需要换成valueKey
       return this.optionData.map(val => val.value)
     },
     optionData() {
@@ -224,7 +237,7 @@ export default {
             })
         } else {
           this.selectData.forEach(val => {
-            filter.push(val.value)
+            filter.push(val[this.nodeKey])
             list.push(val)
           })
         }
@@ -242,7 +255,7 @@ export default {
       this.data.forEach(item => {
         this.getOptionData(item, list, null, null, exclude)
       })
-      list = list.filter(val => !exclude.includes(val.value))
+      list = list.filter(val => !exclude.includes(val[this.nodeKey]))
       return list
     },
     panelStyle() {
@@ -258,13 +271,14 @@ export default {
       return style
     },
     querySelections() {
-      const { query } = this
+      const { query, childrenKey, labelKey } = this
       function filterTitleWithOne(node) {
-        if (Array.isArray(node.children)) {
-          node.children = node.children.filter(filterTitleWithOne)
+        if (Array.isArray(node[childrenKey])) {
+          node[childrenKey] = node[childrenKey].filter(filterTitleWithOne)
         }
         return (
-          node.label.includes(query) || (Array.isArray(node.children) && node.children.length > 0)
+          node[labelKey].includes(query) ||
+          (Array.isArray(node[childrenKey]) && node[childrenKey].length > 0)
         )
       }
       const intermediateList = this.data.filter(filterTitleWithOne)
@@ -327,37 +341,37 @@ export default {
   },
   methods: {
     getOptionData(item, list, info, parent, exclude) {
-      const checked = this.storeValue.includes(item.value)
+      const checked = this.storeValue.includes(item[this.nodeKey])
       if (
         !this.checkStrictly &&
         !this.deepUpChecked &&
         parent &&
         checked &&
-        !exclude.includes(parent.value)
+        !exclude.includes(parent[this.nodeKey])
       ) {
-        exclude.push(parent.value)
+        exclude.push(parent[this.nodeKey])
       }
       if (info) {
-        info.labelStr = info.labelStr + '/' + item.label
-        info.valueStr = info.valueStr + '/' + item.value
+        info.labelStr = info.labelStr + '/' + item[this.labelKey]
+        info.valueStr = info.valueStr + '/' + item[this.nodeKey]
       }
       // 选中
       if (checked) {
-        if (item.children && item.children.length) {
+        if (item[this.childrenKey] && item[this.childrenKey].length) {
           // 添加空的占位
           list.push({
             // 自己的
-            label: item.label,
+            label: item[this.labelKey],
             // 自己的
-            value: item.value,
+            value: item[this.nodeKey],
             // 优选父节点
             parentValue: info ? info.parentValue : '',
             parentLabel: info ? info.parentLabel : '',
             type: 'node',
-            labelStr: info ? info.labelStr : item.label,
-            valueStr: info ? info.valueStr : item.value
+            labelStr: info ? info.labelStr : item[this.labelKey],
+            valueStr: info ? info.valueStr : item[this.nodeKey]
           })
-          item.children.forEach(val => {
+          item[this.childrenKey].forEach(val => {
             let _info = {}
 
             if (info) {
@@ -369,10 +383,10 @@ export default {
               }
             } else {
               _info = {
-                parentLabel: item.label,
-                parentValue: item.value,
-                labelStr: item.label,
-                valueStr: item.value
+                parentLabel: item[this.labelKey],
+                parentValue: item[this.nodeKey],
+                labelStr: item[this.labelKey],
+                valueStr: item[this.nodeKey]
               }
             }
             this.getOptionData(val, list, _info, item, exclude)
@@ -380,23 +394,23 @@ export default {
         } else {
           list.push({
             // 优选父节点
-            label: item.label,
+            label: item[this.labelKey],
             // 自己的
-            value: item.value,
+            value: item[this.nodeKey],
             // 自己的
-            myLabel: item.label,
-            parentLabel: info ? info.parentLabel : item.label,
+            myLabel: item[this.labelKey],
+            parentLabel: info ? info.parentLabel : item[this.labelKey],
             // 优选父节点
-            parentValue: info ? info.parentValue : item.value,
+            parentValue: info ? info.parentValue : item[this.nodeKey],
             type: 'leaf',
-            labelStr: info ? info.labelStr : item.label,
-            valueStr: info ? info.valueStr : item.value
+            labelStr: info ? info.labelStr : item[this.labelKey],
+            valueStr: info ? info.valueStr : item[this.nodeKey]
           })
         }
       } else {
         // 未选中
-        if (item.children && item.children.length) {
-          item.children.forEach(val => {
+        if (item[this.childrenKey] && item[this.childrenKey].length) {
+          item[this.childrenKey].forEach(val => {
             // 循环子集
             this.getOptionData(val, list, info, item, exclude)
           })
@@ -405,7 +419,7 @@ export default {
     },
     // 删除
     handleFilterListChange(values, oldValues) {
-      const list = this.optionData.filter(val => values.includes(val.value))
+      const list = this.optionData.filter(val => values.includes(val[this.nodeKey]))
       let newValues = []
       if (this.checkStrictly) {
         this.storeValue = values
@@ -413,18 +427,20 @@ export default {
       } else if (!this.deepUpChecked) {
         list.forEach(item => {
           if (item.type === 'leaf') {
-            let find = this.selectData.find(val => val.value === item.value)
-            newValues.push(find.value)
+            let find = this.selectData.find(val => val[this.nodeKey] === item[this.nodeKey])
+            newValues.push(find[this.nodeKey])
           } else {
             let complete = this.selectData.filter(val => val.parentValue === item.parentValue)
             // 找父节点
             if (complete.length) {
-              let findParent = this.selectData.find(val => val.value === complete[0].parentValue)
+              let findParent = this.selectData.find(
+                val => val[this.nodeKey] === complete[0].parentValue
+              )
               if (findParent) {
                 complete.push(findParent)
               }
             }
-            const completeValues = complete.map(val => val.value)
+            const completeValues = complete.map(val => val[this.nodeKey])
             newValues = [...newValues, ...completeValues]
           }
         })
@@ -432,7 +448,7 @@ export default {
         this.$refs.tree.setCheckedKeys(this.storeValue)
       } else {
         // 底层选中
-        // newValues = list.map(val => val.value)
+        // newValues = list.map(val => val[this.nodeKey])
         // this.storeValue = this.storeValue.filter(val => newValues.includes(val))
         // 获取所有事选中状态的节点value
         this.$refs.tree.deleteCheckedKeys(oldValues)
@@ -440,7 +456,7 @@ export default {
       }
 
       this.isChangeValueInTree = true
-      this.emitChange()
+      this.movementChange()
     },
     // tree click
     handleSelectNode() {
@@ -454,14 +470,15 @@ export default {
         }
 
         this.isChangeValueInTree = true
-        this.emitChange()
+        this.movementChange()
       }
     },
     // 单选
     currentChange(currentData) {
       if (!this.multiple) {
-        this.storeValue = [currentData.value]
-        this.emitChange()
+        this.storeValue = [currentData[this.nodeKey]]
+        // this.emitChange()
+        this.movementChange()
       }
     },
     // 更新tree
@@ -471,24 +488,30 @@ export default {
        * */
       const valueToArray = isInit ? this.valueToArray : this.storeValueToArray
       data.forEach(item => {
-        if (valueToArray.indexOf(item.value) >= 0 || state) {
+        if (valueToArray.indexOf(item[this.nodeKey]) >= 0 || state) {
           if (list) {
-            list.push(item.value)
+            list.push(item[this.nodeKey])
           }
-          if (item.children && item.children.length) {
+          if (item[this.childrenKey] && item[this.childrenKey].length) {
             this.handleUpdateTreeNodes({
-              data: item.children,
+              data: item[this.childrenKey],
               list,
               state: true,
               isInit
             })
           }
         } else {
-          if (item.children && item.children.length) {
-            this.handleUpdateTreeNodes({ data: item.children, list, isInit })
+          if (item[this.childrenKey] && item[this.childrenKey].length) {
+            this.handleUpdateTreeNodes({ data: item[this.childrenKey], list, isInit })
           }
         }
       })
+    },
+    movementChange() {
+      if (this.saveType === 'always-save' || !this.multiple) {
+        // console.log('时时触发-emitChange')
+        this.emitChange()
+      }
     },
     emitChange() {
       if (this.isValueNull) {
@@ -526,13 +549,30 @@ export default {
       this.$emit('on-click', val)
     },
     handleInputClear(val) {
+      this.storeValue = []
+      this.$refs.tree.setCheckedKeys(this.storeValue)
+      if (this.saveType === 'leave-save' && this.multiple) {
+        this.emitChange()
+      }
       this.$emit('on-input-clear', val)
     },
     handleVisibleChange(val) {
+      if (
+        !val &&
+        this.saveType === 'leave-save' &&
+        this.multiple &&
+        !_isEqual(this.current, this.value)
+      ) {
+        // console.log('离开触发-emitChange')
+        this.emitChange()
+      }
       this.$emit('on-visible-change', val)
     },
     closeDropdown() {
       this.$refs['filter-list'].closeDropdown()
+    },
+    filterNodeMethod(value, data) {
+      return data[this.labelKey].includes(value)
     }
   }
 }
