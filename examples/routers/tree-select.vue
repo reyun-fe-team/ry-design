@@ -43,11 +43,16 @@
       show-checkbox
       filterable
       clearable
-      :data="data"
+      :data="data2"
       :max-height="300"
       :height="300"
       :max-width="5000"
       deep-up-checked
+      node-key="code"
+      :default-props="{
+        children: 'data',
+        label: 'name'
+      }"
       save-type="leave-save"
       :option-label-method="upOptionLabelMethod"
       select-type="click-up"></rd-tree-select>
@@ -241,6 +246,94 @@ export default {
                 {
                   label: '外滩',
                   value: '外滩',
+                  selected: false,
+                  checked: false
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      data2: [
+        {
+          name: '地球3',
+          expand: true,
+          code: '地球3',
+          selected: false,
+          checked: false,
+          data: [
+            {
+              name: '水果2',
+              expand: true,
+              code: '水果2',
+              selected: false,
+              checked: false,
+              data: [
+                {
+                  name: '西瓜2',
+                  code: '西瓜2',
+                  selected: false,
+                  checked: false,
+                  data: [
+                    {
+                      name: '西瓜肉',
+                      code: '西瓜肉',
+                      selected: false,
+                      checked: false
+                    },
+                    {
+                      name: '西瓜籽',
+                      code: '西瓜籽',
+                      selected: false,
+                      checked: false
+                    }
+                  ]
+                },
+                {
+                  name: '香蕉',
+                  code: '香蕉',
+                  selected: false,
+                  checked: false
+                }
+              ]
+            },
+            {
+              name: '北京',
+              expand: true,
+              code: '北京',
+              selected: false,
+              checked: false,
+              data: [
+                {
+                  name: '朝阳1',
+                  code: '朝阳',
+                  selected: false,
+                  checked: false
+                },
+                {
+                  name: '昌平',
+                  code: '昌平',
+                  selected: false,
+                  checked: false
+                }
+              ]
+            },
+            {
+              name: '上海',
+              expand: true,
+              code: '上海',
+              selected: false,
+              checked: false,
+              data: [
+                {
+                  name: '南京路',
+                  code: '南京路',
+                  selected: false,
+                  checked: false
+                },
+                {
+                  name: '外滩',
+                  code: '外滩',
                   selected: false,
                   checked: false
                 }
