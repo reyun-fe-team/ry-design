@@ -3,9 +3,9 @@
 
 <template>
   <div>
+    <!-- storeValue:{{ storeValue }} -->
     <!-- querySelections:{{ querySelections }}
-    <hr />
-    storeValue:{{ storeValue }}
+    
     <hr /> -->
     <!-- optionData:{{ optionData }}
     <hr />
@@ -71,7 +71,7 @@ const prefixCls = prefix + 'tree-select'
 import _isEqual from 'lodash/isEqual'
 // import _cloneDeep from 'lodash/cloneDeep'
 import Emitter from '@src/mixins/emitter'
-
+import { oneOf } from '@src/util/assist.js'
 export default {
   name: prefixCls,
   mixins: [Emitter],
@@ -168,7 +168,16 @@ export default {
       type: Boolean,
       default: false
     },
-    optionLabelMethod: Function
+    optionLabelMethod: Function,
+    saveType: {
+      type: String,
+      default: 'always-save',
+      //default: 'leave-save',
+      // 时时保存 always-save 离开保存leave-save
+      validator(value) {
+        return oneOf(value, ['always-save', 'leave-save'])
+      }
+    }
   },
   data() {
     let value = this.value
@@ -440,7 +449,7 @@ export default {
       }
 
       this.isChangeValueInTree = true
-      this.emitChange()
+      this.movementChange()
     },
     // tree click
     handleSelectNode() {
@@ -454,14 +463,15 @@ export default {
         }
 
         this.isChangeValueInTree = true
-        this.emitChange()
+        this.movementChange()
       }
     },
     // 单选
     currentChange(currentData) {
       if (!this.multiple) {
         this.storeValue = [currentData.value]
-        this.emitChange()
+        // this.emitChange()
+        this.movementChange()
       }
     },
     // 更新tree
@@ -489,6 +499,12 @@ export default {
           }
         }
       })
+    },
+    movementChange() {
+      if (this.saveType === 'always-save' || !this.multiple) {
+        // console.log('时时触发-emitChange')
+        this.emitChange()
+      }
     },
     emitChange() {
       if (this.isValueNull) {
@@ -526,9 +542,23 @@ export default {
       this.$emit('on-click', val)
     },
     handleInputClear(val) {
+      this.storeValue = []
+      this.$refs.tree.setCheckedKeys(this.storeValue)
+      if (this.saveType === 'leave-save' && this.multiple) {
+        this.emitChange()
+      }
       this.$emit('on-input-clear', val)
     },
     handleVisibleChange(val) {
+      if (
+        !val &&
+        this.saveType === 'leave-save' &&
+        this.multiple &&
+        !_isEqual(this.current, this.value)
+      ) {
+        // console.log('离开触发-emitChange')
+        this.emitChange()
+      }
       this.$emit('on-visible-change', val)
     },
     closeDropdown() {
