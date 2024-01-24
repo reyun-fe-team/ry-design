@@ -1,7 +1,7 @@
 
 <template>
   <div>
-    多选事例-checkStrictly:{{ value }}
+    <!-- 多选事例-checkStrictly:{{ value }}
     <hr />
     <rd-tree-select
       v-model="value"
@@ -32,7 +32,7 @@
       :max-height="300"
       :height="300"
       :max-width="5000"
-      :option-label-method="downLabelMethod"></rd-tree-select>
+      :option-label-method="downLabelMethod"></rd-tree-select> -->
 
     多选事例-默认向上选中:{{ valueUp }}
     <hr />
@@ -44,11 +44,11 @@
       show-checkbox
       filterable
       clearable
-      :data="data"
+      :data="data2"
       :max-height="300"
       :height="300"
       :max-width="5000"
-      deep-up-check
+      deep-up-checked
       :option-label-method="upOptionLabelMethod"
       select-type="click-up"></rd-tree-select>
 
@@ -248,7 +248,8 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      data2:[{ "id": "624", "label": "啧啧啧", "value": "624", "children": [ { "id": "625", "label": "走走走", "value": "625", "children": [ { "id": "627", "label": "啊啊啊", "value": "627" }, { "id": "628", "label": "我问问1", "value": "628", "children": [ { "id": "629", "label": "文如其人我确认我认为", "value": "629", "children": [ { "id": "631", "label": "qweeee", "value": "631" }, { "id": "632", "label": "hgjvgjhm", "value": "632" }, { "id": "633", "label": "jhgkghkbkj", "value": "633" } ] }, { "id": "630", "label": "q让我去而我额确认", "value": "630" } ] } ] }, { "id": "626", "label": "再找找", "value": "626" } ] }, { "id": "634", "label": "一级", "value": "634", "children": [ { "id": "635", "label": "二级", "value": "635", "children": [ { "id": "636", "label": "三级", "value": "636", "children": [ { "id": "637", "label": "四级", "value": "637", "children": [ { "id": "638", "label": "五级", "value": "638" }],
     }
   },
   methods: {
