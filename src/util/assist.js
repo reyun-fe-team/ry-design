@@ -341,12 +341,12 @@ export function genID(length = 4) {
 // 保存当前光标的选区
 export function saveSelection() {
   if (!isClient) {
-    return
+    return null
   }
 
-  if (window.getSelection) {
-    const selection = window.getSelection()
-    if (selection.getRangeAt && selection.rangeCount) {
+  if (document.getSelection) {
+    const selection = document.getSelection()
+    if (selection.getRangeAt && selection.rangeCount > 0) {
       return selection.getRangeAt(0)
     }
   }
@@ -360,7 +360,7 @@ export function restoreSelection(range) {
   }
 
   if (range) {
-    const selection = window.getSelection()
+    const selection = document.getSelection()
     selection.removeAllRanges()
     selection.addRange(range)
   }

@@ -5,6 +5,7 @@
     <rd-batch-inputs
       ref="batch-inputs"
       v-model="list"
+      use-emoj
       show-limit
       style="height: 270px"
       :max-line="1000">
@@ -31,7 +32,7 @@
           <img
             style="width: 20px"
             :src="AddLineFeed"
-            @click="insertEnter(index)" />
+            @click="insertEnter" />
         </div>
       </template>
     </rd-batch-inputs>
@@ -251,8 +252,13 @@ export default {
     insertWord(fn) {
       fn('{{' + new Date().getSeconds() + '}}')
     },
-    insertFace(fn) {},
-    insertEnter(fn) {},
+    insertFace(fn, item) {
+      fn(item)
+    },
+    insertEnter(fn) {
+      let values = this.$refs['batch-inputs'].getPlainTextValues()
+      console.log('values: ', values)
+    },
     insertAllWord() {
       this.$refs['batch-inputs'].insertText('{{' + new Date().getSeconds() + '}}')
     }

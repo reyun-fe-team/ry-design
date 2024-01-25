@@ -1,10 +1,8 @@
 <template>
   <div :class="[prefixCls]">
-    <input
+    <div
       ref="Input"
-      v-model="currentValue"
-      v-tooltip="tooltipOptions"
-      type="text"
+      contenteditable
       style="width: 100%"
       :placeholder="placeholder"
       :class="prefixCls + '-rich'"
@@ -14,7 +12,7 @@
       @keyup="handlerKeyup"
       @keydown="handlerKeydown"
       @input="handlerInput"
-      @paste="handlerPaste" />
+      @paste="handlerPaste"></div>
 
     <div
       v-if="showLimit && value.length > 0"
@@ -31,9 +29,9 @@
 </template>
 
 <script>
-import { typeOf, insertInputTextAtCursor } from '@src/util/assist'
+import { typeOf, saveSelection, restoreSelection } from '@src/util/assist'
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'batch-inputs-row-input'
+const prefixCls = prefix + 'batch-inputs-tinymce'
 
 export default {
   name: prefixCls,
@@ -71,6 +69,11 @@ export default {
     validFn: {
       type: Function,
       default: null
+    },
+    // 是否含有图片表情
+    useEmoj: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -79,9 +82,11 @@ export default {
       // 聚焦状态
       isFounded: false,
       // 当前的输入的值
-      currentValue: this.value || '',
+      currentValue: '',
       // 已输入的字符长度
-      totalln: 0
+      totalln: 0,
+      // 光标范围
+      selection: null
     }
   },
   computed: {
@@ -98,9 +103,9 @@ export default {
   },
   watch: {
     value() {
-      if (this.value !== this.currentValue) {
-        this.currentValue = this.value
-      }
+      this.$nextTick(() => {
+        this.setInputValue(this.value)
+      })
     },
     currentValue() {
       // 计算字数
@@ -109,33 +114,35 @@ export default {
       this.calcValidResult()
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.setInputValue(this.value)
+    })
+  },
   methods: {
     // 鼠标抬起事件
     handlerMouseup(event) {
       event.stopPropagation()
+      // 更新选区
+      this.selection = saveSelection()
     },
     // 输入事件
     handlerInput(keyInputEvent) {
       keyInputEvent.stopPropagation()
+      this.currentValue = this.$refs.Input.innerHTML
+      // 更新选区
+      this.selection = saveSelection()
       this.$emit('input', this.currentValue)
       this.$emit('on-change', this.currentValue)
     },
     // 粘贴(禁止粘贴文件和图片)
+    // 粘贴触发输入，自动更新选区
     handlerPaste(event) {
       event.stopPropagation()
       event.preventDefault()
       const { clipboardData } = event
-      if (!clipboardData) {
-        return
-      }
-      const { items } = clipboardData
-      if (!items) {
-        return
-      }
-      // 获取纯文本
-      const text = event.clipboardData.getData('text/plain')
-      // 不是纯文本就阻止粘贴
-      if (!text) {
+      // 只获取获取纯文本
+      if (!clipboardData || !clipboardData.items || !clipboardData.getData('text/plain')) {
         return
       }
 
@@ -160,6 +167,8 @@ export default {
     },
     // 聚焦事件
     handlerFocus(event) {
+      // 更新选区
+      this.selection = saveSelection()
       this.isFounded = true
       this.$emit('on-foucs', event)
     },
@@ -170,17 +179,58 @@ export default {
     },
     // 清除
     handleClear() {
-      this.currentValue = ''
+      this.setInputValue()
       this.$emit('input', this.currentValue)
       this.$emit('on-change', this.currentValue)
       this.$emit('on-clear')
     },
 
     // ----------公共方法---------
-    insertTextAtCursor(textToInsert) {
-      const input = this.$refs.Input
-      insertInputTextAtCursor(input, textToInsert, value => {
+    // 设置inputValue
+    setInputValue(value = '') {
+      if (value !== this.currentValue) {
         this.currentValue = value
+        this.$refs.Input.innerHTML = this.currentValue
+        // 删除选区
+        restoreSelection(this.selection)
+        // 在重新获取一次
+        this.selection = saveSelection()
+      }
+    },
+    // 主动插入内容
+    insertTextAtCursor(textToInsert) {
+      function createNode(htmlStr) {
+        const div = document.createElement('div')
+        div.innerHTML = htmlStr
+        return div.childNodes[0]
+      }
+
+      if (!this.selection) {
+        return
+      }
+
+      if (this.useEmoj) {
+        textToInsert = `<img src="${textToInsert.url}" value="${textToInsert.value}"/>`
+      }
+
+      // 只保留当前的选区
+      restoreSelection(this.selection)
+
+      // 创建节点
+      const node = createNode(textToInsert)
+      // 插入节点
+      this.selection.deleteContents()
+      this.selection.insertNode(node)
+
+      // 重新设置光标位置
+      this.selection.setStartAfter(node)
+      this.selection.setEndAfter(node)
+
+      // 使用 requestAnimationFrame 确保在下一帧渲染前执行
+      window.requestAnimationFrame(() => {
+        this.currentValue = this.$refs.Input.innerHTML
+        // 重新保存当前的选区(自动更新选区位置，不用手动更新)
+        // this.selection = saveSelection()
         this.$emit('input', this.currentValue)
         this.$emit('on-change', this.currentValue)
       })

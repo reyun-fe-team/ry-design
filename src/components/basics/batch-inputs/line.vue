@@ -9,9 +9,10 @@
       </div>
       <!-- 输入 -->
       <div :class="prefixCls + '-right-list'">
-        <row-input
+        <tinymce
           ref="Input"
           :key="index"
+          :use-emoj="useEmoj"
           :show-limit="showLimit"
           :value="value[index]"
           :class="lineInputClasses"
@@ -25,7 +26,7 @@
           @on-keydown="val => handlerKeydown(val, index)"
           @on-clear="handlerClear(index)"
           @on-paste="val => handlerPaste(val, index)"
-          @on-error="val => handleError(val, index)"></row-input>
+          @on-error="val => handleError(val, index)"></tinymce>
 
         <!-- 每一行的最尾端 slot -->
         <div
@@ -40,15 +41,15 @@
 
 <script>
 import { prefix } from '@src/config.js'
-import rowInput from './input'
+import tinymce from './tinymce'
 import endSlot from './slots/end'
 
 const prefixCls = prefix + 'batch-inputs'
 
 export default {
-  name: prefixCls + '-row',
+  name: prefixCls + '-line',
   components: {
-    rowInput,
+    tinymce,
     endSlot
   },
   inject: ['root'],
@@ -115,6 +116,11 @@ export default {
     emits: {
       type: Object,
       default: () => {}
+    },
+    // 是否含有图片表情
+    useEmoj: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -198,7 +204,7 @@ export default {
     // 清空
     handlerClear(index) {
       const newValue = [...this.value]
-      newValue.splice(index, 1)
+      newValue.splice(index, 1, '')
       this.dispatch('on-input', newValue)
       this.dispatch('on-change', newValue)
     },
