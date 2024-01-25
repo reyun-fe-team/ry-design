@@ -31,6 +31,7 @@
 <script>
 import { typeOf, saveSelection, restoreSelection } from '@src/util/assist'
 import { prefix } from '@src/config.js'
+import _throttle from 'lodash/throttle'
 const prefixCls = prefix + 'batch-inputs-tinymce'
 
 export default {
@@ -124,14 +125,14 @@ export default {
     handlerMouseup(event) {
       event.stopPropagation()
       // 更新选区
-      this.selection = saveSelection()
+      this.getSelection()
     },
     // 输入事件
     handlerInput(keyInputEvent) {
       keyInputEvent.stopPropagation()
       this.currentValue = this.$refs.Input.innerHTML
       // 更新选区
-      this.selection = saveSelection()
+      this.getSelection()
       this.$emit('input', this.currentValue)
       this.$emit('on-change', this.currentValue)
     },
@@ -164,11 +165,13 @@ export default {
     // 键盘抬起事件
     handlerKeyup(keyUpEvent) {
       keyUpEvent.stopPropagation()
+      // 更新选区
+      this.getSelection()
     },
     // 聚焦事件
     handlerFocus(event) {
       // 更新选区
-      this.selection = saveSelection()
+      this.getSelection()
       this.isFounded = true
       this.$emit('on-foucs', event)
     },
@@ -194,7 +197,7 @@ export default {
         // 删除选区
         restoreSelection(this.selection)
         // 在重新获取一次
-        this.selection = saveSelection()
+        this.getSelection()
       }
     },
     // 主动插入内容
@@ -230,7 +233,7 @@ export default {
       window.requestAnimationFrame(() => {
         this.currentValue = this.$refs.Input.innerHTML
         // 重新保存当前的选区(自动更新选区位置，不用手动更新)
-        // this.selection = saveSelection()
+        // this.getSelection()
         this.$emit('input', this.currentValue)
         this.$emit('on-change', this.currentValue)
       })
@@ -250,6 +253,10 @@ export default {
       }
       this.$emit('on-error', errors)
     },
+    // 更新选区
+    getSelection: _throttle(function () {
+      this.selection = saveSelection()
+    }, 1000),
     // ----------公共方法---------
 
     // ---------主动事件------
