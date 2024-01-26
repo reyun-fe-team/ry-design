@@ -70,11 +70,6 @@ export default {
     validFn: {
       type: Function,
       default: null
-    },
-    // 是否含有图片表情
-    useEmoj: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -210,10 +205,6 @@ export default {
 
       if (!this.selection) {
         return
-      }
-
-      if (this.useEmoj) {
-        textToInsert = `<img src="${textToInsert.url}" value="${textToInsert.value}"/>`
       }
 
       // 只保留当前的选区

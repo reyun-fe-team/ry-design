@@ -1,17 +1,35 @@
 <template>
   <div style="margin: 20px">
-    <p>{{ list }}</p>
-    <p><Button @click="insertAllWord">插入动态词包</Button></p>
+    <div
+      v-for="(t, i) in list"
+      :key="i"
+      style="margin: 5px 0">
+      <p v-html="t"></p>
+    </div>
+
+    <div style="margin: 10px 0">
+      <p>插入动态词包</p>
+      <a
+        v-for="t in dynamicWordList"
+        :key="t.value"
+        style="margin-right: 5px"
+        @click="addDynamicWord(t)">
+        {{ t.label }}
+      </a>
+    </div>
+    <div style="margin: 10px 0">
+      <Button @click="getPlainTextValues">获取纯文本</Button>
+      <p>{{ plainTextValues }}</p>
+    </div>
     <rd-batch-inputs
-      ref="batch-inputs"
+      ref="BatchInputs"
       v-model="list"
       use-emoj
       show-limit
-      style="height: 270px"
       :max-line="1000">
-      <template #end="{ insertText }">
+      <template #end="{ insertNode }">
         <div style="display: flex; align-items: center">
-          <Button @click="insertWord(insertText)">插入动态词包</Button>
+          <Button @click="insertWord(insertNode)">插入动态词包</Button>
           <Poptip
             transfer
             placement="bottom-end">
@@ -26,13 +44,13 @@
                 :key="index"
                 style="width: 20px; margin: 10px"
                 :src="item.url"
-                @click="insertFace(insertText, item)" />
+                @click="insertFace(insertNode, item)" />
             </div>
           </Poptip>
           <img
             style="width: 20px"
             :src="AddLineFeed"
-            @click="insertEnter" />
+            @click="insertEnter(insertNode)" />
         </div>
       </template>
     </rd-batch-inputs>
@@ -47,7 +65,19 @@ export default {
     return {
       AddEmoji,
       AddLineFeed,
-      list: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+      plainTextValues: '',
+      list: [
+        '一步登顶修仙路，一斧砍尽千年树',
+        '模拟经营小游戏，穿越回古代，轻松种田，逆袭人生！',
+        '一斧光阴一斧梦，梦醒时分已是王。',
+        '1月26日起，轻松解压的益智小游戏，随时随地玩，休闲又有趣',
+        '梦幻西游网页版，手机也能玩西游了，无级别武器登录送！',
+        '无需下载不占内存，点开即玩的微信小游戏！十分钟就上头！',
+        '是兄弟，就来一把紧张刺激的抓大鹅！',
+        '脚踏阴阳定乾坤，风云再起，挑战你的极限！',
+        '全新修仙碰撞，小猪妖登场，让你的眼睛发光！',
+        '1月26日全新武侠《无名江湖》公测！10倍爆率，装备靠打！'
+      ],
       emojiList: [
         {
           value: '[666]',
@@ -245,22 +275,49 @@ export default {
           value: '[优秀]',
           url: 'https://tx2.a.yximgs.com/bs2/emotion/app_1580805626075_5xvw3rvaqjpqmcg.png'
         }
+      ],
+      dynamicWordList: [
+        {
+          label: '城市',
+          value: '{{城市}}'
+        },
+        {
+          label: '年龄',
+          value: '{{年龄}}'
+        },
+        {
+          label: '姓名',
+          value: '{{姓名}}'
+        },
+        {
+          label: '性别',
+          value: '{{性别}}'
+        },
+        {
+          label: '设备型号',
+          value: '{{设备型号}}'
+        }
       ]
     }
   },
   methods: {
-    insertWord(fn) {
-      fn('{{' + new Date().getSeconds() + '}}')
+    insertWord(insertNode) {
+      const randomNumber = Math.floor(Math.random() * 5)
+      insertNode('text', { value: this.dynamicWordList[randomNumber].value })
     },
-    insertFace(fn, item) {
-      fn(item)
+    insertFace(insertNode, item) {
+      insertNode('image', item)
     },
-    insertEnter(fn) {
-      let values = this.$refs['batch-inputs'].getPlainTextValues()
-      console.log('values: ', values)
+    insertEnter(insertNode) {
+      insertNode('enterIcon', { url: AddLineFeed, value: '[回车]' })
     },
-    insertAllWord() {
-      this.$refs['batch-inputs'].insertText('{{' + new Date().getSeconds() + '}}')
+    getPlainTextValues() {
+      let ref = this.$refs.BatchInputs
+      this.plainTextValues = ref.getPlainTextValues()
+    },
+    addDynamicWord(t) {
+      let ref = this.$refs.BatchInputs
+      ref.insertNode('text', { value: t.value })
     }
   }
 }

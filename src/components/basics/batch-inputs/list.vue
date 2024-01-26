@@ -1,5 +1,7 @@
 <template>
-  <div :class="prefixCls">
+  <div
+    :class="[prefixCls]"
+    :style="{ height: height + 'px' }">
     <rd-virtual-list
       ref="list"
       :class="prefixCls + '-virtual-list'"
@@ -15,6 +17,61 @@ import VirtualItem from './line'
 import { prefix } from '@src/config.js'
 import { getKey } from '@src/util/assist'
 const prefixCls = prefix + 'batch-inputs'
+
+// 获取富文本的纯文字内容
+function getPlainText(htmlString) {
+  if (!htmlString) {
+    return htmlString
+  }
+
+  const div = document.createElement('div')
+  div.innerHTML = htmlString
+  const childNodes = div.childNodes
+
+  let stringArray = []
+
+  for (let index = 0; index < childNodes.length; index++) {
+    const ele = childNodes[index]
+    const { nodeValue, nodeType, nodeName } = ele
+
+    let text = ''
+
+    switch (nodeType) {
+      case Node.TEXT_NODE: {
+        text = nodeValue
+        break
+      }
+      case Node.ELEMENT_NODE: {
+        if (nodeName === 'IMG') {
+          text = ele.getAttribute('value')
+        }
+        if (nodeName === 'BR') {
+          text = '\\'
+        }
+        break
+      }
+    }
+
+    stringArray.push(text)
+  }
+
+  let textString = stringArray.join('')
+  const repReg1 = /\s*|<[^>]+>|↵|[\r\n]|&nbsp;|(\n)|(\t)|(\r)|<\/?[^>]*>|\\s*/g
+  textString = textString.replace(repReg1, '')
+
+  const arrEntities = {
+    lt: '<',
+    gt: '>',
+    nbsp: ' ',
+    amp: '&',
+    quot: '"'
+  }
+  const repReg2 = /&(lt|gt|nbsp|amp|quot);/gi
+  textString = textString.replace(repReg2, (all, t) => arrEntities[t])
+
+  return textString
+}
+
 export default {
   name: prefixCls,
   provide() {
@@ -61,10 +118,11 @@ export default {
       type: Function,
       default: null
     },
-    // 是否含有图片表情
-    useEmoj: {
-      type: Boolean,
-      default: false
+    // 高度
+    // 需要指定一个具体的高度，否则虚列滚动计算失效
+    height: {
+      type: [Number, String],
+      default: 250
     }
   },
   data() {
@@ -149,71 +207,21 @@ export default {
       this.$emit('on-change', val)
       this.$emit('input', val)
     },
-    // 获取富文本的纯文字内容
-    getPlainText(htmlString) {
-      if (!htmlString) {
-        return htmlString
-      }
-
-      const div = document.createElement('div')
-      div.innerHTML = htmlString
-      const childNodes = div.childNodes
-
-      let stringArray = []
-
-      for (let index = 0; index < childNodes.length; index++) {
-        const ele = childNodes[index]
-        const { nodeValue, nodeType, nodeName } = ele
-
-        let text = ''
-
-        switch (nodeType) {
-          case Node.TEXT_NODE: {
-            text = nodeValue
-            break
-          }
-          case Node.ELEMENT_NODE: {
-            if (nodeName === 'IMG') {
-              text = ele.getAttribute('value')
-            }
-            if (nodeName === 'BR') {
-              text = '\\'
-            }
-            break
-          }
-        }
-
-        stringArray.push(text)
-      }
-
-      let textString = stringArray.join('')
-      const repReg1 = /\s*|<[^>]+>|↵|[\r\n]|&nbsp;|(\n)|(\t)|(\r)|<\/?[^>]*>|\\s*/g
-      textString = textString.replace(repReg1, '')
-
-      const arrEntities = {
-        lt: '<',
-        gt: '>',
-        nbsp: ' ',
-        amp: '&',
-        quot: '"'
-      }
-      const repReg2 = /&(lt|gt|nbsp|amp|quot);/gi
-      textString = textString.replace(repReg2, (all, t) => arrEntities[t])
-
-      return textString
-    },
+    // 转成纯文本内容
     getPlainTextValues() {
-      return this.value.map(value => this.getPlainText(value))
+      return this.value.map(value => getPlainText(value))
     },
+    // 获取当前的输入行
     getCurrentInput(activeClass = 0) {
       let currentVirtualItem = this.$refs.list.$children.find(item => item.index === activeClass)
       if (currentVirtualItem) {
         this.currentInput = currentVirtualItem.$children[0]
       }
     },
-    insertText(val) {
-      if (this.currentInput && val) {
-        this.currentInput.insertText(val)
+    // 插入内容
+    insertNode(type, data) {
+      if (this.currentInput) {
+        this.currentInput.insertNode(type, data)
       }
     }
   }

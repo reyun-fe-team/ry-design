@@ -12,7 +12,6 @@
         <tinymce
           ref="Input"
           :key="index"
-          :use-emoj="useEmoj"
           :show-limit="showLimit"
           :value="value[index]"
           :class="lineInputClasses"
@@ -116,11 +115,6 @@ export default {
     emits: {
       type: Object,
       default: () => {}
-    },
-    // 是否含有图片表情
-    useEmoj: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -159,8 +153,8 @@ export default {
     },
     endSlotProps() {
       const renderFunction = this.root.$scopedSlots['end']
-      const { source, index, value, insertText } = this
-      return { source, index, value, renderFunction, insertText }
+      const { source, index, value, insertNode } = this
+      return { source, index, value, renderFunction, insertNode }
     },
     // 当前的错误
     currentErrors() {
@@ -332,9 +326,28 @@ export default {
 
       return [...lengthError, ...otherError]
     },
-    // 插入文本
-    insertText(text) {
-      this.$refs.Input.insertTextAtCursor(text)
+    // 插入节点
+    // text 文本 image 图片 enterIcon br标签
+    insertNode(type, data = {}) {
+      if (data && this.$refs.Input) {
+        const { value = '', url = '' } = data
+
+        if (type === 'text') {
+          this.$refs.Input.insertTextAtCursor(value)
+        }
+
+        if (type === 'image') {
+          const iconStr = `<img src="${url}" value="${value}"/>`
+          this.$refs.Input.insertTextAtCursor(iconStr)
+        }
+
+        if (type === 'enterIcon') {
+          const iconStr = `<img src="${url}" value="${value}"/>`
+          this.$refs.Input.insertTextAtCursor(iconStr)
+          this.$refs.Input.insertTextAtCursor('<br />')
+          this.$refs.Input.insertTextAtCursor('&nbsp;')
+        }
+      }
     }
   }
 }

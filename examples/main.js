@@ -19,6 +19,10 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     {
+      path: '/util-class',
+      component: resolve => require(['./routers/util-class'], resolve)
+    },
+    {
       path: '/v-tooltip',
       component: resolve => require(['./routers/v-tooltip'], resolve)
     },
@@ -129,10 +133,6 @@ const router = new VueRouter({
     {
       path: '/wildcard',
       component: resolve => require(['./routers/wildcard'], resolve)
-    },
-    {
-      path: '/util-class',
-      component: resolve => require(['./routers/util-class'], resolve)
     },
     {
       path: '/account-select',
