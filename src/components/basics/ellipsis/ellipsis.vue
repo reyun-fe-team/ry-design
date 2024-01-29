@@ -91,6 +91,11 @@ export default {
       type: Boolean,
       default: false
     },
+    // 自动计算时，省略符号内容占据的文字个数
+    autoResizeMoreTextCount: {
+      type: Number,
+      default: 1
+    },
     // 是否禁用
     disabled: {
       type: Boolean,
@@ -149,9 +154,7 @@ export default {
       // 计算后的 text 内容
       computedText: this.text,
       // 自动计算后的 text 内容
-      autoComputedText: this.text,
-      // 容器宽高
-      container: { width: '', height: '' }
+      autoComputedText: this.text
     }
   },
   computed: {
@@ -253,27 +256,27 @@ export default {
       this.oversize = false
       this.computedReady = false
       this.$nextTick(() => {
-        let $text = this.$refs.text
-        let $el = this.$el
-        let $more = this.$refs.more
-        this.container = { width: parseInt($el.offsetWidth), height: parseInt($el.offsetHeight) }
+        const $text = this.$refs.text
+        const $el = this.$el
+        const $more = this.$refs.more
+        const height = $el.offsetHeight
 
         let n = 1000
+        let text = this.autoComputedText
 
-        let getTextHeight = () => $text.offsetHeight
-        let getElHeight = () => $el.offsetHeight
-
-        // 容器太小
-        if (getElHeight() < getTextHeight()) {
+        // 文字容器超出盒子
+        if ($text.offsetHeight > height) {
           this.oversize = true
           $more.style.display = 'inline-block'
 
-          while (getElHeight() < getTextHeight() && n > 0) {
-            let lastIndex = this.autoComputedText.length - 1
-            this.autoComputedText = this.autoComputedText.substring(0, lastIndex)
-            $text.innerText = this.autoComputedText
+          while ($text.offsetHeight > height && n > 0) {
+            $text.innerText = text = text.substring(0, text.length - 1)
             n--
           }
+
+          // 减去省略符号内容占据的文字个数
+          $text.innerText = text = text.substring(0, text.length - 1 - this.autoResizeMoreTextCount)
+          this.autoComputedText = text
         }
 
         this.limitShow()
@@ -296,24 +299,9 @@ export default {
       })
     },
     // 元素宽高
-    handleResize: _throttle(
-      function (data) {
-        let { width, height } = this.container
-
-        // 没有设置过
-        if (!width || !height) {
-          this.autoComputeText()
-          return
-        }
-
-        // 宽高变了
-        if (width !== data.width || height !== data.height) {
-          this.autoComputeText()
-        }
-      },
-      150,
-      { leading: false }
-    )
+    handleResize: _throttle(function () {
+      this.autoComputeText()
+    }, 150)
   }
 }
 </script>
