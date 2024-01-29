@@ -9,7 +9,7 @@
       </div>
       <!-- 输入 -->
       <div :class="prefixCls + '-right-list'">
-        <row-input
+        <tinymce
           ref="Input"
           :key="index"
           :show-limit="showLimit"
@@ -25,7 +25,7 @@
           @on-keydown="val => handlerKeydown(val, index)"
           @on-clear="handlerClear(index)"
           @on-paste="val => handlerPaste(val, index)"
-          @on-error="val => handleError(val, index)"></row-input>
+          @on-error="val => handleError(val, index)"></tinymce>
 
         <!-- 每一行的最尾端 slot -->
         <div
@@ -40,15 +40,15 @@
 
 <script>
 import { prefix } from '@src/config.js'
-import rowInput from './input'
+import tinymce from './tinymce'
 import endSlot from './slots/end'
 
 const prefixCls = prefix + 'batch-inputs'
 
 export default {
-  name: prefixCls + '-row',
+  name: prefixCls + '-line',
   components: {
-    rowInput,
+    tinymce,
     endSlot
   },
   inject: ['root'],
@@ -153,8 +153,8 @@ export default {
     },
     endSlotProps() {
       const renderFunction = this.root.$scopedSlots['end']
-      const { source, index, value, insertText } = this
-      return { source, index, value, renderFunction, insertText }
+      const { source, index, value, insertNode } = this
+      return { source, index, value, renderFunction, insertNode }
     },
     // 当前的错误
     currentErrors() {
@@ -198,7 +198,7 @@ export default {
     // 清空
     handlerClear(index) {
       const newValue = [...this.value]
-      newValue.splice(index, 1)
+      newValue.splice(index, 1, '')
       this.dispatch('on-input', newValue)
       this.dispatch('on-change', newValue)
     },
@@ -326,9 +326,28 @@ export default {
 
       return [...lengthError, ...otherError]
     },
-    // 插入文本
-    insertText(text) {
-      this.$refs.Input.insertTextAtCursor(text)
+    // 插入节点
+    // text 文本 image 图片 enterIcon br标签
+    insertNode(type, data = {}) {
+      if (data && this.$refs.Input) {
+        const { value = '', url = '' } = data
+
+        if (type === 'text') {
+          this.$refs.Input.insertTextAtCursor(value)
+        }
+
+        if (type === 'image') {
+          const iconStr = `<img src="${url}" value="${value}"/>`
+          this.$refs.Input.insertTextAtCursor(iconStr)
+        }
+
+        if (type === 'enterIcon') {
+          const iconStr = `<img src="${url}" value="${value}"/>`
+          this.$refs.Input.insertTextAtCursor(iconStr)
+          this.$refs.Input.insertTextAtCursor('<br />')
+          this.$refs.Input.insertTextAtCursor('&nbsp;')
+        }
+      }
     }
   }
 }

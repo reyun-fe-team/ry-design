@@ -18,8 +18,20 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     {
-      path: '/vTooltips',
-      component: resolve => require(['./routers/vTooltips'], resolve)
+      path: '/util-class',
+      component: resolve => require(['./routers/util-class'], resolve)
+    },
+    {
+      path: '/v-tooltip',
+      component: resolve => require(['./routers/v-tooltip'], resolve)
+    },
+    {
+      path: '/v-dragging',
+      component: resolve => require(['./routers/v-dragging'], resolve)
+    },
+    {
+      path: '/v-resize',
+      component: resolve => require(['./routers/v-resize'], resolve)
     },
     {
       path: '/transfer',
@@ -120,10 +132,6 @@ const router = new VueRouter({
     {
       path: '/wildcard',
       component: resolve => require(['./routers/wildcard'], resolve)
-    },
-    {
-      path: '/util-class',
-      component: resolve => require(['./routers/util-class'], resolve)
     },
     {
       path: '/account-select',
@@ -256,10 +264,6 @@ const router = new VueRouter({
     {
       path: '/carousel-previewer',
       component: resolve => require(['./routers/carousel-previewer'], resolve)
-    },
-    {
-      path: '/v-dragging',
-      component: resolve => require(['./routers/v-dragging'], resolve)
     },
     {
       path: '/tree-select',

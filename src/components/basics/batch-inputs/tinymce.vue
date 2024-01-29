@@ -1,10 +1,8 @@
 <template>
   <div :class="[prefixCls]">
-    <input
+    <div
       ref="Input"
-      v-model="currentValue"
-      v-tooltip="tooltipOptions"
-      type="text"
+      contenteditable
       style="width: 100%"
       :placeholder="placeholder"
       :class="prefixCls + '-rich'"
@@ -14,7 +12,7 @@
       @keyup="handlerKeyup"
       @keydown="handlerKeydown"
       @input="handlerInput"
-      @paste="handlerPaste" />
+      @paste="handlerPaste"></div>
 
     <div
       v-if="showLimit && value.length > 0"
@@ -31,9 +29,10 @@
 </template>
 
 <script>
-import { typeOf } from '../../../util/assist'
+import { typeOf, saveSelection, restoreSelection } from '@src/util/assist'
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'batch-inputs-row-input'
+import _throttle from 'lodash/throttle'
+const prefixCls = prefix + 'batch-inputs-tinymce'
 
 export default {
   name: prefixCls,
@@ -79,9 +78,11 @@ export default {
       // 聚焦状态
       isFounded: false,
       // 当前的输入的值
-      currentValue: this.value || '',
+      currentValue: '',
       // 已输入的字符长度
-      totalln: 0
+      totalln: 0,
+      // 光标范围
+      selection: null
     }
   },
   computed: {
@@ -98,9 +99,9 @@ export default {
   },
   watch: {
     value() {
-      if (this.value !== this.currentValue) {
-        this.currentValue = this.value
-      }
+      this.$nextTick(() => {
+        this.setInputValue(this.value)
+      })
     },
     currentValue() {
       // 计算字数
@@ -109,33 +110,35 @@ export default {
       this.calcValidResult()
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.setInputValue(this.value)
+    })
+  },
   methods: {
     // 鼠标抬起事件
     handlerMouseup(event) {
       event.stopPropagation()
+      // 更新选区
+      this.getSelection()
     },
     // 输入事件
     handlerInput(keyInputEvent) {
       keyInputEvent.stopPropagation()
+      this.currentValue = this.$refs.Input.innerHTML
+      // 更新选区
+      this.getSelection()
       this.$emit('input', this.currentValue)
       this.$emit('on-change', this.currentValue)
     },
     // 粘贴(禁止粘贴文件和图片)
+    // 粘贴触发输入，自动更新选区
     handlerPaste(event) {
       event.stopPropagation()
       event.preventDefault()
       const { clipboardData } = event
-      if (!clipboardData) {
-        return
-      }
-      const { items } = clipboardData
-      if (!items) {
-        return
-      }
-      // 获取纯文本
-      const text = event.clipboardData.getData('text/plain')
-      // 不是纯文本就阻止粘贴
-      if (!text) {
+      // 只获取获取纯文本
+      if (!clipboardData || !clipboardData.items || !clipboardData.getData('text/plain')) {
         return
       }
 
@@ -157,9 +160,13 @@ export default {
     // 键盘抬起事件
     handlerKeyup(keyUpEvent) {
       keyUpEvent.stopPropagation()
+      // 更新选区
+      this.getSelection()
     },
     // 聚焦事件
     handlerFocus(event) {
+      // 更新选区
+      this.getSelection()
       this.isFounded = true
       this.$emit('on-foucs', event)
     },
@@ -170,36 +177,77 @@ export default {
     },
     // 清除
     handleClear() {
-      this.currentValue = ''
+      this.setInputValue()
       this.$emit('input', this.currentValue)
       this.$emit('on-change', this.currentValue)
       this.$emit('on-clear')
     },
 
     // ----------公共方法---------
+    // 设置inputValue
+    setInputValue(value = '') {
+      if (value !== this.currentValue) {
+        this.currentValue = value
+        this.$refs.Input.innerHTML = this.currentValue
+        // 删除选区
+        restoreSelection(this.selection)
+        // 在重新获取一次
+        this.getSelection()
+      }
+    },
+    // 将光标设置在最后
+    setPlaceCaretAtEnd() {
+      if (document.getSelection) {
+        const range = document.createRange()
+        range.selectNodeContents(this.$refs.Input)
+        range.collapse(false)
+        const selection = document.getSelection()
+        selection.removeAllRanges()
+        selection.addRange(range)
+        this.focus()
+      }
+    },
+    // 主动插入内容
     insertTextAtCursor(textToInsert) {
-      const insertedTextLength = textToInsert.length
-      if (insertedTextLength < 1) {
-        return
+      function createNode(htmlStr) {
+        const div = document.createElement('div')
+        div.innerHTML = htmlStr
+        return div.childNodes[0]
       }
 
-      const input = this.$refs.Input
-      const selectionStart = input.selectionStart
-      const selectionEnd = input.selectionEnd
-      const inputValue = input.value
-      const before = inputValue.substring(0, selectionStart)
-      const after = inputValue.substring(selectionEnd)
+      // 不存在选区，主动设置一个
+      if (!this.selection) {
+        // 将光标设置在最后
+        this.setPlaceCaretAtEnd()
+        // 更新选区
+        this.getSelection()
+      }
 
-      input.value = before + textToInsert + after
-      this.currentValue = input.value
-      this.$emit('input', this.currentValue)
-      this.$emit('on-change', this.currentValue)
+      // 依赖没有取到选区，提示报错，需要主动设置
+      if (!this.selection) {
+        throw new Error('Warn: 输入选区不存在，设置内容前需要主动点击设置光标！')
+      }
+
+      // 只保留当前的选区
+      restoreSelection(this.selection)
+
+      // 创建节点
+      const node = createNode(textToInsert)
+      // 插入节点
+      this.selection.deleteContents()
+      this.selection.insertNode(node)
+
+      // 重新设置光标位置
+      this.selection.setStartAfter(node)
+      this.selection.setEndAfter(node)
 
       // 使用 requestAnimationFrame 确保在下一帧渲染前执行
       window.requestAnimationFrame(() => {
-        // 重新设置光标位置（将光标移动到插入文字的末尾）
-        const position = selectionStart + insertedTextLength
-        input.setSelectionRange(position, position)
+        this.currentValue = this.$refs.Input.innerHTML
+        // 重新保存当前的选区(自动更新选区位置，不用手动更新)
+        // this.getSelection()
+        this.$emit('input', this.currentValue)
+        this.$emit('on-change', this.currentValue)
       })
     },
     // 计算字数
@@ -217,6 +265,11 @@ export default {
       }
       this.$emit('on-error', errors)
     },
+    // 更新选区
+    getSelection: _throttle(function () {
+      const activeElement = this.$refs.Input
+      this.selection = saveSelection(activeElement)
+    }, 1000),
     // ----------公共方法---------
 
     // ---------主动事件------
