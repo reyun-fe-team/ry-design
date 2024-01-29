@@ -339,7 +339,7 @@ export function genID(length = 4) {
 }
 
 // 保存当前光标的选区
-export function saveSelection() {
+export function saveSelection(pEle) {
   if (!isClient) {
     return null
   }
@@ -347,7 +347,13 @@ export function saveSelection() {
   if (document.getSelection) {
     const selection = document.getSelection()
     if (selection.getRangeAt && selection.rangeCount > 0) {
-      return selection.getRangeAt(0)
+      const range = selection.getRangeAt(0)
+      const container = range.commonAncestorContainer
+      const containerParent = container.parentElement
+      const isSame = pEle && (pEle === container || pEle === containerParent)
+      if (isSame) {
+        return range
+      }
     }
   }
   return null

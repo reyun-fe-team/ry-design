@@ -195,6 +195,18 @@ export default {
         this.getSelection()
       }
     },
+    // 将光标设置在最后
+    setPlaceCaretAtEnd() {
+      if (document.getSelection) {
+        const range = document.createRange()
+        range.selectNodeContents(this.$refs.Input)
+        range.collapse(false)
+        const selection = document.getSelection()
+        selection.removeAllRanges()
+        selection.addRange(range)
+        this.focus()
+      }
+    },
     // 主动插入内容
     insertTextAtCursor(textToInsert) {
       function createNode(htmlStr) {
@@ -203,8 +215,17 @@ export default {
         return div.childNodes[0]
       }
 
+      // 不存在选区，主动设置一个
       if (!this.selection) {
-        return
+        // 将光标设置在最后
+        this.setPlaceCaretAtEnd()
+        // 更新选区
+        this.getSelection()
+      }
+
+      // 依赖没有取到选区，提示报错，需要主动设置
+      if (!this.selection) {
+        throw new Error('Warn: 输入选区不存在，设置内容前需要主动点击设置光标！')
       }
 
       // 只保留当前的选区
@@ -246,7 +267,8 @@ export default {
     },
     // 更新选区
     getSelection: _throttle(function () {
-      this.selection = saveSelection()
+      const activeElement = this.$refs.Input
+      this.selection = saveSelection(activeElement)
     }, 1000),
     // ----------公共方法---------
 
