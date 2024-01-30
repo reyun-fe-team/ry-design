@@ -183,15 +183,21 @@ export default {
         disableInputFn()
         const currentIndex = index + 1
 
+        // 回车后超出可编辑的长度
         if (currentIndex >= this.maxLine) {
-          // 回车后超出可编辑的长度
           this.dispatch('on-enter-over-length', currentIndex)
           return
         }
 
-        this.dispatch('on-middle-change', {
-          preActiveClass: this.middle.activeClass,
-          activeClass: currentIndex
+        // 没有超出，自动添加一行，在最后一行时
+        this.dispatch('on-enter-add-line', currentIndex)
+
+        // 更新,聚焦
+        this.$nextTick(() => {
+          this.dispatch('on-middle-change', {
+            preActiveClass: this.middle.activeClass,
+            activeClass: currentIndex
+          })
         })
       }
     },
