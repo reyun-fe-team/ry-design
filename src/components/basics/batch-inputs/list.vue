@@ -3,10 +3,10 @@
     :class="[prefixCls]"
     :style="{ height: height + 'px' }">
     <rd-virtual-list
-      ref="list"
+      ref="VirtualList"
       :class="prefixCls + '-virtual-list'"
       data-key="uid"
-      :data-sources="getLine"
+      :data-sources="dataSources"
       :extra-props="extraProps"
       :data-component="VirtualItem"
       v-on="$listeners"></rd-virtual-list>
@@ -85,10 +85,15 @@ export default {
       type: Boolean,
       default: true
     },
+    // 初始化行数
+    initialLine: {
+      type: Number,
+      default: 10
+    },
     // 最大行数
     maxLine: {
       type: Number,
-      default: 30
+      default: 100
     },
     value: {
       type: Array,
@@ -127,43 +132,38 @@ export default {
   },
   data() {
     return {
+      prefixCls,
       // 每行的渲染组件
       VirtualItem,
-      prefixCls,
       // 当前数据计数器
-      middle: {
-        preActiveClass: null,
-        activeClass: null
-      },
+      middle: { preActiveClass: null, activeClass: null },
       // 错误信息
       errorList: [],
-      // 事件
-      emits: {
-        'on-enter-over-length': this.handleEnterOverLength,
-        'on-paste-over-length': this.handlePasteOverLength,
-        'on-middle-change': this.handleMiddleChange,
-        'on-error': this.handleError,
-        'on-change': this.handleChange
-      },
-      currentInput: null
+      // 渲染的行数
+      rows: this.initialLine || 10,
+      // 当前输入的组件实例
+      currentInput: null,
+      // 输入行数据
+      dataSources: []
     }
   },
   computed: {
+    // 额外参数
     extraProps() {
       let { $props, middle, emits, errorList } = this
       return { ...$props, middle, emits, errorList }
     },
-    getLine() {
-      let arr = []
-      for (let index = 0; index < this.maxLine; index++) {
-        arr.push({
-          uid: getKey(),
-          index,
-          item: index + 1,
-          maxLine: this.maxLine
-        })
+
+    // 事件
+    emits() {
+      return {
+        'on-enter-over-length': this.handleEnterOverLength,
+        'on-paste-over-length': this.handlePasteOverLength,
+        'on-middle-change': this.handleMiddleChange,
+        'on-error': this.handleError,
+        'on-change': this.handleChange,
+        'on-enter-add-line': this.handleAddLine
       }
-      return arr
     }
   },
   watch: {
@@ -176,10 +176,24 @@ export default {
       }
     }
   },
-  mounted() {
-    this.$nextTick(() => this.getCurrentInput())
+  created() {
+    this.dataSources = this.getDataSources()
+    this.$nextTick(() => window.requestAnimationFrame(() => this.getCurrentInput()))
   },
   methods: {
+    // 最后一行，自增一行
+    handleAddLine(currentIndex) {
+      if (currentIndex === this.rows) {
+        this.dataSources.push(this.getSingleLineData(currentIndex + 1))
+        this.rows = this.dataSources.length
+        // 滚动到最下面
+        const _VirtualList = this.$refs.VirtualList
+        if (_VirtualList) {
+          _VirtualList.scrollToBottom()
+        }
+      }
+    },
+    // 更新选中的行
     handleMiddleChange(middle) {
       this.middle = middle
       let { activeClass } = this.middle
@@ -187,10 +201,12 @@ export default {
 
       this.getCurrentInput(activeClass)
 
+      // 聚焦，设置光标在最后
       if (this.currentInput) {
-        this.currentInput.$refs.Input.focus()
+        this.currentInput.$refs.Input.setPlaceCaretAtEnd()
       }
     },
+    // 接受错误
     handleError(index, error) {
       this.errorList.splice(index, 1, error)
       this.$emit('on-error', index, error)
@@ -203,6 +219,7 @@ export default {
     handlePasteOverLength(data) {
       this.$emit('on-paste-over-length', data)
     },
+    // 数据更新
     handleChange(val) {
       this.$emit('on-change', val)
       this.$emit('input', val)
@@ -213,10 +230,35 @@ export default {
     },
     // 获取当前的输入行
     getCurrentInput(activeClass = 0) {
-      let currentVirtualItem = this.$refs.list.$children.find(item => item.index === activeClass)
+      const _VirtualList = this.$refs.VirtualList
+      if (!_VirtualList) {
+        return
+      }
+
+      let currentVirtualItem = _VirtualList.$children.find(item => item.index === activeClass)
       if (currentVirtualItem) {
         this.currentInput = currentVirtualItem.$children[0]
       }
+    },
+    // 获取一行的数据集合
+    getSingleLineData(index = 0) {
+      const data = {
+        uid: getKey(),
+        index,
+        item: index + 1,
+        maxLine: this.maxLine,
+        rows: this.rows
+      }
+      return data
+    },
+    // 获取输入行数据
+    getDataSources() {
+      const arr = []
+      this.rows = this.rows >= this.maxLine ? this.maxLine : this.rows
+      for (let index = 0; index < this.rows; index++) {
+        arr.push(this.getSingleLineData(index))
+      }
+      return arr
     },
     // 插入内容
     insertNode(type, data) {

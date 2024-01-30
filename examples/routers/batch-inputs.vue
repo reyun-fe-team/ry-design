@@ -26,27 +26,21 @@
       v-model="list"
       use-emoj
       show-limit
-      :max-line="1000">
+      :max-line="15">
       <template #end="{ insertNode }">
         <div style="display: flex; align-items: center">
           <Button @click="insertWord(insertNode)">插入动态词包</Button>
-          <Poptip
-            transfer
-            placement="bottom-end">
-            <img
-              :src="AddEmoji"
-              style="width: 20px" />
-            <div
-              slot="content"
-              style="max-width: 200px; display: flex; flex-wrap: wrap; max-height: 80px">
-              <img
-                v-for="(item, index) in emojiList"
-                :key="index"
-                style="width: 20px; margin: 10px"
-                :src="item.url"
-                @click="insertFace(insertNode, item)" />
-            </div>
-          </Poptip>
+          <img
+            v-tooltip="{
+              contentRender,
+              insertFace,
+              insertNode,
+              emojiList,
+              placement: 'bottom-end',
+              transferClassName: 'emojo-wrapper'
+            }"
+            :src="AddEmoji"
+            style="width: 20px" />
           <img
             style="width: 20px"
             :src="AddLineFeed"
@@ -57,9 +51,29 @@
   </div>
 </template>
 
+<style lang="less">
+.emojo-wrapper .ivu-tooltip-inner {
+  padding: 0;
+}
+</style>
+
 <script>
 import AddEmoji from '@src/images/text-input-list/add-emoji.png'
 import AddLineFeed from '@src/images/text-input-list//add-line-feed.png'
+
+const AddEmojiWrapper = {
+  props: ['emojiList', 'insertFace', 'insertNode'],
+  template: /*html*/ `
+  <div
+    style="display: flex;flex-wrap: wrap;max-height: 100px;width: 155px;overflow: auto;padding: 10px;">
+    <img
+      v-for="(item, index) in emojiList"
+      :key="index"
+      style="width: 20px; margin: 5px"
+      :src="item.url"
+      @click="insertFace(insertNode, item)" />
+  </div>`
+}
 export default {
   data() {
     return {
@@ -301,6 +315,10 @@ export default {
     }
   },
   methods: {
+    contentRender(h, data) {
+      const { emojiList, insertFace, insertNode } = data
+      return h(AddEmojiWrapper, { props: { emojiList, insertFace, insertNode } })
+    },
     insertWord(insertNode) {
       const randomNumber = Math.floor(Math.random() * 5)
       insertNode('text', { value: this.dynamicWordList[randomNumber].value })
