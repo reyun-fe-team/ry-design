@@ -42,6 +42,7 @@
 import { prefix } from '@src/config.js'
 import tinymce from './tinymce'
 import endSlot from './slots/end'
+import { deepCopy } from '@src/util/assist'
 
 const prefixCls = prefix + 'batch-inputs'
 
@@ -220,72 +221,38 @@ export default {
       this.dispatch('on-change', newValue)
     },
     // 粘贴
-    handlerPaste(event, index) {
+    handlerPaste(plainTextList, index) {
       // 超出可编辑的列表长度
       let overLength = []
-      this.getClipboardData(event, arr => {
-        let newValue = JSON.parse(JSON.stringify(this.value))
-        arr.forEach((o, i) => {
-          // 首行 叠加
-          if (i === 0) {
-            // 再光标位置插入复制的文案
-            newValue[index] = !newValue[index] ? o : newValue[index] + o
-          }
+      let newValue = deepCopy(this.value)
+      plainTextList.forEach((plainText, plainTextIndex) => {
+        // 首行自动更新了
 
-          // 插入新行
-          if (i > 0) {
-            newValue.splice(index + i, 0, o)
-          }
+        // 第二行开始，插入新行
+        if (plainTextIndex >= 1) {
+          newValue.splice(index + plainTextIndex, 0, plainText)
+        }
 
-          // 校验 && 超出最大行数
-          if (newValue.length > this.maxLine) {
-            overLength.push(o)
-            this.dispatch('on-paste-over-length', overLength)
+        // 校验 && 超出最大行数
+        if (newValue.length > this.maxLine) {
+          overLength.push(plainText)
+          this.dispatch('on-paste-over-length', overLength)
+        }
+
+        // 校验 && 文案
+        else {
+          if (plainText.length > 0) {
+            const count = this.calcWordCount(plainText)
+            const error = this.calcValidResult(count, plainText)
+            this.dispatch('on-error', index + plainTextIndex, error)
           }
-          // 校验 && 文案
-          else {
-            if (o) {
-              const count = this.calcWordCount(o)
-              const error = this.calcValidResult(count, o)
-              this.dispatch('on-error', index + i, error)
-            }
-          }
-        })
-        // 截取
-        newValue = newValue.slice(0, this.maxLine)
-        this.dispatch('on-input', newValue)
-        this.dispatch('on-change', newValue)
+        }
       })
-    },
-    // 获取剪切板内容
-    getClipboardData(event, cb) {
-      let itemList = event.clipboardData.items
-
-      function getSplitReg(str) {
-        if (str.indexOf('\\r\\n') > -1) {
-          return /\\r\\n/
-        } else if (str.indexOf('\\r') > -1) {
-          return /\\r/
-        } else if (str.indexOf('\\n') > -1) {
-          return /\\n/
-        }
-        return /\\r\\n/
-      }
-
-      for (let i = 0; i < itemList.length; i++) {
-        let item = itemList[i]
-        if (item.kind === 'string' && item.type.match('text/plain')) {
-          item.getAsString(str => {
-            let splitReg = getSplitReg(JSON.stringify(str).replace(/"/g, ''))
-            let arr = JSON.stringify(str)
-              .replace(/"/g, '')
-              .split(splitReg)
-              .filter(o => o)
-
-            cb && cb(arr)
-          })
-        }
-      }
+      // 截取
+      newValue = newValue.slice(0, this.maxLine)
+      this.dispatch('on-input', newValue)
+      this.dispatch('on-change', newValue)
+      this.dispatch('on-paste-length', newValue.filter(Boolean).length)
     },
     // 错误
     handleError(errors, index) {

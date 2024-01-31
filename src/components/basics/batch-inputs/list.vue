@@ -153,7 +153,6 @@ export default {
       let { $props, middle, emits, errorList } = this
       return { ...$props, middle, emits, errorList }
     },
-
     // 事件
     emits() {
       return {
@@ -162,7 +161,8 @@ export default {
         'on-middle-change': this.handleMiddleChange,
         'on-error': this.handleError,
         'on-change': this.handleChange,
-        'on-enter-add-line': this.handleAddLine
+        'on-enter-add-line': this.handleAddLine,
+        'on-paste-length': this.handlePasteLength
       }
     }
   },
@@ -186,15 +186,23 @@ export default {
       if (currentIndex === this.rows) {
         this.dataSources.push(this.getSingleLineData(currentIndex + 1))
         this.rows = this.dataSources.length
-        // 滚动到最下面
-        const _VirtualList = this.$refs.VirtualList
-        if (_VirtualList) {
-          _VirtualList.scrollToBottom()
+        this.scrollVirtualListToBottom()
+      }
+    },
+    // 粘贴增加行数
+    handlePasteLength(len) {
+      const addCount = len - this.rows
+      if (addCount > 0) {
+        for (let index = 0; index < addCount; index++) {
+          this.dataSources.push(this.getSingleLineData(this.rows + index + 1))
         }
+        this.rows = this.dataSources.length
+        this.scrollVirtualListToBottom()
       }
     },
     // 更新选中的行
     handleMiddleChange(middle) {
+      console.log('handleMiddleChange: ', );
       this.middle = middle
       let { activeClass } = this.middle
       this.$emit('on-middle-change', this.middle)
@@ -223,6 +231,13 @@ export default {
     handleChange(val) {
       this.$emit('on-change', val)
       this.$emit('input', val)
+    },
+    scrollVirtualListToBottom() {
+      // 滚动到最下面
+      const _VirtualList = this.$refs.VirtualList
+      if (_VirtualList) {
+        _VirtualList.scrollToBottom()
+      }
     },
     // 转成纯文本内容
     getPlainTextValues() {

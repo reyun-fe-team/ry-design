@@ -95,6 +95,11 @@ export default {
         placement: 'bottom-start'
       }
       return show ? option : null
+    },
+    // 更新选区
+    getSelection() {
+      const func = this.getSelectionImmediate
+      return _throttle(func, 16.7)
     }
   },
   watch: {
@@ -123,8 +128,9 @@ export default {
       this.getSelection()
     },
     // 输入事件
-    handlerInput(keyInputEvent) {
-      keyInputEvent.stopPropagation()
+    handlerInput(event) {
+      event.stopPropagation()
+      event.preventDefault()
       this.currentValue = this.$refs.Input.innerHTML
       // 更新选区
       this.getSelection()
@@ -136,25 +142,33 @@ export default {
     handlerPaste(event) {
       event.stopPropagation()
       event.preventDefault()
-      const { clipboardData } = event
-      // 只获取获取纯文本
-      if (!clipboardData || !clipboardData.items || !clipboardData.getData('text/plain')) {
+      const clipboardData = event.clipboardData || event.originalEvent.clipboardData
+
+      if (!clipboardData) {
         return
       }
 
-      this.$emit('on-paste', event)
+      const plainTextList = this.getClipboardData(clipboardData)
+      if (plainTextList.length > 0) {
+        // 立刻获取选区
+        this.getSelectionImmediate()
+        // 粘贴事件当前行，直接插入文本
+        this.insertTextAtCursor(plainTextList[0])
+        // 触发
+        this.$emit('on-paste', plainTextList)
+      }
     },
     // 键盘按下事件
-    handlerKeydown(keyDownEvent) {
-      keyDownEvent.stopPropagation()
+    handlerKeydown(event) {
+      event.stopPropagation()
 
       this.$emit('on-keydown', {
         // 按键事件对象
-        keyDownEvent,
+        keyDownEvent: event,
         // 输入框的html 内容
-        stringHtml: keyDownEvent.target.value,
+        stringHtml: event.target.value,
         // 禁用输入。一些场景去禁用。
-        disableInputFn: () => keyDownEvent.preventDefault()
+        disableInputFn: () => event.preventDefault()
       })
     },
     // 键盘抬起事件
@@ -184,10 +198,35 @@ export default {
     },
 
     // ----------公共方法---------
+    // 获取剪切板内容
+    getClipboardData(clipboardData) {
+      const getReg = str => {
+        const regs = {
+          '\\r\\n': /\\r\\n/,
+          '\\r': /\\r/,
+          '\\n': /\\n/
+        }
+        for (const s in regs) {
+          if (str.indexOf(s) > -1) {
+            return regs[s]
+          }
+        }
+
+        return /\\r\\n/
+      }
+      let plainText = clipboardData.getData('text/plain')
+      plainText = JSON.stringify(plainText)
+      plainText = plainText.replace(/"/g, '')
+      const reg = getReg(plainText)
+      const plainTextList = plainText.split(reg).filter(s => s.length > 0)
+
+      return plainTextList
+    },
     // 设置inputValue
     setInputValue(value = '') {
       if (value !== this.currentValue) {
         this.currentValue = value
+        // 光标丢失，无法保存
         this.$refs.Input.innerHTML = this.currentValue
         // 删除选区
         restoreSelection(this.selection)
@@ -225,7 +264,8 @@ export default {
 
       // 依赖没有取到选区，提示报错，需要主动设置
       if (!this.selection) {
-        throw new Error('Warn: 输入选区不存在，设置内容前需要主动点击设置光标！')
+        console.warn('Warn: 输入选区不存在。设置内容前需要主动点击设置光标。')
+        return
       }
 
       // 只保留当前的选区
@@ -265,11 +305,11 @@ export default {
       }
       this.$emit('on-error', errors)
     },
-    // 更新选区
-    getSelection: _throttle(function () {
+    // 立刻获取选区
+    getSelectionImmediate() {
       const activeElement = this.$refs.Input
       this.selection = saveSelection(activeElement)
-    }, 1000),
+    },
     // ----------公共方法---------
 
     // ---------主动事件------
