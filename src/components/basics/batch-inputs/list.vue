@@ -202,7 +202,6 @@ export default {
     },
     // 更新选中的行
     handleMiddleChange(middle) {
-      console.log('handleMiddleChange: ', );
       this.middle = middle
       let { activeClass } = this.middle
       this.$emit('on-middle-change', this.middle)
