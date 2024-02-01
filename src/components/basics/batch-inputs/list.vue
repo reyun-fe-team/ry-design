@@ -19,13 +19,12 @@ const prefixCls = prefix + 'batch-inputs'
 const RowHeight = 35
 // 附加虚拟滚动的行数
 const ExtraRows = 5
-
 // 获取富文本的纯文字内容
-function getPlainText(htmlString) {
+const getPlainText = htmlString => {
   if (!htmlString) {
     return htmlString
   }
-
+  htmlString = htmlString.replaceAll(/<br>|&nbsp;/g, '')
   const div = document.createElement('div')
   div.innerHTML = htmlString
   const childNodes = div.childNodes
@@ -34,32 +33,19 @@ function getPlainText(htmlString) {
 
   for (let index = 0; index < childNodes.length; index++) {
     const ele = childNodes[index]
-    const { nodeValue, nodeType, nodeName } = ele
-
-    let text = ''
-
-    switch (nodeType) {
-      case Node.TEXT_NODE: {
-        text = nodeValue
-        break
-      }
-      case Node.ELEMENT_NODE: {
-        if (nodeName === 'IMG') {
-          text = ele.getAttribute('value')
-        }
-        if (nodeName === 'BR') {
-          text = '\\'
-        }
-        break
-      }
+    const isTextNode = ele.nodeType === Node.TEXT_NODE
+    const isEleNode = ele.nodeType === Node.ELEMENT_NODE
+    if (isTextNode) {
+      stringArray.push(ele.nodeValue)
     }
-
-    stringArray.push(text)
+    if (isEleNode && ele.nodeName === 'IMG') {
+      const imgValue = ele.getAttribute('value')
+      stringArray.push(imgValue)
+    }
   }
 
-  let textString = stringArray.join('')
   const repReg1 = /\s*|<[^>]+>|↵|[\r\n]|&nbsp;|(\n)|(\t)|(\r)|<\/?[^>]*>|\\s*/g
-  textString = textString.replace(repReg1, '')
+  let textString = stringArray.join('').replace(repReg1, '')
 
   const arrEntities = {
     lt: '<',
@@ -82,6 +68,16 @@ export default {
     }
   },
   props: {
+    // 类型 只能是文本 PlainText 支持的html内容 Html
+    type: {
+      type: String,
+      default: 'PlainText'
+    },
+    // 一个图标几个字符
+    iconWordCount: {
+      type: Number,
+      default: 1
+    },
     // 显示文字长度
     showLimit: {
       type: Boolean,
@@ -118,8 +114,7 @@ export default {
     // 文本计算方法.默认每个文字算2个字符
     calcTextFn: {
       type: Function,
-      // eslint-disable-next-line no-control-regex
-      default: text => text.replaceAll(/[^\x00-\xff]/g, '**').length
+      default: null
     },
     validFn: {
       type: Function,
