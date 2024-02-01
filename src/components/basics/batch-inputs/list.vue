@@ -1,22 +1,24 @@
 <template>
-  <div
-    :class="[prefixCls]"
-    :style="{ height: height + 'px' }">
-    <rd-virtual-list
-      ref="VirtualList"
-      :class="prefixCls + '-virtual-list'"
-      data-key="uid"
-      :data-sources="dataSources"
-      :extra-props="extraProps"
-      :data-component="VirtualItem"
-      v-on="$listeners"></rd-virtual-list>
-  </div>
+  <rd-virtual-list
+    ref="VirtualList"
+    :class="[prefixCls, 'small-scroll-y']"
+    :style="{ height: height + 'px' }"
+    :keeps="keeps"
+    data-key="uid"
+    :data-sources="dataSources"
+    :extra-props="extraProps"
+    :data-component="VirtualItem"
+    v-on="$listeners"></rd-virtual-list>
 </template>
 <script>
 import VirtualItem from './line'
 import { prefix } from '@src/config.js'
 import { getKey } from '@src/util/assist'
 const prefixCls = prefix + 'batch-inputs'
+// 行高
+const RowHeight = 35
+// 附加虚拟滚动的行数
+const ExtraRows = 5
 
 // 获取富文本的纯文字内容
 function getPlainText(htmlString) {
@@ -127,7 +129,7 @@ export default {
     // 需要指定一个具体的高度，否则虚列滚动计算失效
     height: {
       type: [Number, String],
-      default: 250
+      default: 350
     }
   },
   data() {
@@ -148,6 +150,12 @@ export default {
     }
   },
   computed: {
+    // 虚拟滚动时渲染的行数
+    keeps() {
+      const rows = Math.round(this.height / RowHeight)
+      const newRows = rows + ExtraRows
+      return rows > 30 || newRows > 30 ? 30 : newRows
+    },
     // 额外参数
     extraProps() {
       let { $props, middle, emits, errorList } = this
@@ -202,7 +210,6 @@ export default {
     },
     // 更新选中的行
     handleMiddleChange(middle) {
-      console.log('handleMiddleChange: ', );
       this.middle = middle
       let { activeClass } = this.middle
       this.$emit('on-middle-change', this.middle)

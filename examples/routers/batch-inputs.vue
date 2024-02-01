@@ -23,10 +23,11 @@
     </div>
     <rd-batch-inputs
       ref="BatchInputs"
+      :height="350"
       v-model="list"
-      use-emoj
+      :initial-line="100"
       show-limit
-      :max-line="15">
+      :max-line="200">
       <template #end="{ insertNode }">
         <div style="display: flex; align-items: center">
           <Button @click="insertWord(insertNode)">插入动态词包</Button>
