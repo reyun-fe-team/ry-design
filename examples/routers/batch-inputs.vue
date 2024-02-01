@@ -4,7 +4,10 @@
       v-for="(t, i) in list"
       :key="i"
       style="margin: 5px 0">
+      <h3>html</h3>
       <p v-html="t"></p>
+      <h3>text</h3>
+      <p>{{ t }}</p>
     </div>
 
     <div style="margin: 10px 0">
@@ -23,8 +26,9 @@
     </div>
     <rd-batch-inputs
       ref="BatchInputs"
-      :height="350"
       v-model="list"
+      type="PlainText"
+      :height="350"
       :initial-line="100"
       show-limit
       :max-line="200">

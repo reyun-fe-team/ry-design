@@ -42,6 +42,11 @@ export default {
       type: String,
       default: ''
     },
+    // 类型 只能是文本 PlainText 支持的html内容 Html
+    type: {
+      type: String,
+      default: 'PlainText'
+    },
     // 显示文字长度
     showLimit: {
       type: Boolean,
@@ -131,7 +136,17 @@ export default {
     handlerInput(event) {
       event.stopPropagation()
       event.preventDefault()
-      this.currentValue = this.$refs.Input.innerHTML
+      let value = ''
+
+      if (this.type === 'Html') {
+        value = this.$refs.Input.innerHTML
+      }
+
+      if (this.type === 'PlainText') {
+        value = this.$refs.Input.innerText
+      }
+
+      this.currentValue = value
       // 更新选区
       this.getSelection()
       this.$emit('input', this.currentValue)
@@ -227,7 +242,12 @@ export default {
       if (value !== this.currentValue) {
         this.currentValue = value
         // 光标丢失，无法保存
-        this.$refs.Input.innerHTML = this.currentValue
+        if (this.type === 'Html') {
+          this.$refs.Input.innerHTML = this.currentValue
+        }
+        if (this.type === 'PlainText') {
+          this.$refs.Input.innerText = this.currentValue
+        }
         // 删除选区
         restoreSelection(this.selection)
         // 在重新获取一次
@@ -283,7 +303,12 @@ export default {
 
       // 使用 requestAnimationFrame 确保在下一帧渲染前执行
       window.requestAnimationFrame(() => {
-        this.currentValue = this.$refs.Input.innerHTML
+        if (this.type === 'Html') {
+          this.currentValue = this.$refs.Input.innerHTML
+        }
+        if (this.type === 'PlainText') {
+          this.currentValue = this.$refs.Input.innerText
+        }
         // 重新保存当前的选区(自动更新选区位置，不用手动更新)
         // this.getSelection()
         this.$emit('input', this.currentValue)

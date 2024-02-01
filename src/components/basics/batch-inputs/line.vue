@@ -12,11 +12,12 @@
         <tinymce
           ref="Input"
           :key="index"
+          :type="type"
           :show-limit="showLimit"
           :value="value[index]"
           :class="lineInputClasses"
           :placeholder="placeholder"
-          :calc-text-fn="calcTextFn"
+          :calc-text-fn="calcWordCount"
           :valid-fn="calcValidResult"
           :max-length="maxLength"
           :min-length="minLength"
@@ -45,6 +46,7 @@ import endSlot from './slots/end'
 import { deepCopy } from '@src/util/assist'
 
 const prefixCls = prefix + 'batch-inputs'
+const EnterIconValue = '\\'
 
 export default {
   name: prefixCls + '-line',
@@ -54,11 +56,6 @@ export default {
   },
   inject: ['root'],
   props: {
-    // 显示文字长度
-    showLimit: {
-      type: Boolean,
-      default: true
-    },
     source: {
       type: Object,
       default: () => {}
@@ -113,9 +110,25 @@ export default {
       type: Function,
       default: null
     },
+    // 事件
     emits: {
       type: Object,
       default: () => {}
+    },
+    // 类型 只能是文本 PlainText 支持的html内容 Html
+    type: {
+      type: String,
+      default: 'PlainText'
+    },
+    // 显示文字长度
+    showLimit: {
+      type: Boolean,
+      default: true
+    },
+    // 一个图标几个字符
+    iconWordCount: {
+      type: Number,
+      default: 1
     }
   },
   data() {
@@ -244,7 +257,7 @@ export default {
           if (plainText.length > 0) {
             const count = this.calcWordCount(plainText)
             const error = this.calcValidResult(count, plainText)
-            this.dispatch('on-error', index + plainTextIndex, error)
+            error.length > 0 && this.dispatch('on-error', index + plainTextIndex, error)
           }
         }
       })
@@ -261,27 +274,38 @@ export default {
       this.dispatch('on-error', index, newErrors)
     },
     // 计算字数
-    calcWordCount(text) {
-      if (!text) {
-        return 0
+    calcWordCount(htmlString) {
+      let totalln = 0
+
+      if (!htmlString) {
+        return totalln
       }
-      let copyDom = document.createElement('div')
-      // 需要匹配换行符替换为空
-      copyDom.innerHTML = text.replaceAll('&nbsp;', '')
-      // 计算文本长度
-      let textLn = 0
-      const textStr = copyDom.innerText.replace(/[\r\n]/g, '')
+
+      htmlString = htmlString.replaceAll(/<br>|&nbsp;/g, '')
       if (this.calcTextFn) {
-        textLn = this.calcTextFn(textStr)
-      } else {
-        textLn = textStr.length
+        return this.calcTextFn(htmlString)
       }
-      const imgs = copyDom.getElementsByTagName('img')
-      const emojLn = [...imgs].reduce(
-        (pre, cur) => (cur.getAttribute('data-type') === 'emoj' ? pre + 1 : pre),
-        0
-      )
-      return textLn + emojLn
+
+      const div = document.createElement('div')
+      div.innerHTML = htmlString
+      const childNodes = div.childNodes
+      for (let index = 0; index < childNodes.length; index++) {
+        const ele = childNodes[index]
+        const isTextNode = ele.nodeType === Node.TEXT_NODE
+        const isEleNode = ele.nodeType === Node.ELEMENT_NODE
+        if (isTextNode) {
+          totalln += ele.nodeValue.length
+        }
+        if (isEleNode && ele.nodeName === 'IMG') {
+          const imgValue = ele.getAttribute('value')
+          // 不计算回车符号
+          if (imgValue !== EnterIconValue) {
+            totalln += this.iconWordCount || 1
+          }
+        }
+      }
+
+      return totalln
     },
     // 计算验证
     calcValidResult(ln, value) {
@@ -305,21 +329,18 @@ export default {
       if (data && this.$refs.Input) {
         const { value = '', url = '' } = data
 
+        let strings = []
         if (type === 'text') {
-          this.$refs.Input.insertTextAtCursor(value)
+          strings = [value]
+        }
+        if (this.type === 'Html' && type === 'image') {
+          strings = [`<img src="${url}" value="${value}"/>`]
+        }
+        if (this.type === 'Html' && type === 'enterIcon') {
+          strings = [`<img src="${url}" value="${EnterIconValue}"/>`, '<br/>', '&nbsp;']
         }
 
-        if (type === 'image') {
-          const iconStr = `<img src="${url}" value="${value}"/>`
-          this.$refs.Input.insertTextAtCursor(iconStr)
-        }
-
-        if (type === 'enterIcon') {
-          const iconStr = `<img src="${url}" value="${value}"/>`
-          this.$refs.Input.insertTextAtCursor(iconStr)
-          this.$refs.Input.insertTextAtCursor('<br />')
-          this.$refs.Input.insertTextAtCursor('&nbsp;')
-        }
+        strings.forEach(text => this.$refs.Input.insertTextAtCursor(text))
       }
     }
   }
