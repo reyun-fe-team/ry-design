@@ -229,7 +229,7 @@ export default {
         return
       }
 
-      const newValue = [...this.value]
+      const newValue = [...this.value].map(v => v || '')
       newValue[index] = value || ''
       this.dispatch('on-input', newValue)
       this.dispatch('on-change', newValue)

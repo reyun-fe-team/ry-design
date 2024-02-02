@@ -240,7 +240,7 @@ export default {
     // 设置inputValue
     setInputValue(value = '') {
       if (value !== this.currentValue) {
-        this.currentValue = value
+        this.currentValue = value || ''
         // 光标丢失，无法保存
         if (this.type === 'Html') {
           this.$refs.Input.innerHTML = this.currentValue
