@@ -400,3 +400,10 @@ export function insertInputTextAtCursor(input, textToInsert = '', callback) {
     input.setSelectionRange(position, position)
   })
 }
+
+// 等待一会
+export function waitOut(cb, time = 20) {
+  window.setTimeout(() => {
+    cb && cb()
+  }, time)
+}

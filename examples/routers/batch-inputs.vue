@@ -28,10 +28,9 @@
       ref="BatchInputs"
       v-model="list"
       type="PlainText"
-      :height="350"
-      :initial-line="100"
+      :height="200"
       show-limit
-      :max-line="200">
+      :max-line="20">
       <template #end="{ insertNode }">
         <div style="display: flex; align-items: center">
           <Button @click="insertWord(insertNode)">插入动态词包</Button>

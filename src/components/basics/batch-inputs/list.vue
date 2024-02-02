@@ -4,16 +4,14 @@
     :class="[prefixCls, 'small-scroll-y']"
     :style="{ height: height + 'px' }"
     :keeps="keeps"
-    data-key="uid"
-    :data-sources="dataSources"
     :extra-props="extraProps"
-    :data-component="VirtualItem"
+    v-bind="listDataProp"
     v-on="$listeners"></rd-virtual-list>
 </template>
 <script>
 import VirtualItem from './line'
 import { prefix } from '@src/config.js'
-import { getKey } from '@src/util/assist'
+import { getKey, waitOut } from '@src/util/assist'
 const prefixCls = prefix + 'batch-inputs'
 // 行高
 const RowHeight = 35
@@ -24,6 +22,7 @@ const getPlainText = htmlString => {
   if (!htmlString) {
     return htmlString
   }
+  // 去掉回车符号
   htmlString = htmlString.replaceAll(/<br>|&nbsp;/g, '')
   const div = document.createElement('div')
   div.innerHTML = htmlString
@@ -47,6 +46,7 @@ const getPlainText = htmlString => {
   const repReg1 = /\s*|<[^>]+>|↵|[\r\n]|&nbsp;|(\n)|(\t)|(\r)|<\/?[^>]*>|\\s*/g
   let textString = stringArray.join('').replace(repReg1, '')
 
+  // 一些转义符号
   const arrEntities = {
     lt: '<',
     gt: '>',
@@ -82,11 +82,6 @@ export default {
     showLimit: {
       type: Boolean,
       default: true
-    },
-    // 初始化行数
-    initialLine: {
-      type: Number,
-      default: 10
     },
     // 最大行数
     maxLine: {
@@ -130,21 +125,33 @@ export default {
   data() {
     return {
       prefixCls,
-      // 每行的渲染组件
-      VirtualItem,
       // 当前数据计数器
       middle: { preActiveClass: null, activeClass: null },
       // 错误信息
       errorList: [],
-      // 渲染的行数
-      rows: this.initialLine || 10,
       // 当前输入的组件实例
-      currentInput: null,
-      // 输入行数据
-      dataSources: []
+      currentInput: null
     }
   },
   computed: {
+    // 列表数据字段
+    listDataProp() {
+      return {
+        dataKey: 'uid',
+        dataSources: this.dataSources,
+        // 每行的渲染组件
+        dataComponent: VirtualItem
+      }
+    },
+    // 输入行数据
+    dataSources() {
+      const arr = []
+      for (let index = 0; index < this.maxLine; index++) {
+        const data = { index, uid: getKey(), item: index + 1, maxLine: this.maxLine }
+        arr.push(data)
+      }
+      return arr
+    },
     // 虚拟滚动时渲染的行数
     keeps() {
       const rows = Math.round(this.height / RowHeight)
@@ -164,8 +171,7 @@ export default {
         'on-middle-change': this.handleMiddleChange,
         'on-error': this.handleError,
         'on-change': this.handleChange,
-        'on-enter-add-line': this.handleAddLine,
-        'on-paste-length': this.handlePasteLength
+        'on-enter': this.handleEnter
       }
     }
   },
@@ -179,29 +185,14 @@ export default {
       }
     }
   },
-  created() {
-    this.dataSources = this.getDataSources()
-    this.$nextTick(() => window.requestAnimationFrame(() => this.getCurrentInput()))
+  async created() {
+    await this.$nextTick()
+    waitOut(() => this.getCurrentInput())
   },
   methods: {
-    // 最后一行，自增一行
-    handleAddLine(currentIndex) {
-      if (currentIndex === this.rows) {
-        this.dataSources.push(this.getSingleLineData(currentIndex + 1))
-        this.rows = this.dataSources.length
-        this.scrollVirtualListToBottom()
-      }
-    },
-    // 粘贴增加行数
-    handlePasteLength(len) {
-      const addCount = len - this.rows
-      if (addCount > 0) {
-        for (let index = 0; index < addCount; index++) {
-          this.dataSources.push(this.getSingleLineData(this.rows + index + 1))
-        }
-        this.rows = this.dataSources.length
-        this.scrollVirtualListToBottom()
-      }
+    // 回车
+    handleEnter(index) {
+      this.scrollToIndex(index)
     },
     // 更新选中的行
     handleMiddleChange(middle) {
@@ -234,12 +225,19 @@ export default {
       this.$emit('on-change', val)
       this.$emit('input', val)
     },
-    scrollVirtualListToBottom() {
-      // 滚动到最下面
+    // 滚动到某一行
+    scrollToIndex(index = 0) {
       const _VirtualList = this.$refs.VirtualList
       if (_VirtualList) {
-        _VirtualList.scrollToBottom()
+        _VirtualList.scrollToIndex(index)
       }
+    },
+    // 获取当前输入行的数据
+    getCurrentValue() {
+      if (this.middle.activeClass === null) {
+        return ''
+      }
+      return this.value[this.middle.activeClass]
     },
     // 转成纯文本内容
     getPlainTextValues() {
@@ -251,31 +249,10 @@ export default {
       if (!_VirtualList) {
         return
       }
-
       let currentVirtualItem = _VirtualList.$children.find(item => item.index === activeClass)
       if (currentVirtualItem) {
         this.currentInput = currentVirtualItem.$children[0]
       }
-    },
-    // 获取一行的数据集合
-    getSingleLineData(index = 0) {
-      const data = {
-        uid: getKey(),
-        index,
-        item: index + 1,
-        maxLine: this.maxLine,
-        rows: this.rows
-      }
-      return data
-    },
-    // 获取输入行数据
-    getDataSources() {
-      const arr = []
-      this.rows = this.rows >= this.maxLine ? this.maxLine : this.rows
-      for (let index = 0; index < this.rows; index++) {
-        arr.push(this.getSingleLineData(index))
-      }
-      return arr
     },
     // 插入内容
     insertNode(type, data) {
