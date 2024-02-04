@@ -43,7 +43,7 @@
 import { prefix } from '@src/config.js'
 import tinymce from './tinymce'
 import endSlot from './slots/end'
-import { deepCopy } from '@src/util/assist'
+import { deepCopy, waitOut } from '@src/util/assist'
 
 const prefixCls = prefix + 'batch-inputs'
 const EnterIconValue = '\\'
@@ -191,7 +191,7 @@ export default {
       }
     },
     // 按键
-    handlerKeydown({ keyDownEvent, disableInputFn }, index) {
+    async handlerKeydown({ keyDownEvent, disableInputFn }, index) {
       // 回车换行
       if (keyDownEvent.keyCode === 13) {
         disableInputFn()
@@ -203,16 +203,17 @@ export default {
           return
         }
 
-        // 没有超出，自动添加一行，在最后一行时
-        this.dispatch('on-enter-add-line', currentIndex)
-
         // 更新,聚焦
-        this.$nextTick(() => {
+        await this.$nextTick()
+        waitOut(() => {
           this.dispatch('on-middle-change', {
             preActiveClass: this.middle.activeClass,
             activeClass: currentIndex
           })
         })
+
+        // 回车
+        this.dispatch('on-enter', index)
       }
     },
     // 清空
@@ -228,7 +229,7 @@ export default {
         return
       }
 
-      const newValue = [...this.value]
+      const newValue = [...this.value].map(v => v || '')
       newValue[index] = value || ''
       this.dispatch('on-input', newValue)
       this.dispatch('on-change', newValue)
@@ -265,7 +266,6 @@ export default {
       newValue = newValue.slice(0, this.maxLine)
       this.dispatch('on-input', newValue)
       this.dispatch('on-change', newValue)
-      this.dispatch('on-paste-length', newValue.filter(Boolean).length)
     },
     // 错误
     handleError(errors, index) {
