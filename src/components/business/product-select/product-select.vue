@@ -11,7 +11,9 @@
         </div>
         <div :class="prefixCls + '-wrapper-table'">
           <!-- 一级表格搜索 -->
-          <div style="padding: 10px">
+          <div
+            v-if="isFirstSearch"
+            style="padding: 10px">
             <Input
               v-model.trim="firstSearch"
               :placeholder="firstSearchPlaceholder"
@@ -22,7 +24,7 @@
             ref="firstTableRef"
             :row-key="firstRowId"
             big-data-checkbox
-            :height="firstTableHeight"
+            :height="firstTableHeightCpu"
             :border="false"
             use-virtual
             :show-header="isFirst"
@@ -38,6 +40,7 @@
             <u-table-column
               v-if="level === 'first' && firstTableData.length"
               type="selection"
+              :selectable="selectable"
               width="33"></u-table-column>
             <u-table-column
               v-if="firstTableData.length"
@@ -79,7 +82,9 @@
         </div>
         <div :class="[prefixCls + '-wrapper-table', prefixCls + '-wrapper-table-border-left-none']">
           <!-- 二级表格搜索框 -->
-          <div style="padding: 10px">
+          <div
+            v-if="isSecondSearch"
+            style="padding: 10px">
             <Input
               v-model.trim="secondSearch"
               :placeholder="secondSearchPlaceholder"
@@ -91,7 +96,7 @@
             ref="secondTableRef"
             :row-key="secondRowId"
             big-data-checkbox
-            :height="secondTableHeight"
+            :height="secondTableHeightCpu"
             :border="false"
             use-virtual
             :row-height="secondTableRowHeight"
@@ -104,6 +109,7 @@
             <u-table-column
               v-if="secondTableData.length"
               type="selection"
+              :selectable="selectable"
               width="33"></u-table-column>
             <u-table-column
               v-if="secondTableData.length"
@@ -401,6 +407,16 @@ export default {
     clearSecondKeyword: {
       type: Boolean,
       default: false
+    },
+    // 一级表格是否展示搜索
+    isFirstSearch: {
+      type: Boolean,
+      default: true
+    },
+    // 二级表格是否展示搜索
+    isSecondSearch: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -452,6 +468,14 @@ export default {
       })
 
       return arr
+    },
+    firstTableHeightCpu() {
+      const res = this.isFirstSearch ? this.firstTableHeight : this.selectedTableHeight
+      return res
+    },
+    secondTableHeightCpu() {
+      const res = this.isSecondSearch ? this.secondTableHeight : this.selectedTableHeight
+      return res
     }
   },
   watch: {
@@ -643,6 +667,14 @@ export default {
         const arr = this.firstSelectedData.map(item => item[this.firstRowId])
         const data = this.firstTableData.filter(item => arr.includes(item[this.firstRowId]))
         this.$refs.firstTableRef && this.$refs.firstTableRef.partRowSelections(data, true)
+      }
+    },
+    // 复选框是否可选
+    selectable(row) {
+      if (row.disabled) {
+        return false
+      } else {
+        return true
       }
     }
   }
