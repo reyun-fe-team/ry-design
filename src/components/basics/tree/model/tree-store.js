@@ -262,12 +262,14 @@ export default class TreeStore {
         cache[parent.data[key]] = true
         parent = parent.parent
       }
-      // TODO
+
       if (node.isLeaf || this.checkStrictly) {
         node.setChecked(true, false, false)
         continue
       }
-      node.setChecked(true, true, this.deepUpChecked)
+      // node.setChecked(true, true, this.deepUpChecked)
+      const deep = !this.deepUpChecked
+      node.setChecked(true, deep, this.deepUpChecked)
 
       if (leafOnly) {
         node.setChecked(false, false, false)
@@ -285,6 +287,7 @@ export default class TreeStore {
     }
   }
 
+  // 原有
   setCheckedNodes(array, leafOnly = false) {
     const key = this.key
     const checkedKeys = {}
@@ -295,6 +298,7 @@ export default class TreeStore {
     this._setCheckedKeys(key, leafOnly, checkedKeys)
   }
 
+  // 原有
   setCheckedKeys(keys, leafOnly = false) {
     this.defaultCheckedKeys = keys
     const key = this.key
@@ -306,6 +310,7 @@ export default class TreeStore {
     this._setCheckedKeys(key, leafOnly, checkedKeys)
   }
 
+  // 自有
   deleteCheckedKeys(keys, deep = true, deepUpChecked = true) {
     const allNodes = this._getAllNodes().sort((a, b) => b.level - a.level)
     const key = this.key

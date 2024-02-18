@@ -32,9 +32,16 @@
 
   &-node-content {
     display: flex;
-    align-items: center;
     height: 26px;
+    overflow: hidden;
     cursor: pointer;
+    align-items: center;
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   &-node-expand-icon {

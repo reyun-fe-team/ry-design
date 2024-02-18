@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{
-      prefixCls,
+      [prefixCls]: true,
       [prefixCls + '-highlight-current']: highlightCurrent,
       'is-dragging': !!dragState.draggingNode,
       'is-drop-not-allow': !dragState.allowDrop,
@@ -19,8 +19,8 @@
       @node-expand="handleNodeExpand"></rd-tree-node>
     <div
       v-if="isEmpty"
-      :class="prefixCls + 'empty-block'">
-      <span :class="prefixCls + 'empty-text'">{{ emptyText }}</span>
+      :class="prefixCls + '-empty-block'">
+      <span :class="prefixCls + '-empty-text'">{{ emptyText }}</span>
     </div>
     <div
       v-show="dragState.showDropIndicator"
