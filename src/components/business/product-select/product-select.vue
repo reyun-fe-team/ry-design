@@ -470,12 +470,10 @@ export default {
       return arr
     },
     firstTableHeightCpu() {
-      const res = this.isFirstSearch ? this.firstTableHeight : this.selectedTableHeight
-      return res
+      return this.isFirstSearch ? this.firstTableHeight : this.selectedTableHeight
     },
     secondTableHeightCpu() {
-      const res = this.isSecondSearch ? this.secondTableHeight : this.selectedTableHeight
-      return res
+      return this.isSecondSearch ? this.secondTableHeight : this.selectedTableHeight
     }
   },
   watch: {
@@ -671,11 +669,7 @@ export default {
     },
     // 复选框是否可选
     selectable(row) {
-      if (row.disabled) {
-        return false
-      } else {
-        return true
-      }
+      return !row.disabled
     }
   }
 }
