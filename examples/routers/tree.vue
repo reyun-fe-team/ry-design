@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 400px; border: 1px solid red">
     <rd-tree
       ref="tree"
       :data="data"
@@ -26,7 +26,8 @@ export default {
       data: [
         {
           value: 1,
-          label: '一级 1',
+          label:
+            '一级 1----超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试超长测试',
           children: [
             {
               value: 4,

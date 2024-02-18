@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="prefixCls">
     <template v-if="parent.renderContent">
       <slot
         :_self="tree.$vnode.context"
@@ -13,7 +13,9 @@
         :node="node"
         :data="data"></slot>
     </template>
-    <span v-else>
+    <span
+      v-else
+      :title="node.label">
       {{ node.label }}
     </span>
   </div>
@@ -28,6 +30,11 @@ export default {
     node: {
       required: true,
       type: Object
+    }
+  },
+  data() {
+    return {
+      prefixCls
     }
   },
   computed: {

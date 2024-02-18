@@ -5,15 +5,13 @@
   <div>
     <!-- storeValue:{{ storeValue }}
     <hr />
-    querySelections:{{ querySelections }}
-
+    右侧面板展示的数据optionData:{{ optionData.length }}
+    <br />
+    {{ optionData }}
     <hr />
-    optionData:{{ optionData }}
-    <hr />
-    selectData:{{ selectData.length }}--
+    全量的数据selectData:{{ selectData.length }}
     <br />
     {{ selectData }} -->
-
     <rd-filter-list
       ref="filter-list"
       :value="realData"
@@ -47,7 +45,7 @@
       <div
         :style="panelStyle"
         :class="prefixCls + '-body'">
-        <!-- check-strictly       highlight-current check-on-click-node-->
+        <!-- check-strictly highlight-current check-on-click-node-->
         <rd-tree
           ref="tree"
           :data="data"
@@ -70,7 +68,6 @@
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'tree-select'
 import _isEqual from 'lodash/isEqual'
-// import _cloneDeep from 'lodash/cloneDeep'
 import Emitter from '@src/mixins/emitter'
 import { oneOf } from '@src/util/assist.js'
 export default {
@@ -149,11 +146,6 @@ export default {
     nodeKey: {
       type: String,
       default: 'value'
-    },
-    selectType: {
-      // 'click-down' 1默认向下 2向上 'click-down' 3 不处理 'click-no'
-      type: String,
-      default: 'click-down'
     },
     deepUpChecked: {
       type: Boolean,
@@ -269,20 +261,6 @@ export default {
         style.maxHeight = `${maxHeight}px`
       }
       return style
-    },
-    querySelections() {
-      const { query, childrenKey, labelKey } = this
-      function filterTitleWithOne(node) {
-        if (Array.isArray(node[childrenKey])) {
-          node[childrenKey] = node[childrenKey].filter(filterTitleWithOne)
-        }
-        return (
-          node[labelKey].includes(query) ||
-          (Array.isArray(node[childrenKey]) && node[childrenKey].length > 0)
-        )
-      }
-      const intermediateList = this.data.filter(filterTitleWithOne)
-      return intermediateList
     }
   },
   watch: {
@@ -301,6 +279,7 @@ export default {
         }
 
         let list = []
+        // 手动计算哪些该选中
         this.handleUpdateTreeNodes({
           data: this.data,
           list,
@@ -496,7 +475,7 @@ export default {
             this.handleUpdateTreeNodes({
               data: item[this.childrenKey],
               list,
-              state: true,
+              state: this.deepUpChecked ? false : true,
               isInit
             })
           }

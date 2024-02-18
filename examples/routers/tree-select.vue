@@ -44,18 +44,17 @@
       filterable
       clearable
       :data="data2"
-      :max-height="300"
+      :max-height="400"
       :height="300"
-      :max-width="5000"
+      :max-width="200"
       deep-up-checked
       node-key="code"
       :default-props="{
         children: 'data',
         label: 'name'
       }"
-      save-type="leave-save"
-      :option-label-method="upOptionLabelMethod"
-      select-type="click-up"></rd-tree-select>
+      save-type="always-save"
+      :option-label-method="upOptionLabelMethod"></rd-tree-select>
 
     <!-- 单选事例1:{{ valueRadio1 }}
     <hr />
@@ -76,7 +75,8 @@ export default {
     return {
       value: [],
       valueDown: ['水果', '朝阳'],
-      valueUp: [],
+      //valueUp: [],
+      valueUp: ['地球3', '水果2', '西瓜2', '西瓜肉', '香蕉', '北京'],
       valueRadio1: '水果',
       data: [
         {
@@ -276,7 +276,7 @@ export default {
                   checked: false,
                   data: [
                     {
-                      name: '西瓜肉',
+                      name: '西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉西瓜肉',
                       code: '西瓜肉',
                       selected: false,
                       checked: false
