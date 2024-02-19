@@ -62,6 +62,7 @@ import FilterLisCascader from './components/business/filter-list-cascader'
 import FilterArea from './components/business/filter-area'
 import PlacementLocation from './components/business/placement-location'
 import ErrorPreventModal from './components/business/error-prevent-modal'
+import ManageBatchSelected from './components/business/manage-batch-selected'
 
 import ViewUI from 'view-design'
 
@@ -162,7 +163,8 @@ const components = [
   PlacementLocation,
   BatchInputs,
   ErrorPreventModal,
-  CarouselPreviewer
+  CarouselPreviewer,
+  ManageBatchSelected
 ]
 
 // 对象式-指令
@@ -252,5 +254,6 @@ export default {
   Space,
   PlacementLocation,
   ErrorPreventModal,
-  CarouselPreviewer
+  CarouselPreviewer,
+  ManageBatchSelected
 }

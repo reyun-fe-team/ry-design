@@ -1,0 +1,33 @@
+@manage-batch-selected: ~'@{css-prefix}manage-batch-selected';
+
+.@{manage-batch-selected} {
+    &-select-value {
+        width: 400px;
+        height: 32px;
+        padding: 0 10px;
+        font-size: 12px;
+        line-height: 32px;
+        background:  @background-light-gray;
+        border-radius: 3px;
+    }
+    &-list-wrapper {
+        max-height: 240px;
+        padding: 0 16px;
+        overflow-y: auto;
+        &-item {
+            display: flex;
+            height: 32px;
+            font-size: 12px;
+            line-height: 32px;
+            &-index {
+                width: 36px;
+            }
+            &-title {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                flex: 1;
+            }
+        }
+    }
+}
