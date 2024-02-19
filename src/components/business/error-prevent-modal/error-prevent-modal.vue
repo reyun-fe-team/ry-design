@@ -83,6 +83,10 @@ export default {
   },
   methods: {
     async onErrorPrevent({ paramsData, callback }) {
+      // 防出错debug模式：不执行
+      if (window?.adsDebug?.hasErrorPrevent === false) {
+        return Promise.resolve()
+      }
       let validateData = paramsData
       validateData.data = this.transformValidateDataList(paramsData.data)
       validateData.keys = Object.keys(validateData.data[0])
