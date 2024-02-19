@@ -146,7 +146,7 @@ export default {
   },
   methods: {
     handleClear() {
-      const oldValues = _cloneDeep(this.current)
+      const oldValues = _cloneDeep(this.current).map(val => val.value)
       this.current = []
       this.$emit('on-change', this.current)
       this.$emit('on-clear', this.current, oldValues)
