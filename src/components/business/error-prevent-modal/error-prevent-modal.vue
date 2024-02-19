@@ -85,7 +85,10 @@ export default {
     async onErrorPrevent({ paramsData, callback }) {
       // 防出错debug模式：不执行
       if (window.adsDebug && window.adsDebug.hasErrorPrevent === false) {
-        return new Promise(resolve => resolve())
+        return new Promise(resolve => {
+          callback && callback()
+          resolve()
+        })
       }
       let validateData = paramsData
       validateData.data = this.transformValidateDataList(paramsData.data)
