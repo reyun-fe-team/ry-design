@@ -84,7 +84,7 @@ export default {
   methods: {
     async onErrorPrevent({ paramsData, callback }) {
       // 防出错debug模式：不执行
-      if (window?.adsDebug?.hasErrorPrevent === false) {
+      if (window.adsDebug && window.adsDebug.hasErrorPrevent === false) {
         return Promise.resolve()
       }
       let validateData = paramsData
