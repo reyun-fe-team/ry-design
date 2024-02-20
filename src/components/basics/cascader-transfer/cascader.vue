@@ -1,5 +1,5 @@
 <template>
-  <main :class="prefixCls">
+  <div :class="prefixCls">
     <div :class="prefixCls + '-wrapper'">
       <ul :class="prefixCls + '-wrapper-content'">
         <Input
@@ -76,7 +76,7 @@
       :label="label"
       :value="value"
       @update="childUpdate"></rd-cascader>
-  </main>
+  </div>
 </template>
 
 <script>

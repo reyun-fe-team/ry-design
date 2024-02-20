@@ -1,5 +1,5 @@
 <template>
-  <main :class="prefixCls">
+  <div :class="prefixCls">
     <Poptip
       transfer
       :width="width"
@@ -24,7 +24,7 @@
         </div>
       </div>
     </Poptip>
-  </main>
+  </div>
 </template>
 
 <script>

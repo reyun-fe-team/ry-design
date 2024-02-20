@@ -1,5 +1,5 @@
 <template>
-  <main :class="prefixCls">
+  <div :class="prefixCls">
     <div :class="[prefixCls + '-wrapper', 'small-scroll-y']">
       <!-- 第一级表格 -->
       <div
@@ -241,7 +241,7 @@
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>
