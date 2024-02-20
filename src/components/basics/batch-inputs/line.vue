@@ -242,9 +242,10 @@ export default {
       plainTextList.forEach((plainText, plainTextIndex) => {
         // 首行自动更新了
 
+        const activeIndex = index + plainTextIndex
         // 第二行开始，插入新行
         if (plainTextIndex >= 1) {
-          newValue.splice(index + plainTextIndex, 0, plainText)
+          newValue.splice(activeIndex, 0, plainText)
         }
 
         // 校验 && 超出最大行数
@@ -258,7 +259,7 @@ export default {
           if (plainText.length > 0) {
             const count = this.calcWordCount(plainText)
             const error = this.calcValidResult(count, plainText)
-            error.length > 0 && this.dispatch('on-error', index + plainTextIndex, error)
+            error.length > 0 && this.dispatch('on-error', activeIndex, error)
           }
         }
       })

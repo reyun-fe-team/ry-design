@@ -164,13 +164,15 @@ export default {
       }
 
       const plainTextList = this.getClipboardData(clipboardData)
+      console.log('plainTextList: ', plainTextList)
       if (plainTextList.length > 0) {
         // 立刻获取选区
         this.getSelectionImmediate()
         // 粘贴事件当前行，直接插入文本
-        this.insertTextAtCursor(plainTextList[0])
-        // 触发
-        this.$emit('on-paste', plainTextList)
+        this.insertTextAtCursor(plainTextList[0], () => {
+          // 触发
+          this.$nextTick(() => this.$emit('on-paste', plainTextList))
+        })
       }
     },
     // 键盘按下事件
@@ -267,7 +269,7 @@ export default {
       }
     },
     // 主动插入内容
-    insertTextAtCursor(textToInsert) {
+    insertTextAtCursor(textToInsert, cb) {
       function createNode(htmlStr) {
         const div = document.createElement('div')
         div.innerHTML = htmlStr
@@ -313,6 +315,7 @@ export default {
         // this.getSelection()
         this.$emit('input', this.currentValue)
         this.$emit('on-change', this.currentValue)
+        cb && cb()
       })
     },
     // 计算字数
