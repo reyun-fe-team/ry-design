@@ -207,9 +207,6 @@ export default {
     },
     // 清除
     handleClear() {
-      this.setInputValue()
-      this.$emit('input', this.currentValue)
-      this.$emit('on-change', this.currentValue)
       this.$emit('on-clear')
     },
 
