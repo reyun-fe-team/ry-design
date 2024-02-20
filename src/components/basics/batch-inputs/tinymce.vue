@@ -164,7 +164,6 @@ export default {
       }
 
       const plainTextList = this.getClipboardData(clipboardData)
-      console.log('plainTextList: ', plainTextList)
       if (plainTextList.length > 0) {
         // 立刻获取选区
         this.getSelectionImmediate()
