@@ -1,17 +1,6 @@
 <template>
-  <div style="margin: 20px">
-    <div
-      v-for="(t, i) in list"
-      :key="i"
-      style="margin: 5px 0">
-      <h3>html</h3>
-      <p v-html="t"></p>
-      <h3>text</h3>
-      <p>{{ t }}</p>
-    </div>
-
+  <div>
     <div style="margin: 10px 0">
-      <p>插入动态词包</p>
       <a
         v-for="t in dynamicWordList"
         :key="t.value"
@@ -21,6 +10,7 @@
       </a>
     </div>
     <div style="margin: 10px 0">
+      <Button @click="maxLine = maxLine * 2">设置最大行数</Button>
       <Button @click="getPlainTextValues">获取纯文本</Button>
       <p>{{ plainTextValues }}</p>
     </div>
@@ -30,7 +20,7 @@
       type="PlainText"
       :height="200"
       show-limit
-      :max-line="20">
+      :max-line="maxLine">
       <template #end="{ insertNode }">
         <div style="display: flex; align-items: center">
           <Button @click="insertWord(insertNode)">插入动态词包</Button>
@@ -81,6 +71,7 @@ const AddEmojiWrapper = {
 export default {
   data() {
     return {
+      maxLine: 10,
       AddEmoji,
       AddLineFeed,
       plainTextValues: '',

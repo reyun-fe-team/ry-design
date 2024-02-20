@@ -179,7 +179,8 @@ export default {
     value: {
       deep: true,
       handler() {
-        if (this.value.length === 0 && this.middle.activeClass !== null) {
+        const isEmptyValue = this.value.length === 0 && this.middle.activeClass !== null
+        if (isEmptyValue) {
           this.errorList = []
         }
       }
@@ -197,10 +198,9 @@ export default {
     // 更新选中的行
     handleMiddleChange(middle) {
       this.middle = middle
-      let { activeClass } = this.middle
       this.$emit('on-middle-change', this.middle)
 
-      this.getCurrentInput(activeClass)
+      this.getCurrentInput()
 
       // 聚焦，设置光标在最后
       if (this.currentInput) {
@@ -244,7 +244,10 @@ export default {
       return this.value.map(value => getPlainText(value))
     },
     // 获取当前的输入行
-    getCurrentInput(activeClass = 0) {
+    getCurrentInput() {
+      let { activeClass } = this.middle
+      activeClass = activeClass || 0
+
       const _VirtualList = this.$refs.VirtualList
       if (!_VirtualList) {
         return
@@ -256,6 +259,9 @@ export default {
     },
     // 插入内容
     insertNode(type, data) {
+      this.getCurrentInput()
+
+      // 插入内容
       if (this.currentInput) {
         this.currentInput.insertNode(type, data)
       }

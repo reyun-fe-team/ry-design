@@ -3,7 +3,6 @@
     {{ list }}
     <rd-text-input-list
       v-model="list"
-      :show-limit="false"
       style="height: 270px"
       :emoji-list="emojiList"
       :max-line="1000" />

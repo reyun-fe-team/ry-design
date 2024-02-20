@@ -219,7 +219,8 @@ export default {
     // 清空
     handlerClear(index) {
       const newValue = [...this.value]
-      newValue.splice(index, 1, '')
+      // 直接删除当前行
+      newValue.splice(index, 1)
       this.dispatch('on-input', newValue)
       this.dispatch('on-change', newValue)
     },
@@ -327,7 +328,12 @@ export default {
     // 插入节点
     // text 文本 image 图片 enterIcon br标签
     insertNode(type, data = {}) {
-      if (data && this.$refs.Input) {
+      const _input = this.$refs.Input
+      if (!_input) {
+        throw '[WARN] invalid input'
+      }
+
+      if (data) {
         const { value = '', url = '' } = data
 
         let strings = []
@@ -341,7 +347,7 @@ export default {
           strings = [`<img src="${url}" value="${EnterIconValue}"/>`, '<br/>', '&nbsp;']
         }
 
-        strings.forEach(text => this.$refs.Input.insertTextAtCursor(text))
+        strings.forEach(text => _input.insertTextAtCursor(text))
       }
     }
   }
