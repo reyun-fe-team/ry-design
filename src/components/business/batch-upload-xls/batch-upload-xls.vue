@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <div>
     <div :class="[prefixCls]">
       <div v-show="!isSubmitAdvance && !reportAdvanceTo && !isTautology">
         <Upload
@@ -148,7 +148,7 @@
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 <script>
 import { prefix } from '@src/config.js'

@@ -1,5 +1,5 @@
 <template>
-  <main :class="prefixCls">
+  <div :class="prefixCls">
     <div :class="prefixCls + '-img'">
       <div
         :class="prefixCls + '-img-element'"
@@ -23,7 +23,7 @@
         </slot>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>

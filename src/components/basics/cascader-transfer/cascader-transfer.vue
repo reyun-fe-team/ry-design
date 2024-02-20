@@ -1,5 +1,5 @@
 <template>
-  <main :class="prefixCls">
+  <div :class="prefixCls">
     <div :class="prefixCls + '-content'">
       <div :class="prefixCls + '-content-massage'">
         <div :class="[prefixCls + '-content-massage-header', 'font-main', 'font-1']">
@@ -98,7 +98,7 @@
       class="error">
       {{ title }}选择不能超过{{ max }}
     </p>
-  </main>
+  </div>
 </template>
 
 <script>

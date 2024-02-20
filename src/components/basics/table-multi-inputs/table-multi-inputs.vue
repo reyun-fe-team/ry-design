@@ -1,5 +1,5 @@
 <template>
-  <main :class="prefixCls">
+  <div :class="prefixCls">
     <Table
       :class="`${prefixCls}-table`"
       border
@@ -37,7 +37,7 @@
       :class="prefixCls + '-error-tip'">
       * {{ errorInfo.errorTip }}
     </p>
-  </main>
+  </div>
 </template>
 
 <script>

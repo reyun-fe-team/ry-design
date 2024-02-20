@@ -1,5 +1,5 @@
 <template>
-  <main :class="classes">
+  <div :class="classes">
     <div :class="prefixCls + '-header'">
       <slot name="header">
         <div>
@@ -153,7 +153,7 @@
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>

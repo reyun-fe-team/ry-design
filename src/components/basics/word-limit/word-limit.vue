@@ -1,5 +1,5 @@
 <template>
-  <main :class="prefixCls">
+  <div :class="prefixCls">
     <slot
       v-if="isInputSlot"
       name="input">
@@ -19,7 +19,7 @@
       </span>
       <span>/ {{ maxLen }}</span>
     </span>
-  </main>
+  </div>
 </template>
 
 <script>
