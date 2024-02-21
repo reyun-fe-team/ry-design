@@ -14,6 +14,7 @@
       :placement="placement"
       :placeholder="placeholder"
       :size="size"
+      :disabled="disabled"
       @click.native="nativeClick"
       @on-open-change="handleOpenChange"
       @on-change="handleChange"
@@ -115,6 +116,11 @@ export default {
     width: {
       type: [String, Number],
       default: null
+    },
+    // 是否禁用选择器
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
