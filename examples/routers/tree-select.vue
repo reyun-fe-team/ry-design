@@ -18,11 +18,29 @@
       :max-width="5000"
       :option-label-method="labelMethod"></rd-tree-select>
 
+    <h2>多选事例-默认:{{ defaultValue }}</h2>
+    <rd-tree-select
+      v-model="defaultValue"
+      label="默认 : "
+      multiple
+      show-select-option
+      show-checkbox
+      filterable
+      clearable
+      :data="data"
+      :max-height="300"
+      :height="300"
+      save-type="leave-save"
+      :max-width="5000"
+      :option-label-method="labelMethod"></rd-tree-select>
+
     <h2 style="margin-top: 100px">多选事例-向下-春福:{{ valueDown }}</h2>
+
     <rd-tree-select
       v-model="valueDown"
       label="多选: "
       multiple
+      option-show-parent
       show-select-option
       show-checkbox
       filterable
@@ -56,17 +74,16 @@
       save-type="always-save"
       :option-label-method="upOptionLabelMethod"></rd-tree-select>
 
-    <!-- 单选事例1:{{ valueRadio1 }}
+    单选事例1:{{ valueRadio1 }}
     <hr />
     <rd-tree-select
       v-model="valueRadio1"
       label="单选: "
-      show-checkbox
-      show-select-option
       check-strictly
       :data="data1"
+      disabled
       :max-width="500"
-      :max-height="300"></rd-tree-select> -->
+      :max-height="300"></rd-tree-select>
   </div>
 </template>
 <script>
@@ -74,10 +91,10 @@ export default {
   data() {
     return {
       value: [],
-      valueDown: ['水果', '朝阳'],
-      //valueUp: [],
+      defaultValue: ['水果1', '西瓜1', '西瓜肉', '西瓜籽', '香蕉'],
+      valueDown: ['水果1', '朝阳'],
       valueUp: ['地球3', '水果2', '西瓜2', '西瓜肉', '香蕉', '北京'],
-      valueRadio1: '水果',
+      valueRadio1: '水果1',
       data: [
         {
           label: '地球',
@@ -89,13 +106,13 @@ export default {
             {
               label: '水果1',
               expand: true,
-              value: '水果',
+              value: '水果1',
               selected: false,
               checked: false,
               children: [
                 {
                   label: '西瓜1',
-                  value: '西瓜',
+                  value: '西瓜1',
                   selected: false,
                   checked: false,
                   children: [
