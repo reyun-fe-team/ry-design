@@ -1,6 +1,3 @@
-
-
-
 <template>
   <div>
     <!-- storeValue:{{ storeValue }}
@@ -45,7 +42,6 @@
       <div
         :style="panelStyle"
         :class="prefixCls + '-body'">
-        <!-- check-strictly highlight-current check-on-click-node-->
         <rd-tree
           ref="tree"
           :data="data"
@@ -164,6 +160,11 @@ export default {
       validator(value) {
         return oneOf(value, ['always-save', 'leave-save'])
       }
+    },
+    // 显示父亲的label和value
+    optionShowParent: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -203,7 +204,7 @@ export default {
       return this.multiple && this.showCheckbox
     },
     realData() {
-      // 这里的value不需要换成valueKey
+      // 这里的value不能换成nodeKey, selectData自定义的value
       return this.optionData.map(val => val.value)
     },
     optionData() {
@@ -218,7 +219,7 @@ export default {
           this.selectData.forEach(val => {
             list.push(val)
           })
-        } else if (!this.deepUpChecked) {
+        } else if (this.optionShowParent) {
           this.selectData
             .filter(val => val.type !== 'node')
             .forEach(val => {
@@ -243,11 +244,9 @@ export default {
         return []
       }
       let list = []
-      let exclude = []
       this.data.forEach(item => {
-        this.getOptionData(item, list, null, null, exclude)
+        this.getOptionData(item, list, null)
       })
-      list = list.filter(val => !exclude.includes(val[this.nodeKey]))
       return list
     },
     panelStyle() {
@@ -319,17 +318,17 @@ export default {
     this.$refs.tree.setCheckedKeys(this.storeValue)
   },
   methods: {
-    getOptionData(item, list, info, parent, exclude) {
+    getOptionData(item, list, info) {
       const checked = this.storeValue.includes(item[this.nodeKey])
-      if (
-        !this.checkStrictly &&
-        !this.deepUpChecked &&
-        parent &&
-        checked &&
-        !exclude.includes(parent[this.nodeKey])
-      ) {
-        exclude.push(parent[this.nodeKey])
-      }
+      // if (
+      //   !this.checkStrictly &&
+      //   !this.deepUpChecked &&
+      //   parent &&
+      //   checked &&
+      //   !exclude.includes(parent[this.nodeKey])
+      // ) {
+      //   exclude.push(parent[this.nodeKey])
+      // }
       if (info) {
         info.labelStr = info.labelStr + '/' + item[this.labelKey]
         info.valueStr = info.valueStr + '/' + item[this.nodeKey]
@@ -368,7 +367,7 @@ export default {
                 valueStr: item[this.nodeKey]
               }
             }
-            this.getOptionData(val, list, _info, item, exclude)
+            this.getOptionData(val, list, _info)
           })
         } else {
           list.push({
@@ -391,7 +390,7 @@ export default {
         if (item[this.childrenKey] && item[this.childrenKey].length) {
           item[this.childrenKey].forEach(val => {
             // 循环子集
-            this.getOptionData(val, list, info, item, exclude)
+            this.getOptionData(val, list, info)
           })
         }
       }
@@ -403,7 +402,7 @@ export default {
       if (this.checkStrictly) {
         this.storeValue = values
         this.$refs.tree.setCheckedKeys(this.storeValue)
-      } else if (!this.deepUpChecked) {
+      } else if (this.optionShowParent) {
         list.forEach(item => {
           if (item.type === 'leaf') {
             let find = this.selectData.find(val => val[this.nodeKey] === item[this.nodeKey])
@@ -426,11 +425,16 @@ export default {
         this.storeValue = this.storeValue.filter(val => newValues.includes(val))
         this.$refs.tree.setCheckedKeys(this.storeValue)
       } else {
+        // console.log(values, oldValues, 'values, oldValues')
         // 底层选中
         // newValues = list.map(val => val[this.nodeKey])
         // this.storeValue = this.storeValue.filter(val => newValues.includes(val))
         // 获取所有事选中状态的节点value
-        this.$refs.tree.deleteCheckedKeys(oldValues)
+        // this.$refs.tree.deleteCheckedKeys(oldValues)
+        // this.storeValue = this.$refs.tree.getCheckedKeys()
+        // this.$refs.tree.deleteCheckedKeys(oldValues, false, false)
+        //this.storeValue = this.$refs.tree.getCheckedKeys()
+        this.$refs.tree.deleteCheckedKeys(oldValues, true, this.deepUpChecked)
         this.storeValue = this.$refs.tree.getCheckedKeys()
       }
 
@@ -438,7 +442,7 @@ export default {
       this.movementChange()
     },
     // tree click
-    handleSelectNode() {
+    handleSelectNode(data) {
       if (this.multiple) {
         const selectedNodes = this.$refs.tree.getCheckedKeys()
         // console.log('selectedNodes:selectedNodes', selectedNodes)
@@ -450,13 +454,23 @@ export default {
 
         this.isChangeValueInTree = true
         this.movementChange()
+      } else {
+        this.storeValue = [data[this.nodeKey]]
+        this.$refs.tree.setCheckedKeys(this.storeValue)
+        this.isChangeValueInTree = true
+        this.movementChange()
       }
     },
     // 单选
     currentChange(currentData) {
       if (!this.multiple) {
         this.storeValue = [currentData[this.nodeKey]]
-        // this.emitChange()
+        this.isChangeValueInTree = true
+        this.movementChange()
+      } else {
+        this.storeValue = [currentData[this.nodeKey]]
+        this.$refs.tree.setCheckedKeys(this.storeValue)
+        this.isChangeValueInTree = true
         this.movementChange()
       }
     },
@@ -503,7 +517,7 @@ export default {
       if (this.multiple) {
         if (this.checkStrictly) {
           values = this.storeValue
-        } else if (!this.deepUpChecked) {
+        } else if (this.optionShowParent) {
           values = this.optionData
             .filter(val => val.type === 'leaf')
             .map(val => {
