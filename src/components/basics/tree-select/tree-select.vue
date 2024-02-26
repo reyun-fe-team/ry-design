@@ -46,7 +46,7 @@
         <rd-tree
           ref="tree"
           :data="data"
-          :show-checkbox="showCheckbox"
+          :show-checkbox="showCheckbox && multiple"
           default-expand-all
           :node-key="nodeKey"
           :props="defaultProps"
@@ -163,7 +163,7 @@ export default {
       }
     },
     // 显示父亲的label和value
-    optionShowParent: {
+    showOptionParent: {
       type: Boolean,
       default: false
     },
@@ -224,7 +224,7 @@ export default {
           this.selectData.forEach(val => {
             list.push(val)
           })
-        } else if (this.optionShowParent) {
+        } else if (this.showOptionParent) {
           this.selectData
             .filter(val => val.type !== 'node')
             .forEach(val => {
@@ -407,7 +407,7 @@ export default {
       if (this.checkStrictly) {
         this.storeValue = values
         this.$refs.tree.setCheckedKeys(this.storeValue)
-      } else if (this.optionShowParent) {
+      } else if (this.showOptionParent) {
         list.forEach(item => {
           if (item.type === 'leaf') {
             let find = this.selectData.find(val => val[this.nodeKey] === item[this.nodeKey])
@@ -472,11 +472,10 @@ export default {
         this.storeValue = [currentData[this.nodeKey]]
         this.isChangeValueInTree = true
         this.movementChange()
-      } else {
-        this.storeValue = [currentData[this.nodeKey]]
-        this.$refs.tree.setCheckedKeys(this.storeValue)
-        this.isChangeValueInTree = true
-        this.movementChange()
+        // 单选选中后当saveType时时关闭时候要关闭Dropdown
+        if (this.saveType === 'always-save') {
+          this.closeDropdown()
+        }
       }
     },
     // 更新tree
@@ -522,7 +521,7 @@ export default {
       if (this.multiple) {
         if (this.checkStrictly) {
           values = this.storeValue
-        } else if (this.optionShowParent) {
+        } else if (this.showOptionParent) {
           values = this.optionData
             .filter(val => val.type === 'leaf')
             .map(val => {
