@@ -40,7 +40,7 @@
       v-model="valueDown"
       label="多选: "
       multiple
-      option-show-parent
+      show-option-parent
       show-select-option
       show-checkbox
       filterable
@@ -79,9 +79,8 @@
     <rd-tree-select
       v-model="valueRadio1"
       label="单选: "
-      check-strictly
       :data="data1"
-      disabled
+      save-type="always-save"
       :max-width="500"
       :max-height="300"></rd-tree-select>
   </div>
