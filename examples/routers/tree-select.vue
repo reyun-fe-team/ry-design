@@ -81,6 +81,7 @@
       label="单选: "
       check-strictly
       :data="data1"
+      disabled
       :max-width="500"
       :max-height="300"></rd-tree-select>
   </div>

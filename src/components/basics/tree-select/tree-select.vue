@@ -34,6 +34,7 @@
       :transfer="transfer"
       :placement="placement"
       :option-label-method="optionLabelMethod"
+      :disabled="disabled"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange"
       @on-input-click="handleInputClick"
@@ -163,6 +164,10 @@ export default {
     },
     // 显示父亲的label和value
     optionShowParent: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     }
