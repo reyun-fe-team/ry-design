@@ -24,7 +24,7 @@
         v-for="item in data"
         :key="item.value"
         :class="prefixCls + '-body-item'">
-        <p :title="item.label">{{ item.label }}</p>
+        <p :title="item.label">{{ label(item) }}</p>
         <rd-icon
           color="rgba(87, 91, 101, 1)"
           type="ry-icon-text-delete"
@@ -38,6 +38,7 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-option'
+import _cloneDeep from 'lodash/cloneDeep'
 export default {
   name: prefixCls,
   components: {},
@@ -61,6 +62,13 @@ export default {
     headerHeight: {
       type: [Number, String],
       default: 40
+    },
+    optionLabelMethod: {
+      type: Function,
+      default(data) {
+        const type = 'label' in data ? 'label' : 'value'
+        return data[type]
+      }
     }
   },
   data() {
@@ -101,17 +109,21 @@ export default {
     }
   },
   methods: {
+    label(row) {
+      return this.optionLabelMethod(row)
+    },
     handleDelete(items) {
       this.current = this.current.filter(val => {
         return val !== items.value
       })
       this.$emit('input', this.current)
-      this.$emit('on-change', this.current)
+      this.$emit('on-change', this.current, [items.value])
     },
     handleClearAll() {
+      const oldValues = _cloneDeep(this.current)
       this.current = []
       this.$emit('input', this.current)
-      this.$emit('on-change', this.current)
+      this.$emit('on-change', this.current, oldValues)
     },
     // 提供方法
     getHeaderHeight() {
