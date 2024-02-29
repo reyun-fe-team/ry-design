@@ -9,14 +9,15 @@
       </div>
       <!-- 输入 -->
       <div :class="prefixCls + '-right-list'">
-        <row-input
+        <tinymce
           ref="Input"
           :key="index"
+          :type="type"
           :show-limit="showLimit"
           :value="value[index]"
           :class="lineInputClasses"
           :placeholder="placeholder"
-          :calc-text-fn="calcTextFn"
+          :calc-text-fn="calcWordCount"
           :valid-fn="calcValidResult"
           :max-length="maxLength"
           :min-length="minLength"
@@ -25,7 +26,7 @@
           @on-keydown="val => handlerKeydown(val, index)"
           @on-clear="handlerClear(index)"
           @on-paste="val => handlerPaste(val, index)"
-          @on-error="val => handleError(val, index)"></row-input>
+          @on-error="val => handleError(val, index)"></tinymce>
 
         <!-- 每一行的最尾端 slot -->
         <div
@@ -40,24 +41,21 @@
 
 <script>
 import { prefix } from '@src/config.js'
-import rowInput from './input'
+import tinymce from './tinymce'
 import endSlot from './slots/end'
+import { deepCopy, waitOut } from '@src/util/assist'
 
 const prefixCls = prefix + 'batch-inputs'
+const EnterIconValue = '\\'
 
 export default {
-  name: prefixCls + '-row',
+  name: prefixCls + '-line',
   components: {
-    rowInput,
+    tinymce,
     endSlot
   },
   inject: ['root'],
   props: {
-    // 显示文字长度
-    showLimit: {
-      type: Boolean,
-      default: true
-    },
     source: {
       type: Object,
       default: () => {}
@@ -112,9 +110,25 @@ export default {
       type: Function,
       default: null
     },
+    // 事件
     emits: {
       type: Object,
       default: () => {}
+    },
+    // 类型 只能是文本 PlainText 支持的html内容 Html
+    type: {
+      type: String,
+      default: 'PlainText'
+    },
+    // 显示文字长度
+    showLimit: {
+      type: Boolean,
+      default: true
+    },
+    // 一个图标几个字符
+    iconWordCount: {
+      type: Number,
+      default: 1
     }
   },
   data() {
@@ -153,8 +167,8 @@ export default {
     },
     endSlotProps() {
       const renderFunction = this.root.$scopedSlots['end']
-      const { source, index, value, insertText } = this
-      return { source, index, value, renderFunction, insertText }
+      const { source, index, value, insertNode } = this
+      return { source, index, value, renderFunction, insertNode }
     },
     // 当前的错误
     currentErrors() {
@@ -177,27 +191,35 @@ export default {
       }
     },
     // 按键
-    handlerKeydown({ keyDownEvent, disableInputFn }, index) {
+    async handlerKeydown({ keyDownEvent, disableInputFn }, index) {
       // 回车换行
       if (keyDownEvent.keyCode === 13) {
         disableInputFn()
         const currentIndex = index + 1
 
+        // 回车后超出可编辑的长度
         if (currentIndex >= this.maxLine) {
-          // 回车后超出可编辑的长度
           this.dispatch('on-enter-over-length', currentIndex)
           return
         }
 
-        this.dispatch('on-middle-change', {
-          preActiveClass: this.middle.activeClass,
-          activeClass: currentIndex
+        // 更新,聚焦
+        await this.$nextTick()
+        waitOut(() => {
+          this.dispatch('on-middle-change', {
+            preActiveClass: this.middle.activeClass,
+            activeClass: currentIndex
+          })
         })
+
+        // 回车
+        this.dispatch('on-enter', index)
       }
     },
     // 清空
     handlerClear(index) {
       const newValue = [...this.value]
+      // 直接删除当前行
       newValue.splice(index, 1)
       this.dispatch('on-input', newValue)
       this.dispatch('on-change', newValue)
@@ -208,78 +230,44 @@ export default {
         return
       }
 
-      const newValue = [...this.value]
+      const newValue = [...this.value].map(v => v || '')
       newValue[index] = value || ''
       this.dispatch('on-input', newValue)
       this.dispatch('on-change', newValue)
     },
     // 粘贴
-    handlerPaste(event, index) {
+    handlerPaste(plainTextList, index) {
       // 超出可编辑的列表长度
       let overLength = []
-      this.getClipboardData(event, arr => {
-        let newValue = JSON.parse(JSON.stringify(this.value))
-        arr.forEach((o, i) => {
-          // 首行 叠加
-          if (i === 0) {
-            // 再光标位置插入复制的文案
-            newValue[index] = !newValue[index] ? o : newValue[index] + o
-          }
+      let newValue = deepCopy(this.value)
+      plainTextList.forEach((plainText, plainTextIndex) => {
+        // 首行自动更新了
 
-          // 插入新行
-          if (i > 0) {
-            newValue.splice(index + i, 0, o)
-          }
+        const activeIndex = index + plainTextIndex
+        // 第二行开始，插入新行
+        if (plainTextIndex >= 1) {
+          newValue.splice(activeIndex, 0, plainText)
+        }
 
-          // 校验 && 超出最大行数
-          if (newValue.length > this.maxLine) {
-            overLength.push(o)
-            this.dispatch('on-paste-over-length', overLength)
+        // 校验 && 超出最大行数
+        if (newValue.length > this.maxLine) {
+          overLength.push(plainText)
+          this.dispatch('on-paste-over-length', overLength)
+        }
+
+        // 校验 && 文案
+        else {
+          if (plainText.length > 0) {
+            const count = this.calcWordCount(plainText)
+            const error = this.calcValidResult(count, plainText)
+            error.length > 0 && this.dispatch('on-error', activeIndex, error)
           }
-          // 校验 && 文案
-          else {
-            if (o) {
-              const count = this.calcWordCount(o)
-              const error = this.calcValidResult(count, o)
-              this.dispatch('on-error', index + i, error)
-            }
-          }
-        })
-        // 截取
-        newValue = newValue.slice(0, this.maxLine)
-        this.dispatch('on-input', newValue)
-        this.dispatch('on-change', newValue)
+        }
       })
-    },
-    // 获取剪切板内容
-    getClipboardData(event, cb) {
-      let itemList = event.clipboardData.items
-
-      function getSplitReg(str) {
-        if (str.indexOf('\\r\\n') > -1) {
-          return /\\r\\n/
-        } else if (str.indexOf('\\r') > -1) {
-          return /\\r/
-        } else if (str.indexOf('\\n') > -1) {
-          return /\\n/
-        }
-        return /\\r\\n/
-      }
-
-      for (let i = 0; i < itemList.length; i++) {
-        let item = itemList[i]
-        if (item.kind === 'string' && item.type.match('text/plain')) {
-          item.getAsString(str => {
-            let splitReg = getSplitReg(JSON.stringify(str).replace(/"/g, ''))
-            let arr = JSON.stringify(str)
-              .replace(/"/g, '')
-              .split(splitReg)
-              .filter(o => o)
-
-            cb && cb(arr)
-          })
-        }
-      }
+      // 截取
+      newValue = newValue.slice(0, this.maxLine)
+      this.dispatch('on-input', newValue)
+      this.dispatch('on-change', newValue)
     },
     // 错误
     handleError(errors, index) {
@@ -288,33 +276,44 @@ export default {
       this.dispatch('on-error', index, newErrors)
     },
     // 计算字数
-    calcWordCount(text) {
-      if (!text) {
-        return 0
+    calcWordCount(htmlString) {
+      let totalln = 0
+
+      if (!htmlString) {
+        return totalln
       }
-      let copyDom = document.createElement('div')
-      // 需要匹配换行符替换为空
-      copyDom.innerHTML = text.replaceAll('&nbsp;', '')
-      // 计算文本长度
-      let textLn = 0
-      const textStr = copyDom.innerText.replace(/[\r\n]/g, '')
+
+      htmlString = htmlString.replaceAll(/<br>|&nbsp;/g, '')
       if (this.calcTextFn) {
-        textLn = this.calcTextFn(textStr)
-      } else {
-        textLn = textStr.length
+        return this.calcTextFn(htmlString)
       }
-      const imgs = copyDom.getElementsByTagName('img')
-      const emojLn = [...imgs].reduce(
-        (pre, cur) => (cur.getAttribute('data-type') === 'emoj' ? pre + 1 : pre),
-        0
-      )
-      return textLn + emojLn
+
+      const div = document.createElement('div')
+      div.innerHTML = htmlString
+      const childNodes = div.childNodes
+      for (let index = 0; index < childNodes.length; index++) {
+        const ele = childNodes[index]
+        const isTextNode = ele.nodeType === Node.TEXT_NODE
+        const isEleNode = ele.nodeType === Node.ELEMENT_NODE
+        if (isTextNode) {
+          totalln += ele.nodeValue.length
+        }
+        if (isEleNode && ele.nodeName === 'IMG') {
+          const imgValue = ele.getAttribute('value')
+          // 不计算回车符号
+          if (imgValue !== EnterIconValue) {
+            totalln += this.iconWordCount || 1
+          }
+        }
+      }
+
+      return totalln
     },
     // 计算验证
     calcValidResult(ln, value) {
-      // 长度
+      // 长度(有长度才能校验)
       let lengthError = []
-      if (!isNaN(ln) && (ln > this.maxLength || ln < this.minLength)) {
+      if (!isNaN(ln) && ln > 0 && (ln > this.maxLength || ln < this.minLength)) {
         lengthError.push('lengthError')
       }
 
@@ -326,9 +325,30 @@ export default {
 
       return [...lengthError, ...otherError]
     },
-    // 插入文本
-    insertText(text) {
-      this.$refs.Input.insertTextAtCursor(text)
+    // 插入节点
+    // text 文本 image 图片 enterIcon br标签
+    insertNode(type, data = {}) {
+      const _input = this.$refs.Input
+      if (!_input) {
+        throw '[WARN] invalid input'
+      }
+
+      if (data) {
+        const { value = '', url = '' } = data
+
+        let strings = []
+        if (type === 'text') {
+          strings = [value]
+        }
+        if (this.type === 'Html' && type === 'image') {
+          strings = [`<img src="${url}" value="${value}"/>`]
+        }
+        if (this.type === 'Html' && type === 'enterIcon') {
+          strings = [`<img src="${url}" value="${EnterIconValue}"/>`, '<br/>', '&nbsp;']
+        }
+
+        strings.forEach(text => _input.insertTextAtCursor(text))
+      }
     }
   }
 }

@@ -1,52 +1,92 @@
 <template>
-  <div style="margin: 20px">
-    <p>{{ list }}</p>
-    <p><Button @click="insertAllWord">插入动态词包</Button></p>
+  <div>
+    <div style="margin: 10px 0">
+      <a
+        v-for="t in dynamicWordList"
+        :key="t.value"
+        style="margin-right: 5px"
+        @click="addDynamicWord(t)">
+        {{ t.label }}
+      </a>
+    </div>
+    <div style="margin: 10px 0">
+      <Button @click="maxLine = maxLine * 2">设置最大行数</Button>
+      <Button @click="getPlainTextValues">获取纯文本</Button>
+      <p>{{ plainTextValues }}</p>
+    </div>
     <rd-batch-inputs
-      ref="batch-inputs"
+      ref="BatchInputs"
       v-model="list"
+      type="PlainText"
+      :height="200"
       show-limit
-      style="height: 270px"
-      :max-line="1000">
-      <template #end="{ insertText }">
+      :max-line="maxLine">
+      <template #end="{ insertNode }">
         <div style="display: flex; align-items: center">
-          <Button @click="insertWord(insertText)">插入动态词包</Button>
-          <Poptip
-            transfer
-            placement="bottom-end">
-            <img
-              :src="AddEmoji"
-              style="width: 20px" />
-            <div
-              slot="content"
-              style="max-width: 200px; display: flex; flex-wrap: wrap; max-height: 80px">
-              <img
-                v-for="(item, index) in emojiList"
-                :key="index"
-                style="width: 20px; margin: 10px"
-                :src="item.url"
-                @click="insertFace(insertText, item)" />
-            </div>
-          </Poptip>
+          <Button @click="insertWord(insertNode)">插入动态词包</Button>
+          <img
+            v-tooltip="{
+              contentRender,
+              insertFace,
+              insertNode,
+              emojiList,
+              placement: 'bottom-end',
+              transferClassName: 'emojo-wrapper'
+            }"
+            :src="AddEmoji"
+            style="width: 20px" />
           <img
             style="width: 20px"
             :src="AddLineFeed"
-            @click="insertEnter(index)" />
+            @click="insertEnter(insertNode)" />
         </div>
       </template>
     </rd-batch-inputs>
   </div>
 </template>
 
+<style lang="less">
+.emojo-wrapper .ivu-tooltip-inner {
+  padding: 0;
+}
+</style>
+
 <script>
 import AddEmoji from '@src/images/text-input-list/add-emoji.png'
 import AddLineFeed from '@src/images/text-input-list//add-line-feed.png'
+
+const AddEmojiWrapper = {
+  props: ['emojiList', 'insertFace', 'insertNode'],
+  template: /*html*/ `
+  <div
+    style="display: flex;flex-wrap: wrap;max-height: 100px;width: 155px;overflow: auto;padding: 10px;">
+    <img
+      v-for="(item, index) in emojiList"
+      :key="index"
+      style="width: 20px; margin: 5px"
+      :src="item.url"
+      @click="insertFace(insertNode, item)" />
+  </div>`
+}
 export default {
   data() {
     return {
+      maxLine: 10,
       AddEmoji,
       AddLineFeed,
-      list: [],
+      plainTextValues: '',
+      list: [
+        '一步登顶修仙路，一斧砍尽千年树',
+        '模拟经营小游戏，穿越回古代，轻松种田，逆袭人生！',
+        '一斧光阴一斧梦，梦醒时分已是王。',
+        '1月26日起，轻松解压的益智小游戏，随时随地玩，休闲又有趣',
+        '梦幻西游网页版，手机也能玩西游了，无级别武器登录送！',
+        '无需下载不占内存，点开即玩的微信小游戏！十分钟就上头！',
+        '是兄弟，就来一把紧张刺激的抓大鹅！',
+        '脚踏阴阳定乾坤，风云再起，挑战你的极限！',
+        '全新修仙碰撞，小猪妖登场，让你的眼睛发光！',
+        '1月26日全新武侠《无名江湖》公测！10倍爆率，装备靠打！'
+      ],
       emojiList: [
         {
           value: '[666]',
@@ -244,17 +284,53 @@ export default {
           value: '[优秀]',
           url: 'https://tx2.a.yximgs.com/bs2/emotion/app_1580805626075_5xvw3rvaqjpqmcg.png'
         }
+      ],
+      dynamicWordList: [
+        {
+          label: '城市',
+          value: '{{城市}}'
+        },
+        {
+          label: '年龄',
+          value: '{{年龄}}'
+        },
+        {
+          label: '姓名',
+          value: '{{姓名}}'
+        },
+        {
+          label: '性别',
+          value: '{{性别}}'
+        },
+        {
+          label: '设备型号',
+          value: '{{设备型号}}'
+        }
       ]
     }
   },
   methods: {
-    insertWord(fn) {
-      fn('{{' + new Date().getSeconds() + '}}')
+    contentRender(h, data) {
+      const { emojiList, insertFace, insertNode } = data
+      return h(AddEmojiWrapper, { props: { emojiList, insertFace, insertNode } })
     },
-    insertFace(fn) {},
-    insertEnter(fn) {},
-    insertAllWord() {
-      this.$refs['batch-inputs'].insertText('{{' + new Date().getSeconds() + '}}')
+    insertWord(insertNode) {
+      const randomNumber = Math.floor(Math.random() * 5)
+      insertNode('text', { value: this.dynamicWordList[randomNumber].value })
+    },
+    insertFace(insertNode, item) {
+      insertNode('image', item)
+    },
+    insertEnter(insertNode) {
+      insertNode('enterIcon', { url: AddLineFeed, value: '[回车]' })
+    },
+    getPlainTextValues() {
+      let ref = this.$refs.BatchInputs
+      this.plainTextValues = ref.getPlainTextValues()
+    },
+    addDynamicWord(t) {
+      let ref = this.$refs.BatchInputs
+      ref.insertNode('text', { value: t.value })
     }
   }
 }

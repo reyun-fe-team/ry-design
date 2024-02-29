@@ -21,25 +21,15 @@ export default {
       type: Function,
       default: null
     },
-    insertText: {
+    insertNode: {
       type: Function,
       default: null
     }
   },
   render: (h, ctx) => {
-    const { source, value, index, insertText, renderFunction } = ctx.props
-    return h(
-      'div',
-      {
-        class: [prefixCls]
-      },
-      renderFunction({
-        source,
-        value,
-        index,
-        insertText,
-        renderFunction
-      })
-    )
+    const { source, value, index, insertNode, renderFunction } = ctx.props
+    const childProps = { source, value, index, insertNode }
+    const child = renderFunction(childProps)
+    return h('div', { class: [prefixCls] }, child)
   }
 }

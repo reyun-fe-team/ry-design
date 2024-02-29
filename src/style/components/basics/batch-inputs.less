@@ -1,7 +1,7 @@
 @batch-inputs: ~"@{css-prefix}batch-inputs";
-@input: ~"@{css-prefix}batch-inputs-row-input";
+@tinymce: ~"@{css-prefix}batch-inputs-tinymce";
 
-.@{input} {
+.@{tinymce} {
   position: relative;
   flex: 1;
   font-size: 0;
@@ -25,6 +25,24 @@
     border: 0;
     outline: none;
     line-height: 35px;
+
+    &[contenteditable]:empty:before {
+      content: attr(placeholder);
+      font-size: 12px;
+      color: #a5a3a3;
+    }
+
+    &[contenteditable]:focus {
+      content: none;
+    }
+
+    img[value] {
+      height: 16px;
+      width: 16px;
+      pointer-events: none;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
   }
 
   &-ln-wrap {
@@ -49,10 +67,9 @@
 
 
 .@{batch-inputs} {
-  overflow: auto;
   height: 100%;
-  margin-bottom: 5px;
   border: 1px solid #dadfe3;
+  overflow: auto !important;
 
   &-content {
     width: 100%;
@@ -67,7 +84,7 @@
         background: #edf1f5;
       }
 
-      .@{input} {
+      .@{tinymce} {
         background: #edf1f5;
 
         &-ln-wrap {
@@ -136,10 +153,5 @@
 
   &-middle-style-li-active {
     background: #edf1f5;
-  }
-
-  &-virtual-list {
-    height: 100%;
-    overflow: auto
   }
 }
