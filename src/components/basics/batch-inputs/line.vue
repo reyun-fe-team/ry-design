@@ -311,9 +311,14 @@ export default {
     },
     // 计算验证
     calcValidResult(ln, value) {
+      const isValid = typeof value === 'string' && value.length > 0
+      if (!isValid) {
+        return []
+      }
+
       // 长度(有长度才能校验)
       let lengthError = []
-      if (!isNaN(ln) && ln > 0 && (ln > this.maxLength || ln < this.minLength)) {
+      if (!isNaN(ln) && (ln > this.maxLength || ln < this.minLength)) {
         lengthError.push('lengthError')
       }
 

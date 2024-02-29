@@ -44,13 +44,6 @@
     </rd-batch-inputs>
   </div>
 </template>
-
-<style lang="less">
-.emojo-wrapper .ivu-tooltip-inner {
-  padding: 0;
-}
-</style>
-
 <script>
 import AddEmoji from '@src/images/text-input-list/add-emoji.png'
 import AddLineFeed from '@src/images/text-input-list//add-line-feed.png'
@@ -71,7 +64,7 @@ const AddEmojiWrapper = {
 export default {
   data() {
     return {
-      maxLine: 10,
+      maxLine: 30,
       AddEmoji,
       AddLineFeed,
       plainTextValues: '',
@@ -335,3 +328,8 @@ export default {
   }
 }
 </script>
+<style lang="less">
+.emojo-wrapper .ivu-tooltip-inner {
+  padding: 0;
+}
+</style>
