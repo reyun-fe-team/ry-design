@@ -274,10 +274,6 @@ const router = new VueRouter({
       component: resolve => require(['./routers/tree'], resolve)
     },
     {
-      path: '/v-dragging',
-      component: resolve => require(['./routers/v-dragging'], resolve)
-    },
-    {
       path: '/manage-batch-selected',
       component: resolve => require(['./routers/manage-batch-selected'], resolve)
     }

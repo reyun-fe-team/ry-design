@@ -11,7 +11,7 @@
 <script>
 import VirtualItem from './line'
 import { prefix } from '@src/config.js'
-import { getKey, waitOut } from '@src/util/assist'
+import { getKey, waitOut, deepCopy } from '@src/util/assist'
 const prefixCls = prefix + 'batch-inputs'
 // 行高
 const RowHeight = 35
@@ -209,7 +209,9 @@ export default {
     },
     // 接受错误
     handleError(index, error) {
-      this.errorList.splice(index, 1, error)
+      let errors = deepCopy(this.errorList)
+      errors[index] = error
+      this.errorList = errors
       this.$emit('on-error', index, error)
     },
     // 回车超出可编辑的列表长度
