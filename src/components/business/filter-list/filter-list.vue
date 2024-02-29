@@ -69,6 +69,7 @@
             :max-height="maxHeightOption"
             :min-height="minHeightOption"
             :data="optionData"
+            :option-label-method="optionLabelMethod"
             @on-change="optionChange"></filter-list-option>
         </div>
         <!-- :style="styleFooter" -->
@@ -164,7 +165,8 @@ export default {
     showSubtitle: Boolean,
     disabled: Boolean,
     transfer: Boolean,
-    placement: String
+    placement: String,
+    optionLabelMethod: Function
   },
   data() {
     return {
@@ -282,15 +284,15 @@ export default {
     onClearSearch() {
       this.queryValue = ''
     },
-    filterListInputChange(val) {
+    filterListInputChange(val, oldValues) {
       this.current = val
       this.$emit('input', val)
-      this.$emit('on-change', val)
-      this.$emit('on-input-clear', val)
+      this.$emit('on-change', val, oldValues)
+      this.$emit('on-input-clear', val, oldValues)
     },
-    optionChange() {
+    optionChange(_value, oldValues) {
       this.$emit('input', this.current)
-      this.$emit('on-change', this.current)
+      this.$emit('on-change', this.current, oldValues)
     },
     handleInputClick() {
       this.$emit('on-input-click', this.current)
