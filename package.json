@@ -1,11 +1,7 @@
 {
   "name": "ry-design",
   "main": "dist/ry-design.min.js",
-<<<<<<< HEAD
-  "version": "2.15.2-alpha.1",
-=======
-  "version": "2.15.2",
->>>>>>> feat/placement-location-clearValue-lpf-0327
+  "version": "2.15.3-alpha.1",
   "repository": {
     "type": "git",
     "url": "git@github.com:reyun-fe-team/ry-design.git"
