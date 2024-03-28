@@ -63,7 +63,7 @@ import FormInput from './components/business/form-input'
 import FormIndicator from './components/business/form-indicator'
 import FormSelectIndicator from './components/business/form-select-indicator'
 import FilterLisCascader from './components/business/filter-list-cascader'
-import FilterArea from './components/business/filter-area'
+import { FilterArea, FilterAreaTemplateList } from './components/business/filter-area'
 import PlacementLocation from './components/business/placement-location'
 import ErrorPreventModal from './components/business/error-prevent-modal'
 
@@ -170,7 +170,8 @@ const components = [
   CarouselPreviewer,
   TreeSelect,
   Tree,
-  CollapseTransition
+  CollapseTransition,
+  FilterAreaTemplateList
 ]
 
 // 对象式-指令
@@ -264,5 +265,7 @@ export default {
   CarouselPreviewer,
   TreeSelect,
   Tree,
-  CollapseTransition
+  CollapseTransition,
+  FilterArea,
+  FilterAreaTemplateList
 }

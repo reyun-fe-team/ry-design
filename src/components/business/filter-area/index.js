@@ -1,7 +1,13 @@
-import FilterErea from './filter-area'
+import FilterArea from './filter-area'
+import FilterAreaTemplateList from './filter-area-template-list'
 
-FilterErea.install = function (Vue) {
-  Vue.component(FilterErea.name, FilterErea)
+FilterArea.install = function (Vue) {
+  Vue.component(FilterArea.name, FilterArea)
 }
 
-export default FilterErea
+FilterAreaTemplateList.install = function (Vue) {
+  Vue.component(FilterAreaTemplateList.name, FilterAreaTemplateList)
+}
+
+export { FilterArea, FilterAreaTemplateList }
+export default FilterArea
