@@ -79,8 +79,8 @@
       v-model="valueGdtPosition"
       :data="dataGdtPosition"
       show-checkbox
-      show-all
-      :item-min-width="202"></rd-placement-location>
+      show-all></rd-placement-location>
+
     <h2 style="margin: 16px 0">广点通-创意形式{{ valueGdtCreative }}</h2>
     <rd-placement-location
       v-model="valueGdtCreative"
@@ -96,6 +96,27 @@
       show-all
       :multiple="false"
       :data="dataGdtCreativeCur"></rd-placement-location>
+    视频号动态-单选{{ valueGdtCreative3 }}
+    <rd-placement-location
+      v-if="true"
+      v-model="valueGdtCreative3"
+      show-checkbox
+      :multiple="false"
+      :data="dataGdtPosition3"></rd-placement-location>
+    视频号直播-disabled{{ valueGdtCreative4 }}
+    <rd-placement-location
+      v-if="true"
+      v-model="valueGdtCreative4"
+      show-checkbox
+      multiple
+      :data="dataGdtPosition4"></rd-placement-location>
+    视频号直播-clearValue{{ valueGdtCreative5 }}
+    <rd-placement-location
+      v-if="true"
+      v-model="valueGdtCreative5"
+      show-checkbox
+      multiple
+      :data="dataGdtPosition5"></rd-placement-location>
     <h2 style="margin: 16px 0">广点通-创意形式-局部单选{{ valueGdtCreativeRadio }}</h2>
     <rd-placement-location
       v-if="true"
@@ -119,6 +140,9 @@ export default {
       valueGdtPosition: [],
       valueGdtCreative: ['格子广告'],
       valueGdtCreativeCur: ['格子广告'],
+      valueGdtCreative3: ['微信视频号'],
+      valueGdtCreative4: ['微信视频号'],
+      valueGdtCreative5: ['微信视频号'],
       valueGdtCreativeRadio: ['格子广告'],
       valueGdtCreativeRadioPart: [],
       dataEmpty: [],
@@ -337,6 +361,90 @@ export default {
               value: 'QQ、腾讯音乐及游戏'
             }
           ]
+        }
+      ],
+      dataGdtPosition3: [
+        {
+          label: '微信视频号',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '微信视频号'
+        },
+        {
+          label: '微信朋友圈',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '微信朋友圈',
+          childrenRule: {
+            multiple: false
+          }
+        },
+        {
+          label: '微信公众号与小程序',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '微信公众号与小程序',
+          children: [],
+          childrenRule: {
+            multiple: false
+          }
+        }
+      ],
+      dataGdtPosition4: [
+        {
+          label: '微信视频号',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '微信视频号',
+          disabledValues: ['微信公众号与小程序']
+        },
+        {
+          label: '微信朋友圈',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '微信朋友圈',
+          disabledValues: ['微信公众号与小程序']
+        },
+        {
+          label: '微信公众号与小程序',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '微信公众号与小程序',
+          children: [],
+          disabledValues: ['微信视频号', '微信朋友圈']
+        }
+      ],
+      dataGdtPosition5: [
+        {
+          label: '微信视频号',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '微信视频号',
+          clearValues: ['微信公众号与小程序']
+        },
+        {
+          label: '微信朋友圈',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '微信朋友圈',
+          clearValues: ['微信公众号与小程序']
+        },
+        {
+          label: '微信公众号与小程序',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '微信公众号与小程序',
+          children: [],
+          clearValues: ['微信视频号', '微信朋友圈']
         }
       ],
       dataGdtCreative: [

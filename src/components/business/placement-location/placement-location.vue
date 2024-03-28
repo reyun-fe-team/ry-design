@@ -17,7 +17,7 @@
         :label="option.label"
         :show-checkbox="showCheckbox"
         :disabled="option._disabled || option.disabled"
-        multiple
+        :multiple="multiple"
         :class="classesTitle(titleIndex)"
         :row="option"
         :item-width="itemWidth"
@@ -199,26 +199,78 @@ export default {
       if (!this.showCheckbox) {
         return
       }
-      if (data.children && data.children.length) {
-        // 子集是判断||多选
-        const multiple = this.getChildrenMultiple(data)
-        // 更新子集
-        data.children.forEach((val, index) => {
-          if (val && !val.disabled && !val._disabled) {
-            if (multiple) {
-              val.checked = data.checked
-            } else if (!multiple && !data.checked) {
-              // 单选也需要全部取消
-              val.checked = false
-            } else if (!multiple) {
-              // 单选默认选中第一个
-              val.checked = index === 0
-            }
+      if (!this.multiple) {
+        this.data.forEach(item => {
+          item.checked = data.value === item.value
+          if (item.children && item.children.length) {
+            item.children.forEach(val => {
+              val.checked = item.checked
+            })
           }
         })
+      } else {
+        if (data.children && data.children.length) {
+          // 子集是判断||多选
+          const multiple = this.getChildrenMultiple(data)
+          // 更新子集
+          data.children.forEach((val, index) => {
+            if (val && !val.disabled && !val._disabled) {
+              if (multiple) {
+                val.checked = data.checked
+              } else if (!multiple && !data.checked) {
+                // 单选也需要全部取消
+                val.checked = false
+              } else if (!multiple) {
+                // 单选默认选中第一个
+                val.checked = index === 0
+              }
+            }
+          })
+        }
       }
+      const disabledValues = this.getDisabledTitleValues()
+      const clearValues = data.clearValues || []
+
+      this.disabledCheckedAll = false
+      // 处理特殊场景,选中一条指定置灰其他
+      this.data.forEach(val => {
+        if (val.checked && clearValues.includes(val.value)) {
+          val.checked = false
+          if (val.children && val.children.length) {
+            val.children.forEach(item => {
+              item.checked = false
+            })
+          }
+        }
+
+        if (!val.disabled) {
+          const disabled = disabledValues.includes(val.value)
+          if (disabled) {
+            this.disabledCheckedAll = true
+          }
+          val._disabled = disabled
+          if (val.children && val.children.length) {
+            val.children.forEach(item => {
+              if (!item.disabled) {
+                item._disabled = disabled
+              }
+            })
+          }
+        }
+      })
+
       this.handleUpdateSelectValue()
+
       this.$emit('on-title-click', this.currentValue, data)
+    },
+    getDisabledTitleValues() {
+      return this.data.reduce((list, item) => {
+        let checked = this.currentValue.includes(item.value)
+        if (checked && item.disabledValues) {
+          list = [...list, ...item.disabledValues]
+        }
+        return list
+      }, [])
     },
     getDisabledValues() {
       return this.data.reduce((list, item) => {
@@ -236,10 +288,18 @@ export default {
     // 初始化数据源
     handleUpdateNodes() {
       const disabledValues = this.getDisabledValues()
+      const disabledTitleValues = this.getDisabledTitleValues()
 
       // 初始化处理disabledValues
       this.data.forEach(item => {
         item.checked = this.showCheckbox && this.currentValue.includes(item.value)
+
+        const titleDisabled = disabledTitleValues.includes(item.value)
+        if (titleDisabled) {
+          this.disabledCheckedAll = true
+        }
+        item._disabled = titleDisabled
+
         const multiple = this.getChildrenMultiple(item)
 
         if (item.children && item.children.length) {
