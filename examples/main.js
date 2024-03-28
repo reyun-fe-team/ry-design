@@ -242,6 +242,10 @@ const router = new VueRouter({
       component: resolve => require(['./routers/filter-area'], resolve)
     },
     {
+      path: '/filter-area-template-list',
+      component: resolve => require(['./routers/filter-area-template-list'], resolve)
+    },
+    {
       path: '/space',
       component: resolve => require(['./routers/space'], resolve)
     },
