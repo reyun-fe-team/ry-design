@@ -1,7 +1,7 @@
 <template>
   <div>
-    storeValue:{{ storeValue }}
-    <hr />
+    <!-- storeValue:{{ storeValue }}
+    <hr /> -->
     <!--  右侧面板展示的数据optionData:{{ optionData.length }}
     <br />
     {{ optionData }}
