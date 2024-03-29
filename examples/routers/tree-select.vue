@@ -1,9 +1,9 @@
 
 <template>
   <div>
-    <h2>多选事例-checkStrictly:{{ value }}</h2>
+    <h2>独立-checkStrictly:{{ valueCheckStrictly }}</h2>
     <rd-tree-select
-      v-model="value"
+      v-model="valueCheckStrictly"
       label="多选checkStrictly : "
       multiple
       show-select-option
@@ -14,11 +14,27 @@
       :data="data"
       :max-height="300"
       :height="300"
-      save-type="leave-save"
       :max-width="5000"
       :option-label-method="labelMethod"></rd-tree-select>
 
-    <h2 style="margin-top: 100px">多选事例-向下-春福:{{ valueDown }}</h2>
+  <h2 style="margin-top: 100px;color: blue">默认-点父亲, 儿子们选中-有勾选的在右侧:{{ value }}</h2>
+    <rd-tree-select
+      v-model="value"
+      label="多选checkStrictly : "
+      multiple
+      show-select-option
+      show-checkbox
+      filterable
+      clearable
+      :data="data"
+      :max-height="300"
+      :height="300"
+      :max-width="5000"
+      :option-label-method="labelMethod"></rd-tree-select>
+
+    
+
+    <h2 style="margin-top: 100px">默认-点父亲, 儿子们选中-有勾选的父亲label的在右侧(春福原来要求的):{{ valueDown }}</h2>
     <rd-tree-select
       v-model="valueDown"
       label="多选: "
@@ -31,8 +47,8 @@
       :max-height="300"
       :height="300"
       :max-width="5000"
-      save-type="leave-save"
       ref="rd-tree-select-ref1"
+      showParentLabel
       :option-label-method="downLabelMethod"
       @on-change='valueDownChange'></rd-tree-select>
     <Button
@@ -81,6 +97,7 @@ export default {
   data() {
     return {
       value: [],
+      valueCheckStrictly:[],
       valueDown: ['水果', '朝阳'],
       //valueUp: [],
       valueUp: ['中国3', '水果2', '西瓜2', '西瓜肉', '香蕉', '北京'],

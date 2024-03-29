@@ -311,7 +311,7 @@ export default class TreeStore {
   }
 
   // 自有
-  deleteCheckedKeys(keys, deep = true, deepUpChecked = true) {
+  deleteCheckedKeys(keys, deep = true) {
     const allNodes = this._getAllNodes().sort((a, b) => b.level - a.level)
     const key = this.key
     for (let i = 0, j = allNodes.length; i < j; i++) {
@@ -319,7 +319,7 @@ export default class TreeStore {
       const nodeKey = node.data[key].toString()
       let checked = keys.indexOf(nodeKey) > -1
       if (checked) {
-        node.setChecked(false, deep, deepUpChecked)
+        node.setChecked(false, deep, this.deepUpChecked)
       }
     }
   }

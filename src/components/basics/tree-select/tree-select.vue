@@ -3,9 +3,9 @@
 
 <template>
   <div>
-    <!-- storeValue:{{ storeValue }}
+    storeValue:{{ storeValue }}
     <hr />
-    右侧面板展示的数据optionData:{{ optionData.length }}
+    <!--  右侧面板展示的数据optionData:{{ optionData.length }}
     <br />
     {{ optionData }}
     <hr />
@@ -91,9 +91,9 @@ export default {
       type: Boolean,
       default: false
     },
-    loadData: {
-      type: Function
-    },
+    // loadData: {
+    //   type: Function
+    // },
     transfer: {
       type: Boolean,
       default() {
@@ -148,6 +148,11 @@ export default {
       default: 'value'
     },
     deepUpChecked: {
+      type: Boolean,
+      default: false
+    },
+    // 显示父节点的文案
+    showParentLabel: {
       type: Boolean,
       default: false
     },
@@ -215,10 +220,18 @@ export default {
       let filter = []
       if (this.multiple) {
         if (this.checkStrictly) {
+          console.log('默认optionData-checkStrictly')
           this.selectData.forEach(val => {
             list.push(val)
           })
-        } else if (!this.deepUpChecked) {
+        } else if (this.deepUpChecked) {
+          console.log('默认optionData-向上-博')
+          this.selectData.forEach(val => {
+            list.push(val)
+          })
+        } else if (this.showParentLabel) {
+          console.log('默认optionData-春福老')
+          // selectData是全量的、showParentLabel===true 首先过滤节点、使用filter给parentValue去重
           this.selectData
             .filter(val => val.type !== 'node')
             .forEach(val => {
@@ -228,8 +241,8 @@ export default {
               }
             })
         } else {
+          console.log('默认optionData')
           this.selectData.forEach(val => {
-            filter.push(val[this.nodeKey])
             list.push(val)
           })
         }
@@ -247,7 +260,8 @@ export default {
       this.data.forEach(item => {
         this.getOptionData(item, list, null, null, exclude)
       })
-      list = list.filter(val => !exclude.includes(val[this.nodeKey]))
+      // TODO
+      // list = list.filter(val => !exclude.includes(val[this.nodeKey]))
       return list
     },
     panelStyle() {
@@ -319,17 +333,20 @@ export default {
     this.$refs.tree.setCheckedKeys(this.storeValue)
   },
   methods: {
+    // selectData调用, 返回全量的选中信息
     getOptionData(item, list, info, parent, exclude) {
+      // storeValue是全量包含节点的value
       const checked = this.storeValue.includes(item[this.nodeKey])
-      if (
-        !this.checkStrictly &&
-        !this.deepUpChecked &&
-        parent &&
-        checked &&
-        !exclude.includes(parent[this.nodeKey])
-      ) {
-        exclude.push(parent[this.nodeKey])
-      }
+      // if (
+      //   !this.checkStrictly &&
+      //   !this.deepUpChecked &&
+      //   !this.showParentLabel &&
+      //   parent &&
+      //   checked &&
+      //   !exclude.includes(parent[this.nodeKey])
+      // ) {
+      //   exclude.push(parent[this.nodeKey])
+      // }
       if (info) {
         info.labelStr = info.labelStr + '/' + item[this.labelKey]
         info.valueStr = info.valueStr + '/' + item[this.nodeKey]
@@ -400,10 +417,11 @@ export default {
     handleFilterListChange(values, oldValues) {
       const list = this.optionData.filter(val => values.includes(val[this.nodeKey]))
       let newValues = []
+      debugger
       if (this.checkStrictly) {
         this.storeValue = values
         this.$refs.tree.setCheckedKeys(this.storeValue)
-      } else if (!this.deepUpChecked) {
+      } else if (this.showParentLabel) {
         list.forEach(item => {
           if (item.type === 'leaf') {
             let find = this.selectData.find(val => val[this.nodeKey] === item[this.nodeKey])
@@ -503,7 +521,7 @@ export default {
       if (this.multiple) {
         if (this.checkStrictly) {
           values = this.storeValue
-        } else if (!this.deepUpChecked) {
+        } else if (this.showParentLabel) {
           values = this.optionData
             .filter(val => val.type === 'leaf')
             .map(val => {
