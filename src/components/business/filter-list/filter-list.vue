@@ -18,6 +18,7 @@
         :disabled="disabled"
         :show-description="showDescription"
         :show-subtitle="showSubtitle"
+        :label-method="inputLabelMethod"
         @on-clear="filterListInputChange"
         @click.native="handleInputClick">
         <template
@@ -166,7 +167,8 @@ export default {
     disabled: Boolean,
     transfer: Boolean,
     placement: String,
-    optionLabelMethod: Function
+    optionLabelMethod: Function,
+    inputLabelMethod: Function
   },
   data() {
     return {

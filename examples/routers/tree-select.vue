@@ -20,7 +20,7 @@
   <h2 style="margin-top: 100px;color: blue">默认-点父亲, 儿子们选中-有勾选的在右侧:{{ value }}</h2>
     <rd-tree-select
       v-model="value"
-      label="多选checkStrictly : "
+      label="默认多选 : "
       multiple
       show-select-option
       show-checkbox
@@ -30,7 +30,7 @@
       :max-height="300"
       :height="300"
       :max-width="5000"
-      :option-label-method="labelMethod"></rd-tree-select>
+      :option-label-method="pathMethod"></rd-tree-select>
 
     
 
@@ -380,6 +380,9 @@ export default {
     },
     labelMethod(row) {
       return row.label
+    },
+    pathMethod(row){
+      return row.path
     },
     getHalfCheckedKeys() {
       const rest = this.$refs['rd-tree-select-ref1'].getHalfCheckedKeys()

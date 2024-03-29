@@ -37,6 +37,7 @@
       :transfer="transfer"
       :placement="placement"
       :option-label-method="optionLabelMethod"
+      :input-label-method="optionLabelMethod"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange"
       @on-input-click="handleInputClick"
@@ -258,7 +259,8 @@ export default {
       let list = []
       let exclude = []
       this.data.forEach(item => {
-        this.getOptionData(item, list, null, null, exclude)
+        let path = []
+        this.getOptionData({ item, list, info: null, parent: null, path, exclude })
       })
       // TODO
       // list = list.filter(val => !exclude.includes(val[this.nodeKey]))
@@ -334,7 +336,7 @@ export default {
   },
   methods: {
     // selectData调用, 返回全量的选中信息
-    getOptionData(item, list, info, parent, exclude) {
+    getOptionData({ item, list, info, parent, path, exclude }) {
       // storeValue是全量包含节点的value
       const checked = this.storeValue.includes(item[this.nodeKey])
       // if (
@@ -347,25 +349,21 @@ export default {
       // ) {
       //   exclude.push(parent[this.nodeKey])
       // }
-      if (info) {
-        info.labelStr = info.labelStr + '/' + item[this.labelKey]
-        info.valueStr = info.valueStr + '/' + item[this.nodeKey]
-      }
+      path.push(item[this.labelKey])
+
       // 选中
       if (checked) {
         if (item[this.childrenKey] && item[this.childrenKey].length) {
+          // children有长度的场景
           // 添加空的占位
           list.push({
-            // 自己的
             label: item[this.labelKey],
-            // 自己的
             value: item[this.nodeKey],
-            // 优选父节点
-            parentValue: info ? info.parentValue : '',
-            parentLabel: info ? info.parentLabel : '',
+            // 选中&&有子集,理论上不会出现'-'
+            parentValue: info ? info.parentValue : '-',
+            parentLabel: info ? info.parentLabel : '-',
             type: 'node',
-            labelStr: info ? info.labelStr : item[this.labelKey],
-            valueStr: info ? info.valueStr : item[this.nodeKey]
+            path: this.getPath(path)
           })
           item[this.childrenKey].forEach(val => {
             let _info = {}
@@ -373,51 +371,47 @@ export default {
             if (info) {
               _info = {
                 parentLabel: info.parentLabel,
-                parentValue: info.parentValue,
-                labelStr: info.labelStr,
-                valueStr: info.valueStr
+                parentValue: info.parentValue
               }
             } else {
               _info = {
                 parentLabel: item[this.labelKey],
-                parentValue: item[this.nodeKey],
-                labelStr: item[this.labelKey],
-                valueStr: item[this.nodeKey]
+                parentValue: item[this.nodeKey]
               }
             }
-            this.getOptionData(val, list, _info, item, exclude)
+            // val, list, _info, item, exclude
+            this.getOptionData({ item: val, list, info: _info, parent: item, path, exclude })
           })
         } else {
+          //children无长度的场景
           list.push({
-            // 优选父节点
             label: item[this.labelKey],
-            // 自己的
             value: item[this.nodeKey],
-            // 自己的
-            myLabel: item[this.labelKey],
+            // 选中&&无子集, 则显示自己的label
             parentLabel: info ? info.parentLabel : item[this.labelKey],
-            // 优选父节点
             parentValue: info ? info.parentValue : item[this.nodeKey],
             type: 'leaf',
-            labelStr: info ? info.labelStr : item[this.labelKey],
-            valueStr: info ? info.valueStr : item[this.nodeKey]
+            path: this.getPath(path)
           })
         }
       } else {
         // 未选中
         if (item[this.childrenKey] && item[this.childrenKey].length) {
-          item[this.childrenKey].forEach(val => {
+          item[this.childrenKey].forEach(childItem => {
             // 循环子集
-            this.getOptionData(val, list, info, item, exclude)
+            // childItem, list, info, item, exclude
+            this.getOptionData({ item: childItem, list, info, parent: item, path: path, exclude })
           })
         }
       }
+    },
+    getPath(path) {
+      return path.join('/')
     },
     // 删除
     handleFilterListChange(values, oldValues) {
       const list = this.optionData.filter(val => values.includes(val[this.nodeKey]))
       let newValues = []
-      debugger
       if (this.checkStrictly) {
         this.storeValue = values
         this.$refs.tree.setCheckedKeys(this.storeValue)
