@@ -1,9 +1,19 @@
 
 <template>
   <div>
-    <h2>多选事例-checkStrictly:{{ value }}</h2>
+    <h2>单选事例1:{{ valueRadio1 }}</h2>
+    <hr />
     <rd-tree-select
-      v-model="value"
+      v-model="valueRadio1"
+      label="单选: "
+      check-strictly
+      :data="data1"
+      :max-width="500"
+      :max-height="300"
+      :option-label-method="pathMethod"></rd-tree-select>
+    <h2 style="margin-top: 100px">独立-checkStrictly:{{ valueCheckStrictly }}</h2>
+    <rd-tree-select
+      v-model="valueCheckStrictly"
       label="多选checkStrictly : "
       multiple
       show-select-option
@@ -14,14 +24,15 @@
       :data="data"
       :max-height="300"
       :height="300"
-      save-type="leave-save"
       :max-width="5000"
       :option-label-method="labelMethod"></rd-tree-select>
 
-    <h2>多选事例-默认:{{ defaultValue }}</h2>
+    <h2 style="margin-top: 100px; color: blue">
+      默认-点父亲, 儿子们选中-有勾选的在右侧:{{ value }}
+    </h2>
     <rd-tree-select
-      v-model="defaultValue"
-      label="默认 : "
+      v-model="defauleValue"
+      label="默认多选 : "
       multiple
       show-select-option
       show-checkbox
@@ -30,14 +41,16 @@
       :data="data"
       :max-height="300"
       :height="300"
-      save-type="leave-save"
       :max-width="5000"
-      :option-label-method="labelMethod"></rd-tree-select>
+      :option-label-method="pathMethod"
+      @on-change="valueDownChange"></rd-tree-select>
 
-    <h2 style="margin-top: 100px">多选事例-向下-春福:{{ valueDown }}</h2>
-
+    <h2 style="margin-top: 100px">
+      默认-点父亲, 儿子们选中-有勾选的父亲label的在右侧(春福原来要求的):{{ valueDown }}
+    </h2>
     <rd-tree-select
       v-model="valueDown"
+      ref="rd-tree-select-ref1"
       label="多选: "
       multiple
       show-option-parent
@@ -49,8 +62,14 @@
       :max-height="300"
       :height="300"
       :max-width="5000"
-      save-type="leave-save"
-      :option-label-method="downLabelMethod"></rd-tree-select>
+      show-parent-label
+      :option-label-method="downLabelMethod"
+      @on-change="valueDownChange"></rd-tree-select>
+    <Button
+      type="primary"
+      @click="getHalfCheckedKeys">
+      getHalfCheckedKeys
+    </Button>
 
     <h2 style="margin-top: 100px">多选事例-默认向上选中-周博用:{{ valueUp }}</h2>
     <rd-tree-select
@@ -73,16 +92,6 @@
       }"
       save-type="always-save"
       :option-label-method="upOptionLabelMethod"></rd-tree-select>
-
-    单选事例1:{{ valueRadio1 }}
-    <hr />
-    <rd-tree-select
-      v-model="valueRadio1"
-      label="单选: "
-      :data="data1"
-      save-type="always-save"
-      :max-width="500"
-      :max-height="300"></rd-tree-select>
   </div>
 </template>
 <script>
@@ -90,53 +99,20 @@ export default {
   data() {
     return {
       value: [],
-      defaultValue: ['水果1', '西瓜1', '西瓜肉', '西瓜籽', '香蕉'],
-      valueDown: ['水果1', '朝阳'],
-      valueUp: ['地球3', '水果2', '西瓜2', '西瓜肉', '香蕉', '北京'],
-      valueRadio1: '水果1',
+      valueCheckStrictly: [],
+      defauleValue: [],
+      valueDown: ['水果', '朝阳'],
+      //valueUp: [],
+      valueUp: ['中国3', '水果2', '西瓜2', '西瓜肉', '香蕉', '北京'],
+      valueRadio1: '水果',
       data: [
         {
-          label: '地球',
+          label: '中国',
           expand: true,
-          value: '地球',
+          value: '中国',
           selected: false,
           checked: false,
           children: [
-            {
-              label: '水果1',
-              expand: true,
-              value: '水果1',
-              selected: false,
-              checked: false,
-              children: [
-                {
-                  label: '西瓜1',
-                  value: '西瓜1',
-                  selected: false,
-                  checked: false,
-                  children: [
-                    {
-                      label: '西瓜肉',
-                      value: '西瓜肉',
-                      selected: false,
-                      checked: false
-                    },
-                    {
-                      label: '西瓜籽',
-                      value: '西瓜籽',
-                      selected: false,
-                      checked: false
-                    }
-                  ]
-                },
-                {
-                  label: '香蕉',
-                  value: '香蕉',
-                  selected: false,
-                  checked: false
-                }
-              ]
-            },
             {
               label: '北京',
               expand: true,
@@ -145,7 +121,7 @@ export default {
               checked: false,
               children: [
                 {
-                  label: '朝阳1',
+                  label: '朝阳',
                   value: '朝阳',
                   selected: false,
                   checked: false
@@ -178,6 +154,41 @@ export default {
                   checked: false
                 }
               ]
+            },
+            {
+              label: '水果',
+              expand: true,
+              value: '水果',
+              selected: false,
+              checked: false,
+              children: [
+                {
+                  label: '西瓜',
+                  value: '西瓜',
+                  selected: false,
+                  checked: false,
+                  children: [
+                    {
+                      label: '西瓜肉',
+                      value: '西瓜肉',
+                      selected: false,
+                      checked: false
+                    },
+                    {
+                      label: '西瓜籽',
+                      value: '西瓜籽',
+                      selected: false,
+                      checked: false
+                    }
+                  ]
+                },
+                {
+                  label: '香蕉',
+                  value: '香蕉',
+                  selected: false,
+                  checked: false
+                }
+              ]
             }
           ]
         }
@@ -190,6 +201,48 @@ export default {
           selected: false,
           checked: false,
           children: [
+            {
+              label: '北京',
+              expand: true,
+              value: '北京',
+              selected: false,
+              checked: false,
+              children: [
+                {
+                  label: '朝阳',
+                  value: '朝阳',
+                  selected: false,
+                  checked: false
+                },
+                {
+                  label: '昌平',
+                  value: '昌平',
+                  selected: false,
+                  checked: false
+                }
+              ]
+            },
+            {
+              label: '上海',
+              expand: true,
+              value: '上海',
+              selected: false,
+              checked: false,
+              children: [
+                {
+                  label: '南京路',
+                  value: '南京路',
+                  selected: false,
+                  checked: false
+                },
+                {
+                  label: '外滩',
+                  value: '外滩',
+                  selected: false,
+                  checked: false
+                }
+              ]
+            },
             {
               label: '水果2',
               expand: true,
@@ -224,60 +277,60 @@ export default {
                   checked: false
                 }
               ]
-            },
-            {
-              label: '北京',
-              expand: true,
-              value: '北京',
-              selected: false,
-              checked: false,
-              children: [
-                {
-                  label: '朝阳1',
-                  value: '朝阳',
-                  selected: false,
-                  checked: false
-                },
-                {
-                  label: '昌平',
-                  value: '昌平',
-                  selected: false,
-                  checked: false
-                }
-              ]
-            },
-            {
-              label: '上海',
-              expand: true,
-              value: '上海',
-              selected: false,
-              checked: false,
-              children: [
-                {
-                  label: '南京路',
-                  value: '南京路',
-                  selected: false,
-                  checked: false
-                },
-                {
-                  label: '外滩',
-                  value: '外滩',
-                  selected: false,
-                  checked: false
-                }
-              ]
             }
           ]
         }
       ],
       data2: [
         {
-          name: '地球3',
+          name: '中国3',
           expand: true,
-          code: '地球3',
+          code: '中国3',
           selected: false,
           checked: false,
           data: [
+            {
+              name: '北京',
+              expand: true,
+              code: '北京',
+              selected: false,
+              checked: false,
+              data: [
+                {
+                  name: '朝阳',
+                  code: '朝阳',
+                  selected: false,
+                  checked: false
+                },
+                {
+                  name: '昌平',
+                  code: '昌平',
+                  selected: false,
+                  checked: false
+                }
+              ]
+            },
+            {
+              name: '上海',
+              expand: true,
+              code: '上海',
+              selected: false,
+              checked: false,
+              data: [
+                {
+                  name: '南京路',
+                  code: '南京路',
+                  selected: false,
+                  checked: false
+                },
+                {
+                  name: '外滩',
+                  code: '外滩',
+                  selected: false,
+                  checked: false
+                }
+              ]
+            },
             {
               name: '水果2',
               expand: true,
@@ -312,48 +365,6 @@ export default {
                   checked: false
                 }
               ]
-            },
-            {
-              name: '北京',
-              expand: true,
-              code: '北京',
-              selected: false,
-              checked: false,
-              data: [
-                {
-                  name: '朝阳1',
-                  code: '朝阳',
-                  selected: false,
-                  checked: false
-                },
-                {
-                  name: '昌平',
-                  code: '昌平',
-                  selected: false,
-                  checked: false
-                }
-              ]
-            },
-            {
-              name: '上海',
-              expand: true,
-              code: '上海',
-              selected: false,
-              checked: false,
-              data: [
-                {
-                  name: '南京路',
-                  code: '南京路',
-                  selected: false,
-                  checked: false
-                },
-                {
-                  name: '外滩',
-                  code: '外滩',
-                  selected: false,
-                  checked: false
-                }
-              ]
             }
           ]
         }
@@ -363,15 +374,22 @@ export default {
   methods: {
     upOptionLabelMethod(row) {
       return row.label
-      // return row.label
-      //return row.parentLabel
     },
     downLabelMethod(row) {
       return row.parentLabel
-      //return row.labelStr
     },
     labelMethod(row) {
       return row.label
+    },
+    pathMethod(row) {
+      return row.path
+    },
+    getHalfCheckedKeys() {
+      const rest = this.$refs['rd-tree-select-ref1'].getHalfCheckedKeys()
+      console.log({ rest })
+    },
+    valueDownChange(data, info) {
+      console.log(data, info)
     }
   }
 }

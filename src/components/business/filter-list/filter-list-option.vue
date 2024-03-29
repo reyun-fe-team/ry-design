@@ -24,7 +24,7 @@
         v-for="item in data"
         :key="item.value"
         :class="prefixCls + '-body-item'">
-        <p :title="item.label">{{ label(item) }}</p>
+        <p :title="getLabel(item)">{{ getLabel(item) }}</p>
         <rd-icon
           color="rgba(87, 91, 101, 1)"
           type="ry-icon-text-delete"
@@ -109,7 +109,7 @@ export default {
     }
   },
   methods: {
-    label(row) {
+    getLabel(row) {
       return this.optionLabelMethod(row)
     },
     handleDelete(items) {
