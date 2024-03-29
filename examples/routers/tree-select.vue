@@ -1,8 +1,18 @@
 
 <template>
   <div>
-    <h2>独立-checkStrictly:{{ valueCheckStrictly }}</h2>
+    <h2>单选事例1:{{ valueRadio1 }}</h2>
+    <hr />
     <rd-tree-select
+      v-model="valueRadio1"
+      label="单选: "
+      check-strictly
+      :data="data1"
+      :max-width="500"
+      :max-height="300"
+      :option-label-method="pathMethod"></rd-tree-select>
+    <h2 style="margin-top: 100px">独立-checkStrictly:{{ valueCheckStrictly }}</h2>
+     <rd-tree-select
       v-model="valueCheckStrictly"
       label="多选checkStrictly : "
       multiple
@@ -35,7 +45,7 @@
       :option-label-method="pathMethod"
       @on-change="valueDownChange"></rd-tree-select>
 
-    <h2 style="margin-top: 100px">
+   <!-- <h2 style="margin-top: 100px">
       默认-点父亲, 儿子们选中-有勾选的父亲label的在右侧(春福原来要求的):{{ valueDown }}
     </h2>
     <rd-tree-select
@@ -80,18 +90,7 @@
         label: 'name'
       }"
       save-type="always-save"
-      :option-label-method="upOptionLabelMethod"></rd-tree-select>
-
-    <h2 style="margin-top: 100px">单选事例1:{{ valueRadio1 }}</h2>
-    <hr />
-    <rd-tree-select
-      v-model="valueRadio1"
-      label="单选: "
-      show-select-option
-      check-strictly
-      :data="data1"
-      :max-width="500"
-      :max-height="300"></rd-tree-select>
+      :option-label-method="upOptionLabelMethod"></rd-tree-select> -->
   </div>
 </template>
 <script>

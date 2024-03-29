@@ -59,6 +59,7 @@
           :check-on-click-node="false"
           :deep-up-checked="deepUpChecked"
           :check-strictly="checkStrictly"
+          :multiple="multiple"
           @check="handleSelectNode"
           @current-change="currentChange"></rd-tree>
       </div>
@@ -170,6 +171,9 @@ export default {
       validator(value) {
         return oneOf(value, ['always-save', 'leave-save'])
       }
+    },
+    loadData: {
+      type: Function
     }
   },
   data() {
@@ -221,17 +225,14 @@ export default {
       let filter = []
       if (this.multiple) {
         if (this.checkStrictly) {
-          console.log('默认optionData-checkStrictly')
           this.selectData.forEach(val => {
             list.push(val)
           })
         } else if (this.deepUpChecked) {
-          console.log('默认optionData-向上-博')
           this.selectData.forEach(val => {
             list.push(val)
           })
         } else if (this.showParentLabel) {
-          console.log('默认optionData-春福老')
           // selectData是全量的、showParentLabel===true 首先过滤节点、使用filter给parentValue去重
           this.selectData
             .filter(val => val.type !== 'node')
@@ -242,7 +243,6 @@ export default {
               }
             })
         } else {
-          console.log('默认optionData')
           this.selectData.forEach(val => {
             list.push(val)
           })
@@ -322,16 +322,19 @@ export default {
     }
   },
   mounted() {
-    let list = []
-    this.handleUpdateTreeNodes({
-      data: this.data,
-      list,
-      isInit: true
-    })
-    this.storeValue = list
-    this.$refs.tree.setCheckedKeys(this.storeValue)
+    this.init()
   },
   methods: {
+    init() {
+      let list = []
+      this.handleUpdateTreeNodes({
+        data: this.data,
+        list,
+        isInit: true
+      })
+      this.storeValue = list
+      this.$refs.tree.setCheckedKeys(this.storeValue)
+    },
     // selectData调用, 返回全量的选中信息
     getOptionData({ item, list, info, path }) {
       // storeValue是全量包含节点的value
@@ -457,7 +460,6 @@ export default {
     currentChange(currentData) {
       if (!this.multiple) {
         this.storeValue = [currentData[this.nodeKey]]
-        // this.emitChange()
         this.movementChange()
       }
     },
@@ -476,7 +478,7 @@ export default {
             this.handleUpdateTreeNodes({
               data: item[this.childrenKey],
               list,
-              state: this.deepUpChecked ? false : true,
+              state: this.deepUpChecked || !this.multiple ? false : true,
               isInit
             })
           }
@@ -524,6 +526,9 @@ export default {
         halfAndCheckedKeys
       })
       this.dispatch('FormItem', 'on-form-change', values)
+      if (!this.multiple) {
+        this.closeDropdown()
+      }
     },
     // filter
     queryChange(val) {
