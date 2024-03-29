@@ -49,8 +49,8 @@
       默认-点父亲, 儿子们选中-有勾选的父亲label的在右侧(春福原来要求的):{{ valueDown }}
     </h2>
     <rd-tree-select
-      v-model="valueDown"
       ref="rd-tree-select-ref1"
+      v-model="valueDown"
       label="多选: "
       multiple
       show-option-parent
@@ -103,8 +103,8 @@ export default {
       defauleValue: [],
       valueDown: ['水果', '朝阳'],
       //valueUp: [],
-      valueUp: ['中国3', '水果2', '西瓜2', '西瓜肉', '香蕉', '北京'],
-      valueRadio1: '水果',
+      valueUp: ['中国', '水果', '西瓜', '西瓜肉', '香蕉', '北京'],
+      valueRadio1: '北京',
       data: [
         {
           label: '中国',
@@ -195,9 +195,9 @@ export default {
       ],
       data1: [
         {
-          label: '地球2',
+          label: '中国',
           expand: true,
-          value: '地球2',
+          value: '中国',
           selected: false,
           checked: false,
           children: [
@@ -244,15 +244,15 @@ export default {
               ]
             },
             {
-              label: '水果2',
+              label: '水果',
               expand: true,
-              value: '水果2',
+              value: '水果',
               selected: false,
               checked: false,
               children: [
                 {
-                  label: '西瓜2',
-                  value: '西瓜2',
+                  label: '西瓜',
+                  value: '西瓜',
                   selected: false,
                   checked: false,
                   children: [
@@ -283,9 +283,9 @@ export default {
       ],
       data2: [
         {
-          name: '中国3',
+          name: '中国',
           expand: true,
-          code: '中国3',
+          code: '中国',
           selected: false,
           checked: false,
           data: [
@@ -332,15 +332,15 @@ export default {
               ]
             },
             {
-              name: '水果2',
+              name: '水果',
               expand: true,
-              code: '水果2',
+              code: '水果',
               selected: false,
               checked: false,
               data: [
                 {
-                  name: '西瓜2',
-                  code: '西瓜2',
+                  name: '西瓜',
+                  code: '西瓜',
                   selected: false,
                   checked: false,
                   data: [
