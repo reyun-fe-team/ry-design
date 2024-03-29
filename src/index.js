@@ -79,6 +79,7 @@ import { UTable, UTableColumn } from 'umy-ui'
 import lineClamp from './directives/line-clamp'
 import clickOutside from './directives/click-out-side'
 import transferDom from './directives/transfer-dom'
+import resize from './directives/resize'
 // directivesCreateFuncs
 import createTooltip from './directives/tooltip'
 import createDragging from './directives/dragging'
@@ -176,7 +177,8 @@ const components = [
 const directives = {
   'line-clamp': lineClamp,
   'click-outside': clickOutside,
-  'transfer-dom': transferDom
+  'transfer-dom': transferDom,
+  resize: resize
 }
 
 // 函数式-创建指令对象

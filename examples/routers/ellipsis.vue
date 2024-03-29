@@ -77,6 +77,29 @@
         </div>
       </template>
     </Table>
+    <h2>示例7-宽高变了，自动计算</h2>
+    <div>
+      <Button @click="setHeightPx">改变高度</Button>
+      <div style="margin: 10px 0">
+        <rd-ellipsis
+          style="width: 200px; line-height: 25px; background-color: #f00"
+          auto-resize
+          :style="{ height: height + 'px' }"
+          :text="text"
+          tooltip />
+      </div>
+      <div>
+        <Button @click="setWidthPx">改变宽度</Button>
+        <div style="margin: 10px 0">
+          <rd-ellipsis
+            auto-resize
+            style="height: 25px; line-height: 25px; background-color: #f00"
+            :style="{ width: width + 'px' }"
+            :text="text"
+            tooltip />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -84,6 +107,8 @@
 export default {
   data() {
     return {
+      height: 400,
+      width: 1000,
       text: '史蒂夫·乔布斯（英语：Steve Jobs），是一名美国企业家、营销家和发明家，苹果公司的联合创始人之一，曾任董事长及首席执行官职位，NeXT创办人及首席执行官，也是皮克斯动画的创办人并曾任首席执行官，2006年为华特迪士尼公司的董事会成员。2017年9月苹果发布会举行的地方，以他命名为 Steve Jobs Theater 。',
       column: [
         {
@@ -106,11 +131,22 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    setHeightPx() {
+      this.height -= 10
+    },
+
+    setWidthPx() {
+      this.width -= 10
+    }
   }
 }
 </script>
 
-<style lang="less" scoped>
+<style
+  lang="less"
+  scoped>
 .content {
   width: 300px;
   padding: 10px;

@@ -1,24 +1,23 @@
 <template>
   <div class="app">
     <div class="coms">
-      <p>点击按钮查看组件示例</p>
-      <Button
-        class="com-btn"
-        @click="onClick">
-        提示
-      </Button>
-      <Button
-        v-for="(item, i) in comsList"
-        :key="i"
-        class="com-btn"
-        :class="{ active: activeRoute === item.path }"
-        @click="$router.push(item.path)">
-        {{ item.name }}
-      </Button>
+      <h2>点击按钮查看组件示例</h2>
+      <div class="menu">
+        <Button
+          v-for="(item, i) in comsList"
+          :key="i"
+          class="com-btn"
+          :class="{ active: activeRoute === item.path }"
+          @click="$router.push(item.path)">
+          {{ item.name }}
+        </Button>
+      </div>
     </div>
     <div class="view">
-      <p class="result-desc">示例结果如下：</p>
-      <router-view></router-view>
+      <h2 class="result-desc">示例结果如下：</h2>
+      <div class="router-view">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -47,17 +46,14 @@ export default {
       const name = path.slice(1)
       return { name, path }
     })
-  },
-  methods: {
-    onClick() {
-      this.$Message.info({
-        content: '错误'
-      })
-    }
   }
 }
 </script>
 <style lang="less" scoped>
+h2 {
+  padding: 5px 0;
+}
+
 .coms {
   margin: 16px;
   .com-btn {
@@ -65,6 +61,19 @@ export default {
     margin-right: 16px;
   }
 }
+
+.menu {
+  max-height: 200px;
+  overflow: auto;
+  // 兼容Firefox
+  scrollbar-width: none;
+
+  // 兼容Chrome
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .view {
   margin: 16px;
   border-top: 1px dashed #ddd;
