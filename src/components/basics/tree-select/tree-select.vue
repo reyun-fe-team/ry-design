@@ -515,8 +515,13 @@ export default {
       } else {
         values = this.storeValue[0]
       }
+      const halfCheckedKeys = this.getHalfCheckedKeys()
+      const halfAndCheckedKeys = [...values, ...halfCheckedKeys]
       this.$emit('input', values)
-      this.$emit('on-change', values)
+      this.$emit('on-change', values, {
+        halfCheckedKeys,
+        halfAndCheckedKeys
+      })
       this.dispatch('FormItem', 'on-form-change', values)
     },
     // filter
@@ -552,6 +557,9 @@ export default {
     },
     filterNodeMethod(value, data) {
       return data[this.labelKey].includes(value)
+    },
+    getHalfCheckedKeys() {
+      return this.$refs.tree.getHalfCheckedKeys()
     }
   }
 }
