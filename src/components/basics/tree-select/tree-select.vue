@@ -257,13 +257,10 @@ export default {
         return []
       }
       let list = []
-      let exclude = []
       this.data.forEach(item => {
         let path = []
-        this.getOptionData({ item, list, info: null, parent: null, path, exclude })
+        this.getOptionData({ item, list, info: null, path })
       })
-      // TODO
-      // list = list.filter(val => !exclude.includes(val[this.nodeKey]))
       return list
     },
     panelStyle() {
@@ -336,19 +333,9 @@ export default {
   },
   methods: {
     // selectData调用, 返回全量的选中信息
-    getOptionData({ item, list, info, parent, path, exclude }) {
+    getOptionData({ item, list, info, path }) {
       // storeValue是全量包含节点的value
       const checked = this.storeValue.includes(item[this.nodeKey])
-      // if (
-      //   !this.checkStrictly &&
-      //   !this.deepUpChecked &&
-      //   !this.showParentLabel &&
-      //   parent &&
-      //   checked &&
-      //   !exclude.includes(parent[this.nodeKey])
-      // ) {
-      //   exclude.push(parent[this.nodeKey])
-      // }
       path.push(item[this.labelKey])
 
       // 选中
@@ -379,8 +366,9 @@ export default {
                 parentValue: item[this.nodeKey]
               }
             }
-            // val, list, _info, item, exclude
-            this.getOptionData({ item: val, list, info: _info, parent: item, path, exclude })
+            const _path = JSON.parse(JSON.stringify(path))
+            // val, list, _info, item
+            this.getOptionData({ item: val, list, info: _info, path: _path })
           })
         } else {
           //children无长度的场景
@@ -398,9 +386,10 @@ export default {
         // 未选中
         if (item[this.childrenKey] && item[this.childrenKey].length) {
           item[this.childrenKey].forEach(childItem => {
+            const _path = JSON.parse(JSON.stringify(path))
             // 循环子集
-            // childItem, list, info, item, exclude
-            this.getOptionData({ item: childItem, list, info, parent: item, path: path, exclude })
+            // childItem, list, info, item
+            this.getOptionData({ item: childItem, list, info, path: _path })
           })
         }
       }

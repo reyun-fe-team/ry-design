@@ -17,9 +17,11 @@
       :max-width="5000"
       :option-label-method="labelMethod"></rd-tree-select>
 
-  <h2 style="margin-top: 100px;color: blue">默认-点父亲, 儿子们选中-有勾选的在右侧:{{ value }}</h2>
+    <h2 style="margin-top: 100px; color: blue">
+      默认-点父亲, 儿子们选中-有勾选的在右侧:{{ value }}
+    </h2>
     <rd-tree-select
-      v-model="value"
+      v-model="defauleValue"
       label="默认多选 : "
       multiple
       show-select-option
@@ -30,11 +32,12 @@
       :max-height="300"
       :height="300"
       :max-width="5000"
-      :option-label-method="pathMethod"></rd-tree-select>
+      :option-label-method="pathMethod"
+      @on-change="valueDownChange"></rd-tree-select>
 
-    
-
-    <h2 style="margin-top: 100px">默认-点父亲, 儿子们选中-有勾选的父亲label的在右侧(春福原来要求的):{{ valueDown }}</h2>
+    <h2 style="margin-top: 100px">
+      默认-点父亲, 儿子们选中-有勾选的父亲label的在右侧(春福原来要求的):{{ valueDown }}
+    </h2>
     <rd-tree-select
       v-model="valueDown"
       label="多选: "
@@ -50,7 +53,7 @@
       ref="rd-tree-select-ref1"
       showParentLabel
       :option-label-method="downLabelMethod"
-      @on-change='valueDownChange'></rd-tree-select>
+      @on-change="valueDownChange"></rd-tree-select>
     <Button
       type="primary"
       @click="getHalfCheckedKeys">
@@ -79,17 +82,16 @@
       save-type="always-save"
       :option-label-method="upOptionLabelMethod"></rd-tree-select>
 
-    <!-- 单选事例1:{{ valueRadio1 }}
+    <h2 style="margin-top: 100px">单选事例1:{{ valueRadio1 }}</h2>
     <hr />
     <rd-tree-select
       v-model="valueRadio1"
       label="单选: "
-      show-checkbox
       show-select-option
       check-strictly
       :data="data1"
       :max-width="500"
-      :max-height="300"></rd-tree-select> -->
+      :max-height="300"></rd-tree-select>
   </div>
 </template>
 <script>
@@ -97,7 +99,8 @@ export default {
   data() {
     return {
       value: [],
-      valueCheckStrictly:[],
+      valueCheckStrictly: [],
+      defauleValue: [],
       valueDown: ['水果', '朝阳'],
       //valueUp: [],
       valueUp: ['中国3', '水果2', '西瓜2', '西瓜肉', '香蕉', '北京'],
@@ -371,24 +374,21 @@ export default {
   methods: {
     upOptionLabelMethod(row) {
       return row.label
-      // return row.label
-      //return row.parentLabel
     },
     downLabelMethod(row) {
       return row.parentLabel
-      //return row.labelStr
     },
     labelMethod(row) {
       return row.label
     },
-    pathMethod(row){
+    pathMethod(row) {
       return row.path
     },
     getHalfCheckedKeys() {
       const rest = this.$refs['rd-tree-select-ref1'].getHalfCheckedKeys()
       console.log({ rest })
     },
-    valueDownChange(data, info){
+    valueDownChange(data, info) {
       console.log(data, info)
     }
   }
