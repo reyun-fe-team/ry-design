@@ -426,11 +426,11 @@ export default {
       this.store.setCheckedKeys(keys, leafOnly, deepUpChecked)
     },
 
-    deleteCheckedKeys(keys, deep, deepUpChecked) {
+    deleteCheckedKeys(keys, deep) {
       if (!this.nodeKey) {
         throw new Error('[Tree] nodeKey is required in setCheckedKeys')
       }
-      this.store.deleteCheckedKeys(keys, deep, deepUpChecked)
+      this.store.deleteCheckedKeys(keys, deep)
     },
 
     setChecked(data, checked, deep) {

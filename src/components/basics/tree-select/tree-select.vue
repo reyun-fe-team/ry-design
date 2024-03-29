@@ -1,7 +1,7 @@
 <template>
   <div>
-    storeValue:{{ storeValue }}
-    <hr />
+    <!-- storeValue:{{ storeValue }}
+    <hr /> -->
     <!--  右侧面板展示的数据optionData:{{ optionData.length }}
     <br />
     {{ optionData }}
@@ -432,12 +432,7 @@ export default {
         // 底层选中
         // newValues = list.map(val => val[this.nodeKey])
         // this.storeValue = this.storeValue.filter(val => newValues.includes(val))
-        // 获取所有事选中状态的节点value
-        // this.$refs.tree.deleteCheckedKeys(oldValues)
-        // this.storeValue = this.$refs.tree.getCheckedKeys()
-        // this.$refs.tree.deleteCheckedKeys(oldValues, false, false)
-        //this.storeValue = this.$refs.tree.getCheckedKeys()
-        this.$refs.tree.deleteCheckedKeys(oldValues, true, this.deepUpChecked)
+        this.$refs.tree.deleteCheckedKeys(oldValues, true)
         this.storeValue = this.$refs.tree.getCheckedKeys()
       }
 
