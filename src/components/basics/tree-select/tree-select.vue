@@ -1,8 +1,8 @@
 <template>
   <div>
-    <!-- storeValue:{{ storeValue }}
+    storeValue:{{ storeValue }}
     <hr />
-    右侧面板展示的数据optionData:{{ optionData.length }}
+    <!--  右侧面板展示的数据optionData:{{ optionData.length }}
     <br />
     {{ optionData }}
     <hr />
@@ -35,6 +35,7 @@
       :placement="placement"
       :option-label-method="optionLabelMethod"
       :disabled="disabled"
+      :input-label-method="optionLabelMethod"
       @query-change="queryChange"
       @on-visible-change="handleVisibleChange"
       @on-input-click="handleInputClick"
@@ -55,6 +56,7 @@
           :check-on-click-node="false"
           :deep-up-checked="deepUpChecked"
           :check-strictly="checkStrictly"
+          :multiple="multiple"
           @check="handleSelectNode"
           @current-change="currentChange"></rd-tree>
       </div>
@@ -148,6 +150,11 @@ export default {
       type: Boolean,
       default: false
     },
+    // 显示父节点的文案
+    showParentLabel: {
+      type: Boolean,
+      default: false
+    },
     checkStrictly: {
       type: Boolean,
       default: false
@@ -161,11 +168,6 @@ export default {
       validator(value) {
         return oneOf(value, ['always-save', 'leave-save'])
       }
-    },
-    // 显示父亲的label和value
-    showOptionParent: {
-      type: Boolean,
-      default: false
     },
     disabled: {
       type: Boolean,
@@ -224,7 +226,12 @@ export default {
           this.selectData.forEach(val => {
             list.push(val)
           })
-        } else if (this.showOptionParent) {
+        } else if (this.deepUpChecked) {
+          this.selectData.forEach(val => {
+            list.push(val)
+          })
+        } else if (this.showParentLabel) {
+          // selectData是全量的、showParentLabel===true 首先过滤节点、使用filter给parentValue去重
           this.selectData
             .filter(val => val.type !== 'node')
             .forEach(val => {
@@ -235,7 +242,6 @@ export default {
             })
         } else {
           this.selectData.forEach(val => {
-            filter.push(val[this.nodeKey])
             list.push(val)
           })
         }
@@ -250,7 +256,8 @@ export default {
       }
       let list = []
       this.data.forEach(item => {
-        this.getOptionData(item, list, null)
+        let path = []
+        this.getOptionData({ item, list, info: null, path })
       })
       return list
     },
@@ -313,46 +320,38 @@ export default {
     }
   },
   mounted() {
-    let list = []
-    this.handleUpdateTreeNodes({
-      data: this.data,
-      list,
-      isInit: true
-    })
-    this.storeValue = list
-    this.$refs.tree.setCheckedKeys(this.storeValue)
+    this.init()
   },
   methods: {
-    getOptionData(item, list, info) {
+    init() {
+      let list = []
+      this.handleUpdateTreeNodes({
+        data: this.data,
+        list,
+        isInit: true
+      })
+      this.storeValue = list
+      this.$refs.tree.setCheckedKeys(this.storeValue)
+    },
+    // selectData调用, 返回全量的选中信息
+    getOptionData({ item, list, info, path }) {
+      // storeValue是全量包含节点的value
       const checked = this.storeValue.includes(item[this.nodeKey])
-      // if (
-      //   !this.checkStrictly &&
-      //   !this.deepUpChecked &&
-      //   parent &&
-      //   checked &&
-      //   !exclude.includes(parent[this.nodeKey])
-      // ) {
-      //   exclude.push(parent[this.nodeKey])
-      // }
-      if (info) {
-        info.labelStr = info.labelStr + '/' + item[this.labelKey]
-        info.valueStr = info.valueStr + '/' + item[this.nodeKey]
-      }
+      path.push(item[this.labelKey])
+
       // 选中
       if (checked) {
         if (item[this.childrenKey] && item[this.childrenKey].length) {
+          // children有长度的场景
           // 添加空的占位
           list.push({
-            // 自己的
             label: item[this.labelKey],
-            // 自己的
             value: item[this.nodeKey],
-            // 优选父节点
-            parentValue: info ? info.parentValue : '',
-            parentLabel: info ? info.parentLabel : '',
+            // 选中&&有子集,理论上不会出现'-'
+            parentValue: info ? info.parentValue : '-',
+            parentLabel: info ? info.parentLabel : '-',
             type: 'node',
-            labelStr: info ? info.labelStr : item[this.labelKey],
-            valueStr: info ? info.valueStr : item[this.nodeKey]
+            path: this.getPath(path)
           })
           item[this.childrenKey].forEach(val => {
             let _info = {}
@@ -360,45 +359,44 @@ export default {
             if (info) {
               _info = {
                 parentLabel: info.parentLabel,
-                parentValue: info.parentValue,
-                labelStr: info.labelStr,
-                valueStr: info.valueStr
+                parentValue: info.parentValue
               }
             } else {
               _info = {
                 parentLabel: item[this.labelKey],
-                parentValue: item[this.nodeKey],
-                labelStr: item[this.labelKey],
-                valueStr: item[this.nodeKey]
+                parentValue: item[this.nodeKey]
               }
             }
-            this.getOptionData(val, list, _info)
+            const _path = JSON.parse(JSON.stringify(path))
+            // val, list, _info, item
+            this.getOptionData({ item: val, list, info: _info, path: _path })
           })
         } else {
+          //children无长度的场景
           list.push({
-            // 优选父节点
             label: item[this.labelKey],
-            // 自己的
             value: item[this.nodeKey],
-            // 自己的
-            myLabel: item[this.labelKey],
+            // 选中&&无子集, 则显示自己的label
             parentLabel: info ? info.parentLabel : item[this.labelKey],
-            // 优选父节点
             parentValue: info ? info.parentValue : item[this.nodeKey],
             type: 'leaf',
-            labelStr: info ? info.labelStr : item[this.labelKey],
-            valueStr: info ? info.valueStr : item[this.nodeKey]
+            path: this.getPath(path)
           })
         }
       } else {
         // 未选中
         if (item[this.childrenKey] && item[this.childrenKey].length) {
-          item[this.childrenKey].forEach(val => {
+          item[this.childrenKey].forEach(childItem => {
+            const _path = JSON.parse(JSON.stringify(path))
             // 循环子集
-            this.getOptionData(val, list, info)
+            // childItem, list, info, item
+            this.getOptionData({ item: childItem, list, info, path: _path })
           })
         }
       }
+    },
+    getPath(path) {
+      return path.join('/')
     },
     // 删除
     handleFilterListChange(values, oldValues) {
@@ -407,7 +405,7 @@ export default {
       if (this.checkStrictly) {
         this.storeValue = values
         this.$refs.tree.setCheckedKeys(this.storeValue)
-      } else if (this.showOptionParent) {
+      } else if (this.showParentLabel) {
         list.forEach(item => {
           if (item.type === 'leaf') {
             let find = this.selectData.find(val => val[this.nodeKey] === item[this.nodeKey])
@@ -493,7 +491,7 @@ export default {
             this.handleUpdateTreeNodes({
               data: item[this.childrenKey],
               list,
-              state: this.deepUpChecked ? false : true,
+              state: this.deepUpChecked || !this.multiple ? false : true,
               isInit
             })
           }
@@ -521,7 +519,7 @@ export default {
       if (this.multiple) {
         if (this.checkStrictly) {
           values = this.storeValue
-        } else if (this.showOptionParent) {
+        } else if (this.showParentLabel) {
           values = this.optionData
             .filter(val => val.type === 'leaf')
             .map(val => {
@@ -533,9 +531,17 @@ export default {
       } else {
         values = this.storeValue[0]
       }
+      const halfCheckedKeys = this.getHalfCheckedKeys()
+      const halfAndCheckedKeys = [...values, ...halfCheckedKeys]
       this.$emit('input', values)
-      this.$emit('on-change', values)
+      this.$emit('on-change', values, {
+        halfCheckedKeys,
+        halfAndCheckedKeys
+      })
       this.dispatch('FormItem', 'on-form-change', values)
+      if (!this.multiple) {
+        this.closeDropdown()
+      }
     },
     // filter
     queryChange(val) {
@@ -570,6 +576,9 @@ export default {
     },
     filterNodeMethod(value, data) {
       return data[this.labelKey].includes(value)
+    },
+    getHalfCheckedKeys() {
+      return this.$refs.tree.getHalfCheckedKeys()
     }
   }
 }

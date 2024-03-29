@@ -115,7 +115,11 @@ export default {
       type: Number,
       default: 18
     },
-    iconClass: String
+    iconClass: String,
+    multiple: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data() {

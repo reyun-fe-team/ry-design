@@ -26,7 +26,7 @@
             :key="uuid"
             style="width: 100%; padding: 0"
             :src="current[0].src"
-            :text="current[0].label"
+            :text="labelMethod(current[0])"
             :show-image="showImage"
             :show-description="showDescription"
             :show-subtitle="showSubtitle"
@@ -102,6 +102,13 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    labelMethod: {
+      type: Function,
+      default(data) {
+        const type = 'label' in data ? 'label' : 'value'
+        return data[type]
+      }
     }
   },
   data() {
