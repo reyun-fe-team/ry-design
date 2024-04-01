@@ -204,7 +204,9 @@ export default {
           item.checked = data.value === item.value
           if (item.children && item.children.length) {
             item.children.forEach(val => {
-              val.checked = item.checked
+              if (val && !val.disabled && !val._disabled) {
+                val.checked = item.checked
+              }
             })
           }
         })
@@ -325,6 +327,9 @@ export default {
         }
       } else {
         this.data.forEach((item, index) => {
+          if (!this.multiple) {
+            item.checked = false
+          }
           // 处理全体单选和局部单选的场景
           if (!this.multiple || (item.value === data.value && index === titleIndex)) {
             // 二级节点单选场景-更新兄弟节点

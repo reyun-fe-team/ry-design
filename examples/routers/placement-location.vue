@@ -366,31 +366,54 @@ export default {
       dataGdtPosition3: [
         {
           label: '微信视频号',
-          expand: true,
+          value: 'CHANNELS',
+          expand: false,
           disabled: false,
           checked: false,
-          value: '微信视频号'
+          children: [
+            {
+              label: '微信视频号',
+              disabled: false,
+              checked: false,
+              value: 'SITE_SET_CHANNELS'
+            }
+          ]
         },
         {
           label: '微信朋友圈',
-          expand: true,
+          value: 'WEIXIN_MOMENTS',
+          expand: false,
           disabled: false,
           checked: false,
-          value: '微信朋友圈',
-          childrenRule: {
-            multiple: false
-          }
+          children: [
+            {
+              label: '微信朋友圈',
+              disabled: false,
+              checked: false,
+              value: 'SITE_SET_MOMENTS'
+            }
+          ]
         },
         {
           label: '微信公众号与小程序',
+          value: 'WEIXIN_PROGRAM',
           expand: true,
           disabled: false,
           checked: false,
-          value: '微信公众号与小程序',
-          children: [],
-          childrenRule: {
-            multiple: false
-          }
+          children: [
+            {
+              label: '微信公众号与小程序',
+              disabled: false,
+              checked: false,
+              value: 'SITE_SET_WECHAT'
+            },
+            {
+              label: '微信新闻插件',
+              disabled: true,
+              checked: false,
+              value: 'SITE_SET_WECHAT_PLUGIN'
+            }
+          ]
         }
       ],
       dataGdtPosition4: [
