@@ -205,7 +205,7 @@ export default {
       const clearValues = data.clearValues || []
 
       this.disabledCheckedAll = false
-      // 处理特殊场景,选中一条指定置灰其他
+      // 处理特殊场景,选中一条指定清除、置灰其他
       this.data.forEach(val => {
         if (val.checked && clearValues.includes(val.value)) {
           val.checked = false
@@ -296,6 +296,18 @@ export default {
           // 更新父节点
           data.checked = data.children.some(val => val.checked)
         }
+        const clearValues = data.clearValues || []
+        // 处理特殊场景,选中一条指定清除其他
+        this.data.forEach(val => {
+          if (val.checked && clearValues.includes(val.value)) {
+            val.checked = false
+            if (val.children && val.children.length) {
+              val.children.forEach(item => {
+                item.checked = false
+              })
+            }
+          }
+        })
       } else {
         this.data.forEach((item, index) => {
           if (!this.multiple) {
