@@ -516,7 +516,7 @@ export default {
         values = this.storeValue[0]
       }
       this.$emit('input', values)
-      this.$emit('on-change', values)
+      this.$emit('on-change', values, { optionData: this.optionData })
       this.dispatch('FormItem', 'on-form-change', values)
     },
     // filter
