@@ -9,9 +9,15 @@
     :type="currentType"
     :custom-icon="customIcon"
     :loading="loading"
-    :icon="currentIcon"
     :disabled="disabled">
-    <slot></slot>
+    <span :class="[prefixCls + '-content-wp']">
+      <rd-icon
+        :size="12"
+        :type="icon"></rd-icon>
+      <span :class="[prefixCls + '-slot-wp']">
+        <slot></slot>
+      </span>
+    </span>
   </Button>
 </template>
 <script>
@@ -39,6 +45,11 @@ export default {
     icon: {
       type: String,
       default: ''
+    }
+  },
+  data() {
+    return {
+      prefixCls
     }
   },
   computed: {
