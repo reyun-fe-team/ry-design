@@ -273,6 +273,14 @@ const router = new VueRouter({
     {
       path: '/carousel-previewer',
       component: resolve => require(['./routers/carousel-previewer'], resolve)
+    },
+    {
+      path: '/tree-select',
+      component: resolve => require(['./routers/tree-select'], resolve)
+    },
+    {
+      path: '/tree',
+      component: resolve => require(['./routers/tree'], resolve)
     }
   ]
 })
