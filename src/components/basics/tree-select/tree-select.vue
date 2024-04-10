@@ -294,7 +294,8 @@ export default {
         this.handleUpdateTreeNodes({
           data: this.data,
           list,
-          isInit: true
+          isInit: true,
+          level: 0
         })
         // console.log(list, 'watch-value')
         this.storeValue = list
@@ -310,7 +311,8 @@ export default {
           this.handleUpdateTreeNodes({
             data: this.data,
             list,
-            isInit: true
+            isInit: true,
+            level: 0
           })
           // console.log(list, 'watch-data', _isEqual(newVal, oldVal))
           this.storeValue = list
@@ -328,7 +330,8 @@ export default {
       this.handleUpdateTreeNodes({
         data: this.data,
         list,
-        isInit: true
+        isInit: true,
+        level: 0
       })
       this.storeValue = list
       this.$refs.tree.setCheckedKeys(this.storeValue)
@@ -351,7 +354,8 @@ export default {
             parentValue: info ? info.parentValue : '-',
             parentLabel: info ? info.parentLabel : '-',
             type: 'node',
-            path: this.getPath(path)
+            path: this.getPath(path),
+            level: item.level
           })
           item[this.childrenKey].forEach(val => {
             let _info = {}
@@ -380,7 +384,8 @@ export default {
             parentLabel: info ? info.parentLabel : item[this.labelKey],
             parentValue: info ? info.parentValue : item[this.nodeKey],
             type: 'leaf',
-            path: this.getPath(path)
+            path: this.getPath(path),
+            level: item.level
           })
         }
       } else {
@@ -472,12 +477,13 @@ export default {
       }
     },
     // 更新tree
-    handleUpdateTreeNodes({ data, list, state = false, isInit = false }) {
+    handleUpdateTreeNodes({ data, list, state = false, isInit = false, level }) {
       /**
        * 当开启 showCheckbox 时，不能选择，只能勾选，且只有在多选时支持 showCheckbox 属性
        * */
       const valueToArray = isInit ? this.valueToArray : this.storeValueToArray
       data.forEach(item => {
+        item.level = level
         if (valueToArray.indexOf(item[this.nodeKey]) >= 0 || state) {
           if (list) {
             list.push(item[this.nodeKey])
@@ -487,12 +493,18 @@ export default {
               data: item[this.childrenKey],
               list,
               state: this.deepUpChecked || !this.multiple ? false : true,
-              isInit
+              isInit,
+              level: item.level + 1
             })
           }
         } else {
           if (item[this.childrenKey] && item[this.childrenKey].length) {
-            this.handleUpdateTreeNodes({ data: item[this.childrenKey], list, isInit })
+            this.handleUpdateTreeNodes({
+              data: item[this.childrenKey],
+              list,
+              isInit,
+              level: item.level + 1
+            })
           }
         }
       })
@@ -528,10 +540,12 @@ export default {
       }
       const halfCheckedKeys = this.getHalfCheckedKeys()
       const halfAndCheckedKeys = [...values, ...halfCheckedKeys]
+
       this.$emit('input', values)
       this.$emit('on-change', values, {
         halfCheckedKeys,
-        halfAndCheckedKeys
+        halfAndCheckedKeys,
+        optionData: this.optionData
       })
       this.dispatch('FormItem', 'on-form-change', values)
       if (!this.multiple) {
