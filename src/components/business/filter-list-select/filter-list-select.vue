@@ -404,7 +404,7 @@ export default {
       const value = this.geteEmitValue()
       const optionData = this.$refs['filter-list'] ? this.$refs['filter-list'].optionData : []
       this.$emit('input', value)
-      this.$emit('on-change', value, optionData)
+      this.$emit('on-change', value, { optionData })
       this.dispatch('FormItem', 'on-form-change', value)
     },
     handleInputClick(val) {
