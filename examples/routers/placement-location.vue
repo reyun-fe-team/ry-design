@@ -35,6 +35,7 @@
       :data="dataGdtPosition"
       show-checkbox
       show-all></rd-placement-location>
+
     <h2 style="margin: 16px 0">广点通-创意形式{{ valueGdtCreative }}</h2>
     <rd-placement-location
       v-model="valueGdtCreative"
@@ -48,6 +49,27 @@
       show-all
       :multiple="false"
       :data="dataGdtCreativeCur"></rd-placement-location>
+    视频号动态-单选{{ valueGdtCreative3 }}
+    <rd-placement-location
+      v-if="true"
+      v-model="valueGdtCreative3"
+      show-checkbox
+      :multiple="false"
+      :data="dataGdtPosition3"></rd-placement-location>
+    视频号直播-disabled{{ valueGdtCreative4 }}
+    <rd-placement-location
+      v-if="true"
+      v-model="valueGdtCreative4"
+      show-checkbox
+      multiple
+      :data="dataGdtPosition4"></rd-placement-location>
+    视频号直播-clearValue{{ valueGdtCreative5 }}
+    <rd-placement-location
+      v-if="true"
+      v-model="valueGdtCreative5"
+      show-checkbox
+      multiple
+      :data="dataGdtPosition5"></rd-placement-location>
     <h2 style="margin: 16px 0">广点通-创意形式-局部单选{{ valueGdtCreativeRadio }}</h2>
     <rd-placement-location
       v-if="true"
@@ -70,6 +92,9 @@ export default {
       valueGdtPosition: [],
       valueGdtCreative: ['格子广告'],
       valueGdtCreativeCur: ['格子广告'],
+      valueGdtCreative3: ['微信视频号'],
+      valueGdtCreative4: ['微信视频号'],
+      valueGdtCreative5: ['微信视频号'],
       valueGdtCreativeRadio: ['格子广告'],
       valueGdtCreativeRadioPart: [],
       dataEmpty: [],
@@ -284,6 +309,142 @@ export default {
               disabled: false,
               checked: false,
               value: 'QQ、腾讯音乐及游戏'
+            }
+          ]
+        }
+      ],
+      dataGdtPosition3: [
+        {
+          label: '微信视频号',
+          value: 'CHANNELS',
+          expand: false,
+          disabled: false,
+          checked: false,
+          children: [
+            {
+              label: '微信视频号',
+              disabled: false,
+              checked: false,
+              value: 'SITE_SET_CHANNELS'
+            }
+          ]
+        },
+        {
+          label: '微信朋友圈',
+          value: 'WEIXIN_MOMENTS',
+          expand: false,
+          disabled: false,
+          checked: false,
+          children: [
+            {
+              label: '微信朋友圈',
+              disabled: false,
+              checked: false,
+              value: 'SITE_SET_MOMENTS'
+            }
+          ]
+        },
+        {
+          label: '微信公众号与小程序',
+          value: 'WEIXIN_PROGRAM',
+          expand: true,
+          disabled: false,
+          checked: false,
+          children: [
+            {
+              label: '微信公众号与小程序',
+              disabled: false,
+              checked: false,
+              value: 'SITE_SET_WECHAT'
+            },
+            {
+              label: '微信新闻插件',
+              disabled: true,
+              checked: false,
+              value: 'SITE_SET_WECHAT_PLUGIN'
+            }
+          ]
+        }
+      ],
+      dataGdtPosition4: [
+        {
+          label: '微信视频号',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '微信视频号',
+          disabledValues: ['微信公众号与小程序']
+        },
+        {
+          label: '微信朋友圈',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '微信朋友圈',
+          disabledValues: ['微信公众号与小程序']
+        },
+        {
+          label: '微信公众号与小程序',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '微信公众号与小程序',
+          children: [],
+          disabledValues: ['微信视频号', '微信朋友圈']
+        }
+      ],
+      dataGdtPosition5: [
+        {
+          label: '微信视频号',
+          value: 'CHANNELS',
+          expand: false,
+          disabled: false,
+          checked: false,
+          clearValues: ['WEIXIN_PROGRAM'],
+          children: [
+            {
+              label: '微信视频号',
+              disabled: false,
+              checked: false,
+              value: 'SITE_SET_CHANNELS'
+            }
+          ]
+        },
+        {
+          label: '微信朋友圈',
+          value: 'WEIXIN_MOMENTS',
+          expand: false,
+          disabled: false,
+          checked: false,
+          clearValues: ['WEIXIN_PROGRAM'],
+          children: [
+            {
+              label: '微信朋友圈',
+              disabled: false,
+              checked: false,
+              value: 'SITE_SET_MOMENTS'
+            }
+          ]
+        },
+        {
+          label: '微信公众号与小程序',
+          value: 'WEIXIN_PROGRAM',
+          expand: true,
+          disabled: false,
+          checked: false,
+          clearValues: ['CHANNELS', 'WEIXIN_MOMENTS'],
+          children: [
+            {
+              label: '微信公众号与小程序',
+              disabled: false,
+              checked: false,
+              value: 'SITE_SET_WECHAT'
+            },
+            {
+              label: '微信新闻插件',
+              disabled: true,
+              checked: false,
+              value: 'SITE_SET_WECHAT_PLUGIN'
             }
           ]
         }
