@@ -129,7 +129,7 @@ export default {
 
     const tree = this.tree
     if (!tree) {
-      console.warn("Can not find node's tree.")
+      console.warn('Can not find node')
     }
     const props = tree.props || {}
     const childrenKey = props['children'] || 'children'
@@ -171,7 +171,8 @@ export default {
         store.currentNode
       )
       this.tree.currentNode = this
-      if (this.tree.expandOnClickNode) {
+      if (this.tree.expandOnClickNode && this.tree.multiple) {
+        // 展开子节点
         this.handleExpandIconClick()
       }
       if (this.tree.checkOnClickNode && !this.node.disabled) {

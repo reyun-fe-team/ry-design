@@ -115,7 +115,11 @@ export default {
       type: Number,
       default: 18
     },
-    iconClass: String
+    iconClass: String,
+    multiple: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data() {
@@ -422,11 +426,11 @@ export default {
       this.store.setCheckedKeys(keys, leafOnly, deepUpChecked)
     },
 
-    deleteCheckedKeys(keys) {
+    deleteCheckedKeys(keys, deep) {
       if (!this.nodeKey) {
         throw new Error('[Tree] nodeKey is required in setCheckedKeys')
       }
-      this.store.deleteCheckedKeys(keys)
+      this.store.deleteCheckedKeys(keys, deep)
     },
 
     setChecked(data, checked, deep) {
