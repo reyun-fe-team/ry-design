@@ -48,7 +48,6 @@
           ref="tree"
           :data="data"
           :show-checkbox="showCheckbox && multiple"
-          default-expand-all
           :node-key="nodeKey"
           :props="defaultProps"
           :highlight-current="!multiple"
@@ -57,6 +56,8 @@
           :deep-up-checked="deepUpChecked"
           :check-strictly="checkStrictly"
           :multiple="multiple"
+          :default-expanded-keys="defaultExpandedKeys"
+          :default-expand-all="defaultExpandAll"
           @check="handleSelectNode"
           @current-change="currentChange"></rd-tree>
       </div>
@@ -172,6 +173,13 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    // 设置默认展开
+    defaultExpandedKeys: Array,
+    // 是否默认展开所有节点
+    defaultExpandAll: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
