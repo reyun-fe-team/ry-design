@@ -22,6 +22,8 @@
       filterable
       clearable
       :data="data"
+      :default-expanded-keys="['中国']"
+      :default-expand-all="false"
       :max-height="300"
       :height="300"
       :max-width="5000"
@@ -108,14 +110,14 @@ export default {
       data: [
         {
           label: '中国',
-          expand: true,
+          // expand: false,
           value: '中国',
           selected: false,
           checked: false,
           children: [
             {
               label: '北京',
-              expand: true,
+              // expand: false,
               value: '北京',
               selected: false,
               checked: false,
@@ -136,7 +138,7 @@ export default {
             },
             {
               label: '上海',
-              expand: true,
+              // expand: false,
               value: '上海',
               selected: false,
               checked: false,
@@ -157,7 +159,7 @@ export default {
             },
             {
               label: '水果',
-              expand: true,
+              // expand: false,
               value: '水果',
               selected: false,
               checked: false,

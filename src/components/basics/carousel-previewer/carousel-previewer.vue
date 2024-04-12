@@ -47,7 +47,9 @@
               :src="audioUrl"
               @ended="handleEnded"></audio>
             <!-- 按钮 -->
+            <!-- 后面支持一下:  一个普通的图片, 不是图文 , 预览不需要显示这个播放的图标 -->
             <div
+              v-if="autoPlay"
               :style="audioBtnStyle"
               :class="[prefixCls + '-image-audio-icon']"
               @click.stop="handleClickPlay"></div>
@@ -199,6 +201,11 @@ export default {
     containerHeight: {
       type: [Number, String],
       default: 600
+    },
+    // 是否支持点击自动播放轮播
+    autoPlay: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -353,10 +360,10 @@ export default {
     handleClickPlay() {
       if (this.isAudioPlay) {
         this.pauseAudio()
-        this.endRotatingPictures()
+        this.autoPlay && this.endRotatingPictures()
       } else {
         this.playAudio()
-        this.startRotatingPictures()
+        this.autoPlay && this.startRotatingPictures()
       }
     },
     // 播放完毕,继续播放
