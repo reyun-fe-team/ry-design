@@ -164,11 +164,13 @@ export default {
     },
     // 图片或视频的URL (图片展示区使用)
     urlKey: {
+      require: true,
       type: String,
       default: 'previewUrl'
     },
     // 缩略图URL (底部控制区域使用)
     thumbnailKey: {
+      require: true,
       type: String,
       default: 'thumbnailUrl'
     },
@@ -270,8 +272,17 @@ export default {
     value: {
       immediate: true,
       handler: async function () {
-        this.newCurrent = this.current || this.data[0]
-        this.currentIndex = this.data.indexOf(this.newCurrent)
+        let currentIndex = 0
+        if (this.current) {
+          currentIndex = this.data.findIndex(item => {
+            return item[this.idKey] === this.current[this.idKey]
+          })
+        }
+        // 找不到对应的数据，当前索引默认为0
+        this.currentIndex = currentIndex < 0 ? 0 : currentIndex
+        // 赋值数据项
+        this.newCurrent = this.data[this.currentIndex]
+        // 当前的唯一ID
         this.currentUuid = genID(20)
         await this.$nextTick()
         // value === true => transferBody 渲染

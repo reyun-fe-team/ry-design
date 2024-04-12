@@ -2,16 +2,16 @@
   <div>
     <Button @click="handleImageClick">展示Image预览</Button>
     <Button @click="handleVideoClick">展示Video预览</Button>
-    <!-- :audio-url="audioUrl" -->
-    <!-- :current="currentImage" -->
     <rd-carousel-previewer
       v-model="visibleImage"
-      :auto-play="false"
+      :current="currentImage"
+      :audio-url="audioUrl"
+      auto-play
       :carousel-picture-time="3000"
       container-height="600"
       container-width="600"
       type="IMAGE"
-      :data="imageData2"
+      :data="imageData"
       thumbnail-key="previewUrl"
       @on-close="handleImageClose"></rd-carousel-previewer>
     <br />
@@ -31,20 +31,6 @@ export default {
         'https://ads-material.tos-cn-beijing.volces.com/tos_oss/uploadV4File/47f6/21c2/aa7e/47f621c2aa7e6bda46b280e2a026cbb9.m4a',
       visibleImage: false,
       visibleVideo: false,
-      imageData2: [
-        {
-          uuid: 'a2e0f7a7ada2e0f7a7ada2e0f7a7ad',
-          fileName: '1280*720',
-          previewUrl:
-            'https://ads-material.tos-cn-beijing.volces.com/tos_oss/ed2e/00b9/c692/ed2e00b9c6926da896cb5d3e07a5a775.png'
-        },
-        {
-          uuid: 'd5e170ecac',
-          fileName: '5a2e0f7a7ada2e0f7a7ada2e0f7a7ad',
-          previewUrl:
-            'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/2d0/fa8/752/2d0fa875213fa4839106ef62f809d4e5.jpg'
-        }
-      ],
       imageData: [
         {
           uuid: 'a2e0f7a7ada2e0f7a7ada2e0f7a7ad',
@@ -308,7 +294,7 @@ export default {
   methods: {
     handleImageClick() {
       this.visibleImage = true
-      this.currentImage = this.imageData[4]
+      // this.currentImage = this.imageData[4]
     },
     handleImageClose() {
       alert('展示Image预览 close')
