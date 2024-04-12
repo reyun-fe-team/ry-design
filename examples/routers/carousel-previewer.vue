@@ -4,14 +4,15 @@
     <Button @click="handleVideoClick">展示Video预览</Button>
     <rd-carousel-previewer
       v-model="visibleImage"
+      :current="currentImage"
+      :audio-url="audioUrl"
+      auto-play
       :carousel-picture-time="3000"
       container-height="600"
       container-width="600"
-      :audio-url="audioUrl"
       type="IMAGE"
       :data="imageData"
       thumbnail-key="previewUrl"
-      :current="currentImage"
       @on-close="handleImageClose"></rd-carousel-previewer>
     <br />
     <rd-carousel-previewer
@@ -293,7 +294,7 @@ export default {
   methods: {
     handleImageClick() {
       this.visibleImage = true
-      this.currentImage = this.imageData[4]
+      // this.currentImage = this.imageData[4]
     },
     handleImageClose() {
       alert('展示Image预览 close')
