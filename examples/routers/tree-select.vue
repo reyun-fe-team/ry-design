@@ -4,6 +4,7 @@
     <h2>单选事例1:{{ valueRadio1 }}</h2>
     <hr />
     <rd-tree-select
+      v-if="true"
       v-model="valueRadio1"
       label="单选: "
       check-strictly
@@ -12,6 +13,7 @@
       :max-height="300"
       :option-label-method="pathMethod"></rd-tree-select>
     <h2 style="margin-top: 100px">独立-checkStrictly:{{ valueCheckStrictly }}</h2>
+    <!-- :default-expanded-keys="['中国']"     :default-expand-all="false" -->
     <rd-tree-select
       v-model="valueCheckStrictly"
       label="多选checkStrictly : "
@@ -22,18 +24,19 @@
       filterable
       clearable
       :data="data"
-      :default-expanded-keys="['中国']"
-      :default-expand-all="false"
       :max-height="300"
       :height="300"
       :max-width="5000"
+      :default-expanded-keys="['中国']"
+      :default-expand-all="false"
       :option-label-method="labelMethod"></rd-tree-select>
 
     <h2 style="margin-top: 100px; color: blue">
-      默认-点父亲, 儿子们选中-有勾选的在右侧:{{ value }}
+      默认-点父亲, 儿子们选中-有勾选的在右侧:{{ defaultValue }}
     </h2>
     <rd-tree-select
-      v-model="defauleValue"
+      v-if="true"
+      v-model="defaultValue"
       label="默认多选 : "
       multiple
       show-select-option
@@ -51,6 +54,7 @@
       默认-点父亲, 儿子们选中-有勾选的父亲label的在右侧(春福原来要求的):{{ valueDown }}
     </h2>
     <rd-tree-select
+      v-if="true"
       ref="rd-tree-select-ref1"
       v-model="valueDown"
       label="多选: "
@@ -75,6 +79,7 @@
 
     <h2 style="margin-top: 100px">多选事例-默认向上选中-周博用:{{ valueUp }}</h2>
     <rd-tree-select
+      v-if="true"
       v-model="valueUp"
       label="多选: "
       multiple
@@ -101,8 +106,8 @@ export default {
   data() {
     return {
       value: [],
-      valueCheckStrictly: [],
-      defauleValue: [],
+      valueCheckStrictly: ['中国', '朝阳'],
+      defaultValue: ['北京', '朝阳', '昌平'],
       valueDown: ['水果', '朝阳'],
       //valueUp: [],
       valueUp: ['中国', '水果', '西瓜', '西瓜肉', '香蕉', '北京'],
