@@ -138,7 +138,8 @@ export default {
       for (let i = 0; i < 30000; i++) {
         const obj = {
           advertiserId: i,
-          mediaAccountName: '账号' + i
+          mediaAccountName: '账号' + i,
+          disabled: i === 3 ? true : false
         }
         arr.push(obj)
       }
@@ -152,7 +153,8 @@ export default {
         for (let i = 0; i < 1000; i++) {
           const obj = {
             adPlanId: i + this.paramsInfo.activeMediaAccountId,
-            adPlanName: '广告' + i + this.paramsInfo.activeMediaAccountId
+            adPlanName: '广告' + i + this.paramsInfo.activeMediaAccountId,
+            disabled: i === 3 ? true : false
           }
           arr.push(obj)
         }
