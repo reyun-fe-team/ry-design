@@ -281,6 +281,10 @@ const router = new VueRouter({
     {
       path: '/tree',
       component: resolve => require(['./routers/tree'], resolve)
+    },
+    {
+      path: '/footer-toolbar',
+      component: resolve => require(['./routers/footer-toolbar'], resolve)
     }
   ]
 })
