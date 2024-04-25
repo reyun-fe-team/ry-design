@@ -281,6 +281,10 @@ const router = new VueRouter({
     {
       path: '/tree',
       component: resolve => require(['./routers/tree'], resolve)
+    },
+    {
+      path: '/filter-dropdown-input',
+      component: resolve => require(['./routers/filter-dropdown-input'], resolve)
     }
   ]
 })
