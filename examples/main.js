@@ -280,6 +280,10 @@ const router = new VueRouter({
     {
       path: '/manage-batch-selected',
       component: resolve => require(['./routers/manage-batch-selected'], resolve)
+    },
+    {
+      path: '/filter-dropdown-input',
+      component: resolve => require(['./routers/filter-dropdown-input'], resolve)
     }
   ]
 })

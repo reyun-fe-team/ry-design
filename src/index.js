@@ -67,6 +67,7 @@ import { FilterArea, FilterAreaTemplateList } from './components/business/filter
 import PlacementLocation from './components/business/placement-location'
 import ErrorPreventModal from './components/business/error-prevent-modal'
 import ManageBatchSelected from './components/business/manage-batch-selected'
+import FilterDropdownInput from './components/business/filter-dropdown-input'
 
 import ViewUI from 'view-design'
 
@@ -173,7 +174,8 @@ const components = [
   Tree,
   CollapseTransition,
   ManageBatchSelected,
-  FilterAreaTemplateList
+  FilterAreaTemplateList,
+  FilterDropdownInput
 ]
 
 // 对象式-指令
@@ -270,5 +272,6 @@ export default {
   CollapseTransition,
   ManageBatchSelected,
   FilterArea,
-  FilterAreaTemplateList
+  FilterAreaTemplateList,
+  FilterDropdownInput
 }
