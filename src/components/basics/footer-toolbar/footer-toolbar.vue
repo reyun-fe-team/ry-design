@@ -1,5 +1,7 @@
 <template>
-  <div :class="prefixCls">
+  <div
+    :class="prefixCls"
+    :style="styles">
     <div
       v-if="extra || $slots.extra"
       :class="prefixCls + '-left'">
@@ -21,6 +23,10 @@ export default {
     textAlign: {
       type: String,
       default: 'center'
+    },
+    minHeight: {
+      type: [String, Number],
+      default: '56px'
     }
   },
   data() {
@@ -32,6 +38,12 @@ export default {
     bodyStyle() {
       return {
         textAlign: this.textAlign
+      }
+    },
+    styles() {
+      return {
+        height: typeof this.minHeight === 'number' ? `${this.minHeight}px` : this.minHeight,
+        lineHeight: typeof this.minHeight === 'number' ? `${this.minHeight}px` : this.minHeight
       }
     }
   }
