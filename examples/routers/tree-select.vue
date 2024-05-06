@@ -59,7 +59,6 @@
       v-model="valueDown"
       label="多选: "
       multiple
-      show-option-parent
       show-select-option
       show-checkbox
       filterable

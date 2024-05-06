@@ -122,7 +122,6 @@ export default {
       type: [String, Number],
       default: ''
     },
-    selectItemHeight: [String, Number],
     optionWidth: [String, Number],
     filterable: Boolean,
     showSelectOption: Boolean,
