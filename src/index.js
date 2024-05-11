@@ -39,6 +39,7 @@ import CarouselPreviewer from './components/basics/carousel-previewer'
 import TreeSelect from './components/basics/tree-select'
 import Tree from './components/basics/tree'
 import CollapseTransition from './components/basics/transitions/collapse-transition'
+import FooterToolbar from './components/basics/footer-toolbar'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -171,7 +172,8 @@ const components = [
   TreeSelect,
   Tree,
   CollapseTransition,
-  FilterAreaTemplateList
+  FilterAreaTemplateList,
+  FooterToolbar
 ]
 
 // 对象式-指令
@@ -267,5 +269,6 @@ export default {
   Tree,
   CollapseTransition,
   FilterArea,
-  FilterAreaTemplateList
+  FilterAreaTemplateList,
+  FooterToolbar
 }

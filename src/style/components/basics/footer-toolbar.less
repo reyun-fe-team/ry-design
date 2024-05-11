@@ -1,0 +1,26 @@
+@footer-toolbar: ~'@{css-prefix}footer-toolbar';
+
+.@{footer-toolbar} {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
+  width: 100%;
+  padding: 0 24px;
+  background: #fff;
+  box-shadow: 0 1px 14px 0 rgba(0, 0, 0, 20%);
+
+  &::after {
+    display: block;
+    clear: both;
+    content: '';
+  }
+
+  &-left {
+    float: left;
+  }
+
+  button + button {
+    margin-left: 8px;
+  }
+}
