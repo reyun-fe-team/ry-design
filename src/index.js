@@ -176,13 +176,8 @@ const components = [
   CollapseTransition,
   ManageBatchSelected,
   FilterAreaTemplateList,
-<<<<<<< HEAD
   FilterDropdownInput,
   FooterToolbar
-=======
-  FooterToolbar,
-  FilterDropdownInput
->>>>>>> master
 ]
 
 // 对象式-指令
@@ -280,11 +275,6 @@ export default {
   ManageBatchSelected,
   FilterArea,
   FilterAreaTemplateList,
-<<<<<<< HEAD
   FilterDropdownInput,
   FooterToolbar
-=======
-  FooterToolbar,
-  FilterDropdownInput
->>>>>>> master
 }
