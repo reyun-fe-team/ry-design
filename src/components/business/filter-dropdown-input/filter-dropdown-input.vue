@@ -114,6 +114,10 @@ export default {
     value: {
       immediate: true,
       handler() {
+        this.inputValue = this.value || ''
+        if (!this.inputValue) {
+          this.matchingMethod = 'LIKE'
+        }
         this.getShowValueData()
       }
     }
@@ -131,9 +135,9 @@ export default {
       // 关闭了
       if (!val) {
         const { matchingMethod, inputValue, oldInputValue } = this
-
         if (inputValue !== oldInputValue) {
           this.getShowValueData()
+          this.$emit('input', inputValue)
           this.$emit('on-change', { matchingMethod, value: inputValue })
         }
       }
