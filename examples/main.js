@@ -278,16 +278,24 @@ const router = new VueRouter({
       component: resolve => require(['./routers/tree'], resolve)
     },
     {
+<<<<<<< HEAD
       path: '/manage-batch-selected',
       component: resolve => require(['./routers/manage-batch-selected'], resolve)
+=======
+      path: '/footer-toolbar',
+      component: resolve => require(['./routers/footer-toolbar'], resolve)
+>>>>>>> master
     },
     {
       path: '/filter-dropdown-input',
       component: resolve => require(['./routers/filter-dropdown-input'], resolve)
+<<<<<<< HEAD
     },
     {
       path: '/footer-toolbar',
       component: resolve => require(['./routers/footer-toolbar'], resolve)
+=======
+>>>>>>> master
     }
   ]
 })
