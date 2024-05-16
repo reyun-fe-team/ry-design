@@ -37,7 +37,7 @@ import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-dropdown-input'
 import filterListPanel from '@src/components/business/filter-list/filter-list-panel'
 import filterListInput from '@src/components/business/filter-list/filter-list-input'
-
+import _isEqual from 'lodash/isEqual'
 export default {
   name: prefixCls,
   components: { filterListPanel, filterListInput },
@@ -85,7 +85,8 @@ export default {
         { label: '模糊匹配', value: 'LIKE' },
         { label: '精确匹配', value: 'IN' }
       ],
-      showValueData: []
+      showValueData: [],
+      oldMatchingMethod: 'LIKE'
     }
   },
   computed: {
@@ -135,7 +136,11 @@ export default {
       // 关闭了
       if (!val) {
         const { matchingMethod, inputValue, oldInputValue } = this
-        if (inputValue !== oldInputValue) {
+        if (
+          !_isEqual(inputValue, oldInputValue) ||
+          !_isEqual(matchingMethod, this.oldMatchingMethod)
+        ) {
+          this.oldMatchingMethod = matchingMethod
           this.getShowValueData()
           this.$emit('input', inputValue)
           this.$emit('on-change', { matchingMethod, value: inputValue })
