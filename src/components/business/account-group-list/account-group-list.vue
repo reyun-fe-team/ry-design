@@ -191,6 +191,15 @@ export default {
       })
     }
   },
+  watch: {
+    defaultActive: {
+      handler(n) {
+        if (n !== this.active) {
+          this.init()
+        }
+      }
+    }
+  },
   created() {
     this.init()
   },
