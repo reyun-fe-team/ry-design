@@ -51,20 +51,17 @@
                 prefixCls + '-upload-file-content-file-name',
                 prefixCls + '-float-l'
               ]">
-              <Tooltip
-                :delay="500"
-                max-width="500">
-                <p
-                  slot="content"
-                  style="white-space: normal">
-                  {{ fileName ? fileName : `${accept}文件` }}
-                </p>
-                <p
-                  class="rd-overflow-ellipsis rd-line-clamp-two"
-                  :class="[prefixCls + '-upload-file-content-file-name-text']">
-                  {{ fileName ? fileName : `${accept}文件` }}
-                </p>
-              </Tooltip>
+              <p
+                v-tooltip="{
+                  'max-width': 500,
+                  delay: 500,
+                  placement: 'bottom-start',
+                  contentRender: fileNameTooltipRender
+                }"
+                class="rd-overflow-ellipsis rd-line-clamp-two"
+                :class="[prefixCls + '-upload-file-content-file-name-text']">
+                {{ fileName ? fileName : `${accept}文件` }}
+              </p>
             </div>
             <Progress
               v-if="reportAdvanceTo"
@@ -91,16 +88,15 @@
                 {{ tautologyText }}
               </span>
               <slot name="tautologyTooltip">
-                <Tooltip
+                <Icon
                   v-if="isTautologyTooltip"
-                  placement="top"
-                  max-width="500"
-                  :transfer="true"
-                  :content="tautologyTooltipContent">
-                  <Icon
-                    type="ios-help-circle-outline"
-                    size="14"></Icon>
-                </Tooltip>
+                  v-tooltip="{
+                    content: tautologyTooltipContent,
+                    placement: 'bottom-start',
+                    'max-width': 500
+                  }"
+                  type="ios-help-circle-outline"
+                  size="14"></Icon>
               </slot>
             </span>
             <span
@@ -115,16 +111,15 @@
                 {{ clearFileText }}
               </span>
               <slot name="clearFileTooltip">
-                <Tooltip
+                <Icon
                   v-if="isClearFileTooltip"
-                  placement="top"
-                  max-width="500"
-                  :transfer="true"
-                  :content="clearFileTooltipContent">
-                  <Icon
-                    type="ios-help-circle-outline"
-                    size="14"></Icon>
-                </Tooltip>
+                  v-tooltip="{
+                    content: clearFileTooltipContent,
+                    placement: 'bottom-start',
+                    'max-width': 500
+                  }"
+                  type="ios-help-circle-outline"
+                  size="14"></Icon>
               </slot>
             </span>
           </div>
@@ -317,6 +312,14 @@ export default {
     // 显示点击或者拖拽文字信息
     typeText() {
       return this.type === 'drag' ? '点击或拖拽上传' : '点击上传'
+    },
+    // 文件名称提示
+    fileNameTooltipRender() {
+      return h => {
+        return h('p', { style: 'white-space: normal' }, [
+          this.fileName ? this.fileName : `${this.accept}文件`
+        ])
+      }
     }
   },
   watch: {
