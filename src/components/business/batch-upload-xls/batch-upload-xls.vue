@@ -53,9 +53,10 @@
               ]">
               <p
                 v-tooltip="{
+                  'max-width': 500,
                   delay: 500,
-                  contentRender: fileNameTooltipRender,
-                  'max-width': 500
+                  placement: 'bottom-start',
+                  contentRender: fileNameTooltipRender
                 }"
                 class="rd-overflow-ellipsis rd-line-clamp-two"
                 :class="[prefixCls + '-upload-file-content-file-name-text']">
@@ -91,7 +92,7 @@
                   v-if="isTautologyTooltip"
                   v-tooltip="{
                     content: tautologyTooltipContent,
-                    placement: 'top',
+                    placement: 'bottom-start',
                     'max-width': 500
                   }"
                   type="ios-help-circle-outline"
@@ -114,7 +115,7 @@
                   v-if="isClearFileTooltip"
                   v-tooltip="{
                     content: clearFileTooltipContent,
-                    placement: 'top',
+                    placement: 'bottom-start',
                     'max-width': 500
                   }"
                   type="ios-help-circle-outline"
