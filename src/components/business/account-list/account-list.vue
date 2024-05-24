@@ -167,6 +167,15 @@ export default {
       isRenderRight: true
     }
   },
+  watch: {
+    defaultActive: {
+      handler(n) {
+        if (n !== this.active) {
+          this.init()
+        }
+      }
+    }
+  },
   created() {
     this.$nextTick(() => {
       this.init()
