@@ -19,6 +19,7 @@
       :video-sign="videoSign"
       :is-cursor="isCursor"
       :lazy="lazy"
+      :auto-play="autoPlay"
       @on-preview-click="onPreviewClick(option, initialIndex, option._type)"
       @click.native="handleClick(option, initialIndex)"></rd-image>
     <div
@@ -53,6 +54,7 @@
         poster-key="src"
         :current="currentImage"
         thumbnail-key="src"
+        :auto-play="autoPlay"
         :audio-url="audioUrl"></rd-carousel-previewer>
     </template>
   </div>
@@ -175,7 +177,8 @@ export default {
     carouselTime: {
       type: Number,
       default: 2500
-    }
+    },
+    autoPlay: Boolean
   },
   data() {
     return {

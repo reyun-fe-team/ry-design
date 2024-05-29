@@ -62,6 +62,7 @@
         :audio-url="audioUrl"
         thumbnail-key="src"
         :url-key="urlKey"
+        :auto-play="autoPlay"
         poster-key="src"></rd-carousel-previewer>
     </template>
   </div>
@@ -164,7 +165,8 @@ export default {
     audioUrl: {
       type: String,
       default: ''
-    }
+    },
+    autoPlay: Boolean
   },
   data() {
     return {
