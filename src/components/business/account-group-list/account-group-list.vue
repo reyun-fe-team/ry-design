@@ -3,7 +3,9 @@
     <div
       :class="prefixCls + '-body'"
       :style="`width: ${width};height: ${height};`">
-      <div :class="prefixCls + '-body-left-box'">
+      <div
+        v-show="showLeft"
+        :class="prefixCls + '-body-left-box'">
         <div :class="prefixCls + '-body-left-box-title'">
           {{ leftTitle }}
         </div>
@@ -164,6 +166,10 @@ export default {
       default: () => {
         return Promise.resolve()
       }
+    },
+    showLeft: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -185,6 +191,15 @@ export default {
       })
     }
   },
+  watch: {
+    defaultActive: {
+      handler(n) {
+        if (n !== this.active) {
+          this.init()
+        }
+      }
+    }
+  },
   created() {
     this.init()
   },
@@ -202,7 +217,7 @@ export default {
     },
     init() {
       this.$nextTick(() => {
-        if (!this.data.length) {
+        if (!this.data.length || !this.showLeft) {
           return
         }
         let { list, itemId, defaultActive } = this
@@ -219,7 +234,7 @@ export default {
     choose(item) {
       let { itemId, active } = this
       // 当前已经选中的 不在返回
-      if (item[itemId] === active) {
+      if (!this.showLeft || item[itemId] === active) {
         return
       }
       const before = this.beforeCheck()
@@ -232,4 +247,3 @@ export default {
   }
 }
 </script>
-
