@@ -83,10 +83,13 @@
           transfer
           clearable
           placement="bottom-start"
+          select-all
           filterable
           show-select-option
           :data="data"
           :group-name-list="groupNameList"
+          :group-checkbox="true"
+          :is-select-entity="false"
           multiple
           save-type="leave-save"
           show-action

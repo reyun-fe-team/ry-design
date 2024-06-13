@@ -39,7 +39,7 @@
     </template>
     <!-- 全选 -->
     <rd-filter-list-select-all
-      v-if="selectAll && multiple"
+      v-if="selectAll && multiple && isSelectEntity"
       :checked-all="checkedAll"
       @on-checked-all="toggleSelectAll"></rd-filter-list-select-all>
     <rd-virtual-list
@@ -53,7 +53,8 @@
         current,
         multiple,
         renderItem,
-        groupCheckObj
+        groupCheckObj,
+        groupCheckbox
       }"
       :data-component="virtualComponent"
       v-on="$listeners"
@@ -210,7 +211,12 @@ export default {
       type: Boolean,
       default: false
     },
+    // 是否能添加其他组/主体
     isSelectEntity: {
+      type: Boolean,
+      default: true
+    },
+    groupCheckbox: {
       type: Boolean,
       default: true
     }
@@ -300,7 +306,8 @@ export default {
         }
       })
       if (
-        this.isSelectEntity &&
+        !this.isSelectEntity &&
+        this.groupCheckbox &&
         this.groupNameList &&
         Object.keys(this.groupNameList).length &&
         this.current.length
