@@ -52,11 +52,13 @@
         groupNameList,
         current,
         multiple,
-        renderItem
+        renderItem,
+        groupCheckObj
       }"
       :data-component="virtualComponent"
       v-on="$listeners"
-      @on-click="handleClick"></rd-virtual-list>
+      @on-click="handleClick"
+      @on-group-click="handleGroupClick"></rd-virtual-list>
     <template slot="search-operate">
       <slot name="search-operate"></slot>
     </template>
@@ -118,7 +120,10 @@ export default {
         return []
       }
     },
-    label: String,
+    label: {
+      type: String,
+      default: ''
+    },
     multiple: {
       type: Boolean,
       default: false
@@ -204,6 +209,10 @@ export default {
     selectAll: {
       type: Boolean,
       default: false
+    },
+    isSelectEntity: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -279,10 +288,31 @@ export default {
       return style
     },
     getLine() {
-      return this.filterData.map((item, idx) => ({
-        uid: `key_${idx}_${item.value}`,
-        ...item
-      }))
+      let groupValue = ''
+      const list = this.filterData.map((item, idx) => {
+        if (this.groupNameList[item.value]) {
+          groupValue = item.value
+        }
+        return {
+          uid: `key_${idx}_${item.value}`,
+          _groupValue: groupValue,
+          ...item
+        }
+      })
+      if (
+        this.isSelectEntity &&
+        this.groupNameList &&
+        Object.keys(this.groupNameList).length &&
+        this.current.length
+      ) {
+        const findItem = list.find(val => this.current.includes(val.value))
+        list.forEach(val => {
+          if (val._groupValue !== findItem._groupValue) {
+            val.disabled = true
+          }
+        })
+      }
+      return list
     },
     showFooter() {
       return this.$scopedSlots.footer
@@ -300,6 +330,19 @@ export default {
         this.filterData.filter(data => !data.disabled).length === this.validKeysCount &&
         this.validKeysCount !== 0
       )
+    },
+    groupCheckObj() {
+      let params = {}
+      if (this.groupNameList && Object.keys(this.groupNameList).length) {
+        Object.keys(this.groupNameList).forEach(key => {
+          const groups = this.getLine.filter(val => val._groupValue === key)
+          params[key] = {
+            check: groups.every(val => this.current.includes(val.value)),
+            disabled: groups.every(val => val.disabled)
+          }
+        })
+      }
+      return params
     }
   },
   watch: {
@@ -366,6 +409,22 @@ export default {
         }
       }
       this.movementChange()
+    },
+    handleGroupClick({ value }) {
+      if (!this.multiple) {
+        return
+      }
+      const groups = this.getLine.filter(val => val._groupValue === value)
+      const values = groups.map(val => val.value)
+
+      const check = !this.groupCheckObj[value].check
+      values.forEach(value => {
+        if (check && !this.current.includes(value)) {
+          this.current.push(value)
+        } else if (!check) {
+          this.current = this.current.filter(item => item !== value)
+        }
+      })
     },
     handleVisibleChange(val) {
       this.planeVisible = val

@@ -1,11 +1,19 @@
 <template>
   <div>
-    <div
-      v-if="groupNameList && groupNameList[source.value]"
-      :title="groupNameList[source.value]"
-      :class="prefixCls + '-group-name'">
-      {{ groupNameList[source.value] }}
+    <div v-if="groupNameList && groupNameList[source.value]">
+      <Checkbox
+        :disabled="groupCheckObj[source.value].disabled"
+        style="margin: 0 0 0 10px"
+        :value="groupCheckObj[source.value].check"
+        @on-change="handleGroupClick(source)"></Checkbox>
+      {{ groupCheckObj[source.value] }}
+      <div
+        :title="groupNameList[source.value]"
+        :class="prefixCls + '-group-name'">
+        {{ groupNameList[source.value] }}
+      </div>
     </div>
+
     <div
       :key="source.value"
       :class="[
@@ -60,7 +68,11 @@ export default {
       }
     },
     multiple: Boolean,
-    renderItem: Function
+    renderItem: Function,
+    groupCheckObj: {
+      type: Object,
+      default: () => {}
+    }
     // beforeChange: Function
   },
   data() {
@@ -85,6 +97,9 @@ export default {
       // } else if (before !== false) {
       //   this.$parent.$parent.$emit('on-click', val)
       // }
+    },
+    handleGroupClick(val) {
+      this.$parent.$parent.$emit('on-group-click', val)
     }
   }
 }

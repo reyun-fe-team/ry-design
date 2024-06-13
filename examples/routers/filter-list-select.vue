@@ -280,7 +280,7 @@ export default {
   mounted() {
     for (let i = 0; i < 3; i++) {
       let children = []
-      for (let j = 0; j < 100; j++) {
+      for (let j = 0; j < 2; j++) {
         const value = `${i.toString(36)}${j}`
         children.push({
           value: `${j + 1}-${value}-value`,
