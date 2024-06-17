@@ -225,9 +225,9 @@ export default {
       type: String,
       default: ''
     },
-    filterByBabelValue: {
-      type: Boolean,
-      default: false
+    filterByCustom: {
+      type: Array,
+      default: () => ['label']
     }
   },
   data() {
@@ -286,21 +286,20 @@ export default {
 
       let searchTerms = this.filterBySplit
         ? this.query.split(this.filterBySplit).filter(val => val)
-        : [this.query]
+        : [this.query].filter(val => val)
 
       if (!searchTerms.length) {
         return this.data
       }
-
       return this.data.filter(data => {
-        const type = 'label' in data ? 'label' : 'value'
-
-        const labelsAndValues = this.filterByBabelValue
-          ? [data.label, data.value].filter(val => val)
-          : [data[type]]
-
-        return searchTerms.some(val => {
-          return labelsAndValues.some(ele => ele.includes(val))
+        const labels = this.filterByCustom
+          .reduce((list, val) => {
+            list.push(data[val])
+            return list
+          }, [])
+          .filter(val => val)
+        return labels.some(val => {
+          return searchTerms.some(ele => val.includes(ele))
         })
       })
     },
