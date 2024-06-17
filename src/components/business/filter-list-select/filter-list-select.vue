@@ -39,7 +39,7 @@
     </template>
     <!-- 全选 -->
     <rd-filter-list-select-all
-      v-if="selectAll && multiple"
+      v-if="selectAll && multiple && isSelectEntity"
       :checked-all="checkedAll"
       @on-checked-all="toggleSelectAll"></rd-filter-list-select-all>
     <rd-virtual-list
@@ -52,11 +52,14 @@
         groupNameList,
         current,
         multiple,
-        renderItem
+        renderItem,
+        groupCheckObj,
+        groupCheckbox
       }"
       :data-component="virtualComponent"
       v-on="$listeners"
-      @on-click="handleClick"></rd-virtual-list>
+      @on-click="handleClick"
+      @on-group-click="handleGroupClick"></rd-virtual-list>
     <template slot="search-operate">
       <slot name="search-operate"></slot>
     </template>
@@ -118,7 +121,10 @@ export default {
         return []
       }
     },
-    label: String,
+    label: {
+      type: String,
+      default: ''
+    },
     multiple: {
       type: Boolean,
       default: false
@@ -160,13 +166,14 @@ export default {
     },
     selectItemHeight: [String, Number],
     optionWidth: [String, Number],
-    filterMethod: {
-      type: Function,
-      default(data, query) {
-        const type = 'label' in data ? 'label' : 'value'
-        return data[type].indexOf(query) > -1
-      }
-    },
+    filterMethod: Function,
+    // filterMethod: {
+    //   type: Function,
+    //   default(data, query) {
+    //     const type = 'label' in data ? 'label' : 'value'
+    //     return data[type].indexOf(query) > -1
+    //   }
+    // },
     labelMethod: {
       type: Function,
       default(data) {
@@ -202,6 +209,23 @@ export default {
       default: false
     },
     selectAll: {
+      type: Boolean,
+      default: false
+    },
+    // 是否能添加其他组/主体
+    isSelectEntity: {
+      type: Boolean,
+      default: true
+    },
+    groupCheckbox: {
+      type: Boolean,
+      default: true
+    },
+    filterBySplit: {
+      type: String,
+      default: ''
+    },
+    filterByBabelValue: {
       type: Boolean,
       default: false
     }
@@ -256,7 +280,29 @@ export default {
   },
   computed: {
     filterData() {
-      return this.data.filter(item => this.filterMethod(item, this.query))
+      if (this.filterMethod) {
+        return this.data.filter(item => this.filterMethod(item, this.query))
+      }
+
+      let searchTerms = this.filterBySplit
+        ? this.query.split(this.filterBySplit).filter(val => val)
+        : [this.query]
+
+      if (!searchTerms.length) {
+        return this.data
+      }
+
+      return this.data.filter(data => {
+        const type = 'label' in data ? 'label' : 'value'
+
+        const labelsAndValues = this.filterByBabelValue
+          ? [data.label, data.value].filter(val => val)
+          : [data[type]]
+
+        return searchTerms.some(val => {
+          return labelsAndValues.some(ele => ele.includes(val))
+        })
+      })
     },
     realData() {
       let current = Array.isArray(this.value) ? this.value : [this.value]
@@ -279,10 +325,32 @@ export default {
       return style
     },
     getLine() {
-      return this.filterData.map((item, idx) => ({
-        uid: `key_${idx}_${item.value}`,
-        ...item
-      }))
+      let groupValue = ''
+      const list = this.filterData.map((item, idx) => {
+        if (this.groupNameList[item.value]) {
+          groupValue = item.value
+        }
+        return {
+          uid: `key_${idx}_${item.value}`,
+          _groupValue: groupValue,
+          ...item
+        }
+      })
+      if (
+        !this.isSelectEntity &&
+        this.groupCheckbox &&
+        this.groupNameList &&
+        Object.keys(this.groupNameList).length &&
+        this.current.length
+      ) {
+        const findItem = list.find(val => this.current.includes(val.value))
+        list.forEach(val => {
+          if (val._groupValue !== findItem._groupValue) {
+            val.disabled = true
+          }
+        })
+      }
+      return list
     },
     showFooter() {
       return this.$scopedSlots.footer
@@ -300,6 +368,19 @@ export default {
         this.filterData.filter(data => !data.disabled).length === this.validKeysCount &&
         this.validKeysCount !== 0
       )
+    },
+    groupCheckObj() {
+      let params = {}
+      if (this.groupNameList && Object.keys(this.groupNameList).length) {
+        Object.keys(this.groupNameList).forEach(key => {
+          const groups = this.getLine.filter(val => val._groupValue === key)
+          params[key] = {
+            check: groups.every(val => this.current.includes(val.value)),
+            disabled: groups.every(val => val.disabled)
+          }
+        })
+      }
+      return params
     }
   },
   watch: {
@@ -366,6 +447,22 @@ export default {
         }
       }
       this.movementChange()
+    },
+    handleGroupClick({ value }) {
+      if (!this.multiple) {
+        return
+      }
+      const groups = this.getLine.filter(val => val._groupValue === value)
+      const values = groups.map(val => val.value)
+
+      const check = !this.groupCheckObj[value].check
+      values.forEach(value => {
+        if (check && !this.current.includes(value)) {
+          this.current.push(value)
+        } else if (!check) {
+          this.current = this.current.filter(item => item !== value)
+        }
+      })
     },
     handleVisibleChange(val) {
       this.planeVisible = val

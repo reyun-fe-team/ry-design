@@ -1,11 +1,21 @@
 <template>
   <div>
     <div
-      v-if="groupNameList && groupNameList[source.value]"
-      :title="groupNameList[source.value]"
-      :class="prefixCls + '-group-name'">
-      {{ groupNameList[source.value] }}
+      v-if="showGroupName"
+      :class="classGroupName"
+      @click="handleGroupClick(source)">
+      <Checkbox
+        v-if="showGroupCheckbox"
+        :disabled="groupCheckObj[source.value].disabled"
+        :value="groupCheckObj[source.value].check"
+        @click="handleGroupClick(source)"></Checkbox>
+      <div
+        :title="groupNameList[source.value]"
+        :class="prefixCls + '-group-name-item-text'">
+        {{ groupNameList[source.value] }}
+      </div>
     </div>
+
     <div
       :key="source.value"
       :class="[
@@ -60,12 +70,31 @@ export default {
       }
     },
     multiple: Boolean,
-    renderItem: Function
+    renderItem: Function,
+    groupCheckObj: {
+      type: Object,
+      default: () => {}
+    },
+    groupCheckbox: Boolean
     // beforeChange: Function
   },
   data() {
     return {
       prefixCls
+    }
+  },
+  computed: {
+    showGroupName() {
+      return this.groupNameList[this.source.value]
+    },
+    showGroupCheckbox() {
+      return this.multiple && this.groupCheckbox
+    },
+    classGroupName() {
+      return [
+        this.prefixCls + '-group-name-item',
+        { [this.prefixCls + '-group-name-item-cursor']: this.showGroupCheckbox }
+      ]
     }
   },
   methods: {
@@ -85,6 +114,12 @@ export default {
       // } else if (before !== false) {
       //   this.$parent.$parent.$emit('on-click', val)
       // }
+    },
+    handleGroupClick(val) {
+      if (!this.showGroupCheckbox) {
+        return
+      }
+      this.$parent.$parent.$emit('on-group-click', val)
     }
   }
 }
