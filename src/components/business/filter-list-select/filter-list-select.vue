@@ -338,7 +338,6 @@ export default {
       })
       if (
         !this.isSelectEntity &&
-        this.groupCheckbox &&
         this.groupNameList &&
         Object.keys(this.groupNameList).length &&
         this.current.length
