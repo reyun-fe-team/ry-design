@@ -166,13 +166,14 @@ export default {
     },
     selectItemHeight: [String, Number],
     optionWidth: [String, Number],
-    filterMethod: {
-      type: Function,
-      default(data, query) {
-        const type = 'label' in data ? 'label' : 'value'
-        return data[type].indexOf(query) > -1
-      }
-    },
+    filterMethod: Function,
+    // filterMethod: {
+    //   type: Function,
+    //   default(data, query) {
+    //     const type = 'label' in data ? 'label' : 'value'
+    //     return data[type].indexOf(query) > -1
+    //   }
+    // },
     labelMethod: {
       type: Function,
       default(data) {
@@ -219,6 +220,14 @@ export default {
     groupCheckbox: {
       type: Boolean,
       default: true
+    },
+    filterBySplit: {
+      type: String,
+      default: ''
+    },
+    filterByBabelValue: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -271,7 +280,29 @@ export default {
   },
   computed: {
     filterData() {
-      return this.data.filter(item => this.filterMethod(item, this.query))
+      if (this.filterMethod) {
+        return this.data.filter(item => this.filterMethod(item, this.query))
+      }
+
+      let searchTerms = this.filterBySplit
+        ? this.query.split(this.filterBySplit).filter(val => val)
+        : [this.query]
+
+      if (!searchTerms.length) {
+        return this.data
+      }
+
+      return this.data.filter(data => {
+        const type = 'label' in data ? 'label' : 'value'
+
+        const labelsAndValues = this.filterByBabelValue
+          ? [data.label, data.value].filter(val => val)
+          : [data[type]]
+
+        return searchTerms.some(val => {
+          return labelsAndValues.some(ele => ele.includes(val))
+        })
+      })
     },
     realData() {
       let current = Array.isArray(this.value) ? this.value : [this.value]

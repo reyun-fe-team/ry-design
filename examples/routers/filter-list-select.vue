@@ -90,6 +90,8 @@
           :group-name-list="groupNameList"
           :group-checkbox="true"
           :is-select-entity="false"
+          filter-by-babel-value
+          filter-by-split=","
           multiple
           save-type="leave-save"
           show-action
