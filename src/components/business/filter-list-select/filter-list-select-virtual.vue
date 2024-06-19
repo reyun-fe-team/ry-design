@@ -6,6 +6,7 @@
       @click="handleGroupClick(source)">
       <Checkbox
         v-if="showGroupCheckbox"
+        :indeterminate="groupCheckObj[source.value].indeterminate"
         :disabled="groupCheckObj[source.value].disabled"
         :value="groupCheckObj[source.value].check"
         @click="handleGroupClick(source)"></Checkbox>

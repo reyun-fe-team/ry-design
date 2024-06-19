@@ -41,6 +41,7 @@
     <rd-filter-list-select-all
       v-if="selectAll && multiple && isSelectEntity"
       :checked-all="checkedAll"
+      :checked-all-indeterminate="checkedAllIndeterminate"
       @on-checked-all="toggleSelectAll"></rd-filter-list-select-all>
     <rd-virtual-list
       ref="list"
@@ -365,14 +366,21 @@ export default {
         this.validKeysCount !== 0
       )
     },
+    checkedAllIndeterminate() {
+      return !this.checkedAll && this.validKeysCount !== 0
+    },
     groupCheckObj() {
       let params = {}
       if (this.groupNameList && Object.keys(this.groupNameList).length) {
         Object.keys(this.groupNameList).forEach(key => {
           const groups = this.filterData.filter(val => val._groupValue === key)
+          const check = groups.every(val => this.current.includes(val.value))
+          const indeterminate = !check && groups.some(val => this.current.includes(val.value))
+          const disabled = groups.every(val => val.disabled)
           params[key] = {
-            check: groups.every(val => this.current.includes(val.value)),
-            disabled: groups.every(val => val.disabled)
+            check,
+            disabled,
+            indeterminate
           }
         })
       }
