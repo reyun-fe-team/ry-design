@@ -41,13 +41,14 @@
     <rd-filter-list-select-all
       v-if="selectAll && multiple && isSelectEntity"
       :checked-all="checkedAll"
+      :checked-all-indeterminate="checkedAllIndeterminate"
       @on-checked-all="toggleSelectAll"></rd-filter-list-select-all>
     <rd-virtual-list
       ref="list"
       :class="[prefixCls + '-virtual-list', 'small-scroll-y']"
       :style="mainStyles"
       data-key="uid"
-      :data-sources="getLine"
+      :data-sources="filterData"
       :extra-props="{
         groupNameList,
         current,
@@ -279,9 +280,34 @@ export default {
     }
   },
   computed: {
+    currentData() {
+      let _groupValue = ''
+      let list = this.data.map((item, idx) => {
+        if (this.groupNameList[item.value]) {
+          _groupValue = item.value
+        }
+        return {
+          ...item,
+          uid: `key_${idx}_${item.value}`,
+          _groupValue
+        }
+      })
+      if (
+        !this.isSelectEntity &&
+        this.groupNameList &&
+        Object.keys(this.groupNameList).length &&
+        this.current.length
+      ) {
+        const findItem = list.find(val => this.current.includes(val.value))
+        list.forEach(val => {
+          val.disabled = val._groupValue !== findItem._groupValue ? true : val.disabled
+        })
+      }
+      return list
+    },
     filterData() {
       if (this.filterMethod) {
-        return this.data.filter(item => this.filterMethod(item, this.query))
+        return this.currentData.filter(item => this.filterMethod(item, this.query))
       }
 
       let searchTerms = this.filterBySplit
@@ -289,9 +315,9 @@ export default {
         : [this.query].filter(val => val)
 
       if (!searchTerms.length) {
-        return this.data
+        return this.currentData
       }
-      return this.data.filter(data => {
+      return this.currentData.filter(data => {
         const labels = this.filterByCustom
           .reduce((list, val) => {
             list.push(data[val])
@@ -323,33 +349,6 @@ export default {
       }
       return style
     },
-    getLine() {
-      let groupValue = ''
-      const list = this.filterData.map((item, idx) => {
-        if (this.groupNameList[item.value]) {
-          groupValue = item.value
-        }
-        return {
-          uid: `key_${idx}_${item.value}`,
-          _groupValue: groupValue,
-          ...item
-        }
-      })
-      if (
-        !this.isSelectEntity &&
-        this.groupNameList &&
-        Object.keys(this.groupNameList).length &&
-        this.current.length
-      ) {
-        const findItem = list.find(val => this.current.includes(val.value))
-        list.forEach(val => {
-          if (val._groupValue !== findItem._groupValue) {
-            val.disabled = true
-          }
-        })
-      }
-      return list
-    },
     showFooter() {
       return this.$scopedSlots.footer
     },
@@ -367,14 +366,21 @@ export default {
         this.validKeysCount !== 0
       )
     },
+    checkedAllIndeterminate() {
+      return !this.checkedAll && this.validKeysCount !== 0
+    },
     groupCheckObj() {
       let params = {}
       if (this.groupNameList && Object.keys(this.groupNameList).length) {
         Object.keys(this.groupNameList).forEach(key => {
-          const groups = this.getLine.filter(val => val._groupValue === key)
+          const groups = this.filterData.filter(val => val._groupValue === key)
+          const check = groups.every(val => this.current.includes(val.value))
+          const indeterminate = !check && groups.some(val => this.current.includes(val.value))
+          const disabled = groups.every(val => val.disabled)
           params[key] = {
-            check: groups.every(val => this.current.includes(val.value)),
-            disabled: groups.every(val => val.disabled)
+            check,
+            disabled,
+            indeterminate
           }
         })
       }
@@ -450,7 +456,7 @@ export default {
       if (!this.multiple) {
         return
       }
-      const groups = this.getLine.filter(val => val._groupValue === value)
+      const groups = this.filterData.filter(val => val._groupValue === value)
       const values = groups.map(val => val.value)
 
       const check = !this.groupCheckObj[value].check
