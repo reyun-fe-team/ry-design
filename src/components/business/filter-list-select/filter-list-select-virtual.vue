@@ -36,7 +36,7 @@
       <Checkbox
         v-if="multiple"
         :disabled="source.disabled"
-        style="margin: 0 0 0 10px"
+        style="margin: 0 0 0 24px"
         :value="current.includes(source.value)"
         @click="handleClick(source)"></Checkbox>
       <div :class="prefixCls + '-item-contain'">
