@@ -36,7 +36,7 @@
       <Checkbox
         v-if="multiple"
         :disabled="source.disabled"
-        style="margin: 0 0 0 10px"
+        :style="checkboxItemStyle"
         :value="current.includes(source.value)"
         @click="handleClick(source)"></Checkbox>
       <div :class="prefixCls + '-item-contain'">
@@ -96,6 +96,14 @@ export default {
         this.prefixCls + '-group-name-item',
         { [this.prefixCls + '-group-name-item-cursor']: this.showGroupCheckbox }
       ]
+    },
+    checkboxItemStyle() {
+      return {
+        margin:
+          this.groupNameList && Object.keys(this.groupNameList).length && this.showGroupCheckbox
+            ? '0 0 0 24px'
+            : '0 0 0 10px'
+      }
     }
   },
   methods: {
