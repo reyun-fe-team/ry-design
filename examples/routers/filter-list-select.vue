@@ -45,6 +45,7 @@
           :data="data"
           multiple
           filterable
+          :filter-by-custom="['label', 'newLabel']"
           :label-method="labelMethod"
           select-all
           @on-input-clear="handleInputClear"
@@ -83,10 +84,15 @@
           transfer
           clearable
           placement="bottom-start"
+          select-all
           filterable
           show-select-option
           :data="data"
           :group-name-list="groupNameList"
+          :group-checkbox="true"
+          :is-select-entity="false"
+          :filter-by-custom="['label', 'description']"
+          filter-by-split=","
           multiple
           save-type="leave-save"
           show-action
@@ -280,14 +286,14 @@ export default {
   mounted() {
     for (let i = 0; i < 3; i++) {
       let children = []
-      for (let j = 0; j < 100; j++) {
+      for (let j = 0; j < 2; j++) {
         const value = `${i.toString(36)}${j}`
         children.push({
           value: `${j + 1}-${value}-value`,
-          label: `${j + 1}-天安门上太阳升-${value} (beijin-description)`,
+          label: `${j + 1}-天安门上太阳升-${value}`,
           newLabel: `天安门上太阳升${j + 1}-${value}`,
           disabled: [2, 4, 6, 7].includes(j) ? true : false,
-          description: '天安门上太阳升beijin-description',
+          description: `天安门上太阳升beijin-description-${i}-${j}`,
           src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/e3b/a68/69c/e3ba6869c4593eaaa7984e0f555d9517-small.jpg',
           isDefault: false,
           subtitle: '天安门上太阳升beijin-subtitle'
