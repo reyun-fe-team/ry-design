@@ -325,7 +325,7 @@ export default {
           }, [])
           .filter(val => val)
         return labels.some(val => {
-          return searchTerms.some(ele => val.includes(ele))
+          return searchTerms.some(ele => val.toUpperCase().includes(ele.toUpperCase()))
         })
       })
     },
