@@ -96,7 +96,7 @@ export function getAdsMoreAccountList(mediaCode, dimension) {
       value: 'OFF',
       tooltip: `所有账户统一按照预览区生成的${label}顺序分批次提交`
     },
-    { label: '开启', value: 'ON', tooltip: `所有账户统一按照预览区生成的${label}顺序分批次提交` }
+    { label: '开启', value: 'ON', tooltip: `所有账户同时按批次提交相同数量的${label}` }
   ]
 }
 
