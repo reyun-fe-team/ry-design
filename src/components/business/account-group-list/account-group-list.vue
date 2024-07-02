@@ -16,6 +16,7 @@
             <Tooltip
               :max-width="maxWidth"
               transfer
+              style="padding-top: 4px"
               :delay="delay"
               placement="right"
               theme="light">
@@ -35,14 +36,20 @@
                 <Tooltip
                   :max-width="maxWidth"
                   transfer
+                  style="padding-top: 4px"
                   :delay="delay"
                   placement="right"
                   theme="light">
-                  <div
+                  <span
                     :class="prefixCls + '-body-left-box-content-item-name'"
-                    class="sign">
-                    {{ el[itemName] }}
-                  </div>
+                    class="sign"
+                    v-text="el[itemName]"></span>
+                  <span
+                    v-if="id && el[id]"
+                    :class="prefixCls + '-body-left-box-content-item-name'"
+                    class="sign id">
+                    ID: {{ el[id] }}
+                  </span>
                   <div
                     slot="content"
                     class="display-flex flex-direction-column">
