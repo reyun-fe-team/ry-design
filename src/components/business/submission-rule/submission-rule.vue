@@ -27,7 +27,8 @@
             :options="dateOptions"
             :clearable="false"
             placeholder="请选择定时提交日期时间"
-            @on-ok="handleStartTime('adsDelaySubmitTime')"></DatePicker>
+            @on-ok="handleStartTime('adsDelaySubmitTime')"
+            @on-clickoutside="handleStartTime('adsDelaySubmitTime')"></DatePicker>
         </FormItem>
       </template>
       <template v-if="formData.adsSubmitRule === 'BATCH'">
@@ -42,7 +43,8 @@
             :options="dateOptions"
             :clearable="false"
             placeholder="请选择定时提交日期时间"
-            @on-ok="handleStartTime('adsBatchStartTime')"></DatePicker>
+            @on-ok="handleStartTime('adsBatchStartTime')"
+            @on-clickoutside="handleStartTime('adsBatchStartTime')"></DatePicker>
         </FormItem>
         <FormItem label="时间间隔">
           <div :class="[prefixCls + '-setting-item']">
@@ -71,7 +73,20 @@
             :class="[prefixCls + '-rule-group']"
             :default-list="adsMoreAccountList"></rd-radio-group>
         </FormItem>
-        <FormItem :label="'每次提交' + dimensionLabel">
+        <FormItem>
+          <label slot="label">
+            {{ '每次提交' + dimensionLabel }}
+            <Tooltip
+              placement="top"
+              max-width="200"
+              theme="light"
+              content="多账户同时提交开启时，设置数量为每个账户每次提交数量；多账户同时提交关闭时，设置数量为每次提交数量。">
+              <Icon
+                type="ios-help-circle-outline"
+                size="16"
+                class="cursor-pointer icon-question tip-icon"></Icon>
+            </Tooltip>
+          </label>
           <div :class="[prefixCls + '-setting-item']">
             <InputNumber
               v-model="formData.adsSubmitNum1"
@@ -96,7 +111,8 @@
             :options="dateOptions"
             :clearable="false"
             placeholder="请选择定时提交日期时间"
-            @on-ok="handleStartTime('adsRepeatSubmitTime')"></DatePicker>
+            @on-ok="handleStartTime('adsRepeatSubmitTime')"
+            @on-clickoutside="handleStartTime('adsRepeatSubmitTime')"></DatePicker>
         </FormItem>
         <FormItem label="时间间隔">
           <div :class="[prefixCls + '-setting-item']">
