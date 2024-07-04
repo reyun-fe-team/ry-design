@@ -90,6 +90,8 @@ import filterListPanel from './filter-list-panel'
 import filterListOption from './filter-list-option'
 import filterListInput from './filter-list-input'
 import { oneOf } from '@src/util/assist.js'
+import _throttle from 'lodash/throttle'
+import _isEqual from 'lodash/isEqual'
 
 export default {
   name: prefixCls,
@@ -176,7 +178,12 @@ export default {
       current: this.value,
       iconState: false,
       queryValue: this.query,
-      refHeight: null
+      refHeight: null,
+
+      observeTarget: null,
+      intersectionObserver: null,
+      animationFrameId: null,
+      lastTargetProps: { top: 0, left: 0, width: 0, height: 0 }
     }
   },
   computed: {
@@ -267,7 +274,64 @@ export default {
       this.$emit('query-change', val)
     }
   },
+  mounted() {
+    this.initElementObserver()
+  },
+  beforeDestroy() {
+    this.destroyElementObserver()
+  },
   methods: {
+    // 销毁元素监测器
+    destroyElementObserver() {
+      if (this.observeTarget) {
+        this.intersectionObserver.unobserve(this.observeTarget)
+      }
+      if (this.animationFrameId) {
+        cancelAnimationFrame(this.animationFrameId)
+      }
+    },
+    // 初始化元素监测器
+    initElementObserver() {
+      // 被监测元素
+      this.observeTarget = this.$refs['list-panel'].$el
+
+      if (this.observeTarget) {
+        this.checkElementPosition()
+
+        // 视口监测
+        this.intersectionObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            // 离开视口 关闭
+            // @TODO： 面板消失停止计算位置信息
+            if (!entry.isIntersecting) {
+              this.closeDropdown()
+            }
+          })
+        })
+        this.intersectionObserver.observe(this.observeTarget)
+      }
+
+      // Throttled check position function
+      this.throttledCheckPosition = _throttle(this.checkElementPosition, 500)
+
+      if (this.animationFrameId) {
+        cancelAnimationFrame(this.animationFrameId)
+      }
+      this.animationFrameId = requestAnimationFrame(this.throttledCheckPosition)
+    },
+    // 监测元素位置 相对屏幕的位置
+    checkElementPosition() {
+      if (this.observeTarget) {
+        const rect = this.observeTarget.getBoundingClientRect()
+        const { top, left, width, height } = rect
+        const props = { top, left, width, height }
+
+        if (!_isEqual(props, this.lastTargetProps)) {
+          this.lastTargetProps = props
+          this.updateDropdown()
+        }
+      }
+    },
     closeDropdown() {
       this.$refs['list-panel'].closeDropdown()
     },
