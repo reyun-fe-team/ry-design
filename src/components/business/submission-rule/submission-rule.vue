@@ -2,6 +2,7 @@
   <div :class="[prefixCls]">
     <Form
       ref="formData"
+      label-position="left"
       :label-width="110"
       :class="[prefixCls + '-form']"
       :model="formData">
