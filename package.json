@@ -1,7 +1,7 @@
 {
   "name": "ry-design",
   "main": "dist/ry-design.min.js",
-  "version": "2.18.10-alpha.2",
+  "version": "2.18.12-alpha.0",
   "repository": {
     "type": "git",
     "url": "git@github.com:reyun-fe-team/ry-design.git"
@@ -20,7 +20,6 @@
   "dependencies": {
     "element-resize-detector": "^1.2.0",
     "moment": "^2.29.4",
-    "ry-design": "file:.yalc/ry-design",
     "umy-ui": "^1.1.6",
     "view-design": "^4.6.1"
   },
