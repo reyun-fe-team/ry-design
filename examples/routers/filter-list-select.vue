@@ -228,7 +228,7 @@ export default {
       formData: {
         selectMultiple: []
       },
-      selectMultiple: ['1-00-value', '1-01-value'],
+      selectMultiple: [],
       selectRadio: '',
       groupList: [],
       formValidate: {
@@ -286,13 +286,13 @@ export default {
   mounted() {
     for (let i = 0; i < 3; i++) {
       let children = []
-      for (let j = 0; j < 2; j++) {
+      for (let j = 0; j < 3; j++) {
         const value = `${i.toString(36)}${j}`
         children.push({
           value: `${j + 1}-${value}-value`,
           label: `${j + 1}-天安门上太阳升-${value}`,
           newLabel: `天安门上太阳升${j + 1}-${value}`,
-          disabled: [2, 4, 6, 7].includes(j) ? true : false,
+          disabled: false,
           description: `天安门上太阳升beijin-description-${i}-${j}`,
           src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/e3b/a68/69c/e3ba6869c4593eaaa7984e0f555d9517-small.jpg',
           isDefault: false,

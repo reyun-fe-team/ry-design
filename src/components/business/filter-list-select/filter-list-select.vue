@@ -229,6 +229,10 @@ export default {
     filterByCustom: {
       type: Array,
       default: () => ['label']
+    },
+    max: {
+      type: Number,
+      default: 2
     }
   },
   data() {
@@ -281,22 +285,26 @@ export default {
   },
   computed: {
     currentData() {
+      const size = this.current.length
+      const exceedValid = this.max !== 0 && size >= this.max
       let _groupValue = ''
       let list = this.data.map((item, idx) => {
         if (this.groupNameList[item.value]) {
           _groupValue = item.value
         }
+        const checked = this.current.includes(item.value)
         return {
           ...item,
           uid: `key_${idx}_${item.value}`,
-          _groupValue
+          _groupValue,
+          disabled: item.disabled || (checked ? false : exceedValid)
         }
       })
       if (
         !this.isSelectEntity &&
         this.groupNameList &&
         Object.keys(this.groupNameList).length &&
-        this.current.length
+        size
       ) {
         const findItem = list.find(val => this.current.includes(val.value))
         list.forEach(val => {
@@ -527,13 +535,16 @@ export default {
       this.$refs['filter-list'].updateDropdown()
     },
     toggleSelectAll(status) {
-      const values = status
+      let values = status
         ? this.filterData
             .filter(data => !data.disabled || this.current.indexOf(data.value) > -1)
             .map(data => data.value)
         : this.filterData
             .filter(data => data.disabled && this.current.indexOf(data.value) > -1)
             .map(data => data.value)
+      if (this.max !== 0) {
+        values = values.slice(0, this.max)
+      }
       this.current = values
       this.movementChange()
     }
