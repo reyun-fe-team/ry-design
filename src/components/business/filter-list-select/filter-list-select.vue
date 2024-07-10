@@ -229,6 +229,10 @@ export default {
     filterByCustom: {
       type: Array,
       default: () => ['label']
+    },
+    max: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -281,22 +285,26 @@ export default {
   },
   computed: {
     currentData() {
+      const size = this.current.length
+      const exceedValid = this.isCountMax && size >= this.max
       let _groupValue = ''
       let list = this.data.map((item, idx) => {
         if (this.groupNameList[item.value]) {
           _groupValue = item.value
         }
+        const checked = this.current.includes(item.value)
         return {
           ...item,
           uid: `key_${idx}_${item.value}`,
-          _groupValue
+          _groupValue,
+          disabled: item.disabled || (checked ? false : exceedValid)
         }
       })
       if (
         !this.isSelectEntity &&
         this.groupNameList &&
         Object.keys(this.groupNameList).length &&
-        this.current.length
+        size
       ) {
         const findItem = list.find(val => this.current.includes(val.value))
         list.forEach(val => {
@@ -332,6 +340,9 @@ export default {
     realData() {
       let current = Array.isArray(this.value) ? this.value : [this.value]
       return _cloneDeep(current)
+    },
+    isCountMax() {
+      return this.max !== 0
     },
     mainStyles() {
       let style = {}
@@ -373,8 +384,19 @@ export default {
       let params = {}
       if (this.groupNameList && Object.keys(this.groupNameList).length) {
         Object.keys(this.groupNameList).forEach(key => {
-          const groups = this.filterData.filter(val => val._groupValue === key)
-          const check = groups.every(val => this.current.includes(val.value))
+          const groups = this.filterData.filter(val => val._groupValue === key && !val.disabled)
+          let check = groups.every(val => this.current.includes(val.value))
+          if (!check && this.isCountMax) {
+            const tol = groups.reduce((total, val) => {
+              if (this.current.includes(val.value)) {
+                total = total + 1
+              }
+              return total
+            }, 0)
+            if (tol >= this.max) {
+              check = true
+            }
+          }
           const indeterminate = !check && groups.some(val => this.current.includes(val.value))
           const disabled = groups.every(val => val.disabled)
           params[key] = {
@@ -456,12 +478,16 @@ export default {
       if (!this.multiple) {
         return
       }
-      const groups = this.filterData.filter(val => val._groupValue === value)
+      const groups = this.filterData.filter(val => val._groupValue === value && !val.disabled)
       const values = groups.map(val => val.value)
 
       const check = !this.groupCheckObj[value].check
       values.forEach(value => {
-        if (check && !this.current.includes(value)) {
+        if (
+          check &&
+          !this.current.includes(value) &&
+          (this.isCountMax ? this.current.length < this.max : true)
+        ) {
           this.current.push(value)
         } else if (!check) {
           this.current = this.current.filter(item => item !== value)
@@ -527,13 +553,16 @@ export default {
       this.$refs['filter-list'].updateDropdown()
     },
     toggleSelectAll(status) {
-      const values = status
+      let values = status
         ? this.filterData
             .filter(data => !data.disabled || this.current.indexOf(data.value) > -1)
             .map(data => data.value)
         : this.filterData
             .filter(data => data.disabled && this.current.indexOf(data.value) > -1)
             .map(data => data.value)
+      if (this.isCountMax) {
+        values = values.slice(0, this.max)
+      }
       this.current = values
       this.movementChange()
     }
