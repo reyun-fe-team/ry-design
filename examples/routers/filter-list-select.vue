@@ -94,7 +94,6 @@
           :filter-by-custom="['label', 'description']"
           filter-by-split=","
           multiple
-          save-type="leave-save"
           show-action
           action-button-text="添加小游戏"
           :action-rule-validate="actionRuleValidate"
