@@ -1,7 +1,7 @@
 {
   "name": "ry-design",
   "main": "dist/ry-design.min.js",
-  "version": "2.16.2",
+  "version": "2.18.11",
   "repository": {
     "type": "git",
     "url": "git@github.com:reyun-fe-team/ry-design.git"
@@ -13,15 +13,15 @@
   "scripts": {
     "dev": "webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --config build/webpack.dev.config.js",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.prod.config.js",
-    "commit":"npm run build && npm publish && open https://npmmirror.com/sync/ry-design",
-    "beta":"npm run build && npm publish --tag=beta && open https://npmmirror.com/sync/ry-design"
+    "commit": "npm run build && npm publish && open https://npmmirror.com/sync/ry-design",
+    "beta": "npm run build && npm publish --tag=beta && open https://npmmirror.com/sync/ry-design"
   },
   "author": "ry",
   "dependencies": {
+    "element-resize-detector": "^1.2.0",
     "moment": "^2.29.4",
     "umy-ui": "^1.1.6",
-    "view-design": "^4.6.1",
-    "element-resize-detector": "^1.2.0"
+    "view-design": "^4.6.1"
   },
   "peerDependencies": {
     "vue": "^2.6.7"

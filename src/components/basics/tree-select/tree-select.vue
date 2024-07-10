@@ -500,7 +500,7 @@ export default {
             this.handleUpdateTreeNodes({
               data: item[this.childrenKey],
               list,
-              state: this.deepUpChecked || !this.multiple ? false : true,
+              state: this.deepUpChecked || !this.multiple || this.checkStrictly ? false : true,
               isInit,
               level: item.level + 1
             })

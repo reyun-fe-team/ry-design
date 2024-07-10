@@ -39,6 +39,7 @@ import CarouselPreviewer from './components/basics/carousel-previewer'
 import TreeSelect from './components/basics/tree-select'
 import Tree from './components/basics/tree'
 import CollapseTransition from './components/basics/transitions/collapse-transition'
+import FooterToolbar from './components/basics/footer-toolbar'
 
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
@@ -66,6 +67,7 @@ import FilterLisCascader from './components/business/filter-list-cascader'
 import { FilterArea, FilterAreaTemplateList } from './components/business/filter-area'
 import PlacementLocation from './components/business/placement-location'
 import ErrorPreventModal from './components/business/error-prevent-modal'
+import FilterDropdownInput from './components/business/filter-dropdown-input'
 
 import ViewUI from 'view-design'
 
@@ -171,7 +173,9 @@ const components = [
   TreeSelect,
   Tree,
   CollapseTransition,
-  FilterAreaTemplateList
+  FilterAreaTemplateList,
+  FooterToolbar,
+  FilterDropdownInput
 ]
 
 // 对象式-指令
@@ -267,5 +271,7 @@ export default {
   Tree,
   CollapseTransition,
   FilterArea,
-  FilterAreaTemplateList
+  FilterAreaTemplateList,
+  FooterToolbar,
+  FilterDropdownInput
 }

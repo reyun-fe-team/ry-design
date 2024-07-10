@@ -8,9 +8,15 @@
     :class="classes"
     :type="type"
     :loading="loading"
-    :disabled="disabled"
-    :icon="icon">
-    <slot></slot>
+    :disabled="disabled">
+    <span :class="[prefixCls + '-content-wp']">
+      <rd-icon
+        :size="12"
+        :type="icon"></rd-icon>
+      <span :class="[prefixCls + '-slot-wp']">
+        <slot></slot>
+      </span>
+    </span>
   </Button>
 </template>
 <script>
@@ -38,6 +44,11 @@ export default {
     icon: {
       type: String,
       default: ''
+    }
+  },
+  data() {
+    return {
+      prefixCls
     }
   },
   computed: {

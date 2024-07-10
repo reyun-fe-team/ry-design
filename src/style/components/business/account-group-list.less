@@ -53,11 +53,7 @@
           justify-content: space-between;
           align-items: center;
           flex-wrap: nowrap;
-
-          .ivu-tooltip {
-            display: flex;
-            line-height: 100%;
-          }
+          cursor: pointer;
 
           .wid100 {
             width: 100%;
@@ -65,14 +61,23 @@
 
           &-name {
             width: 100%;
+            display: inline-block;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 1;
+            -webkit-line-clamp: 2;
             font-size: 12px;
-            color: #151b39;
+            color: #151B39;
             word-break: break-all;
+
+            &.sign {
+              -webkit-line-clamp: 1;
+
+              &.id {
+                color: #999999;
+              }
+            }
           }
 
           &-num {
