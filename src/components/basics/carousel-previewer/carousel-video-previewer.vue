@@ -5,13 +5,13 @@
     @mouseleave.stop="handleMouseLeave"
     @mouseenter.stop="handlemouseEnter">
     <!-- 静音 -->
-    <div
+    <!-- <div
       v-if="isPlay"
       :class="[prefixCls + '-voice']">
       <Icon
         :type="isOpenVoice ? 'md-volume-up' : 'md-volume-off'"
         @click.stop="isOpenVoice ? handleOnMuted() : handleOffMuted()"></Icon>
-    </div>
+    </div> -->
     <!-- 内容 -->
     <transition name="fade-motion">
       <div :class="[prefixCls + '-content']">
@@ -25,13 +25,16 @@
           <!-- 视频播放区域 -->
           <video
             ref="video"
+            :controls="videoControls"
             :src="src"
             :muted="true"
             :poster="poster"
             preload="auto"
             @click.stop="handleClickPlay"
             @error="handleError"
-            @ended="handleEnded"></video>
+            @ended="handleEnded"
+            @play="playVideo"
+            @pause="pauseVideo"></video>
           <!-- 播放按钮 -->
           <div
             v-if="!isPlay"
@@ -68,6 +71,10 @@ export default {
     poster: {
       type: String,
       default: ''
+    },
+    videoControls: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

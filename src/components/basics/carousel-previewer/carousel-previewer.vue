@@ -73,6 +73,7 @@
               <CarouselVideoPreviewer
                 v-if="type === 'VIDEO'"
                 :poster="newCurrent[posterKey]"
+                :video-controls="videoControls"
                 :src="newCurrent[urlKey]"
                 :class="[prefixCls + '-image-video']"></CarouselVideoPreviewer>
             </div>
@@ -206,6 +207,11 @@ export default {
     },
     // 是否支持点击自动播放轮播
     autoPlay: {
+      type: Boolean,
+      default: true
+    },
+    // 视频播放器展示控制条
+    videoControls: {
       type: Boolean,
       default: true
     }
