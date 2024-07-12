@@ -512,6 +512,7 @@ export default {
               disabled: false,
               checked: false,
               value: '横版三小图 3:2',
+              showCheckbox: false,
               disabledValues: ['格子广告']
             },
             {

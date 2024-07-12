@@ -38,7 +38,7 @@
           :key="item.value"
           v-model="item.checked"
           :label="item.label"
-          show-checkbox
+          :show-checkbox="getChildItemCheckbox(item)"
           :disabled="item._disabled || item.disabled"
           :multiple="getChildrenMultiple(option)"
           :row="item"
@@ -424,6 +424,12 @@ export default {
       if (this.showCheckbox) {
         this.$emit('on-select-all', this.currentValue)
       }
+    },
+    getChildItemCheckbox(item) {
+      if ('showCheckbox' in item) {
+        return item.showCheckbox
+      }
+      return true
     }
   }
 }
