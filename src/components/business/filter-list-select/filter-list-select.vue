@@ -493,6 +493,7 @@ export default {
           this.current = this.current.filter(item => item !== value)
         }
       })
+      this.movementChange()
     },
     handleVisibleChange(val) {
       this.planeVisible = val
