@@ -49,15 +49,15 @@ export default {
   props: {
     height: [Number, String],
     text: {
-      type: String,
+      type: [String, Number],
       default: '-'
     },
     src: {
-      type: String,
+      type: [String, Number],
       default: ''
     },
     description: {
-      type: String,
+      type: [String, Number],
       default: ''
     },
     showImage: {
@@ -73,7 +73,7 @@ export default {
       default: false
     },
     subtitle: {
-      type: String,
+      type: [String, Number],
       default: ''
     },
     showTitle: {

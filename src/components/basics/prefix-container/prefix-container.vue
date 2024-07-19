@@ -2,6 +2,7 @@
   <div :class="classes">
     <div
       v-if="prepend"
+      :style="labelStyles"
       :class="classPrepend">
       <slot name="prepend"></slot>
     </div>
@@ -18,6 +19,10 @@ import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'prefix-container'
 export default {
   name: prefixCls,
+  props: {
+    labelWidth: [Number, String],
+    labelMinWidth: [Number, String]
+  },
   data() {
     return {
       prefixCls: prefixCls,
@@ -40,6 +45,18 @@ export default {
         { [this.prefixCls + '-body-prepend']: this.prepend },
         { [prefixCls + '-body-append']: this.append }
       ]
+    },
+    labelStyles() {
+      let params = {}
+      if (this.labelWidth) {
+        const width = parseInt(this.labelWidth)
+        params['width'] = `${width}px`
+      }
+      if (this.labelMinWidth) {
+        const width = parseInt(this.labelMinWidth)
+        params['min-width'] = `${width}px`
+      }
+      return params
     }
   },
   mounted() {
