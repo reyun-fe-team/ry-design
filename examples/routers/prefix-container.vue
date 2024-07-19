@@ -1,6 +1,6 @@
 <template>
   <div>
-    <rd-prefix-container>
+    <rd-prefix-container :label-min-width="200">
       <span slot="prepend">投放账户</span>
       <Select
         v-model="accountIds"
