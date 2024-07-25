@@ -5,7 +5,7 @@
       ref="rd-date-picker-inner"
       v-model="selDate"
       :style="styles"
-      type="daterange"
+      :type="type"
       :transfer="transfer"
       :confirm="confirm"
       :clearable="clearable"
@@ -32,6 +32,13 @@ import { getKey } from '@src/util/assist'
 export default {
   name: prefixCls,
   props: {
+    type: {
+      // daterange datetimerange
+      default: 'daterange',
+      validator(value) {
+        return ['daterange', 'datetimerange'].includes(value)
+      }
+    },
     value: {
       type: Array,
       default: () => []
