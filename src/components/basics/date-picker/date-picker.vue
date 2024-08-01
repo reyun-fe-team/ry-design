@@ -93,7 +93,7 @@ export default {
     },
     end: {
       type: String,
-      request: true,
+      require: true,
       default: () => {
         return date.getMoment(new Date())
       }
