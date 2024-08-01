@@ -37,15 +37,23 @@
           v-for="indicatType in listData"
           :key="indicatType.key"
           :class="prefixCls + '-nav-area-list'">
-          <div :class="prefixCls + '-nav-area-list-label'">{{ indicatType.title }}</div>
+          <div
+            v-tooltip="{ content: indicatType.title, 'max-width': 350, placement: 'bottom-start' }"
+            :class="prefixCls + '-nav-area-list-label'">
+            {{ indicatType.title }}
+          </div>
           <div
             v-for="indicatClassify in indicatType.children"
             :key="indicatClassify.key"
+            v-tooltip="{
+              content: indicatClassify.title,
+              'max-width': 350,
+              placement: 'bottom-start'
+            }"
             :class="[
               [prefixCls + '-nav-area-list-item'],
               { [prefixCls + '-nav-area-list-item-checked']: currentNav === indicatClassify.key }
             ]"
-            :title="indicatClassify.title"
             @click="handleNavJump(indicatClassify.key)">
             {{ indicatClassify.title }}
           </div>
