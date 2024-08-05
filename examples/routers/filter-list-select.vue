@@ -81,6 +81,7 @@
         多选组 事例：{{ formData.selectMultiple }}
         <rd-filter-list-select
           v-model="formData.selectMultiple"
+          :max="2"
           transfer
           clearable
           placement="bottom-start"
@@ -283,7 +284,7 @@ export default {
     }
   },
   mounted() {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
       let children = []
       for (let j = 0; j < 4; j++) {
         const value = `${i.toString(36)}${j}`
