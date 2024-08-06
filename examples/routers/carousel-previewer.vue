@@ -14,7 +14,19 @@
       type="IMAGE"
       :data="imageData"
       thumbnail-key="previewUrl"
-      @on-close="handleImageClose"></rd-carousel-previewer>
+      @on-close="handleImageClose">
+      <template #default>
+        <div class="slot">
+          <div class="row">
+            <Tag color="primary">primary</Tag>
+            <Tag color="error">primary</Tag>
+          </div>
+          <div class="row">
+            <Tag color="warning">warning</Tag>
+          </div>
+        </div>
+      </template>
+    </rd-carousel-previewer>
     <br />
     <rd-carousel-previewer
       v-model="visibleVideo"
