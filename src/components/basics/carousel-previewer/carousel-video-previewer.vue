@@ -15,6 +15,7 @@
     <!-- 内容 -->
     <transition name="fade-motion">
       <div :class="[prefixCls + '-content']">
+        <slot></slot>
         <!-- 视频加载错误 -->
         <img
           v-if="isVideoLoadError"
@@ -75,6 +76,10 @@ export default {
     videoControls: {
       type: Boolean,
       default: true
+    },
+    autoPlay: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -106,7 +111,9 @@ export default {
     async init() {
       await this.$nextTick()
       this.handleOnMuted()
-      // this.playVideo()
+      if (this.autoPlay) {
+        this.playVideo()
+      }
     },
     // 视频播放
     playVideo() {
