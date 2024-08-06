@@ -2,6 +2,7 @@
   <div>
     <Button @click="handleImageClick">展示Image预览</Button>
     <Button @click="handleVideoClick">展示Video预览</Button>
+    <Button @click="handleVideoAutoClick">展示Video自动预览</Button>
     <rd-carousel-previewer
       v-model="visibleImage"
       :current="currentImage"
@@ -20,7 +21,20 @@
       type="VIDEO"
       :data="videoData"
       thumbnail-key="thumbnail"
-      @on-close="handleVideoClose"></rd-carousel-previewer>
+      :video-auto-play="videoAutoPlay"
+      @on-close="handleVideoClose">
+      <template #default>
+        <div class="slot">
+          <div class="row">
+            <Tag color="primary">primary</Tag>
+            <Tag color="error">primary</Tag>
+          </div>
+          <div class="row">
+            <Tag color="warning">warning</Tag>
+          </div>
+        </div>
+      </template>
+    </rd-carousel-previewer>
   </div>
 </template>
 <script>
@@ -288,7 +302,8 @@ export default {
             'https://tos-video.adsdesk.cn/tos_oss/1488/b50e/1250/1488b50e1250ac914482ed44fc659cb6-small.jpg'
         }
       ],
-      currentImage: null
+      currentImage: null,
+      videoAutoPlay: false
     }
   },
   methods: {
@@ -304,10 +319,28 @@ export default {
     handleVideoClose() {
       alert('展示Video预览 close')
       this.visibleVideo = false
+      this.videoAutoPlay = false
     },
     handleVideoClick() {
+      this.visibleVideo = true
+    },
+    handleVideoAutoClick() {
+      this.videoAutoPlay = true
       this.visibleVideo = true
     }
   }
 }
 </script>
+<style lang="less" scoped>
+.slot {
+  position: absolute;
+  width: 100%;
+  height: 10px;
+
+  .row {
+    display: flex;
+    margin: 8px;
+    justify-content: space-between;
+  }
+}
+</style>

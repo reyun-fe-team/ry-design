@@ -75,7 +75,10 @@
                 :poster="newCurrent[posterKey]"
                 :video-controls="videoControls"
                 :src="newCurrent[urlKey]"
-                :class="[prefixCls + '-image-video']"></CarouselVideoPreviewer>
+                :auto-play="videoAutoPlay"
+                :class="[prefixCls + '-image-video']">
+                <slot></slot>
+              </CarouselVideoPreviewer>
             </div>
           </transition>
         </div>
@@ -214,6 +217,11 @@ export default {
     videoControls: {
       type: Boolean,
       default: true
+    },
+    // 视频自动播放
+    videoAutoPlay: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
