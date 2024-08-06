@@ -15,6 +15,7 @@
     <!-- 内容 -->
     <transition name="fade-motion">
       <div :class="[prefixCls + '-content']">
+        <!-- 插槽 -->
         <slot></slot>
         <!-- 视频加载错误 -->
         <img

@@ -64,6 +64,8 @@
               <div
                 v-if="type === 'IMAGE'"
                 :class="[prefixCls + '-image-wrap']">
+                <!-- 插槽 -->
+                <slot></slot>
                 <img
                   :class="[prefixCls + '-image-img']"
                   :src="newCurrent[urlKey]"
