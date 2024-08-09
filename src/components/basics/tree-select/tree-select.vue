@@ -179,14 +179,6 @@ export default {
     defaultExpandAll: {
       type: Boolean,
       default: true
-    },
-    filterNodeMethod: {
-      type: Function,
-      default(value, data) {
-        const labelKey =
-          this.defaultProps && this.defaultProps.label ? this.defaultProps.label : 'label'
-        return data[labelKey].includes(value)
-      }
     }
   },
   data() {
@@ -597,6 +589,9 @@ export default {
     },
     closeDropdown() {
       this.$refs['filter-list'].closeDropdown()
+    },
+    filterNodeMethod(value, data) {
+      return data[this.labelKey].includes(value)
     },
     getHalfCheckedKeys() {
       return this.$refs.tree.getHalfCheckedKeys()
