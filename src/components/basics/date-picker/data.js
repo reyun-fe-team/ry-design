@@ -3,6 +3,7 @@ export const shortcutsList = [
   '-1day',
   '-7day',
   '-30day',
+  '-365day',
   '0week',
   '-1week',
   '0month',
@@ -235,6 +236,19 @@ export const getShortcutsOptionsList = (start, self) => [
       const date = new Date()
       let date1 = new Date()
       date1.setTime(date1.getTime() - 92 * 3600 * 1000 * 24)
+      if (start && new Date(start) > date1) {
+        date1 = new Date(new Date(start).getTime() + 3600 * 1000 * 24)
+      }
+      return [date1, date]
+    }
+  },
+  {
+    id: '-365day',
+    text: '近一年',
+    value() {
+      const date = new Date()
+      let date1 = new Date()
+      date1.setTime(date1.getTime() - 364 * 3600 * 1000 * 24)
       if (start && new Date(start) > date1) {
         date1 = new Date(new Date(start).getTime() + 3600 * 1000 * 24)
       }
