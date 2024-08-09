@@ -180,14 +180,6 @@ export default {
       type: Boolean,
       default: true
     }
-    // filterNodeMethod: {
-    //   type: Function,
-    //   default(value, data) {
-    //     const labelKey =
-    //       this.defaultProps && this.defaultProps.label ? this.defaultProps.label : 'label'
-    //     return data[labelKey].includes(value)
-    //   }
-    // }
   },
   data() {
     let value = this.value
