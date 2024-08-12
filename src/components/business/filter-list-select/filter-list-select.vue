@@ -385,7 +385,7 @@ export default {
       if (this.groupNameList && Object.keys(this.groupNameList).length) {
         Object.keys(this.groupNameList).forEach(key => {
           const groups = this.filterData.filter(val => val._groupValue === key && !val.disabled)
-          let check = groups.every(val => this.current.includes(val.value))
+          let check = !!groups.length && groups.every(val => this.current.includes(val.value))
           if (!check && this.isCountMax) {
             const tol = groups.reduce((total, val) => {
               if (this.current.includes(val.value)) {
@@ -398,7 +398,7 @@ export default {
             }
           }
           const indeterminate = !check && groups.some(val => this.current.includes(val.value))
-          const disabled = groups.every(val => val.disabled)
+          const disabled = groups.length ? groups.every(val => val.disabled) : true
           params[key] = {
             check,
             disabled,
