@@ -3,6 +3,7 @@
     <h2 style="margin: 24px 0">rd-form-select-indicator</h2>
     <rd-form-select-indicator
       v-model="dataFiltering"
+      :has-switch="false"
       :data-list="groupList"
       :show-index-is-union="true"
       :clearable="true"

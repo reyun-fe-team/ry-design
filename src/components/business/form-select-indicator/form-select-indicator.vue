@@ -1,6 +1,8 @@
 <template>
   <div :class="classes">
-    <div :class="prefixCls + '-data-filtering'">
+    <div
+      v-if="hasSwitch"
+      :class="prefixCls + '-data-filtering'">
       <i-switch
         v-model="dataFilteringChecked"
         size="small"
@@ -156,6 +158,10 @@ export default {
           ruleType: 'number-input-between'
         }
       ]
+    },
+    hasSwitch: {
+      type: Boolean,
+      defualt: true
     }
   },
   data() {
@@ -202,6 +208,9 @@ export default {
           this.currentValue = {
             data: [_cloneDeep(this.params)],
             selectData: []
+          }
+          if (!this.hasSwitch) {
+            this.dataFilteringChecked = true
           }
         } else {
           this.currentValue = val
