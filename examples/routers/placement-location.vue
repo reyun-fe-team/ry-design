@@ -23,8 +23,53 @@
       show-checkbox
       show-all
       :loading="loading"
+      :item-min-width="62"
       @on-title-click="onTitleClick"
-      @on-on-select-all="onTitleClick"></rd-placement-location>
+      @on-select-all="onTitleClick">
+      <template
+        slot="select-item"
+        slot-scope="{ row }">
+        {{ row.label }}
+        <Tooltip
+          v-if="row.message"
+          :content="row.message"
+          theme="light"
+          transfer>
+          <Icon
+            size="14"
+            custom="iconfont ry-icon-illustrate"
+            @click.stop></Icon>
+        </Tooltip>
+      </template>
+    </rd-placement-location>
+
+    <h2 style="margin: 16px 0">快手{{ valueKuaishou }}</h2>
+
+    <rd-placement-location
+      v-model="valueKuaishou"
+      style="width: 212px"
+      :data="dataKuaishou"
+      show-checkbox
+      :item-width="152"
+      show-all>
+      <template
+        slot="select-item"
+        slot-scope="{ row }">
+        {{ row.label }}
+        <Tooltip
+          slot="select-action"
+          style="float: right"
+          :content="row.label"
+          theme="light">
+          <span
+            style="color: #3989fa; cursor: default"
+            @click.stop>
+            预览
+          </span>
+        </Tooltip>
+      </template>
+    </rd-placement-location>
+
     <h2 style="margin: 16px 0">广点通-广告位置{{ valueGdtPosition }}</h2>
     <div @click="updateValue">点击设置空</div>
     <div @click="updateValueAdd">点击添加</div>
@@ -39,6 +84,8 @@
     <h2 style="margin: 16px 0">广点通-创意形式{{ valueGdtCreative }}</h2>
     <rd-placement-location
       v-model="valueGdtCreative"
+      style="width: 650px"
+      :item-min-width="152"
       show-checkbox
       :data="dataGdtCreative"></rd-placement-location>
     <h2 style="margin: 16px 0">广点通-创意形式-单选{{ valueGdtCreativeRadio }}</h2>
@@ -89,6 +136,7 @@ export default {
     return {
       loading: true,
       valueToutiao: [],
+      valueKuaishou: [],
       valueGdtPosition: [],
       valueGdtCreative: ['格子广告'],
       valueGdtCreativeCur: ['格子广告'],
@@ -104,7 +152,8 @@ export default {
           expand: true,
           disabled: false,
           checked: false,
-          value: '今日头条'
+          value: '今日头条',
+          message: 'message'
         },
         {
           label: '西瓜视频',
@@ -127,7 +176,8 @@ export default {
               label: '激励视频',
               disabled: false,
               checked: false,
-              value: '激励视频'
+              value: '激励视频',
+              message: 'message'
             },
             {
               label: '原生',
@@ -771,6 +821,29 @@ export default {
               ]
             }
           ]
+        }
+      ],
+      dataKuaishou: [
+        {
+          label: '信息流广告',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: 'information'
+        },
+        {
+          label: '上下滑大屏广告',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: 'downward'
+        },
+        {
+          label: '激励视频和广告',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: 'videos'
         }
       ]
     }

@@ -62,6 +62,10 @@ export default {
             // 标题
             {
               title:
+                'https://lanhuapp.com/web/#/item/project/product?tid=e3e62454-5612-4f0f-9039-19b08fef37b9&pid=fbd49784-8dcd-4d1a-b41d-000797ac9501&image_id=e7ddc25f-af89-4648-903b-718c6f54429f&docId=e7ddc25f-af89-4648-903b-718c6f54429f&docType=axure&versionId=a501f5fe-0495-4bd2-aa3b-0287b96afc5c&pageId=a6fbcd71cd634a6aaacc4befcfc186bc'
+            },
+            {
+              title:
                 'Steven Paul Jobs was an American entrepreneur and business magnate. He was the chairman, chief executive officer, and a co-founder of Apple Inc.'
             },
             {

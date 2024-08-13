@@ -67,6 +67,7 @@ import FilterLisCascader from './components/business/filter-list-cascader'
 import { FilterArea, FilterAreaTemplateList } from './components/business/filter-area'
 import PlacementLocation from './components/business/placement-location'
 import ErrorPreventModal from './components/business/error-prevent-modal'
+import ManageBatchSelected from './components/business/manage-batch-selected'
 import FilterDropdownInput from './components/business/filter-dropdown-input'
 
 import ViewUI from 'view-design'
@@ -173,9 +174,10 @@ const components = [
   TreeSelect,
   Tree,
   CollapseTransition,
+  ManageBatchSelected,
   FilterAreaTemplateList,
-  FooterToolbar,
-  FilterDropdownInput
+  FilterDropdownInput,
+  FooterToolbar
 ]
 
 // 对象式-指令
@@ -270,8 +272,9 @@ export default {
   TreeSelect,
   Tree,
   CollapseTransition,
+  ManageBatchSelected,
   FilterArea,
   FilterAreaTemplateList,
-  FooterToolbar,
-  FilterDropdownInput
+  FilterDropdownInput,
+  FooterToolbar
 }

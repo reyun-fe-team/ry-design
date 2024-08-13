@@ -1,12 +1,12 @@
 {
   "name": "ry-design",
-  "version": "2.18.9",
+  "version": "2.9.1-alpha.2",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "ry-design",
-      "version": "2.18.9",
+      "version": "2.9.1-alpha.2",
       "dependencies": {
         "element-resize-detector": "^1.2.0",
         "moment": "^2.29.4",

@@ -19,7 +19,17 @@
         :disabled="option._disabled || option.disabled"
         :multiple="multiple"
         :class="classesTitle(titleIndex)"
-        @on-change="handlTitleChange(option)"></placement-location-node>
+        :row="option"
+        :item-width="itemWidth"
+        @on-change="handlTitleChange(option)">
+        <template
+          slot="select-item"
+          slot-scope="{ row }">
+          <slot
+            name="select-item"
+            :row="row"></slot>
+        </template>
+      </placement-location-node>
       <div
         v-if="option.expand && option.children && option.children.length"
         :class="prefixCls + '-children'">
@@ -31,7 +41,18 @@
           :show-checkbox="getChildItemCheckbox(item)"
           :disabled="item._disabled || item.disabled"
           :multiple="getChildrenMultiple(option)"
-          @on-change="handleChildrenChange(option, item, titleIndex)"></placement-location-node>
+          :row="item"
+          :item-width="itemWidth"
+          :item-min-width="itemMinWidth"
+          @on-change="handleChildrenChange(option, item, titleIndex)">
+          <template
+            slot="select-item"
+            slot-scope="{ row }">
+            <slot
+              name="select-item"
+              :row="row"></slot>
+          </template>
+        </placement-location-node>
       </div>
     </div>
     <div
@@ -91,6 +112,14 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    itemWidth: {
+      type: [Number, String],
+      default: ''
+    },
+    itemMinWidth: {
+      type: [Number, String],
+      default: ''
     }
   },
   data() {
@@ -393,7 +422,7 @@ export default {
       })
       this.handleUpdateSelectValue()
       if (this.showCheckbox) {
-        this.$emit('on-on-select-all', this.currentValue)
+        this.$emit('on-select-all', this.currentValue)
       }
     },
     getChildItemCheckbox(item) {

@@ -5,7 +5,7 @@
       ref="rd-date-picker-inner"
       v-model="selDate"
       :style="styles"
-      type="daterange"
+      :type="type"
       :transfer="transfer"
       :confirm="confirm"
       :clearable="clearable"
@@ -14,6 +14,7 @@
       :placement="placement"
       :placeholder="placeholder"
       :size="size"
+      :disabled="disabled"
       @click.native="nativeClick"
       @on-open-change="handleOpenChange"
       @on-change="handleChange"
@@ -32,6 +33,13 @@ import { getKey } from '@src/util/assist'
 export default {
   name: prefixCls,
   props: {
+    type: {
+      // daterange datetimerange
+      default: 'daterange',
+      validator(value) {
+        return ['daterange', 'datetimerange'].includes(value)
+      }
+    },
     value: {
       type: Array,
       default: () => []
@@ -85,7 +93,7 @@ export default {
     },
     end: {
       type: String,
-      request: true,
+      require: true,
       default: () => {
         return date.getMoment(new Date())
       }
@@ -115,6 +123,11 @@ export default {
     width: {
       type: [String, Number],
       default: null
+    },
+    // 是否禁用选择器
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

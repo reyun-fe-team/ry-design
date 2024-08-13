@@ -1,5 +1,5 @@
 <template>
-  <main :class="classes">
+  <div :class="classes">
     <div :class="prefixCls + '-header'">
       <slot name="header">
         <div>
@@ -37,15 +37,23 @@
           v-for="indicatType in listData"
           :key="indicatType.key"
           :class="prefixCls + '-nav-area-list'">
-          <div :class="prefixCls + '-nav-area-list-label'">{{ indicatType.title }}</div>
+          <div
+            v-tooltip="{ content: indicatType.title, 'max-width': 350, placement: 'bottom-start' }"
+            :class="prefixCls + '-nav-area-list-label'">
+            {{ indicatType.title }}
+          </div>
           <div
             v-for="indicatClassify in indicatType.children"
             :key="indicatClassify.key"
+            v-tooltip="{
+              content: indicatClassify.title,
+              'max-width': 350,
+              placement: 'bottom-start'
+            }"
             :class="[
               [prefixCls + '-nav-area-list-item'],
               { [prefixCls + '-nav-area-list-item-checked']: currentNav === indicatClassify.key }
             ]"
-            :title="indicatClassify.title"
             @click="handleNavJump(indicatClassify.key)">
             {{ indicatClassify.title }}
           </div>
@@ -90,7 +98,6 @@
                     <Tooltip
                       v-if="item.prefix.content"
                       theme="light"
-                      placement="top"
                       :max-width="200"
                       :content="item.prefix.content">
                       <!-- ali-icon 暂时不能上传，先使用图片 -->
@@ -108,7 +115,6 @@
                   <Tooltip
                     v-if="item.tooltip"
                     theme="light"
-                    placement="top"
                     :max-width="200"
                     :content="item.tooltip">
                     <span :class="prefixCls + '-view-list-content-item-title'">
@@ -125,7 +131,6 @@
                     <Tooltip
                       v-if="item.suffix.content"
                       theme="light"
-                      placement="top"
                       :max-width="200"
                       :content="item.suffix.content">
                       <ry-icon
@@ -156,7 +161,7 @@
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>

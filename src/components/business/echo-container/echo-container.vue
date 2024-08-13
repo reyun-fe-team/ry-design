@@ -1,5 +1,5 @@
 <template>
-  <main :class="prefixCls">
+  <div :class="prefixCls">
     <slot
       name="label"
       :class="prefixCls + '-label'">
@@ -64,7 +64,7 @@
       custom="iconfont ry-icon-guanbi"
       color="#767A82"
       @click="clear"></Icon>
-  </main>
+  </div>
 </template>
 
 <script>

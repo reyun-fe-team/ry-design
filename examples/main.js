@@ -3,10 +3,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './app.vue'
 import ryDesign from '../src/index'
-// import iView from 'view-design'
+// 调试打包后的dist文件
 // import ryDesign from '../dist/ry-design.min.js'
 // import '../dist/styles/main.css'
-// Vue.use(iView)
 Vue.use(VueRouter)
 Vue.use(ryDesign)
 
@@ -187,20 +186,12 @@ const router = new VueRouter({
       component: resolve => require(['./routers/sort'], resolve)
     },
     {
-      path: '/image-preview',
-      component: resolve => require(['./routers/image-preview'], resolve)
-    },
-    {
       path: '/dropdown-panel',
       component: resolve => require(['./routers/dropdown-panel'], resolve)
     },
     {
-      path: '/image',
-      component: resolve => require(['./routers/image'], resolve)
-    },
-    {
-      path: '/image-group',
-      component: resolve => require(['./routers/image-group'], resolve)
+      path: '/image-preview',
+      component: resolve => require(['./routers/image-preview'], resolve)
     },
     {
       path: '/date-picker',
@@ -263,6 +254,10 @@ const router = new VueRouter({
       component: resolve => require(['./routers/placement-location'], resolve)
     },
     {
+      path: '/error-prevent-modal',
+      component: resolve => require(['./routers/error-prevent-modal'], resolve)
+    },
+    {
       path: '/batch-inputs',
       component: resolve => require(['./routers/batch-inputs'], resolve)
     },
@@ -283,12 +278,16 @@ const router = new VueRouter({
       component: resolve => require(['./routers/tree'], resolve)
     },
     {
-      path: '/footer-toolbar',
-      component: resolve => require(['./routers/footer-toolbar'], resolve)
+      path: '/manage-batch-selected',
+      component: resolve => require(['./routers/manage-batch-selected'], resolve)
     },
     {
       path: '/filter-dropdown-input',
       component: resolve => require(['./routers/filter-dropdown-input'], resolve)
+    },
+    {
+      path: '/footer-toolbar',
+      component: resolve => require(['./routers/footer-toolbar'], resolve)
     }
   ]
 })

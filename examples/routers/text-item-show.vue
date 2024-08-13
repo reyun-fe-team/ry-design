@@ -2,7 +2,7 @@
  * @Author: 杨玉峰 yangyufeng@reyun.com
  * @Date: 2022-06-15 19:53:40
  * @LastEditors: 杨玉峰 yangyufeng@mobvista.com
- * @LastEditTime: 2022-10-28 16:10:17
+ * @LastEditTime: 2023-03-01 11:11:33
  * @FilePath: /ry-design/examples/routers/text-item-show.vue
  * @Description: 极速创建基础信息，单项显示控件 示例
 -->
@@ -28,7 +28,15 @@
         type="md-create"
         style="padding: 0 5px" />
     </rd-text-item-show>
-
+    <p style="margin: 10px 0">单行</p>
+    <rd-text-item-show :data="basic">
+      <template #btnGroup>
+        <Icon
+          style="width: 50px"
+          type="md-create" />
+      </template>
+    </rd-text-item-show>
+    <p style="margin: 10px 0">带图文-标题与子标题</p>
     <rd-text-item-show
       :tooltip="basic.text"
       type="title"
@@ -38,7 +46,7 @@
         type="md-create"
         style="padding: 0 5px" />
     </rd-text-item-show>
-
+    <p style="margin: 10px 0">无图文-标题与子标题</p>
     <rd-text-item-show
       type="title"
       :data="titleInfo">
@@ -47,7 +55,7 @@
         type="md-create"
         style="padding: 0 5px" />
     </rd-text-item-show>
-
+    <p style="margin: 10px 0">带图文的分类</p>
     <rd-text-item-show
       type="classify"
       :data="classify">
