@@ -38,7 +38,7 @@
             <TabPane
               v-for="item in tabsList"
               :key="item.name"
-              :label="item.label"
+              :label="renderTabLabel(item)"
               :name="item.name" />
           </Tabs>
         </div>
@@ -181,6 +181,33 @@ export default {
       if (this.newIsRoute) {
         this.$router.push({ name })
       }
+    },
+    renderTabLabel(item) {
+      return h =>
+        h('div', [
+          h('span', item.label),
+          item.tooltip
+            ? h(
+                'Tooltip',
+                {
+                  props: {
+                    transfer: true,
+                    content: item.tooltip,
+                    maxWidth: '300',
+                    theme: 'light'
+                  }
+                },
+                [
+                  h('Icon', {
+                    props: {
+                      custom: 'iconfont ry-icon-help',
+                      size: '14'
+                    }
+                  })
+                ]
+              )
+            : null
+        ])
     }
   }
 }
