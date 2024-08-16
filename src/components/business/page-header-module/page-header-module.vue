@@ -184,30 +184,43 @@ export default {
     },
     renderTabLabel(item) {
       return h =>
-        h('div', [
-          h('span', item.label),
-          item.tooltip
-            ? h(
-                'Tooltip',
-                {
-                  props: {
-                    transfer: true,
-                    content: item.tooltip,
-                    maxWidth: '300',
-                    theme: 'light'
-                  }
-                },
-                [
-                  h('Icon', {
+        h(
+          'div',
+          {
+            style: {
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center'
+            }
+          },
+          [
+            h('span', item.label),
+            item.tooltip
+              ? h(
+                  'Tooltip',
+                  {
                     props: {
-                      custom: 'iconfont ry-icon-help',
-                      size: '14'
+                      transfer: true,
+                      content: item.tooltip,
+                      maxWidth: '300',
+                      theme: 'light'
                     }
-                  })
-                ]
-              )
-            : null
-        ])
+                  },
+                  [
+                    h('Icon', {
+                      props: {
+                        size: '14',
+                        type: 'ios-help-circle-outline'
+                      },
+                      style: {
+                        marginLeft: '6px'
+                      }
+                    })
+                  ]
+                )
+              : null
+          ]
+        )
     }
   }
 }
