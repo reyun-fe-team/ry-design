@@ -310,11 +310,13 @@ export default {
       this.$emit('on-save-rule', val)
     },
     updateMoreStatus() {
-      if (this.$refs.resizeElement) {
-        if (this.$refs.resizeElement.scrollHeight > 40) {
-          this.hasMore = true
+      this.$nextTick(() => {
+        if (this.$refs.resizeElement) {
+          if (this.$refs.resizeElement.scrollHeight > 40) {
+            this.hasMore = true
+          }
         }
-      }
+      })
     },
     // #utils
     initData(data) {
