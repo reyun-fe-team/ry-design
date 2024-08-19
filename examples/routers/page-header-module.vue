@@ -31,7 +31,8 @@ export default {
       tabsList: [
         {
           label: '模块头部组件',
-          name: 'page-header-module'
+          name: 'page-header-module',
+          tooltip:'模块头部组件'
         },
         {
           label: '页头组件',
