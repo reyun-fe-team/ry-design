@@ -118,6 +118,10 @@ export default {
       type: Boolean,
       default: false
     },
+    selectBottomValue: {
+      type: Boolean,
+      default: false
+    },
     // 栏目 title
     title: {
       type: String,
@@ -265,7 +269,7 @@ export default {
     handleReciveCycle(datas) {
       datas.map(item => {
         if (item.check) {
-          if (this.onlyBottom) {
+          if (this.onlyBottom || this.selectBottomValue) {
             // 如果只有最底层可选, 判断是否为最后一层数据，最后一层直接push，否则继续循环
             if (!item.children || !item.children.length) {
               this.selectDatas.push(item)
@@ -354,7 +358,7 @@ export default {
           if (item.children && item.children.length) {
             item.children = this.handleChildrenCheck(item.children)
           }
-          if (this.onlyBottom) {
+          if (this.onlyBottom || this.selectBottomValue) {
             // 如果只有最底层可选, 判断是否为最后一层数据，最后一层直接push，否则继续循环
             if (!item.children || !item.children.length) {
               this.selectDatas.push(item)
@@ -369,8 +373,13 @@ export default {
           this.$set(item, 'little', false)
           if (item.children && item.children.length) {
             item.children = this.handleDefaultCycle(item.children, datas)
+            // 历史代码：逻辑只要children 有check 或者 little 为true， 那么children 的父级的little就应该为true
             if (this.checkArrayLittle(item.children)) {
               item.little = true
+            }
+            if (item.children.every(item => item.check)) {
+              item.check = true
+              item.little = false
             }
           }
         }
