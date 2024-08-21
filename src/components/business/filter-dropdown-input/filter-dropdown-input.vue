@@ -17,6 +17,7 @@
       </filter-list-input>
       <div
         slot="list"
+        :style="{ width: listWidth }"
         :class="[prefixCls + '-wrapper']">
         <rd-radio-group
           v-model="matchingMethod"
@@ -58,6 +59,10 @@ export default {
       type: [String, Number],
       default: 260
     },
+    wrapperWidth: {
+      type: [String, Number],
+      default: null
+    },
     inputHeight: {
       type: [String, Number],
       default: ''
@@ -90,6 +95,14 @@ export default {
     }
   },
   computed: {
+    listWidth() {
+      let width = this.inputStyles.width
+      if (this.wrapperWidth) {
+        width = parseInt(this.wrapperWidth || 0)
+        width = `${width}px`
+      }
+      return width
+    },
     inputStyles() {
       let style = {}
       if (this.inputWidth) {
