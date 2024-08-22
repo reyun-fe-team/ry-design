@@ -40,7 +40,7 @@
             @on-change="changeIndicator" />
         </div>
         <span
-          v-if="currentValue.data.length > 1 && showDeleteIcon === index"
+          v-if="currentValue.data.length > minLine && showDeleteIcon === index"
           :class="prefixCls + '-icon-delete'">
           <Icon
             custom="iconfont ry-icon-trash-outline"
@@ -115,6 +115,10 @@ export default {
     maxLine: {
       type: Number,
       default: 10
+    },
+    minLine: {
+      type: Number,
+      default: 1
     },
     // 指标选择数据
     dataList: {
