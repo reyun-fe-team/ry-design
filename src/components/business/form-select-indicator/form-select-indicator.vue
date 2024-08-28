@@ -10,42 +10,44 @@
       <span :class="prefixCls + '-data-filtering-text'">按指标数值筛选</span>
     </div>
     <template v-if="dataFilteringChecked">
-      <div
-        v-for="(_, index) in currentValue.data"
-        :key="index"
-        :class="prefixCls + '-content'"
-        @mouseover="handleMouseOver(index)"
-        @mouseleave="handleMouseLeave">
+      <div>
         <div
-          :style="formStyle"
-          :class="prefixCls + '-form'">
-          <rd-filter-list-select
-            v-model="currentValue.selectData[index]"
-            :max-height="256"
-            :input-width="160"
-            filterable
-            :data="getFilteredDataList(index)"
-            @on-click="handleStop"
-            @on-change="changeData(index)"></rd-filter-list-select>
-          <div :class="prefixCls + '-form-line'"></div>
-          <rd-form-indicator
-            :ref="`rdFormIndicator-${index}`"
-            v-model="currentValue.data[index]"
-            :show-label="false"
-            :show-clear-icon="false"
-            :unit="getUnit(index)"
-            :width="182"
-            :indicator-rule="indicatorRule"
-            :styles="{ width: '240px' }"
-            @on-change="changeIndicator" />
+          v-for="(_, index) in currentValue.data"
+          :key="index"
+          :class="prefixCls + '-content'"
+          @mouseover="handleMouseOver(index)"
+          @mouseleave="handleMouseLeave">
+          <div
+            :style="formStyle"
+            :class="prefixCls + '-form'">
+            <rd-filter-list-select
+              v-model="currentValue.selectData[index]"
+              :max-height="256"
+              :input-width="160"
+              :filterable="filterable"
+              :data="getFilteredDataList(index)"
+              @on-click="handleStop"
+              @on-change="changeData(index)"></rd-filter-list-select>
+            <div :class="prefixCls + '-form-line'"></div>
+            <rd-form-indicator
+              :ref="`rdFormIndicator-${index}`"
+              v-model="currentValue.data[index]"
+              :show-label="false"
+              :show-clear-icon="false"
+              :unit="getUnit(index)"
+              :width="182"
+              :indicator-rule="indicatorRule"
+              :styles="{ width: '240px' }"
+              @on-change="changeIndicator" />
+          </div>
+          <span
+            v-if="currentValue.data.length > minLine && showDeleteIcon === index"
+            :class="prefixCls + '-icon-delete'">
+            <Icon
+              custom="iconfont ry-icon-trash-outline"
+              @click="handlerDelete(index)"></Icon>
+          </span>
         </div>
-        <span
-          v-if="currentValue.data.length > 1 && showDeleteIcon === index"
-          :class="prefixCls + '-icon-delete'">
-          <Icon
-            custom="iconfont ry-icon-trash-outline"
-            @click="handlerDelete(index)"></Icon>
-        </span>
       </div>
       <span
         v-if="currentValue.data.length < maxLine"
@@ -116,6 +118,10 @@ export default {
       type: Number,
       default: 10
     },
+    minLine: {
+      type: Number,
+      default: 1
+    },
     // 指标选择数据
     dataList: {
       type: Array,
@@ -160,6 +166,10 @@ export default {
       ]
     },
     hasSwitch: {
+      type: Boolean,
+      defualt: true
+    },
+    filterable: {
       type: Boolean,
       defualt: true
     }
