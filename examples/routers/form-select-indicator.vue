@@ -9,6 +9,7 @@
       :clearable="true"
       :width="240"
       :min-line="0"
+      :filterable="false"
       :styles="{ width: '240px' }"
       @on-change="handlerChange" />
   </main>

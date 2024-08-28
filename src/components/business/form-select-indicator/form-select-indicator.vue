@@ -24,7 +24,7 @@
               v-model="currentValue.selectData[index]"
               :max-height="256"
               :input-width="160"
-              filterable
+              :filterable="filterable"
               :data="getFilteredDataList(index)"
               @on-click="handleStop"
               @on-change="changeData(index)"></rd-filter-list-select>
@@ -166,6 +166,10 @@ export default {
       ]
     },
     hasSwitch: {
+      type: Boolean,
+      defualt: true
+    },
+    filterable: {
       type: Boolean,
       defualt: true
     }
