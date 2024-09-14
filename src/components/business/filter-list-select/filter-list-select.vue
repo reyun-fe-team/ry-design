@@ -211,7 +211,7 @@ export default {
     },
     selectAll: {
       type: Boolean,
-      default: false
+      default: true
     },
     // 是否能添加其他组/主体
     isSelectEntity: {
