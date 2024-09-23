@@ -11,7 +11,7 @@ export const formatDate = (date, format = 'yyyy-MM-dd') => {
   // 替换格式中的标记
   format = format.replace(/YYYY|yyyy/g, year)
   format = format.replace(/MM/g, month)
-  format = format.replace(/DD|mm/g, day)
+  format = format.replace(/DD|dd/g, day)
   format = format.replace(/HH|hh/g, hours)
   format = format.replace(/mm/g, minutes)
   format = format.replace(/SS|ss/g, seconds)
