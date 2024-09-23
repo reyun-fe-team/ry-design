@@ -221,11 +221,11 @@ export default {
             endRange = Math.floor((new Date(this.end).getTime() - end.getTime()) / 86400000)
           }
           end.setDate(end.getDate() + endRange)
-          this.selStart = date.getMoment(star)
+          this.selStart = date.getMoment(star, this.format)
           this.selEnd =
             new Date(end).getTime() > new Date().getTime()
-              ? date.getMoment(new Date())
-              : date.getMoment(end)
+              ? date.getMoment(new Date(), this.format)
+              : date.getMoment(end, this.format)
         } else {
           this.selStart = this.start
           this.selEnd = this.end
@@ -328,10 +328,14 @@ export default {
     handleChange(date) {
       this.selStart = this.start
       this.selEnd = this.end
-      if (new Date(this.start) > new Date(date[0]) || new Date(this.end) < new Date(date[1])) {
+
+      const gt = new Date(this.start) > new Date(date[0])
+      const lt = new Date(this.end) < new Date(date[1])
+      if (gt || lt) {
         this.$Message.info('时间范围超出，请确认')
         return false
       }
+
       this.selDate = date
       if (!this.confirm) {
         this.$emit('input', this.selDate)
@@ -340,6 +344,10 @@ export default {
     },
     // 在 confirm 模式下有效，点击确定按钮时触发
     handleOk() {
+      if (!this.confirm) {
+        return
+      }
+
       let isLength = !this.selDate.length
       let isInvalid = this.selDate[0] === 'Invalid date' || this.selDate[1] === 'Invalid date'
       let isEmpty = this.selDate[0] === '' || this.selDate[1] === ''
@@ -348,16 +356,19 @@ export default {
         this.$Message.info('时间筛选不能为空')
         return false
       }
-      if (
-        new Date(this.start) > new Date(this.selDate[0]) ||
-        new Date(this.end) < new Date(this.selDate[1])
-      ) {
+
+      const gt = new Date(this.start) > new Date(this.selDate[0])
+      const lt = new Date(this.end) < new Date(this.selDate[1])
+      if (gt || lt) {
         this.$Message.info('时间范围超出，请确认')
         return false
       }
-      if (this.format === 'yyyy-MM-dd') {
-        this.selDate = [date.getMoment(this.selDate[0]), date.getMoment(this.selDate[1])]
-      }
+
+      this.selDate = [
+        date.getMoment(this.selDate[0], this.format),
+        date.getMoment(this.selDate[1], this.format)
+      ]
+
       this.$emit('input', this.selDate)
       this.$emit('on-ok', this.selDate)
     },
