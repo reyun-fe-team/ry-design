@@ -1,6 +1,12 @@
 <template>
   <div>
     <h2>placement-location</h2>
+    <rd-placement-location
+      v-if="true"
+      v-model="testValue"
+      :data="testListData"
+      show-checkbox
+      show-all></rd-placement-location>
     <div
       v-for="option in dataToutiao"
       :key="option.label"
@@ -146,6 +152,23 @@ export default {
       valueGdtCreativeRadio: ['格子广告'],
       valueGdtCreativeRadioPart: [],
       dataEmpty: [],
+      testValue: [],
+      testListData: [
+        {
+          label: '今日头条',
+          expand: true,
+          disabled: false,
+          checked: false,
+          value: '今日头条'
+        },
+        {
+          label: '西瓜视频',
+          expand: false,
+          disabled: true,
+          checked: false,
+          value: '西瓜视频'
+        }
+      ],
       dataToutiao: [
         {
           label: '今日头条',
