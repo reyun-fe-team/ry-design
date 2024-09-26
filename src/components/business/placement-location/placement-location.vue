@@ -115,7 +115,7 @@ export default {
     },
     checkedAll() {
       const valid = this.data.some(val => {
-        if (this.showCheckbox && !val.checked) {
+        if (this.showCheckbox && !val.checked && !val.disabled) {
           return true
         } else if (val.expand && val.children && val.children.length) {
           return val.children.some(item => {
