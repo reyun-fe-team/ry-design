@@ -8,6 +8,7 @@
       v-model="valueRadio1"
       label="单选: "
       check-strictly
+      clearable
       :data="data1"
       :max-width="500"
       :max-height="300"
@@ -59,7 +60,6 @@
       v-model="valueDown"
       label="多选: "
       multiple
-      show-option-parent
       show-select-option
       show-checkbox
       filterable

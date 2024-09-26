@@ -21,6 +21,10 @@
     margin-bottom: 16px;
     margin-right: 10px;
 
+    &:last-child {
+      margin-bottom: 0;
+    }
+
     .@{filter-list-input} {
       padding: 0 4px 0 10px;
       border: none;
@@ -81,10 +85,12 @@
   }
 
   &-add-line {
+    display: block;
     font-size: 12px;
     color: #3989FA;
     line-height: 16px;
     cursor: pointer;
+    margin-top: 6px;
   }
 
   &-index-is-union {
