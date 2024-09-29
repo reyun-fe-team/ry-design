@@ -93,13 +93,14 @@ const prefixCls = prefix + 'filter-list-select'
 
 import _cloneDeep from 'lodash/cloneDeep'
 import _isEqual from 'lodash/isEqual'
-
+import _uniq from 'lodash/uniq'
 import { oneOf } from '@src/util/assist.js'
 import Emitter from '@src/mixins/emitter'
 import virtualComponent from './filter-list-select-virtual.vue'
 import rdFilterListDescribe from '../filter-list/filter-list-describe'
 import rdFilterListSelectAction from './filter-list-select-action'
 import rdFilterListSelectAll from './filter-list-select-all'
+
 const checkValuesNotEqual = (value, values) => {
   const strValue = JSON.stringify(value)
   const strValues = JSON.stringify(values)
@@ -554,17 +555,14 @@ export default {
       this.$refs['filter-list'].updateDropdown()
     },
     toggleSelectAll(status) {
-      let values = status
-        ? this.filterData
-            .filter(data => !data.disabled || this.current.indexOf(data.value) > -1)
-            .map(data => data.value)
-        : this.filterData
-            .filter(data => data.disabled && this.current.indexOf(data.value) > -1)
-            .map(data => data.value)
+      let values = this.filterData.filter(data => !data.disabled).map(data => data.value)
+      let current = status
+        ? _uniq([...this.current, ...values])
+        : this.current.filter(val => !values.includes(val))
       if (this.isCountMax) {
-        values = values.slice(0, this.max)
+        current = current.slice(0, this.max)
       }
-      this.current = values
+      this.current = current
       this.movementChange()
     }
   }
