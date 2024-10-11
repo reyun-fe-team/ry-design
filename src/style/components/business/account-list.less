@@ -1,26 +1,27 @@
-@account-list: ~"@{css-prefix}account-list";
-@item-active: ~"@{css-prefix}account-list-body-left-box-content-item";
+@account-list: ~'@{css-prefix}account-list';
+@item-active: ~'@{css-prefix}account-list-body-left-box-content-item';
 
 .@{account-list} {
   &-body {
-    border: 1px solid @border-color-base;
     display: flex;
+    overflow: hidden;
+    border: 1px solid @border-color-base;
     flex-wrap: nowrap;
 
     &-left-box {
+      display: flex;
       width: 184px;
       border-right: 1px solid @border-color-base;
-      display: flex;
       flex-direction: column;
 
       &-title {
-        background: #F9F9F9;
-        border-bottom: 1px solid @border-color-base;
         height: 32px;
-        line-height: 32px;
         padding: 0 10px;
-        color: #151B39;
         font-weight: bold;
+        line-height: 32px;
+        color: #151b39;
+        background: #f9f9f9;
+        border-bottom: 1px solid @border-color-base;
       }
 
       &-content {
@@ -28,49 +29,47 @@
         .small-scroll-y();
 
         &-item {
-          height: 48px;
+          display: flex;
           width: 100%;
+          height: 48px;
           padding: 8px 10px;
           cursor: pointer;
-          display: flex;
           justify-content: space-between;
           align-items: center;
           flex-wrap: nowrap;
-          cursor: pointer;
 
           &-name {
-            width: 100%;
-            display: inline-block;
-            overflow: hidden;
-            text-overflow: ellipsis;
             display: -webkit-box;
+            width: 100%;
+            overflow: hidden;
+            font-size: 12px;
+            color: #151b39;
+            text-overflow: ellipsis;
+            word-break: break-all;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
-            font-size: 12px;
-            color: #151B39;
-            word-break: break-all;
 
             &.sign {
               -webkit-line-clamp: 1;
 
               &.id {
-                color: #999999;
+                color: #999;
               }
             }
           }
 
           &-num {
             display: inline-block;
-            background-color: #3A88FA;
-            color: #fff;
             height: 16px;
-            line-height: 16px;
-            border-radius: 3px;
             padding: 0 4px;
-            text-align: center;
             margin-left: 9px;
-            opacity: 0.6;
+            line-height: 16px;
+            color: #fff;
+            text-align: center;
             white-space: nowrap;
+            background-color: #3a88fa;
+            border-radius: 3px;
+            opacity: 0.6;
           }
 
           &-icon {
@@ -79,7 +78,7 @@
         }
 
         &-item-active {
-          background: #F1F3F5 !important;
+          background: #f1f3f5 !important;
 
           .@{item-active}-icon {
             opacity: 1 !important;
@@ -88,13 +87,8 @@
           .@{item-active}-num {
             opacity: 1 !important;
           }
-
-          .@{item-active}-icon {
-            opacity: 1 !important;
-          }
         }
       }
-
     }
 
     &-right-box {

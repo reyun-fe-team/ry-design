@@ -2,7 +2,7 @@
   <div :class="[prefixCls]">
     <div
       :class="prefixCls + '-body'"
-      :style="`width: ${width};height: ${height};`">
+      :style="bodyStyles">
       <div
         v-show="showLeft"
         :class="prefixCls + '-body-left-box'">
@@ -100,6 +100,14 @@ export default {
       type: String,
       default: '438px'
     },
+    maxHeight: {
+      type: String,
+      default: ''
+    },
+    minHeight: {
+      type: String,
+      default: ''
+    },
     dataList: {
       type: Array,
       default: () => [],
@@ -165,6 +173,12 @@ export default {
       prefixCls: prefixCls,
       active: '',
       isRenderRight: true
+    }
+  },
+  computed: {
+    bodyStyles() {
+      const { width = '', minHeight = '', height = '', maxHeight = '' } = this
+      return { width, minHeight, height, maxHeight }
     }
   },
   watch: {

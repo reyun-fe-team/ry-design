@@ -20,6 +20,7 @@
       :is-cursor="isCursor"
       :lazy="lazy"
       :auto-play="autoPlay"
+      :low-quality="option.lowQuality"
       @on-preview-click="onPreviewClick(option, initialIndex, option._type)"
       @click.native="handleClick(option, initialIndex)"></rd-image>
     <div
