@@ -18,6 +18,7 @@
         :disabled="disabled"
         :show-description="showDescription"
         :show-subtitle="showSubtitle"
+        :label-method="inputLabelMethod"
         @on-clear="filterListInputChange"
         @click.native="handleInputClick">
         <template
@@ -69,6 +70,7 @@
             :max-height="maxHeightOption"
             :min-height="minHeightOption"
             :data="optionData"
+            :option-label-method="optionLabelMethod"
             @on-change="optionChange"></filter-list-option>
         </div>
         <!-- :style="styleFooter" -->
@@ -88,6 +90,8 @@ import filterListPanel from './filter-list-panel'
 import filterListOption from './filter-list-option'
 import filterListInput from './filter-list-input'
 import { oneOf } from '@src/util/assist.js'
+import _throttle from 'lodash/throttle'
+import _isEqual from 'lodash/isEqual'
 
 export default {
   name: prefixCls,
@@ -164,7 +168,9 @@ export default {
     showSubtitle: Boolean,
     disabled: Boolean,
     transfer: Boolean,
-    placement: String
+    placement: String,
+    optionLabelMethod: Function,
+    inputLabelMethod: Function
   },
   data() {
     return {
@@ -172,7 +178,13 @@ export default {
       current: this.value,
       iconState: false,
       queryValue: this.query,
-      refHeight: null
+      refHeight: null,
+      // 下拉面板位置监测
+      showDropdownPanel: false,
+      observeTarget: null,
+      intersectionObserver: null,
+      animationFrameId: null,
+      lastTargetProps: { top: 0, left: 0, width: 0, height: 0 }
     }
   },
   computed: {
@@ -263,9 +275,85 @@ export default {
       this.$emit('query-change', val)
     }
   },
+  mounted() {
+    this.initElementObserver()
+  },
+  beforeDestroy() {
+    this.closeElementObserver()
+  },
   methods: {
-    closeDropdown() {
-      this.$refs['list-panel'].closeDropdown()
+    // 关闭监测
+    closeElementObserver() {
+      if (this.observeTarget) {
+        // 视口监测
+        // 停止监听特定目标元素
+        this.intersectionObserver.unobserve(this.observeTarget)
+        // 位置监测
+        if (this.animationFrameId) {
+          cancelAnimationFrame(this.animationFrameId)
+          this.animationFrameId = null
+        }
+      }
+    },
+    // 开启监测
+    openElementObserver() {
+      if (this.observeTarget) {
+        // 视口监测
+        // 开始监听一个目标元素
+        this.intersectionObserver.observe(this.observeTarget)
+        // 位置监测
+        if (this.animationFrameId) {
+          cancelAnimationFrame(this.animationFrameId)
+        }
+        this.animationFrameId = requestAnimationFrame(this.throttledCheckPosition)
+      }
+    },
+    // 销毁监测
+    destroyElementObserver() {
+      this.closeElementObserver()
+      if (this.animationFrameId) {
+        this.animationFrameId = null
+      }
+      if (this.intersectionObserver) {
+        // 当你不再需要观察时，调用 disconnect 方法
+        this.intersectionObserver.disconnect()
+        this.intersectionObserver = null
+      }
+    },
+    // 初始化元素监测器
+    initElementObserver() {
+      // 被监测元素
+      this.observeTarget = this.$refs['list-panel'].$el
+      // 初始化监测
+      if (this.observeTarget) {
+        // 视口监测
+        this.intersectionObserver = new IntersectionObserver(entries => {
+          for (const entry of entries) {
+            // 离开视口 => 关闭下拉面板
+            if (!entry.isIntersecting) {
+              this.closeDropdown()
+              break
+            }
+          }
+        })
+        // 位置监测
+        this.throttledCheckPosition = _throttle(this.checkElementPosition, 600)
+      }
+    },
+    // 检测元素尺寸、位置
+    checkElementPosition() {
+      if (this.observeTarget && this.showDropdownPanel) {
+        const rect = this.observeTarget.getBoundingClientRect()
+        const { top, left, width, height } = rect
+        const props = { top, left, width, height }
+        // 元素信息变更
+        if (!_isEqual(props, this.lastTargetProps)) {
+          this.lastTargetProps = props
+          this.updateDropdown()
+        }
+      }
+      // 重复监测
+      this.animationFrameId = requestAnimationFrame(this.throttledCheckPosition)
     },
     handleVisibleChange(val) {
       this.iconState = val
@@ -278,23 +366,36 @@ export default {
         })
       }
       this.$emit('on-visible-change', val)
+
+      this.showDropdownPanel = val
+      this.$nextTick(() => {
+        // 打开 ？ 开启监测 ： 关闭监测
+        this.showDropdownPanel ? this.openElementObserver() : this.closeElementObserver()
+      })
     },
     onClearSearch() {
       this.queryValue = ''
     },
-    filterListInputChange(val) {
+    filterListInputChange(val, oldValues) {
       this.current = val
       this.$emit('input', val)
-      this.$emit('on-change', val)
-      this.$emit('on-input-clear', val)
+      this.$emit('on-change', val, oldValues)
+      this.$emit('on-input-clear', val, oldValues)
     },
-    optionChange() {
+    optionChange(_value, oldValues) {
       this.$emit('input', this.current)
-      this.$emit('on-change', this.current)
+      this.$emit('on-change', this.current, oldValues)
     },
     handleInputClick() {
       this.$emit('on-input-click', this.current)
     },
+    // 关闭下拉面板
+    closeDropdown() {
+      this.$refs['list-panel'].closeDropdown()
+      // 关闭监测
+      this.closeElementObserver()
+    },
+    // 更新下拉面板
     updateDropdown() {
       this.$refs['list-panel'].updateDropdown()
     }

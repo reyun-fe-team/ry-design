@@ -1,0 +1,153 @@
+@batch-inputs: ~"@{css-prefix}batch-inputs";
+@tinymce: ~"@{css-prefix}batch-inputs-tinymce";
+
+.@{tinymce} {
+  position: relative;
+  display: flex;
+  font-size: 0;
+  vertical-align: middle;
+  background: #fff;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-start;
+
+  &-is-error {
+    background: #fde9e9 !important;
+  }
+
+  &-rich {
+    padding: 0 16px;
+    font-size: 12px;
+    line-height: 35px;
+    word-break: break-all;
+    background: transparent;
+    border: 0;
+    outline: none;
+    flex: 1;
+
+    &[contenteditable]:empty::before {
+      font-size: 12px;
+      color: #a5a3a3;
+      content: attr(placeholder);
+    }
+
+    &[contenteditable]:focus {
+      content: none;
+    }
+
+    img[value] {
+      width: 16px;
+      height: 16px;
+      margin-left: 4px;
+      vertical-align: middle;
+      pointer-events: none;
+    }
+  }
+
+  &-ln-wrap {
+    display: none;
+    height: 35px;
+    min-width: 50px;
+    font-size: 12px;
+    line-height: 35px;
+    color: #999;
+
+    &-l {
+      margin-right: 5px;
+    }
+
+    &-r {
+      margin-right: 5px;
+      cursor: pointer;
+    }
+  }
+}
+
+.@{batch-inputs} {
+  height: 100%;
+  overflow: auto !important;
+  border: 1px solid #dadfe3;
+
+  &-content {
+    width: 100%;
+    border: 0;
+  }
+
+  &-line {
+    display: flex;
+
+    &:hover {
+      .@{batch-inputs}-left-list {
+        background: #edf1f5;
+      }
+
+      .@{tinymce} {
+        background: #edf1f5;
+
+        &-ln-wrap {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+        }
+      }
+    }
+  }
+
+  &-left-list {
+    display: flex;
+    width: 40px;
+    background: #f9f9f9;
+    align-items: center;
+    justify-content: center;
+
+    &-active {
+      background: #edf1f5 !important;
+    }
+  }
+
+  &-error-left {
+    position: relative;
+    display: inline-block;
+    width: 25px;
+    height: 20px;
+    line-height: 20px;
+    color: #fff;
+    text-align: center;
+    background: #f45858;
+    border-radius: 5px;
+
+    &::after {
+      position: absolute;
+      top: 5.5px;
+      right: -8px;
+      width: 0;
+      height: 0;
+      border: 4px solid #f45858;
+      content: '';
+      border-top-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+    }
+  }
+
+  &-right-list {
+    display: flex;
+    width: 100%;
+
+    &-active {
+      background: #edf1f5 !important;
+    }
+  }
+
+  &-btn-wrap {
+    margin: 0 16px;
+  }
+
+  &-is-error {
+    background: #fde9e9 !important;
+  }
+
+  &-middle-style-li-active {
+    background: #edf1f5;
+  }
+}

@@ -45,6 +45,7 @@
           :data="data"
           multiple
           filterable
+          :filter-by-custom="['label', 'newLabel']"
           :label-method="labelMethod"
           select-all
           @on-input-clear="handleInputClear"
@@ -77,19 +78,23 @@
       <div
         v-if="true"
         style="display: inline-block; margin-left: 380px">
-        多选组 事例：{{ selectMultiple }}
-        <!-- :group-name-list="groupNameList" -->
+        多选组 事例：{{ formData.selectMultiple }}
         <rd-filter-list-select
-          v-model="selectMultiple"
+          v-model="formData.selectMultiple"
+          :max="2"
           transfer
           clearable
           placement="bottom-start"
+          select-all
           filterable
           show-select-option
           :data="data"
           :group-name-list="groupNameList"
+          :group-checkbox="true"
+          :is-select-entity="false"
+          :filter-by-custom="['label', 'description']"
+          filter-by-split=","
           multiple
-          save-type="leave-save"
           show-action
           action-button-text="添加小游戏"
           :action-rule-validate="actionRuleValidate"
@@ -220,7 +225,10 @@
 export default {
   data() {
     return {
-      selectMultiple: ['1-00-value', '1-01-value'],
+      formData: {
+        selectMultiple: []
+      },
+      selectMultiple: [],
       selectRadio: '',
       groupList: [],
       formValidate: {
@@ -267,17 +275,25 @@ export default {
       return params
     }
   },
+  watch: {
+    formData: {
+      handler(n, o) {
+        console.log(n, o)
+      },
+      deep: true
+    }
+  },
   mounted() {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
       let children = []
-      for (let j = 0; j < 100; j++) {
+      for (let j = 0; j < 4; j++) {
         const value = `${i.toString(36)}${j}`
         children.push({
           value: `${j + 1}-${value}-value`,
-          label: `${j + 1}-天安门上太阳升-${value} (beijin-description)`,
+          label: `${j + 1}-天安门上太阳升-${value}`,
           newLabel: `天安门上太阳升${j + 1}-${value}`,
-          disabled: [2, 4, 6, 7].includes(j) ? true : false,
-          description: '天安门上太阳升beijin-description',
+          disabled: j === 2,
+          description: `天安门上太阳升beijin-description-${i}-${j}`,
           src: 'https://adsdesk-test.s3.cn-north-1.amazonaws.com.cn/e3b/a68/69c/e3ba6869c4593eaaa7984e0f555d9517-small.jpg',
           isDefault: false,
           subtitle: '天安门上太阳升beijin-subtitle'
@@ -340,8 +356,8 @@ export default {
     handleInputClear(val) {
       console.log(val)
     },
-    handleChange() {
-      // console.log('接收到on-change', val)
+    handleChange(val) {
+      console.log('接收到on-change', val)
     },
     handleActionOk(label) {
       this.actionValue = label

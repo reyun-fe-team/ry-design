@@ -38,7 +38,7 @@
             <TabPane
               v-for="item in tabsList"
               :key="item.name"
-              :label="item.label"
+              :label="renderTabLabel(item)"
               :name="item.name" />
           </Tabs>
         </div>
@@ -137,6 +137,14 @@ export default {
       if (this.activeValue !== route.name) {
         this.tabInit()
       }
+    },
+    activeValue: function (value) {
+      if (this.newIsRoute) {
+        this.newActiveValue = this.$route.name
+      }
+      if (this.isTabs) {
+        this.newActiveValue = value
+      }
     }
   },
   created() {
@@ -165,15 +173,54 @@ export default {
       return typeof soltRef === 'function'
     },
     // 点击
-    handleTabClick(e) {
-      if (!this.isTabs) {
-        return
+    handleTabClick(name) {
+      this.newActiveValue = name
+      if (this.isTabs) {
+        this.$emit('on-tab-click', name)
       }
-      this.$emit('on-tab-click', e)
       if (this.newIsRoute) {
-        this.newActiveValue = e
-        this.$router.push({ name: e })
+        this.$router.push({ name })
       }
+    },
+    renderTabLabel(item) {
+      return h =>
+        h(
+          'div',
+          {
+            style: {
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center'
+            }
+          },
+          [
+            h('span', item.label),
+            item.tooltip
+              ? h(
+                  'Tooltip',
+                  {
+                    props: {
+                      transfer: true,
+                      content: item.tooltip,
+                      maxWidth: '300',
+                      theme: 'light'
+                    }
+                  },
+                  [
+                    h('Icon', {
+                      props: {
+                        size: '14',
+                        type: 'ios-help-circle-outline'
+                      },
+                      style: {
+                        marginLeft: '6px'
+                      }
+                    })
+                  ]
+                )
+              : null
+          ]
+        )
     }
   }
 }

@@ -1,3 +1,7 @@
+// 是否为前端浏览器环境
+export const isClient = typeof window !== 'undefined'
+
+// 类型判断
 export function typeOf(obj) {
   const toString = Object.prototype.toString
   const map = {
@@ -15,7 +19,7 @@ export function typeOf(obj) {
   return map[toString.call(obj)]
 }
 
-// deepCopy
+// 深度克隆
 export function deepCopy(data) {
   const t = typeOf(data)
   let o
@@ -40,6 +44,7 @@ export function deepCopy(data) {
   return o
 }
 
+// 根据组件名称向上查找
 export function findComponentUpward(context, componentName, componentNames) {
   if (typeof componentName === 'string') {
     componentNames = [componentName]
@@ -58,6 +63,7 @@ export function findComponentUpward(context, componentName, componentNames) {
   return parent
 }
 
+// 根据组件名称向下查找
 export function findComponentDownward(context, componentName) {
   const childrens = context.$children
   let children = null
@@ -79,6 +85,7 @@ export function findComponentDownward(context, componentName) {
   return children
 }
 
+// 根据组件名称向下查找 多个
 export function findComponentsDownward(context, componentName) {
   return context.$children.reduce((components, child) => {
     if (child.$options.name === componentName) {
@@ -89,6 +96,7 @@ export function findComponentsDownward(context, componentName) {
   }, [])
 }
 
+// 根据组件名称向上查找 多个
 export function findComponentsUpward(context, componentName) {
   let parents = []
   const parent = context.$parent
@@ -114,7 +122,7 @@ export function isArrRepeat(arr) {
   return false
 }
 
-// 唯一key v-for
+// 获取唯一ID
 export function getKey() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     let r = (Math.random() * 16) | 0
@@ -123,6 +131,7 @@ export function getKey() {
   })
 }
 
+// 中英文计算字数
 export function count({ value, type, isDifferWord }) {
   let len = 0
   // 输入内容不区分中英文，直接返回value的长度
@@ -157,12 +166,12 @@ export function count({ value, type, isDifferWord }) {
   return len
 }
 
-export const isClient = typeof window !== 'undefined'
+// 转成驼峰命名
+export function camelCase(name) {
+  // eslint-disable-next-line no-useless-escape
+  const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g
+  const MOZ_HACK_REGEXP = /^moz([A-Z])/
 
-const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g
-const MOZ_HACK_REGEXP = /^moz([A-Z])/
-
-function camelCase(name) {
   return name
     .replace(SPECIAL_CHARS_REGEXP, function (_, separator, letter, offset) {
       return offset ? letter.toUpperCase() : letter
@@ -179,7 +188,8 @@ export function oneOf(value, validList) {
   }
   return false
 }
-// getStyle
+
+// 获取元素的样式属性
 export function getStyle(element, styleName) {
   if (!isClient) {
     return
@@ -199,12 +209,12 @@ export function getStyle(element, styleName) {
   }
 }
 
-/* istanbul ignore next */
-const trim = function (string) {
+// 去除字符串首尾 2 端的空字符
+export function trim(string) {
   return (string || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '')
 }
 
-/* istanbul ignore next */
+// 判断元素是否存在对应 class 类名
 export function hasClass(el, cls) {
   if (!el || !cls) {
     return false
@@ -219,7 +229,7 @@ export function hasClass(el, cls) {
   }
 }
 
-/* istanbul ignore next */
+// 给元素添加对应 class 类名
 export function addClass(el, cls) {
   if (!el) {
     return
@@ -246,7 +256,7 @@ export function addClass(el, cls) {
   }
 }
 
-/* istanbul ignore next */
+// 给元素去除对应 class 类名
 export function removeClass(el, cls) {
   if (!el || !cls) {
     return
@@ -273,12 +283,12 @@ export function removeClass(el, cls) {
   }
 }
 
-/*get is empty element？*/
+// 获取是否为空元素
 export function isEmptyElement(c) {
   return !(c.tag || (c.text && c.text.trim() !== ''))
 }
 
-/*filter empty element*/
+// 过滤空元素
 export function filterEmpty() {
   var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : []
 
@@ -297,8 +307,8 @@ export function easeInOutQuad(t, b, c, d) {
   return (-c / 2) * (t * (t - 2) - 1) + b
 }
 
-// 唯一标识
-export const genID = (length = 4) => {
+// 获取唯一标识
+export function genID(length = 4) {
   const S4 = () => {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
   }
@@ -326,4 +336,74 @@ export const genID = (length = 4) => {
   }
   let gen = getRandomArrayElements(s.split(''), length).join('')
   return gen
+}
+
+// 保存当前光标的选区
+export function saveSelection(pEle) {
+  if (!isClient) {
+    return null
+  }
+
+  if (document.getSelection) {
+    const selection = document.getSelection()
+    if (selection.getRangeAt && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0)
+      const container = range.commonAncestorContainer
+      const containerParent = container.parentElement
+      const isSame = pEle && (pEle === container || pEle === containerParent)
+      if (isSame) {
+        return range
+      }
+    }
+  }
+  return null
+}
+
+// 恢复保存的光标的选区
+export function restoreSelection(range) {
+  if (!isClient) {
+    return
+  }
+
+  if (range) {
+    const selection = document.getSelection()
+    selection.removeAllRanges()
+    selection.addRange(range)
+  }
+}
+
+// 在input, textarea 元素当前的光标位置添加一段文本
+export function insertInputTextAtCursor(input, textToInsert = '', callback) {
+  if (!isClient) {
+    return
+  }
+
+  const isDomElement = input instanceof Element || input instanceof HTMLDocument
+  const isInputOrTextarea = isDomElement && ['INPUT', 'TEXTAREA'].includes(input.tagName)
+  if (!isInputOrTextarea || textToInsert.length < 1) {
+    return
+  }
+
+  const selectionStart = input.selectionStart
+  const selectionEnd = input.selectionEnd
+  const inputValue = input.value
+  const before = inputValue.substring(0, selectionStart)
+  const after = inputValue.substring(selectionEnd)
+
+  input.value = before + textToInsert + after
+  callback && callback(input.value)
+
+  // 使用 requestAnimationFrame 确保在下一帧渲染前执行
+  window.requestAnimationFrame(() => {
+    // 重新设置光标位置（将光标移动到插入文字的末尾）
+    const position = selectionStart + textToInsert.length
+    input.setSelectionRange(position, position)
+  })
+}
+
+// 等待一会
+export function waitOut(cb, time = 20) {
+  window.setTimeout(() => {
+    cb && cb()
+  }, time)
 }

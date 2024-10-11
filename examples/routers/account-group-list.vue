@@ -1,7 +1,7 @@
 <template>
   <div class="dis-flex">
     <rd-account-group-list
-      id="accountId"
+      id="id"
       :data="dataList"
       :icon-size="18"
       item-id="accountId"
@@ -58,7 +58,8 @@ export default {
             {
               num: '不限',
               accountName: '广告组3',
-              accountId: 'ggz099'
+              accountId: 'ggz099',
+              id: 'ggz099'
             }
           ]
         }
@@ -75,6 +76,6 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-
-</style>
+<style
+  lang="less"
+  scoped></style>

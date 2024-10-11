@@ -1,5 +1,5 @@
 <template>
-  <main :class="prefixCls">
+  <div :class="prefixCls">
     <div :class="[prefixCls + '-wrapper', 'small-scroll-y']">
       <!-- 第一级表格 -->
       <div
@@ -11,7 +11,9 @@
         </div>
         <div :class="prefixCls + '-wrapper-table'">
           <!-- 一级表格搜索 -->
-          <div style="padding: 10px">
+          <div
+            v-if="isFirstSearch"
+            style="padding: 10px">
             <Input
               v-model.trim="firstSearch"
               :placeholder="firstSearchPlaceholder"
@@ -22,12 +24,12 @@
             ref="firstTableRef"
             :row-key="firstRowId"
             big-data-checkbox
-            :height="firstTableHeight"
+            :height="firstTableHeightCpu"
             :border="false"
             use-virtual
             :show-header="isFirst"
             :row-height="firstTableRowHeight"
-            :data="firstTableData"
+            :data="currentFirstTableData"
             inverse-current-row
             show-body-overflow="tooltip"
             tooltip-effect="light"
@@ -36,11 +38,12 @@
             @select="select"
             @current-change="getCurrentRecord">
             <u-table-column
-              v-if="level === 'first' && firstTableData.length"
+              v-if="level === 'first' && currentFirstTableData.length"
               type="selection"
+              :selectable="selectable"
               width="33"></u-table-column>
             <u-table-column
-              v-if="firstTableData.length"
+              v-if="currentFirstTableData.length"
               :key="firstTableTitleField"
               label="全选">
               <template #default="{ row }">
@@ -79,7 +82,9 @@
         </div>
         <div :class="[prefixCls + '-wrapper-table', prefixCls + '-wrapper-table-border-left-none']">
           <!-- 二级表格搜索框 -->
-          <div style="padding: 10px">
+          <div
+            v-if="isSecondSearch"
+            style="padding: 10px">
             <Input
               v-model.trim="secondSearch"
               :placeholder="secondSearchPlaceholder"
@@ -91,7 +96,7 @@
             ref="secondTableRef"
             :row-key="secondRowId"
             big-data-checkbox
-            :height="secondTableHeight"
+            :height="secondTableHeightCpu"
             :border="false"
             use-virtual
             :row-height="secondTableRowHeight"
@@ -104,6 +109,7 @@
             <u-table-column
               v-if="secondTableData.length"
               type="selection"
+              :selectable="selectable"
               width="33"></u-table-column>
             <u-table-column
               v-if="secondTableData.length"
@@ -241,7 +247,7 @@
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -401,6 +407,20 @@ export default {
     clearSecondKeyword: {
       type: Boolean,
       default: false
+    },
+    // 一级表格是否展示搜索
+    isFirstSearch: {
+      type: Boolean,
+      default: true
+    },
+    // 二级表格是否展示搜索
+    isSecondSearch: {
+      type: Boolean,
+      default: true
+    },
+    firstMax: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -431,6 +451,22 @@ export default {
     isSecond() {
       return this.level === 'second'
     },
+    currentFirstTableData() {
+      const size = this.firstSelectedData.length
+      if (this.firstMax !== 0 && !!size && size >= this.firstMax) {
+        return this.firstTableData.map(_item => {
+          let item = { ..._item }
+          if (
+            !item.disabled &&
+            !this.firstSelectedData.some(val => val[this.firstRowId] === item[this.firstRowId])
+          ) {
+            item.disabled = true
+          }
+          return item
+        })
+      }
+      return this.firstTableData
+    },
     // 二级已选拍平
     secondSelectedTable() {
       const arr = []
@@ -452,6 +488,12 @@ export default {
       })
 
       return arr
+    },
+    firstTableHeightCpu() {
+      return this.isFirstSearch ? this.firstTableHeight : this.selectedTableHeight
+    },
+    secondTableHeightCpu() {
+      return this.isSecondSearch ? this.secondTableHeight : this.selectedTableHeight
     }
   },
   watch: {
@@ -541,12 +583,15 @@ export default {
     },
     // 全选
     selectAll(selection) {
+      if (this.firstMax !== 0) {
+        selection = selection.slice(0, this.firstMax)
+      }
       this.select(selection)
     },
     select(selection) {
       if (this.level === 'first') {
         // 当前左侧表格数据所有id集合
-        const firstTableDataKeys = this.firstTableData.map(item => item[this.firstRowId])
+        let firstTableDataKeys = this.currentFirstTableData.map(item => item[this.firstRowId])
         // 当前左侧表格数据选中的id集合
         const selectionKeys = selection.map(item => item[this.firstRowId])
         // 已选表格数据id集合
@@ -641,9 +686,13 @@ export default {
         }
       } else if (this.level === 'first') {
         const arr = this.firstSelectedData.map(item => item[this.firstRowId])
-        const data = this.firstTableData.filter(item => arr.includes(item[this.firstRowId]))
+        const data = this.currentFirstTableData.filter(item => arr.includes(item[this.firstRowId]))
         this.$refs.firstTableRef && this.$refs.firstTableRef.partRowSelections(data, true)
       }
+    },
+    // 复选框是否可选
+    selectable(row) {
+      return !row.disabled
     }
   }
 }

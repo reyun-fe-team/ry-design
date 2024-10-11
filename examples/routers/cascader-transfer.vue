@@ -4,7 +4,7 @@
       v-model="region"
       title="区域"
       :datas="cityList"
-      :only-bottom="true"></rd-cascader-transfer>
+      select-bottom-value></rd-cascader-transfer>
     <br />
     <rd-cascader-transfer
       v-model="region2"

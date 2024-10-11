@@ -47,7 +47,9 @@
               :src="audioUrl"
               @ended="handleEnded"></audio>
             <!-- 按钮 -->
+            <!-- 后面支持一下:  一个普通的图片, 不是图文 , 预览不需要显示这个播放的图标 -->
             <div
+              v-if="autoPlay"
               :style="audioBtnStyle"
               :class="[prefixCls + '-image-audio-icon']"
               @click.stop="handleClickPlay"></div>
@@ -62,6 +64,8 @@
               <div
                 v-if="type === 'IMAGE'"
                 :class="[prefixCls + '-image-wrap']">
+                <!-- 插槽 -->
+                <slot></slot>
                 <img
                   :class="[prefixCls + '-image-img']"
                   :src="newCurrent[urlKey]"
@@ -71,8 +75,12 @@
               <CarouselVideoPreviewer
                 v-if="type === 'VIDEO'"
                 :poster="newCurrent[posterKey]"
+                :video-controls="videoControls"
                 :src="newCurrent[urlKey]"
-                :class="[prefixCls + '-image-video']"></CarouselVideoPreviewer>
+                :auto-play="videoAutoPlay"
+                :class="[prefixCls + '-image-video']">
+                <slot></slot>
+              </CarouselVideoPreviewer>
             </div>
           </transition>
         </div>
@@ -162,11 +170,13 @@ export default {
     },
     // 图片或视频的URL (图片展示区使用)
     urlKey: {
+      require: true,
       type: String,
       default: 'previewUrl'
     },
     // 缩略图URL (底部控制区域使用)
     thumbnailKey: {
+      require: true,
       type: String,
       default: 'thumbnailUrl'
     },
@@ -199,6 +209,21 @@ export default {
     containerHeight: {
       type: [Number, String],
       default: 600
+    },
+    // 是否支持点击自动播放轮播
+    autoPlay: {
+      type: Boolean,
+      default: true
+    },
+    // 视频播放器展示控制条
+    videoControls: {
+      type: Boolean,
+      default: true
+    },
+    // 视频自动播放
+    videoAutoPlay: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -263,8 +288,17 @@ export default {
     value: {
       immediate: true,
       handler: async function () {
-        this.newCurrent = this.current || this.data[0]
-        this.currentIndex = this.data.indexOf(this.newCurrent)
+        let currentIndex = 0
+        if (this.current) {
+          currentIndex = this.data.findIndex(item => {
+            return item[this.idKey] === this.current[this.idKey]
+          })
+        }
+        // 找不到对应的数据，当前索引默认为0
+        this.currentIndex = currentIndex < 0 ? 0 : currentIndex
+        // 赋值数据项
+        this.newCurrent = this.data[this.currentIndex]
+        // 当前的唯一ID
         this.currentUuid = genID(20)
         await this.$nextTick()
         // value === true => transferBody 渲染
@@ -334,7 +368,8 @@ export default {
     },
     // 开始轮播图片
     startRotatingPictures() {
-      if (this.type === 'IMAGE') {
+      // 图片，一张图以上
+      if (this.type === 'IMAGE' && this.data.length > 1) {
         clearInterval(this.carouselPicturesTimer)
         this.carouselPicturesTimer = setInterval(() => {
           this.handleNext()
@@ -352,10 +387,10 @@ export default {
     handleClickPlay() {
       if (this.isAudioPlay) {
         this.pauseAudio()
-        this.endRotatingPictures()
+        this.autoPlay && this.endRotatingPictures()
       } else {
         this.playAudio()
-        this.startRotatingPictures()
+        this.autoPlay && this.startRotatingPictures()
       }
     },
     // 播放完毕,继续播放
