@@ -54,6 +54,13 @@
         :style="videoSignStyle" />
     </template>
 
+    <template v-if="lowQuality">
+      <img
+        :src="lowQualityImg"
+        :class="prefixCls + '-low-quality'"
+        :style="lowQualityStyle" />
+    </template>
+
     <template v-if="preview">
       <rd-carousel-previewer
         v-model="imagePreviewModal"
@@ -73,6 +80,7 @@ import videoPlay from '@src/images/image-preview/video-play.svg'
 import imageAmplify from '@src/images/image/amplify.png'
 import videoSignImg from '@src/images/image/video-sign.svg'
 import imageErrorImge from '@src/images/image/image-error.svg'
+import lowQualityImg from '@src/images/image/low-quality.svg'
 
 import { oneOf } from '@src/util/assist.js'
 
@@ -153,6 +161,10 @@ export default {
       type: [String, Number],
       default: 12
     },
+    lowQualityWidth: {
+      type: [String, Number],
+      default: 16
+    },
     isCursor: {
       type: Boolean,
       default: false
@@ -166,7 +178,12 @@ export default {
       type: String,
       default: ''
     },
-    autoPlay: Boolean
+    autoPlay: Boolean,
+    // 低质图标
+    lowQuality: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -180,7 +197,8 @@ export default {
       imagePreviewModal: false,
       imageAmplify,
       videoSignImg,
-      imageErrorImge
+      imageErrorImge,
+      lowQualityImg
     }
   },
   computed: {
@@ -232,6 +250,14 @@ export default {
       return {
         width:
           typeof this.videoSignWidth === 'number' ? `${this.videoSignWidth}px` : this.videoSignWidth
+      }
+    },
+    lowQualityStyle() {
+      return {
+        width:
+          typeof this.lowQualityWidth === 'number'
+            ? `${this.lowQualityWidth}px`
+            : this.lowQualityWidth
       }
     },
     previewData() {
