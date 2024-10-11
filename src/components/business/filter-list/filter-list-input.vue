@@ -26,7 +26,7 @@
             :key="uuid"
             style="width: 100%; padding: 0"
             :src="current[0].src"
-            :text="current[0].label"
+            :text="labelMethod(current[0])"
             :show-image="showImage"
             :show-description="showDescription"
             :show-subtitle="showSubtitle"
@@ -63,6 +63,7 @@ import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-input'
 import rdFilterListDescribe from './filter-list-describe'
 import { getKey } from '@src/util/assist'
+import _cloneDeep from 'lodash/cloneDeep'
 export default {
   name: prefixCls,
   components: { rdFilterListDescribe },
@@ -101,6 +102,13 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    labelMethod: {
+      type: Function,
+      default(data) {
+        const type = 'label' in data ? 'label' : 'value'
+        return data[type]
+      }
     }
   },
   data() {
@@ -145,9 +153,10 @@ export default {
   },
   methods: {
     handleClear() {
+      const oldValues = _cloneDeep(this.current).map(val => val.value)
       this.current = []
       this.$emit('on-change', this.current)
-      this.$emit('on-clear', this.current)
+      this.$emit('on-clear', this.current, oldValues)
     }
   }
 }

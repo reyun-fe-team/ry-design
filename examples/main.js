@@ -19,8 +19,20 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     {
-      path: '/vTooltips',
-      component: resolve => require(['./routers/vTooltips'], resolve)
+      path: '/util-class',
+      component: resolve => require(['./routers/util-class'], resolve)
+    },
+    {
+      path: '/v-tooltip',
+      component: resolve => require(['./routers/v-tooltip'], resolve)
+    },
+    {
+      path: '/v-dragging',
+      component: resolve => require(['./routers/v-dragging'], resolve)
+    },
+    {
+      path: '/v-resize',
+      component: resolve => require(['./routers/v-resize'], resolve)
     },
     {
       path: '/transfer',
@@ -121,10 +133,6 @@ const router = new VueRouter({
     {
       path: '/wildcard',
       component: resolve => require(['./routers/wildcard'], resolve)
-    },
-    {
-      path: '/util-class',
-      component: resolve => require(['./routers/util-class'], resolve)
     },
     {
       path: '/account-select',
@@ -243,6 +251,10 @@ const router = new VueRouter({
       component: resolve => require(['./routers/filter-area'], resolve)
     },
     {
+      path: '/filter-area-template-list',
+      component: resolve => require(['./routers/filter-area-template-list'], resolve)
+    },
+    {
       path: '/space',
       component: resolve => require(['./routers/space'], resolve)
     },
@@ -251,8 +263,8 @@ const router = new VueRouter({
       component: resolve => require(['./routers/placement-location'], resolve)
     },
     {
-      path: '/text-input-list-manage',
-      component: resolve => require(['./routers/text-input-list-manage'], resolve)
+      path: '/batch-inputs',
+      component: resolve => require(['./routers/batch-inputs'], resolve)
     },
     {
       path: '/error-prevent-modal',
@@ -263,8 +275,20 @@ const router = new VueRouter({
       component: resolve => require(['./routers/carousel-previewer'], resolve)
     },
     {
-      path: '/v-dragging',
-      component: resolve => require(['./routers/v-dragging'], resolve)
+      path: '/tree-select',
+      component: resolve => require(['./routers/tree-select'], resolve)
+    },
+    {
+      path: '/tree',
+      component: resolve => require(['./routers/tree'], resolve)
+    },
+    {
+      path: '/footer-toolbar',
+      component: resolve => require(['./routers/footer-toolbar'], resolve)
+    },
+    {
+      path: '/filter-dropdown-input',
+      component: resolve => require(['./routers/filter-dropdown-input'], resolve)
     }
   ]
 })

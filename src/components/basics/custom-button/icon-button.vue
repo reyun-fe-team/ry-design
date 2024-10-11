@@ -8,9 +8,8 @@
     :class="[prefixCls, { [prefixCls + '-selected']: isSelected }]"
     :style="btnSizeStyle">
     <rd-icon
-      size="12"
-      :type="icon"
-      class="icon"></rd-icon>
+      :key="12"
+      :type="icon"></rd-icon>
   </div>
 </template>
 <script>

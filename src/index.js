@@ -16,8 +16,9 @@ import Ellipsis from './components/basics/ellipsis'
 import TableMultiInputs from './components/basics/table-multi-inputs'
 import TextEmojInput from './components/basics/text-emoj-input'
 import Icon from './components/basics/icon'
-import { TextInputList, VirtualList } from './components/basics/text-input-list'
-import TextInputListManage from './components/basics/text-input-list-manage'
+import TextInputList from './components/basics/text-input-list'
+import VirtualList from './components/basics/virtual-list'
+import BatchInputs from './components/basics/batch-inputs'
 import Wildcard from './components/basics/wildcard'
 import CascaderTransfer from './components/basics/cascader-transfer'
 import Exception from './components/basics/exception'
@@ -35,6 +36,11 @@ import Indicator from './components/basics/indicator'
 import Empty from './components/basics/empty'
 import Space from './components/basics/space'
 import CarouselPreviewer from './components/basics/carousel-previewer'
+import TreeSelect from './components/basics/tree-select'
+import Tree from './components/basics/tree'
+import CollapseTransition from './components/basics/transitions/collapse-transition'
+import FooterToolbar from './components/basics/footer-toolbar'
+
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
@@ -58,9 +64,10 @@ import FormInput from './components/business/form-input'
 import FormIndicator from './components/business/form-indicator'
 import FormSelectIndicator from './components/business/form-select-indicator'
 import FilterLisCascader from './components/business/filter-list-cascader'
-import FilterArea from './components/business/filter-area'
+import { FilterArea, FilterAreaTemplateList } from './components/business/filter-area'
 import PlacementLocation from './components/business/placement-location'
 import ErrorPreventModal from './components/business/error-prevent-modal'
+import FilterDropdownInput from './components/business/filter-dropdown-input'
 
 import ViewUI from 'view-design'
 
@@ -74,6 +81,7 @@ import { UTable, UTableColumn } from 'umy-ui'
 import lineClamp from './directives/line-clamp'
 import clickOutside from './directives/click-out-side'
 import transferDom from './directives/transfer-dom'
+import resize from './directives/resize'
 // directivesCreateFuncs
 import createTooltip from './directives/tooltip'
 import createDragging from './directives/dragging'
@@ -159,16 +167,23 @@ const components = [
   FilterArea,
   Space,
   PlacementLocation,
-  TextInputListManage,
+  BatchInputs,
   ErrorPreventModal,
-  CarouselPreviewer
+  CarouselPreviewer,
+  TreeSelect,
+  Tree,
+  CollapseTransition,
+  FilterAreaTemplateList,
+  FooterToolbar,
+  FilterDropdownInput
 ]
 
 // 对象式-指令
 const directives = {
   'line-clamp': lineClamp,
   'click-outside': clickOutside,
-  'transfer-dom': transferDom
+  'transfer-dom': transferDom,
+  resize: resize
 }
 
 // 函数式-创建指令对象
@@ -197,7 +212,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default {
   version: process.env.VERSION,
   install,
-  TextInputListManage,
+  BatchInputs,
   Transfer,
   MultiCascader,
   PrefixContainer,
@@ -251,5 +266,12 @@ export default {
   Space,
   PlacementLocation,
   ErrorPreventModal,
-  CarouselPreviewer
+  CarouselPreviewer,
+  TreeSelect,
+  Tree,
+  CollapseTransition,
+  FilterArea,
+  FilterAreaTemplateList,
+  FooterToolbar,
+  FilterDropdownInput
 }

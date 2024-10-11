@@ -3,6 +3,7 @@
 @filter-list-panel: ~"@{css-prefix}filter-list-panel";
 @filter-list-option: ~"@{css-prefix}filter-list-option";
 @filter-list-describe: ~"@{css-prefix}filter-list-describe";
+@select-item-prefix-cls: ~"@{css-prefix}select-item";
 
 .@{filter-list} {
   &-body {
@@ -204,5 +205,11 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+  }
+}
+
+.ivu-form-item-error {
+  .@{filter-list-input} {
+    border: 1px solid @error-color;
   }
 }
