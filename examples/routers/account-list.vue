@@ -8,9 +8,11 @@
       item-name="name"
       style="display: flex; justify-content: center; margin-top: 130px"
       width="800px"
+      height="100%"
+      max-height="500px"
       :before-check="beforeCheck"
       @on-change="getActiveAccount">
-      我是右边的插槽盒子
+      <div style="height: 900px; background-color: rebeccapurple">我是右边的插槽盒子</div>
     </rd-account-list>
   </div>
 </template>

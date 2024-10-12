@@ -105,41 +105,45 @@ export default {
     }, 1000)
     setTimeout(() => {
       this.table.firstSelectedData = [
-        {
-          advertiserId: 0,
-          mediaAccountName: '账号0',
-          data: [
-            {
-              adPlanId: 0,
-              adPlanName: '广告00'
-            },
-            {
-              adPlanId: 1,
-              adPlanName: '广告10'
-            }
-          ]
-        },
-        {
-          advertiserId: 1,
-          mediaAccountName: '账号1',
-          data: [
-            {
-              adPlanId: 2,
-              adPlanName: '广告11'
-            }
-          ]
-        }
+        { advertiserId: 0, mediaAccountName: '账号0' },
+        { advertiserId: 2, mediaAccountName: '账号2' }
       ]
+      // this.table.firstSelectedData = [
+      //   {
+      //     advertiserId: 0,
+      //     mediaAccountName: '账号0',
+      //     data: [
+      //       {
+      //         adPlanId: 0,
+      //         adPlanName: '广告00'
+      //       },
+      //       {
+      //         adPlanId: 1,
+      //         adPlanName: '广告10'
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     advertiserId: 1,
+      //     mediaAccountName: '账号1',
+      //     data: [
+      //       {
+      //         adPlanId: 2,
+      //         adPlanName: '广告11'
+      //       }
+      //     ]
+      //   }
+      //]
     }, 2000)
   },
   methods: {
     getFristList() {
       const arr = []
-      for (let i = 0; i < 30000; i++) {
+      for (let i = 0; i < 30; i++) {
         const obj = {
           advertiserId: i,
           mediaAccountName: '账号' + i,
-          disabled: i === 3 ? true : false
+          disabled: i === 1
         }
         arr.push(obj)
       }
