@@ -242,8 +242,12 @@ export default {
       return this.value[this.middle.activeClass]
     },
     // 转成纯文本内容
-    getPlainTextValues() {
-      return this.value.map(value => getPlainText(value))
+    getPlainTextValues(htmlStringList = []) {
+      return htmlStringList.map(htmlString => getPlainText(htmlString))
+    },
+    // 转成纯文本内容 单个
+    getPlainTextValue(htmlString = '') {
+      return getPlainText(htmlString)
     },
     // 获取当前的输入行
     getCurrentInput() {
