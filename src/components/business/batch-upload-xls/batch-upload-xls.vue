@@ -136,10 +136,45 @@
         <div
           v-if="['portionSucceed', 'error'].includes(isSucceedType) || showErrorTable"
           :class="prefixCls + '-error-tables'">
-          <Table
+          <!-- <Table
             v-bind="tableOption"
             :columns="columnsHeader"
-            :data="errorTable"></Table>
+            :data="errorTable"></Table> -->
+
+          <u-table
+            ref="firstTableRef"
+            big-data-checkbox
+            :border="false"
+            use-virtual
+            show-header
+            :data="errorTable"
+            inverse-current-row
+            show-body-overflow="tooltip"
+            tooltip-effect="light"
+            tooltip-placement="top">
+            <u-table-column
+              v-for="(option, index) in columnsHeader"
+              :key="index"
+              :label="option.title">
+              <template #default="{ row }">
+                {{ row[option.key] }}
+              </template>
+            </u-table-column>
+            <!-- <u-table-column label="全选2">
+              <template #default="{ row }">
+                {{ row.content }}
+              </template>
+            </u-table-column> -->
+            <!-- 一级表格为空时展示内容 -->
+            <!-- <div
+              slot="empty"
+              :class="prefixCls + '-table-empty-box'">
+              <img
+                :src="svg"
+                alt />
+              <p :class="prefixCls + '-table-empty-text'">暂无数据</p>
+            </div> -->
+          </u-table>
         </div>
       </div>
     </div>

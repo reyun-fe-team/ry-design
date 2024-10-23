@@ -138,12 +138,14 @@ export default {
     },
     // 重置参数
     resetDataError() {
-      this.errorTableError = [
-        {
+      let errorTableError = []
+      for (let i = 0; i < 4; i++) {
+        errorTableError.push({
           title: '上传条目错误',
-          content: '错误条数1，2，3'
-        }
-      ]
+          content: '错误条数1，2，3---' + i
+        })
+      }
+      this.errorTableError = errorTableError
       this.isSucceedTypeError = 'portionSucceed'
       this.hintTextError = '上传失败'
     }
