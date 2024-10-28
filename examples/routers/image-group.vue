@@ -7,6 +7,9 @@
       :width="76"
       :height="44"
       is-cursor
+      preview-tip
+      preview
+      auto-play
       @on-click="onClick"></rd-image-group>
     <rd-image-group
       style="margin: 0 24px 0 0"

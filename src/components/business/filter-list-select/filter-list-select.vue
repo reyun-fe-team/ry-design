@@ -39,24 +39,28 @@
     </template>
     <!-- 全选 -->
     <rd-filter-list-select-all
-      v-if="selectAll && multiple"
+      v-if="selectAll && multiple && isSelectEntity"
       :checked-all="checkedAll"
+      :checked-all-indeterminate="checkedAllIndeterminate"
       @on-checked-all="toggleSelectAll"></rd-filter-list-select-all>
     <rd-virtual-list
       ref="list"
       :class="[prefixCls + '-virtual-list', 'small-scroll-y']"
       :style="mainStyles"
       data-key="uid"
-      :data-sources="getLine"
+      :data-sources="filterData"
       :extra-props="{
         groupNameList,
         current,
         multiple,
-        renderItem
+        renderItem,
+        groupCheckObj,
+        groupCheckbox
       }"
       :data-component="virtualComponent"
       v-on="$listeners"
-      @on-click="handleClick"></rd-virtual-list>
+      @on-click="handleClick"
+      @on-group-click="handleGroupClick"></rd-virtual-list>
     <template slot="search-operate">
       <slot name="search-operate"></slot>
     </template>
@@ -89,13 +93,14 @@ const prefixCls = prefix + 'filter-list-select'
 
 import _cloneDeep from 'lodash/cloneDeep'
 import _isEqual from 'lodash/isEqual'
-
+import _uniq from 'lodash/uniq'
 import { oneOf } from '@src/util/assist.js'
 import Emitter from '@src/mixins/emitter'
 import virtualComponent from './filter-list-select-virtual.vue'
 import rdFilterListDescribe from '../filter-list/filter-list-describe'
 import rdFilterListSelectAction from './filter-list-select-action'
 import rdFilterListSelectAll from './filter-list-select-all'
+
 const checkValuesNotEqual = (value, values) => {
   const strValue = JSON.stringify(value)
   const strValues = JSON.stringify(values)
@@ -118,7 +123,10 @@ export default {
         return []
       }
     },
-    label: String,
+    label: {
+      type: String,
+      default: ''
+    },
     multiple: {
       type: Boolean,
       default: false
@@ -160,13 +168,14 @@ export default {
     },
     selectItemHeight: [String, Number],
     optionWidth: [String, Number],
-    filterMethod: {
-      type: Function,
-      default(data, query) {
-        const type = 'label' in data ? 'label' : 'value'
-        return data[type].indexOf(query) > -1
-      }
-    },
+    filterMethod: Function,
+    // filterMethod: {
+    //   type: Function,
+    //   default(data, query) {
+    //     const type = 'label' in data ? 'label' : 'value'
+    //     return data[type].indexOf(query) > -1
+    //   }
+    // },
     labelMethod: {
       type: Function,
       default(data) {
@@ -203,7 +212,28 @@ export default {
     },
     selectAll: {
       type: Boolean,
-      default: false
+      default: true
+    },
+    // 是否能添加其他组/主体
+    isSelectEntity: {
+      type: Boolean,
+      default: true
+    },
+    groupCheckbox: {
+      type: Boolean,
+      default: true
+    },
+    filterBySplit: {
+      type: String,
+      default: ''
+    },
+    filterByCustom: {
+      type: Array,
+      default: () => ['label']
+    },
+    max: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -255,12 +285,65 @@ export default {
     }
   },
   computed: {
+    currentData() {
+      const size = this.current.length
+      const exceedValid = this.isCountMax && size >= this.max
+      let _groupValue = ''
+      let list = this.data.map((item, idx) => {
+        if (this.groupNameList[item.value]) {
+          _groupValue = item.value
+        }
+        const checked = this.current.includes(item.value)
+        return {
+          ...item,
+          uid: `key_${idx}_${item.value}`,
+          _groupValue,
+          disabled: item.disabled || (checked ? false : exceedValid)
+        }
+      })
+      if (
+        !this.isSelectEntity &&
+        this.groupNameList &&
+        Object.keys(this.groupNameList).length &&
+        size
+      ) {
+        const findItem = list.find(val => this.current.includes(val.value))
+        list.forEach(val => {
+          val.disabled = val._groupValue !== findItem._groupValue ? true : val.disabled
+        })
+      }
+      return list
+    },
     filterData() {
-      return this.data.filter(item => this.filterMethod(item, this.query))
+      if (this.filterMethod) {
+        return this.currentData.filter(item => this.filterMethod(item, this.query))
+      }
+
+      let searchTerms = this.filterBySplit
+        ? this.query.split(this.filterBySplit).filter(val => val)
+        : [this.query].filter(val => val)
+
+      if (!searchTerms.length) {
+        return this.currentData
+      }
+      return this.currentData.filter(data => {
+        const labels = this.filterByCustom
+          .reduce((list, val) => {
+            list.push(data[val])
+            return list
+          }, [])
+          .filter(val => val)
+        return labels.some(val => {
+          return searchTerms.some(ele => val.toUpperCase().includes(ele.toUpperCase()))
+        })
+      })
     },
     realData() {
       let current = Array.isArray(this.value) ? this.value : [this.value]
       return _cloneDeep(current)
+    },
+    isCountMax() {
+      return this.max !== 0
     },
     mainStyles() {
       let style = {}
@@ -278,12 +361,6 @@ export default {
       }
       return style
     },
-    getLine() {
-      return this.filterData.map((item, idx) => ({
-        uid: `key_${idx}_${item.value}`,
-        ...item
-      }))
-    },
     showFooter() {
       return this.$scopedSlots.footer
     },
@@ -300,6 +377,37 @@ export default {
         this.filterData.filter(data => !data.disabled).length === this.validKeysCount &&
         this.validKeysCount !== 0
       )
+    },
+    checkedAllIndeterminate() {
+      return !this.checkedAll && this.validKeysCount !== 0
+    },
+    groupCheckObj() {
+      let params = {}
+      if (this.groupNameList && Object.keys(this.groupNameList).length) {
+        Object.keys(this.groupNameList).forEach(key => {
+          const groups = this.filterData.filter(val => val._groupValue === key && !val.disabled)
+          let check = !!groups.length && groups.every(val => this.current.includes(val.value))
+          if (!check && this.isCountMax) {
+            const tol = groups.reduce((total, val) => {
+              if (this.current.includes(val.value)) {
+                total = total + 1
+              }
+              return total
+            }, 0)
+            if (tol >= this.max) {
+              check = true
+            }
+          }
+          const indeterminate = !check && groups.some(val => this.current.includes(val.value))
+          const disabled = groups.length ? groups.every(val => val.disabled) : true
+          params[key] = {
+            check,
+            disabled,
+            indeterminate
+          }
+        })
+      }
+      return params
     }
   },
   watch: {
@@ -367,6 +475,27 @@ export default {
       }
       this.movementChange()
     },
+    handleGroupClick({ value }) {
+      if (!this.multiple) {
+        return
+      }
+      const groups = this.filterData.filter(val => val._groupValue === value && !val.disabled)
+      const values = groups.map(val => val.value)
+
+      const check = !this.groupCheckObj[value].check
+      values.forEach(value => {
+        if (
+          check &&
+          !this.current.includes(value) &&
+          (this.isCountMax ? this.current.length < this.max : true)
+        ) {
+          this.current.push(value)
+        } else if (!check) {
+          this.current = this.current.filter(item => item !== value)
+        }
+      })
+      this.movementChange()
+    },
     handleVisibleChange(val) {
       this.planeVisible = val
       if (
@@ -426,14 +555,14 @@ export default {
       this.$refs['filter-list'].updateDropdown()
     },
     toggleSelectAll(status) {
-      const values = status
-        ? this.filterData
-            .filter(data => !data.disabled || this.current.indexOf(data.value) > -1)
-            .map(data => data.value)
-        : this.filterData
-            .filter(data => data.disabled && this.current.indexOf(data.value) > -1)
-            .map(data => data.value)
-      this.current = values
+      let values = this.filterData.filter(data => !data.disabled).map(data => data.value)
+      let current = status
+        ? _uniq([...this.current, ...values])
+        : this.current.filter(val => !values.includes(val))
+      if (this.isCountMax) {
+        current = current.slice(0, this.max)
+      }
+      this.current = current
       this.movementChange()
     }
   }

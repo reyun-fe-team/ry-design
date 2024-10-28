@@ -92,7 +92,7 @@ export default {
       if (!isInputSlot) {
         res = currentLen
       } else {
-        res = count({ value: inputValue, type: countType, isDifferWord })
+        res = currentLen ? currentLen : count({ value: inputValue, type: countType, isDifferWord })
       }
       return res
     },

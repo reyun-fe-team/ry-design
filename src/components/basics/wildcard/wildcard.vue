@@ -56,6 +56,7 @@
               </Tooltip>
             </span>
             <p
+              ref="resizeElement"
               :class="prefixCls + '-list-name-rule-item-wrap'"
               @click="handleNameItem">
               <i
@@ -83,6 +84,7 @@
               </i>
             </p>
             <div
+              v-if="hasMore"
               :class="prefixCls + '-list-name-rule-action'"
               @click="handleHideMore">
               {{ hideMore ? '更多' : '收起' }}
@@ -205,7 +207,8 @@ export default {
       mergeOptions: {},
       mergeWildcardLabelConfig: {},
       list: [],
-      hideMore: true
+      hideMore: true,
+      hasMore: false
     }
   },
   computed: {
@@ -213,7 +216,6 @@ export default {
       return [`${prefixCls}`]
     },
     classesList() {
-      // :class="prefixCls + '-list'"
       return [
         `${prefixCls}-list`,
         {
@@ -232,6 +234,7 @@ export default {
       immediate: true,
       handler(now) {
         this.initData(now)
+        this.updateMoreStatus()
       }
     },
     value() {
@@ -241,7 +244,14 @@ export default {
       this.emitData()
     }
   },
-  mounted() {},
+  mounted() {
+    this.updateMoreStatus()
+  },
+  beforeDestroy() {
+    if (this.resizeObserver) {
+      this.resizeObserver.unobserve(this.$refs.resizeElement)
+    }
+  },
   methods: {
     handleNameItem(e) {
       let title = e.target.getAttribute('data-value')
@@ -298,6 +308,15 @@ export default {
     },
     onSaveRuleChange(val) {
       this.$emit('on-save-rule', val)
+    },
+    updateMoreStatus() {
+      this.$nextTick(() => {
+        if (this.$refs.resizeElement) {
+          if (this.$refs.resizeElement.scrollHeight > 40) {
+            this.hasMore = true
+          }
+        }
+      })
     },
     // #utils
     initData(data) {

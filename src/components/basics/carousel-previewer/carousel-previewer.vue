@@ -64,6 +64,8 @@
               <div
                 v-if="type === 'IMAGE'"
                 :class="[prefixCls + '-image-wrap']">
+                <!-- 插槽 -->
+                <slot></slot>
                 <img
                   :class="[prefixCls + '-image-img']"
                   :src="newCurrent[urlKey]"
@@ -73,8 +75,12 @@
               <CarouselVideoPreviewer
                 v-if="type === 'VIDEO'"
                 :poster="newCurrent[posterKey]"
+                :video-controls="videoControls"
                 :src="newCurrent[urlKey]"
-                :class="[prefixCls + '-image-video']"></CarouselVideoPreviewer>
+                :auto-play="videoAutoPlay"
+                :class="[prefixCls + '-image-video']">
+                <slot></slot>
+              </CarouselVideoPreviewer>
             </div>
           </transition>
         </div>
@@ -208,6 +214,16 @@ export default {
     autoPlay: {
       type: Boolean,
       default: true
+    },
+    // 视频播放器展示控制条
+    videoControls: {
+      type: Boolean,
+      default: true
+    },
+    // 视频自动播放
+    videoAutoPlay: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
