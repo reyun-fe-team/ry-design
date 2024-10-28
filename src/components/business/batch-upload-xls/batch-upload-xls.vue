@@ -133,14 +133,24 @@
           ]">
           <slot name="hintText">{{ hintText }}</slot>
         </p>
-        <div
-          v-if="['portionSucceed', 'error'].includes(isSucceedType) || showErrorTable"
-          :class="prefixCls + '-error-tables'">
-          <Table
-            v-bind="tableOption"
-            :columns="columnsHeader"
-            :data="errorTable"></Table>
-        </div>
+        <template v-if="['portionSucceed', 'error'].includes(isSucceedType) || showErrorTable">
+          <div :class="prefixCls + '-error-tables'">
+            <Table
+              v-bind="tableOption"
+              :max-height="350"
+              :columns="columnsHeader"
+              :data="errorTable"></Table>
+          </div>
+          <!-- 分页 -->
+          <rd-page
+            v-if="tablePageTotal"
+            :class="prefixCls + '-error-tables-page'"
+            type="m-middle"
+            :current="pager.current"
+            :size="pager.pageSize"
+            :total="tablePageTotal"
+            @page-change="handlePageChange"></rd-page>
+        </template>
       </div>
     </div>
   </main>
@@ -287,6 +297,11 @@ export default {
     isClearFile: {
       type: Boolean,
       default: true
+    },
+    // 分页数据总数
+    tablePageTotal: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -305,6 +320,12 @@ export default {
         succeed: '成功',
         portionSucceed: '部分成功',
         error: '失败'
+      },
+      pager: {
+        // 当前页数
+        curent: 1,
+        // 每页数量
+        pageSize: 50
       }
     }
   },
@@ -497,6 +518,12 @@ export default {
     // 上传错误回调
     handleError(data, file) {
       this.onError(data, file)
+    },
+    // 分页
+    handlePageChange({ current, size }) {
+      this.pager.current = current
+      this.pager.pageSize = size
+      this.$emit('on-page-change', { current, pageSize: size })
     }
   }
 }
