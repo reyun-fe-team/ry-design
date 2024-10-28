@@ -1,4 +1,4 @@
-@multi-upload-particulars: ~"@{css-prefix}batch-upload-xls";
+@multi-upload-particulars: ~'@{css-prefix}batch-upload-xls';
 
 .@{multi-upload-particulars} {
   &-container {
@@ -184,8 +184,13 @@
 
   &-error-tables {
     margin: 8px 10px 0;
+    overflow: auto;
     border: @border-width-base @border-style-base @border-color-gray-white;
     border-bottom: 0;
+
+    &-page {
+      margin: 10px 8px 0;
+    }
 
     .ivu-table-header {
       height: 48px;
