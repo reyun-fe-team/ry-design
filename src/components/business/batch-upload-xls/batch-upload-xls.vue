@@ -139,16 +139,16 @@
               v-bind="tableOption"
               :max-height="350"
               :columns="columnsHeader"
-              :data="errorTable"></Table>
+              :data="currentTableData"></Table>
           </div>
           <!-- 分页 -->
           <rd-page
-            v-if="tablePageTotal"
+            v-if="errorTable.length > 0"
             :class="prefixCls + '-error-tables-page'"
             type="m-middle"
             :current="pager.current"
             :size="pager.pageSize"
-            :total="tablePageTotal"
+            :total="errorTable.length"
             @page-change="handlePageChange"></rd-page>
         </template>
       </div>
@@ -157,6 +157,7 @@
 </template>
 <script>
 import { prefix } from '@src/config.js'
+import { getTableData } from '@src/util/assist.js'
 const prefixCls = `${prefix}batch-upload-xls`
 export default {
   name: prefixCls,
@@ -297,11 +298,6 @@ export default {
     isClearFile: {
       type: Boolean,
       default: true
-    },
-    // 分页数据总数
-    tablePageTotal: {
-      type: Number,
-      default: 0
     }
   },
   data() {
@@ -341,6 +337,11 @@ export default {
           this.fileName ? this.fileName : `${this.accept}文件`
         ])
       }
+    },
+    // 计算当前的页数据
+    currentTableData() {
+      const { curent = 1, pageSize = 50 } = this.pager
+      return getTableData(curent, pageSize, this.errorTable)
     }
   },
   watch: {
@@ -435,6 +436,7 @@ export default {
       this.percentage = 0
       this.isSubmitAdvance = false
       this.isTautology = false
+      this.pager = { curent: 1, pageSize: 50 }
     },
     // 清除上传文件的内容
     clearFileData() {
