@@ -34,7 +34,6 @@
         :on-success="handleSuccessError"
         :on-error="handleErrorError"
         :is-clear-file="true"
-        :table-page-total="100"
         @tautology="clearDataError"
         @clearFile="clearFileError"
         @on-page-change="pageChange">
