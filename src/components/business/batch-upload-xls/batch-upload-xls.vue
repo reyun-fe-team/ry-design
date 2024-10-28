@@ -139,7 +139,7 @@
               v-bind="tableOption"
               :max-height="350"
               :columns="columnsHeader"
-              :data="currentTableData"></Table>
+              :data="currentTable.data"></Table>
           </div>
           <!-- 分页 -->
           <rd-page
@@ -339,7 +339,7 @@ export default {
       }
     },
     // 计算当前的页数据
-    currentTableData() {
+    currentTable() {
       const { curent = 1, pageSize = 50 } = this.pager
       return getTableData(curent, pageSize, this.errorTable)
     }
