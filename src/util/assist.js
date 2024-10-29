@@ -454,3 +454,12 @@ export function getTableData(page = 1, pageSize = 10, totalData = []) {
   }
   return tableData
 }
+
+// 字符串与Base64转换
+export function getBase64Code(str) {
+  // 对字符串进行编码
+  let encode = encodeURI(str)
+  // 对编码的字符串转化base64
+  let base64 = btoa(encode)
+  return base64
+}
