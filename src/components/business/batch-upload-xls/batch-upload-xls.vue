@@ -319,7 +319,7 @@ export default {
       },
       pager: {
         // 当前页数
-        curent: 1,
+        current: 1,
         // 每页数量
         pageSize: 50
       }
@@ -340,8 +340,8 @@ export default {
     },
     // 计算当前的页数据
     currentTable() {
-      const { curent = 1, pageSize = 50 } = this.pager
-      return getTableData(curent, pageSize, this.errorTable)
+      const { current = 1, pageSize = 50 } = this.pager
+      return getTableData(current, pageSize, this.errorTable)
     }
   },
   watch: {
@@ -436,7 +436,7 @@ export default {
       this.percentage = 0
       this.isSubmitAdvance = false
       this.isTautology = false
-      this.pager = { curent: 1, pageSize: 50 }
+      this.pager = { current: 1, pageSize: 50 }
     },
     // 清除上传文件的内容
     clearFileData() {
