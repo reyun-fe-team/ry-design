@@ -31,15 +31,26 @@
       <template slot="search-operate">
         <slot name="search-operate"></slot>
       </template>
+      <!-- 展示结果面板 -->
       <filter-list-cascader-panel
+        v-if="!isSearching"
         v-model="current"
         :styles="mainStyles"
         :data="filterData"></filter-list-cascader-panel>
+      <!-- 搜索结果面板 -->
+      <filter-list-cascader-result-panel
+        v-else
+        v-model="current"
+        :styles="mainStyles"
+        :search-value="query"
+        :data="filterData"></filter-list-cascader-result-panel>
     </rd-filter-list>
   </div>
 </template>
 
 <script>
+// Add import for new component
+import filterListCascaderResultPanel from './filter-list-cascader-result-panel'
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-cascader'
 
@@ -55,7 +66,7 @@ const checkValuesNotEqual = (value, values) => {
 }
 export default {
   name: prefixCls,
-  components: { filterListCascaderPanel },
+  components: { filterListCascaderPanel, filterListCascaderResultPanel },
   mixins: [Emitter],
   props: {
     data: {
@@ -127,7 +138,8 @@ export default {
     return {
       prefixCls,
       current: [],
-      query: ''
+      query: '',
+      isSearching: false // Add new data property
     }
   },
   computed: {
@@ -241,6 +253,7 @@ export default {
     },
     queryChange(val) {
       this.query = val
+      this.isSearching = val !== '' // Update isSearching based on query
     },
     handleClick({ value }) {
       if (this.multiple) {
