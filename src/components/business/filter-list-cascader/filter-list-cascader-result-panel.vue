@@ -47,7 +47,7 @@ import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-cascader-result'
 
 export default {
-  name: 'FilterListCascaderResultPanel',
+  name: prefixCls,
   props: {
     value: {
       type: Array,
