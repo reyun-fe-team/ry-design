@@ -246,10 +246,61 @@ export default {
       } else if (emitValue === undefined && this.value === null) {
         emitValue = null
       }
-      // console.log('更新数据-emitChange')
+
+      // 添加层级化输出
+      const hierarchicalValue = this.getHierarchicalValue(emitValue)
+
+      // 保持原有输出
       this.$emit('input', emitValue)
       this.$emit('on-change', emitValue)
+      // 新增层级化输出
+      this.$emit('on-hierarchical-change', hierarchicalValue)
       this.dispatch('FormItem', 'on-form-change', emitValue)
+    },
+    // 新增方法：获取层级化的值
+    getHierarchicalValue(value) {
+      const findPath = (data, targetValue, path = []) => {
+        for (const item of data) {
+          if (item.value === targetValue) {
+            return [...path, { level: path.length, value: item.value }]
+          }
+          if (item.children && item.children.length) {
+            const found = findPath(item.children, targetValue, [
+              ...path,
+              { level: path.length, value: item.value }
+            ])
+            if (found) {
+              return found
+            }
+          }
+        }
+        return null
+      }
+
+      if (!value) {
+        return null
+      }
+
+      const values = Array.isArray(value) ? value : [value]
+      const result = values.map(val => {
+        const path = findPath(this.data, val)
+        return path || [{ level: 0, value: val }]
+      })
+
+      // 将结果转换为按层级分组的对象
+      const hierarchical = {}
+      result.forEach(path => {
+        path.forEach(({ level, value }) => {
+          if (!hierarchical[`level${level}`]) {
+            hierarchical[`level${level}`] = []
+          }
+          if (!hierarchical[`level${level}`].includes(value)) {
+            hierarchical[`level${level}`].push(value)
+          }
+        })
+      })
+
+      return hierarchical
     },
     queryChange(val) {
       this.query = val

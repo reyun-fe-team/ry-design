@@ -1,8 +1,20 @@
 <template>
   <div>
-    {{ commitData }}
+    <div>
+      初始值：
+      <pre><code>{{ JSON.stringify(selectMultiple, null, 2) }}</code></pre>
+    </div>
+    <div>
+      手动计算值：
+      <pre><code>{{ JSON.stringify(commitData, null, 2) }}</code></pre>
+    </div>
+    <div>
+      组件自动计算值：
+      <pre><code>{{ JSON.stringify(hierarchicalChangeValue, null, 2) }}</code></pre>
+    </div>
     <h2>filter-list-cascader</h2>
     <Button @click="fu">赋予</Button>
+    <Button @click="clear">清空</Button>
     <section>
       <rd-filter-list-cascader
         v-model="selectMultiple"
@@ -11,7 +23,8 @@
         :height="320"
         filterable
         multiple
-        show-select-option></rd-filter-list-cascader>
+        show-select-option
+        @on-hierarchical-change="handleHierarchicalChange"></rd-filter-list-cascader>
     </section>
   </div>
 </template>
@@ -21,381 +34,294 @@ export default {
   data() {
     return {
       selectMultiple: [],
+      // 级联选择器改变的值
+      hierarchicalChangeValue: [],
       options: [
         {
-          label: '编导',
-          value: 'DIRECTOR',
           children: [
             {
-              type: 'DIRECTOR',
-              value: 1,
-              label: '编导1'
+              children: [],
+              label: '历史项目',
+              value: '1161'
             },
             {
-              type: 'DIRECTOR',
-              value: 7,
-              label: 'qweqwe'
+              children: [],
+              label: '京P·OX334',
+              value: '1170'
             },
             {
-              type: 'DIRECTOR',
-              value: 11,
-              label: '宋真棒'
+              children: [],
+              label: '测试项目1',
+              value: '1177'
             },
             {
-              type: 'DIRECTOR',
-              value: 32,
-              label: '新增静静编导'
+              children: [],
+              label: '新建项目组',
+              value: '1199'
             },
             {
-              type: 'DIRECTOR',
-              value: 35,
-              label: '新来的'
+              children: [],
+              label: '千川项目',
+              value: '13062'
+            },
+            {
+              children: [],
+              label: 'zyj',
+              value: '13070'
+            },
+            {
+              children: [],
+              label: 'ma-test1',
+              value: '13103'
+            },
+            {
+              children: [],
+              label: '新建项目-老权限',
+              value: '13128'
             }
-          ]
+          ],
+          label: '历史项目',
+          value: '1'
         },
         {
-          label: '剪辑师',
-          value: 'EDITOR',
           children: [
             {
-              type: 'EDITOR',
-              value: 3,
-              label: '剪辑2'
-            },
-            {
-              type: 'EDITOR',
-              value: 6,
-              label: '剪辑4'
-            },
-            {
-              type: 'EDITOR',
-              value: 9,
-              label: '宋真好'
-            },
-            {
-              type: 'EDITOR',
-              value: 30,
-              label: '新增剪辑'
+              children: [],
+              label: '新建项目搜索',
+              value: '13072'
             }
-          ]
+          ],
+          label: '新建项目搜索',
+          value: '24'
         },
         {
-          label: '摄影师',
-          value: 'CAMERA',
           children: [
             {
-              type: 'CAMERA',
-              value: 2,
-              label: '摄像1'
+              children: [],
+              label: '京N·UT457',
+              value: '1162'
             },
             {
-              type: 'CAMERA',
-              value: 8,
-              label: '宋真强'
+              children: [],
+              label: '京C·97TU1',
+              value: '1167'
             },
             {
-              type: 'CAMERA',
-              value: 29,
-              label: '新增拍摄'
+              children: [],
+              label: '第三二次',
+              value: '1174'
+            },
+            {
+              children: [],
+              label: '新测试',
+              value: '1196'
+            },
+            {
+              children: [],
+              label: '管理员的项目',
+              value: '13094'
+            },
+            {
+              children: [],
+              label: '防出错项目',
+              value: '13097'
+            },
+            {
+              children: [],
+              label: 'ma-test',
+              value: '13101'
+            },
+            {
+              children: [],
+              label: '优化经理-新建项目',
+              value: '13189'
             }
-          ]
+          ],
+          label: '京N·UT457',
+          value: '2'
         },
         {
-          label: '设计师',
-          value: 'DESIGNER',
           children: [
             {
-              type: 'DESIGNER',
-              value: 2534,
-              label: '111'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2544,
-              label: '123'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2535,
-              label: '222'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2477,
-              label: '组长'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2536,
-              label: '333'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2429,
-              label: '设计师'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2614,
-              label: 'dsds发发发'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2504,
-              label: '测试设计师新开'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30357,
-              label: '设计经理041401'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30360,
-              label: '设计经理041404'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30353,
-              label: '设计师0417'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30356,
-              label: '手动添加设计经理'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30019,
-              label: '一级代理商123'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2501,
-              label: '设计师_广点通'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2541,
-              label: '设计经理'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2592,
-              label: 'renlijuan'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2532,
-              label: '设计产品'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2538,
-              label: '设计经理测试'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30017,
-              label: '设计师1'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2432,
-              label: 'shejishi'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2509,
-              label: 'zhangmeng'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2416,
-              label: '宋真帅'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30287,
-              label: '张武'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2480,
-              label: '宋涛-设计'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2522,
-              label: '素材v3设计师'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2581,
-              label: '王辰设计师'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30345,
-              label: 'yubin'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2443,
-              label: 'sadasdasd'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2537,
-              label: 'zhangmeng设计经理'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2568,
-              label: 'Bo'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2531,
-              label: 'zuohaitao13'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2587,
-              label: 'zuo审核设计经理'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2588,
-              label: 'zuo审核设计师'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2599,
-              label: 'zht31'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2524,
-              label: '左海涛7'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2525,
-              label: 'zuohaitao9'
+              children: [],
+              label: '银河系',
+              value: '1197'
             }
-          ]
+          ],
+          label: '银河系',
+          value: '15'
         },
         {
-          label: '项目',
-          value: 'APP',
-          children: []
-        },
-        {
-          label: '标签',
-          value: 'TAG'
-        },
-        {
-          label: '组长',
-          value: 'LEADER',
           children: [
             {
-              type: 'LEADER',
-              value: 4,
-              label: '组长4'
+              children: [],
+              label: '京J·JV7778',
+              value: '1176'
             },
             {
-              type: 'LEADER',
-              value: 5,
-              label: '组长5'
+              children: [],
+              label: 'XXX',
+              value: '1189'
             },
             {
-              type: 'LEADER',
-              value: 10,
-              label: '宋真牛'
+              children: [],
+              label: '素材项目',
+              value: '1200'
             },
             {
-              type: 'LEADER',
-              value: 12,
-              label: '管理员'
+              children: [],
+              label: '123',
+              value: '1216'
             },
             {
-              type: 'LEADER',
-              value: 14,
-              label: '10'
+              children: [],
+              label: 'aaab',
+              value: '13058'
             },
             {
-              type: 'LEADER',
-              value: 15,
-              label: '4'
+              children: [],
+              label: '头条专用项目',
+              value: '13067'
             },
             {
-              type: 'LEADER',
-              value: 23,
-              label: '夏组长'
+              children: [],
+              label: '测试',
+              value: '13069'
             },
             {
-              type: 'LEADER',
-              value: 31,
-              label: '新增组长'
+              children: [],
+              label: '添加项目名称测试',
+              value: '13073'
+            },
+            {
+              children: [],
+              label: '添加项目测试',
+              value: '13074'
+            },
+            {
+              children: [],
+              label: '广告费给',
+              value: '13075'
+            },
+            {
+              children: [],
+              label: '没有所属产品的项目',
+              value: '13076'
+            },
+            {
+              children: [],
+              label: 'Z项目',
+              value: '13080'
+            },
+            {
+              children: [],
+              label: 'XXXX项目',
+              value: '13081'
+            },
+            {
+              children: [],
+              label: '测试带项目管理的项目',
+              value: '13091'
+            },
+            {
+              children: [],
+              label: '得三四点',
+              value: '13099'
+            },
+            {
+              children: [],
+              label: 'ma-test2',
+              value: '13102'
             }
-          ]
+          ],
+          label: '京J·JV7778',
+          value: '-1'
         },
         {
-          label: '外采公司',
-          value: 'OUTER',
           children: [
             {
-              type: 'OUTER',
-              value: 13,
-              label: '测试供应商'
-            },
-            {
-              type: 'OUTER',
-              value: 16,
-              label: '热云股份有限公司测试'
-            },
-            {
-              type: 'OUTER',
-              value: 19,
-              label: '测试供应商牛'
-            },
-            {
-              type: 'OUTER',
-              value: 21,
-              label: '测试公司'
-            },
-            {
-              type: 'OUTER',
-              value: 22,
-              label: '供应商1'
-            },
-            {
-              type: 'OUTER',
-              value: 27,
-              label: '供应商'
-            },
-            {
-              type: 'OUTER',
-              value: 28,
-              label: '123'
-            },
-            {
-              type: 'OUTER',
-              value: 33,
-              label: '新增供应商0106'
-            },
-            {
-              type: 'OUTER',
-              value: 34,
-              label: 'sdf'
-            },
-            {
-              type: 'OUTER',
-              value: 36,
-              label: 'xlf'
+              children: [],
+              label: '测试上传素材',
+              value: '13079'
             }
-          ]
+          ],
+          label: '测试上传素材',
+          value: '5753'
+        },
+        {
+          children: [
+            {
+              children: [],
+              label: '$$$$',
+              value: '1188'
+            }
+          ],
+          label: '$$$$',
+          value: '9'
+        },
+        {
+          children: [
+            {
+              children: [],
+              label: 'test26',
+              value: '13183'
+            }
+          ],
+          label: 'test26',
+          value: '5824'
+        },
+        {
+          children: [
+            {
+              children: [],
+              label: '防出错项目-021',
+              value: '13098'
+            }
+          ],
+          label: '防出错项目-021',
+          value: '5758'
+        },
+        {
+          children: [
+            {
+              children: [],
+              label: '优化经理建的项目',
+              value: '13188'
+            }
+          ],
+          label: '优化经理建的项目',
+          value: '5826'
+        },
+        {
+          children: [
+            {
+              children: [],
+              label: '测试-0624-01',
+              value: '1203'
+            },
+            {
+              children: [],
+              label: '测试头条',
+              value: '1205'
+            },
+            {
+              children: [],
+              label: '测试快手',
+              value: '1207'
+            },
+            {
+              children: [],
+              label: '测试百度',
+              value: '1208'
+            },
+            {
+              children: [],
+              label: '测试增加123',
+              value: '13057'
+            }
+          ],
+          label: '测试-0624-01',
+          value: '21'
         }
       ],
       options1: [
@@ -478,7 +404,41 @@ export default {
       setTimeout(() => {
         this.selectMultiple = [3, 6, 9, 30]
       }, 2000)
+    },
+    clear() {
+      this.selectMultiple = []
+    },
+    handleHierarchicalChange(value) {
+      this.hierarchicalChangeValue = value
     }
   }
 }
 </script>
+<style scoped>
+pre {
+  background-color: #f5f5f5;
+  padding: 1em;
+  border-radius: 4px;
+  overflow: auto;
+}
+code {
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  color: #333;
+  /* 添加基础的代码高亮样式 */
+  .string {
+    color: #c41a16;
+  } /* 字符串 */
+  .number {
+    color: #1c00cf;
+  } /* 数字 */
+  .boolean {
+    color: #0b7500;
+  } /* 布尔值 */
+  .null {
+    color: #808080;
+  } /* null值 */
+  .key {
+    color: #881391;
+  } /* 对象键名 */
+}
+</style>
