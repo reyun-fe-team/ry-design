@@ -1,17 +1,21 @@
 <template>
   <div class="container">
     <!-- ... existing template code ... -->
+    <div class="warning-tip">
+      <i class="warning-icon">ℹ</i>
+      默认传递本地数据配置rd-filter-list-cascader的data属性即可，如需使用接口数据，则去掉data属性配置dataSource属性
+    </div>
     <div class="code-wrapper">
       <div class="value-display">
-        <h3>初始值：</h3>
+        <h3>初始值（适用于提交场景呢，只获取叶子结点值）：</h3>
         <pre><code>{{ JSON.stringify(selectMultiple, null, 2) }}</code></pre>
       </div>
       <div class="value-display">
-        <h3>自定义计算值：</h3>
+        <h3>自定义计算值（适用于展示场景，根据层级结构展示）：</h3>
         <pre><code>{{ JSON.stringify(commitData, null, 2) }}</code></pre>
       </div>
       <div class="value-display">
-        <h3>组件根据层级结构计算值：</h3>
+        <h3>按层级结构计算值（适用于提交场景，获取不同节点的数据）：</h3>
         <pre><code>{{ JSON.stringify(hierarchicalChangeValue, null, 2) }}</code></pre>
       </div>
     </div>
@@ -31,10 +35,10 @@
         </Button>
       </div>
     </div>
-
     <section class="cascader-section">
       <section>
         <rd-filter-list-cascader
+          ref="cascader"
           v-model="selectMultiple"
           :data="options"
           :width="360"
@@ -47,7 +51,9 @@
           filterable
           multiple
           show-select-option
-          @on-hierarchical-change="handleHierarchicalChange"></rd-filter-list-cascader>
+          @on-hierarchical-change="handleHierarchicalChange"
+          @on-data-loaded="handleDataLoaded"
+          @on-data-error="handleDataError"></rd-filter-list-cascader>
       </section>
     </section>
   </div>
@@ -404,7 +410,16 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      dataSource: {
+        api: 'http://test-api2.adsdesk.cn/adsdesk/api/user/app/tree',
+        method: 'POST',
+        dataPath: 'data.data',
+        headers: {
+          authorization:
+            'Adsdesk ZXlKaGJHY2lPaUpJVXpVeE1pSjkuZXlKemRXSWlPaUl5TWpZNElpd2ljbUpoWTFabGNuTnBiMjRpT2lJeExqQWlMQ0p5YjJ4bElqb2lUVUZPUVVkRlVpSXNJbTFsWkdsaFVHVnliV2x6YzJsdmJpSTZJbUpoYVdSMUxHSnBiR2xpYVd4cExHZGtkSFl6TUN4cmRXRnBjMmh2ZFN4eGFXRnVZMmgxWVc0c2RHOTFkR2xoYnlJc0ltZHliM1Z3U1dRaU9pSXhNVFV5SWl3aVkzVnpkRzl0WlhKSlpDSTZNVEF3TWpVc0ltUmxjSFJKWkhNaU9sdGRMQ0psYm1SVWFXMWxJanA3SW5sbFlYSWlPakl3T1Rrc0ltMXZiblJvVm1Gc2RXVWlPakV5TENKdGIyNTBhQ0k2SWtSRlEwVk5Ra1ZTSWl3aVpHRjVUMlpOYjI1MGFDSTZNekVzSW1SaGVVOW1XV1ZoY2lJNk16WTFMQ0prWVhsUFpsZGxaV3NpT2lKVVNGVlNVMFJCV1NJc0ltaHZkWElpT2pBc0ltMXBiblYwWlNJNk1Dd2ljMlZqYjI1a0lqb3dMQ0p1WVc1dklqb3dMQ0pqYUhKdmJtOXNiMmQ1SWpwN0ltTmhiR1Z1WkdGeVZIbHdaU0k2SW1semJ6ZzJNREVpTENKcFpDSTZJa2xUVHlKOWZTd2lkWE5sY2tsa0lqb3lNalk0TENKMWRXbGtJam9pUVRsQ1F6QkRRakk0TWtVMk5FTXpRemxDUTBSRk5EY3hNamcyTWpNd01FTWlMQ0psYldGcGJDSTZJbnBvWVc1bmJXVnVaMEJ5WlhsMWJpNWpiMjBpZlEucW1kQlNHZTFQbnpKTlZtWGNhdEpaQWx3TEtBZU9OSFZiSXFlaFpVSHNtX0FvZjVpV0tBNTg3bk55Y25tVDJsLWNKX09Hdk5MQXlDQmtwTkFEZTVWOGc='
+        }
+      }
     }
   },
   computed: {
@@ -434,6 +449,12 @@ export default {
     },
     handleHierarchicalChange(value) {
       this.hierarchicalChangeValue = value
+    },
+    handleDataLoaded(data) {
+      console.log('handleDataLoaded', data)
+    },
+    handleDataError(error) {
+      console.log('handleDataError', error)
     }
   }
 }
@@ -474,6 +495,8 @@ export default {
 
 .value-display {
   flex: 1;
+  max-height: 420px; /* Add max height */
+  overflow: auto; /* Enable scrolling */
 }
 
 .value-display h3 {
@@ -536,5 +559,23 @@ code {
     gap: 16px;
     align-items: flex-start;
   }
+}
+
+.warning-tip {
+  background-color: #fff3e0;
+  border-left: 4px solid #ff9800;
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  color: #795548;
+}
+
+.warning-icon {
+  margin-right: 8px;
+  color: #ff9800;
+  font-style: normal;
+  font-weight: bold;
 }
 </style>
