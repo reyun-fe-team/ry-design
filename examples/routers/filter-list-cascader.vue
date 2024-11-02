@@ -1,32 +1,50 @@
 <template>
-  <div>
+  <div class="container">
+    <!-- ... existing template code ... -->
     <div class="code-wrapper">
       <div class="value-display">
-        初始值：
+        <h3>初始值：</h3>
         <pre><code>{{ JSON.stringify(selectMultiple, null, 2) }}</code></pre>
       </div>
       <div class="value-display">
-        自定义计算值：
+        <h3>自定义计算值：</h3>
         <pre><code>{{ JSON.stringify(commitData, null, 2) }}</code></pre>
       </div>
       <div class="value-display">
-        组件根据层级结构计算值：
+        <h3>组件根据层级结构计算值：</h3>
         <pre><code>{{ JSON.stringify(hierarchicalChangeValue, null, 2) }}</code></pre>
       </div>
     </div>
-    <h2>filter-list-cascader</h2>
-    <Button @click="fu">赋予</Button>
-    <Button @click="clear">清空</Button>
-    <section>
-      <rd-filter-list-cascader
-        v-model="selectMultiple"
-        :data="options"
-        :width="360"
-        :height="320"
-        filterable
-        multiple
-        show-select-option
-        @on-hierarchical-change="handleHierarchicalChange"></rd-filter-list-cascader>
+
+    <div class="header">
+      <h2>filter-list-cascader</h2>
+      <div class="button-group">
+        <Button
+          class="action-button"
+          @click="fu">
+          赋予
+        </Button>
+        <Button
+          class="action-button"
+          @click="clear">
+          清空
+        </Button>
+      </div>
+    </div>
+
+    <section class="cascader-section">
+      <section>
+        <rd-filter-list-cascader
+          v-model="selectMultiple"
+          :data="options"
+          :width="360"
+          :height="320"
+          :input-width="260"
+          filterable
+          multiple
+          show-select-option
+          @on-hierarchical-change="handleHierarchicalChange"></rd-filter-list-cascader>
+      </section>
     </section>
   </div>
 </template>
@@ -417,39 +435,102 @@ export default {
 }
 </script>
 <style scoped>
-.code-wrapper {
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
   display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+}
+
+.action-button {
+  min-width: 80px;
+}
+
+.code-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .value-display {
   flex: 1;
 }
-pre {
-  background-color: #f5f5f5;
-  padding: 1em;
-  border-radius: 4px;
-  overflow: auto;
+
+.value-display h3 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
 }
+
+pre {
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-radius: 6px;
+  overflow: auto;
+  margin: 0;
+  border: 1px solid #eee;
+}
+
 code {
   font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.5;
   color: #333;
-  /* 添加基础的代码高亮样式 */
+}
+
+.cascader-section {
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 代码高亮样式优化 */
+code {
   .string {
-    color: #c41a16;
-  } /* 字符串 */
+    color: #e3116c;
+  }
   .number {
-    color: #1c00cf;
-  } /* 数字 */
+    color: #0898c0;
+  }
   .boolean {
-    color: #0b7500;
-  } /* 布尔值 */
+    color: #36acaa;
+  }
   .null {
-    color: #808080;
-  } /* null值 */
+    color: #998;
+  }
   .key {
-    color: #881391;
-  } /* 对象键名 */
+    color: #905;
+  }
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .code-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
 }
 </style>
