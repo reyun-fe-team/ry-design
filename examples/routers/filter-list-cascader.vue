@@ -1,25 +1,5 @@
 <template>
   <div class="container">
-    <!-- ... existing template code ... -->
-    <div class="warning-tip">
-      <i class="warning-icon">ℹ</i>
-      默认传递本地数据配置rd-filter-list-cascader的data属性即可，如需使用接口数据，则去掉data属性配置dataSource属性
-    </div>
-    <div class="code-wrapper">
-      <div class="value-display">
-        <h3>初始值（适用于提交场景呢，只获取叶子结点值）：</h3>
-        <pre><code>{{ JSON.stringify(selectMultiple, null, 2) }}</code></pre>
-      </div>
-      <div class="value-display">
-        <h3>自定义计算值（适用于展示场景，根据层级结构展示）：</h3>
-        <pre><code>{{ JSON.stringify(commitData, null, 2) }}</code></pre>
-      </div>
-      <div class="value-display">
-        <h3>按层级结构计算值（适用于提交场景，获取不同节点的数据）：</h3>
-        <pre><code>{{ JSON.stringify(hierarchicalChangeValue, null, 2) }}</code></pre>
-      </div>
-    </div>
-
     <div class="header">
       <h2>filter-list-cascader</h2>
       <div class="button-group">
@@ -56,9 +36,28 @@
           @on-data-error="handleDataError"></rd-filter-list-cascader>
       </section>
     </section>
+    <!-- ... existing template code ... -->
+    <div class="warning-tip">
+      <i class="warning-icon">ℹ</i>
+      1. 传递本地数据配置rd-filter-list-cascader的data属性即可 2.
+      如需使用接口数据，则去掉data属性配置dataSource属性
+    </div>
+    <div class="code-wrapper">
+      <div class="value-display">
+        <h3>初始值（适用于提交场景呢，只获取叶子结点值）：</h3>
+        <pre><code>{{ JSON.stringify(selectMultiple, null, 2) }}</code></pre>
+      </div>
+      <div class="value-display">
+        <h3>自定义计算值（适用于展示场景，根据层级结构展示）：</h3>
+        <pre><code>{{ JSON.stringify(commitData, null, 2) }}</code></pre>
+      </div>
+      <div class="value-display">
+        <h3>按层级结构计算值（适用于提交场景，获取不同节点的数据）：</h3>
+        <pre><code>{{ JSON.stringify(hierarchicalChangeValue, null, 2) }}</code></pre>
+      </div>
+    </div>
   </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -66,6 +65,7 @@ export default {
       selectMultiple: [],
       // 级联选择器改变的值
       hierarchicalChangeValue: [],
+      // 本地数据
       options: [
         {
           children: [
@@ -354,63 +354,7 @@ export default {
           value: '21'
         }
       ],
-      options1: [
-        {
-          value: 1,
-          label: '东南',
-          children: [
-            {
-              value: '1-1',
-              label: '上海'
-              // children: [
-              //   { value: 3, label: '普陀' },
-              //   { value: 4, label: '黄埔' },
-              //   { value: 5, label: '徐汇' }
-              // ]
-            },
-            {
-              value: '1-2',
-              label: '江苏'
-              // children: [
-              //   { value: 8, label: '南京' },
-              //   { value: 9, label: '苏州' },
-              //   { value: 10, label: '无锡' }
-              // ]
-            },
-            {
-              value: '1-3',
-              label: '浙江'
-              // children: [
-              //   { value: 13, label: '杭州' },
-              //   { value: 14, label: '宁波' },
-              //   { value: 15, label: '嘉兴' }
-              // ]
-            }
-          ]
-        },
-        {
-          value: 2,
-          label: '西北',
-          children: [
-            {
-              value: '2-1',
-              label: '浙江1'
-              // children: [
-              //   { value: 19, label: '西安' },
-              //   { value: 20, label: '延安' }
-              // ]
-            },
-            {
-              value: '2-2',
-              label: '新疆维吾尔族自治区'
-              // children: [
-              //   { value: 22, label: '乌鲁木齐' },
-              //   { value: 23, label: '克拉玛依' }
-              // ]
-            }
-          ]
-        }
-      ],
+      // 接口数据
       dataSource: {
         api: 'http://test-api2.adsdesk.cn/adsdesk/api/user/app/tree',
         method: 'POST',
@@ -463,7 +407,7 @@ export default {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0px;
 }
 
 .header {
@@ -495,7 +439,7 @@ export default {
 
 .value-display {
   flex: 1;
-  max-height: 420px; /* Add max height */
+  max-height: 768px; /* Add max height */
   overflow: auto; /* Enable scrolling */
 }
 
