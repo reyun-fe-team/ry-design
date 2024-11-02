@@ -1,16 +1,18 @@
 <template>
   <div>
-    <div>
-      初始值：
-      <pre><code>{{ JSON.stringify(selectMultiple, null, 2) }}</code></pre>
-    </div>
-    <div>
-      手动计算值：
-      <pre><code>{{ JSON.stringify(commitData, null, 2) }}</code></pre>
-    </div>
-    <div>
-      组件自动计算值：
-      <pre><code>{{ JSON.stringify(hierarchicalChangeValue, null, 2) }}</code></pre>
+    <div class="code-wrapper">
+      <div class="value-display">
+        初始值：
+        <pre><code>{{ JSON.stringify(selectMultiple, null, 2) }}</code></pre>
+      </div>
+      <div class="value-display">
+        自定义计算值：
+        <pre><code>{{ JSON.stringify(commitData, null, 2) }}</code></pre>
+      </div>
+      <div class="value-display">
+        组件根据层级结构计算值：
+        <pre><code>{{ JSON.stringify(hierarchicalChangeValue, null, 2) }}</code></pre>
+      </div>
     </div>
     <h2>filter-list-cascader</h2>
     <Button @click="fu">赋予</Button>
@@ -402,8 +404,8 @@ export default {
   methods: {
     fu() {
       setTimeout(() => {
-        this.selectMultiple = [3, 6, 9, 30]
-      }, 2000)
+        this.selectMultiple = ['13098', '13057', '13099', '13075']
+      }, 60)
     },
     clear() {
       this.selectMultiple = []
@@ -415,6 +417,15 @@ export default {
 }
 </script>
 <style scoped>
+.code-wrapper {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.value-display {
+  flex: 1;
+}
 pre {
   background-color: #f5f5f5;
   padding: 1em;
