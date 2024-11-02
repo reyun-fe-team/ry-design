@@ -291,7 +291,7 @@ export default {
         return path || [{ level: 0, value: val }]
       })
 
-      // Modified: Use levelKeyMap for key names
+      // Modified: Convert to array format
       const hierarchical = {}
       result.forEach(path => {
         path.forEach(({ level, value }) => {
@@ -306,7 +306,10 @@ export default {
         })
       })
 
-      return hierarchical
+      // Convert to array format
+      return Object.entries(hierarchical).map(([key, values]) => ({
+        [key]: values
+      }))
     },
     queryChange(val) {
       this.query = val
