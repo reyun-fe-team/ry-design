@@ -69,6 +69,10 @@ export default {
   components: { filterListCascaderPanel, filterListCascaderResultPanel },
   mixins: [Emitter],
   props: {
+    levelKeyMap: {
+      type: Object,
+      default: () => ({})
+    },
     data: {
       type: Array,
       default: () => {
@@ -287,15 +291,17 @@ export default {
         return path || [{ level: 0, value: val }]
       })
 
-      // 将结果转换为按层级分组的对象
+      // Modified: Use levelKeyMap for key names
       const hierarchical = {}
       result.forEach(path => {
         path.forEach(({ level, value }) => {
-          if (!hierarchical[`level${level}`]) {
-            hierarchical[`level${level}`] = []
+          const defaultKey = `level${level}`
+          const levelKey = this.levelKeyMap[defaultKey] || defaultKey
+          if (!hierarchical[levelKey]) {
+            hierarchical[levelKey] = []
           }
-          if (!hierarchical[`level${level}`].includes(value)) {
-            hierarchical[`level${level}`].push(value)
+          if (!hierarchical[levelKey].includes(value)) {
+            hierarchical[levelKey].push(value)
           }
         })
       })

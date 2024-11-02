@@ -40,6 +40,10 @@
           :width="360"
           :height="320"
           :input-width="260"
+          :level-key-map="{
+            level0: 'productIds',
+            level1: 'appIds'
+          }"
           filterable
           multiple
           show-select-option
