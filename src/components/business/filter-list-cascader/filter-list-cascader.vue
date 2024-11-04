@@ -53,7 +53,7 @@
 import filterListCascaderResultPanel from './filter-list-cascader-result-panel'
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'filter-list-cascader'
-
+import axios from 'axios'
 import _cloneDeep from 'lodash/cloneDeep'
 import { oneOf } from '@src/util/assist.js'
 import Emitter from '@src/mixins/emitter'
@@ -69,6 +69,26 @@ export default {
   components: { filterListCascaderPanel, filterListCascaderResultPanel },
   mixins: [Emitter],
   props: {
+    dataSource: {
+      type: Object,
+      default: () => ({
+        api: '', // API路径
+        method: 'POST', // 请求方法
+        params: {}, // 请求参数
+        dataPath: '', // 数据在响应中的路径，如 'data.list'
+        transform: null, // 数据转换函数
+        headers: {}, // 请求头
+        data: {} // 请求体
+      })
+    },
+    immediate: {
+      type: Boolean,
+      default: true // 是否在组件挂载时立即请求数据
+    },
+    levelKeyMap: {
+      type: Object,
+      default: () => ({})
+    },
     data: {
       type: Array,
       default: () => {
@@ -139,15 +159,17 @@ export default {
       prefixCls,
       current: [],
       query: '',
-      isSearching: false // Add new data property
+      isSearching: false, // 是否在搜索，搜索模式下展示搜索结果面板
+      sourceData: [] // 存储从接口获取的数据
     }
   },
   computed: {
     filterData() {
+      const sourceList = this.data.length ? this.data : this.sourceData
       if (this.query === '') {
-        return JSON.parse(JSON.stringify(this.data))
+        return JSON.parse(JSON.stringify(sourceList))
       }
-      return this.data.reduce((list, item) => {
+      return sourceList.reduce((list, item) => {
         const _item = JSON.parse(JSON.stringify(item))
         let end = []
         const isChildren = item.children && !!item.children.length
@@ -188,7 +210,8 @@ export default {
       return JSON.parse(JSON.stringify(this.current))
     },
     optionData() {
-      return this.data.reduce((list, val) => {
+      const sourceData = this.data.length ? this.data : this.sourceData
+      return sourceData.reduce((list, val) => {
         if (val.children && val.children.length) {
           list = [...list, ...val.children]
         } else if (val && (!val.children || !val.children.length)) {
@@ -221,11 +244,58 @@ export default {
       }
     }
   },
+  created() {
+    if (this.immediate && this.dataSource.api) {
+      this.fetchData()
+    }
+  },
   mounted() {
     const data = this.getInitialValue()
     this.current = data
   },
   methods: {
+    async fetchData(params = {}) {
+      if (!this.dataSource.api) {
+        return
+      }
+
+      try {
+        this.loading = true
+        const requestConfig = {
+          url: this.dataSource.api,
+          method: this.dataSource.method || 'POST',
+          params: { ...this.dataSource.params, ...params },
+          data: this.dataSource.data || {}, // 请求体数据
+          headers: this.dataSource.headers || {} // 添加请求头配置
+        }
+
+        const response = await axios(requestConfig)
+
+        // 获取数据路径
+        let data = response
+        if (this.dataSource.dataPath) {
+          data = this.dataSource.dataPath.split('.').reduce((obj, key) => obj[key], response)
+        }
+
+        // 数据转换
+        if (typeof this.dataSource.transform === 'function') {
+          data = this.dataSource.transform(data)
+        }
+
+        this.sourceData = data
+        this.$emit('on-data-loaded', data)
+      } catch (error) {
+        this.$emit('on-data-error', error)
+        console.error('Failed to fetch data:', error)
+      } finally {
+        this.loading = false
+      }
+    },
+
+    // 刷新数据方法
+    refresh(params = {}) {
+      return this.fetchData(params)
+    },
     getInitialValue() {
       const { multiple, value } = this
       let initialValue = Array.isArray(value) ? _cloneDeep(value) : [value]
@@ -246,10 +316,66 @@ export default {
       } else if (emitValue === undefined && this.value === null) {
         emitValue = null
       }
-      // console.log('更新数据-emitChange')
+
+      // 添加层级化输出
+      const hierarchicalValue = this.getHierarchicalValue(emitValue)
+
+      // 保持原有输出
       this.$emit('input', emitValue)
       this.$emit('on-change', emitValue)
+      // 新增层级化输出
+      this.$emit('on-hierarchical-change', hierarchicalValue)
       this.dispatch('FormItem', 'on-form-change', emitValue)
+    },
+    // 新增方法：获取层级化的值
+    getHierarchicalValue(value) {
+      const findPath = (data, targetValue, path = []) => {
+        for (const item of data) {
+          if (item.value === targetValue) {
+            return [...path, { level: path.length, value: item.value }]
+          }
+          if (item.children && item.children.length) {
+            const found = findPath(item.children, targetValue, [
+              ...path,
+              { level: path.length, value: item.value }
+            ])
+            if (found) {
+              return found
+            }
+          }
+        }
+        return null
+      }
+
+      if (!value) {
+        return null
+      }
+      const sourceData = this.data.length ? this.data : this.sourceData
+      const values = Array.isArray(value) ? value : [value]
+      const result = values.map(val => {
+        const path = findPath(sourceData, val)
+        return path || [{ level: 0, value: val }]
+      })
+
+      // Modified: Convert to array format
+      const hierarchical = {}
+      result.forEach(path => {
+        path.forEach(({ level, value }) => {
+          const defaultKey = `level${level}`
+          const levelKey = this.levelKeyMap[defaultKey] || defaultKey
+          if (!hierarchical[levelKey]) {
+            hierarchical[levelKey] = []
+          }
+          if (!hierarchical[levelKey].includes(value)) {
+            hierarchical[levelKey].push(value)
+          }
+        })
+      })
+
+      // Convert to array format
+      return Object.entries(hierarchical).map(([key, values]) => ({
+        [key]: values
+      }))
     },
     queryChange(val) {
       this.query = val
