@@ -21,6 +21,7 @@ export const formatDate = (date, format = 'yyyy-MM-dd') => {
 
 const date = {
   getMoment(value, formatString) {
+    value = value instanceof Date ? value : new Date(value)
     formatString = formatString || 'YYYY-MM-DD'
     return !value ? '-' : formatDate(value, formatString)
   },
