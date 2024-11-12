@@ -29,6 +29,7 @@
       show-checkbox
       show-all
       :loading="loading"
+      :exclude-from-select-all="['穿山甲']"
       @on-title-click="onTitleClick"
       @on-on-select-all="onTitleClick"></rd-placement-location>
     <h2 style="margin: 16px 0">广点通-广告位置{{ valueGdtPosition }}</h2>
