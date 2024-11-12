@@ -29,7 +29,7 @@
       show-checkbox
       show-all
       :loading="loading"
-      :item-min-width="62"
+      :exclude-from-select-all="['穿山甲']"
       @on-title-click="onTitleClick"
       @on-select-all="onTitleClick">
       <template

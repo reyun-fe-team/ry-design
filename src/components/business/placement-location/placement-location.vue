@@ -120,6 +120,10 @@ export default {
     itemMinWidth: {
       type: [Number, String],
       default: ''
+    },
+    excludeFromSelectAll: {
+      type: Array,
+      default: () => [] // 存储不参与全选的选项值
     }
   },
   data() {
@@ -405,16 +409,20 @@ export default {
     toggleSelectAll(checked) {
       this.data.forEach(item => {
         if (this.showCheckbox) {
-          if (checked && !item.disabled && !item._disabled) {
+          // 添加排除逻辑
+          const isExcluded = this.excludeFromSelectAll.includes(item.value)
+          if (checked && !item.disabled && !item._disabled && !isExcluded) {
             item.checked = true
-          } else if (!checked) {
+          } else if (!checked && !isExcluded) {
             item.checked = false
           }
         }
         if (item.children && item.children.length) {
           item.children.forEach(val => {
             const multiple = this.getChildrenMultiple(val)
-            if (!val.disabled && !val._disabled && multiple) {
+            // 添加排除逻辑
+            const isExcluded = this.excludeFromSelectAll.includes(val.value)
+            if (!val.disabled && !val._disabled && multiple && !isExcluded) {
               val.checked = checked
             }
           })
