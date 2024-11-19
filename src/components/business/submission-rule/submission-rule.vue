@@ -148,6 +148,7 @@
 <script>
 import moment from 'moment'
 import { prefix } from '../../../config.js'
+import _deepClone from 'lodash/cloneDeep'
 const prefixCls = prefix + 'submission-rule'
 
 import * as config from './data.js'
@@ -161,6 +162,11 @@ export default {
     maxConfig: {
       type: Object,
       default: () => ({ CAMPAIGN: 100, PLAN: 100 })
+    },
+    // 已选择数据
+    selectFormData: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -247,6 +253,7 @@ export default {
   },
   created() {
     this.$nextTick(() => {
+      this.formData = _deepClone(this.selectFormData)
       this.$emit('on-change', this.emitData)
     })
   },
