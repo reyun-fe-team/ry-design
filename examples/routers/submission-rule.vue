@@ -2,7 +2,7 @@
   <div class="edit-row-bid">
     <rd-submission-rule
       media-code="toutiao"
-      :select-form-data="selectFormData"
+      :select-form="selectForm"
       @on-change="handleChange"></rd-submission-rule>
   </div>
 </template>
@@ -11,7 +11,7 @@
 export default {
   data() {
     return {
-      selectFormData: {
+      selectForm: {
         adsSubmitRule: 'DELAY',
         adsDelaySubmitTime: '2024-11-18 17:43',
         adsBatchStartTime: '2024-11-18 17:43',
