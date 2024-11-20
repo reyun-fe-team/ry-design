@@ -28,6 +28,7 @@ export default {
   methods: {
     handleChange(data) {
       console.log('data', data)
+      this.selectForm = data.formData
     }
   }
 }
