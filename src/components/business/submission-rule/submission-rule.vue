@@ -149,6 +149,7 @@ import moment from 'moment'
 import { prefix } from '../../../config.js'
 import _deepClone from 'lodash/cloneDeep'
 import _debounce from 'lodash/debounce'
+import _isEmpty from 'lodash/isEmpty'
 const prefixCls = prefix + 'submission-rule'
 
 import * as config from './data.js'
@@ -166,7 +167,7 @@ export default {
     // 已选择数据
     selectForm: {
       type: Object,
-      default: () => {}
+      default: null
     }
   },
   data() {
@@ -252,7 +253,10 @@ export default {
     }
   },
   created() {
-    this.formData = _deepClone(this.selectForm)
+    // 有值
+    if (this.selectForm && !_isEmpty(this.selectForm)) {
+      this.formData = _deepClone(this.selectForm)
+    }
     this.handleChange()
   },
   methods: {
