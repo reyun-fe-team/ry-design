@@ -12,8 +12,7 @@
         <rd-radio-group
           v-model="formData.adsSubmitRule"
           :class="[prefixCls + '-rule-group']"
-          :default-list="submitRuleList"
-          @on-change="handleSubmitRule"></rd-radio-group>
+          :default-list="submitRuleList"></rd-radio-group>
       </FormItem>
 
       <template v-if="formData.adsSubmitRule === 'DELAY'">
@@ -149,6 +148,8 @@
 import moment from 'moment'
 import { prefix } from '../../../config.js'
 import _deepClone from 'lodash/cloneDeep'
+import _debounce from 'lodash/debounce'
+import _isEmpty from 'lodash/isEmpty'
 const prefixCls = prefix + 'submission-rule'
 
 import * as config from './data.js'
@@ -164,9 +165,9 @@ export default {
       default: () => ({ CAMPAIGN: 100, PLAN: 100 })
     },
     // 已选择数据
-    selectFormData: {
+    selectForm: {
       type: Object,
-      default: () => {}
+      default: null
     }
   },
   data() {
@@ -231,37 +232,38 @@ export default {
 
       return this.maxConfig[adsSubmitDimension]
     },
-
     emitData() {
       return {
         formData: this.formData,
         labelData: this.getLabelData(),
         submitData: this.getSubmitData()
       }
+    },
+    emitDataString() {
+      return JSON.stringify(this.emitData)
     }
   },
   watch: {
-    emitData: {
-      deep: true,
-      immediate: true,
+    emitDataString: {
       handler(n, o) {
-        if (JSON.stringify(n) !== JSON.stringify(o)) {
-          this.$emit('on-change', n)
+        if (n !== o) {
+          this.handleChange()
         }
       }
     }
   },
   created() {
-    this.$nextTick(() => {
-      this.formData = _deepClone(this.selectFormData)
-      this.$emit('on-change', this.emitData)
-    })
+    // 有值
+    if (this.selectForm && !_isEmpty(this.selectForm)) {
+      this.formData = _deepClone(this.selectForm)
+    }
+    this.handleChange()
   },
   methods: {
-    // change
-    handleSubmitRule() {
-      //
-    },
+    // 防抖 更新最后一次结果
+    handleChange: _debounce(function () {
+      this.$emit('on-change', this.emitData)
+    }, 20),
     handelDimensionChange() {
       this.formData.adsSubmitNum1 = 1
     },
