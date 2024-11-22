@@ -458,6 +458,7 @@ export default {
     queryChange(val) {
       this.query = val
       this.$refs['list'] && this.$refs['list'].scrollToIndex(0)
+      this.$emit('query-change', val)
     },
     handleClick({ value }) {
       if (this.multiple) {
