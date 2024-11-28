@@ -531,10 +531,12 @@ export default {
     emitChange() {
       // console.log('更新-emitChange')
       const value = this.geteEmitValue()
-      const optionData = this.$refs['filter-list'] ? this.$refs['filter-list'].optionData : []
       this.$emit('input', value)
-      this.$emit('on-change', value, { optionData })
       this.dispatch('FormItem', 'on-form-change', value)
+      this.$nextTick(() => {
+        const optionData = this.$refs['filter-list'] ? this.$refs['filter-list'].optionData : []
+        this.$emit('on-change', value, { optionData })
+      })
     },
     handleInputClick(val) {
       this.$emit('on-click', val)
