@@ -234,6 +234,11 @@ export default {
     max: {
       type: Number,
       default: 0
+    },
+    // 开启远端搜索
+    remote: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -315,6 +320,9 @@ export default {
       return list
     },
     filterData() {
+      if (this.remote) {
+        return this.currentData
+      }
       if (this.filterMethod) {
         return this.currentData.filter(item => this.filterMethod(item, this.query))
       }
