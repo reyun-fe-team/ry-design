@@ -3,6 +3,8 @@
     <rd-submission-rule
       media-code="toutiao"
       :select-form="selectForm"
+      :has-delay-submit-time="false"
+      :submit-rule-disabled-item-fun="submitRuleDisabledItemFun"
       @on-change="handleChange"></rd-submission-rule>
   </div>
 </template>
@@ -29,6 +31,18 @@ export default {
     handleChange(data) {
       console.log('data', data)
       this.selectForm = data.formData
+    },
+    submitRuleDisabledItemFun(arr) {
+      return arr.map(e => {
+        let disabled = false
+        if (e.value === 'DELAY') {
+          disabled = true
+        }
+        return {
+          ...e,
+          disabled
+        }
+      })
     }
   }
 }

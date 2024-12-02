@@ -16,7 +16,9 @@
       </FormItem>
 
       <template v-if="formData.adsSubmitRule === 'DELAY'">
-        <FormItem label="执行时间">
+        <FormItem
+          v-if="hasDelaySubmitTime"
+          label="执行时间">
           <DatePicker
             v-model="formData.adsDelaySubmitTime"
             :class="[prefixCls + '-date-picker']"
@@ -32,7 +34,9 @@
         </FormItem>
       </template>
       <template v-if="formData.adsSubmitRule === 'BATCH'">
-        <FormItem label="执行时间">
+        <FormItem
+          v-if="hasDelaySubmitTime"
+          label="执行时间">
           <DatePicker
             v-model="formData.adsBatchStartTime"
             :class="[prefixCls + '-date-picker']"
@@ -100,7 +104,9 @@
         </FormItem>
       </template>
       <template v-if="formData.adsSubmitRule === 'REPEAT'">
-        <FormItem label="执行时间">
+        <FormItem
+          v-if="hasDelaySubmitTime"
+          label="执行时间">
           <DatePicker
             v-model="formData.adsRepeatSubmitTime"
             :class="[prefixCls + '-date-picker']"
@@ -168,6 +174,18 @@ export default {
     selectForm: {
       type: Object,
       default: null
+    },
+    // 提交方式禁用函数
+    submitRuleDisabledItemFun: {
+      type: Function,
+      default: () => {
+        return false
+      }
+    },
+    // 是否包含执行时间
+    hasDelaySubmitTime: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -212,7 +230,9 @@ export default {
       return config.getDimensionLabel(this.mediaCode, this.formData.adsSubmitDimension)
     },
     submitRuleList() {
-      return config.getSubmitRuleList(this.mediaCode, this.formData.adsSubmitDimension)
+      return this.submitRuleDisabledItemFun(
+        config.getSubmitRuleList(this.mediaCode, this.formData.adsSubmitDimension)
+      )
     },
     submitDimensionList() {
       return config.getSubmitDimensionList(this.mediaCode)
@@ -355,6 +375,10 @@ export default {
         result.adsSubmitNum = this.formData.adsSubmitNum2
       }
 
+      //  如果不包含执行时间，那么删除该参数
+      if (!this.hasDelaySubmitTime) {
+        delete result.adsSubmitInterval
+      }
       return result
     },
     getLabelData() {
