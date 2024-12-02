@@ -377,7 +377,7 @@ export default {
 
       //  如果不包含执行时间，那么删除该参数
       if (!this.hasDelaySubmitTime) {
-        delete result.adsSubmitInterval
+        delete result.adsDelaySubmitTime
       }
       return result
     },
