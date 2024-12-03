@@ -113,7 +113,7 @@ export default {
     inputPlaceholder: String,
     filterPlaceholder: {
       type: String,
-      default: '请输入要搜索的内容'
+      default: '英文,分隔多个'
     },
     query: {
       type: String,

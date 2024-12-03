@@ -225,7 +225,7 @@ export default {
     },
     filterBySplit: {
       type: String,
-      default: ''
+      default: ','
     },
     filterByCustom: {
       type: Array,
