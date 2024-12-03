@@ -177,10 +177,7 @@ export default {
     },
     // 提交方式禁用函数
     submitRuleDisabledItemFun: {
-      type: Function,
-      default: () => {
-        return false
-      }
+      type: Function
     },
     // 是否包含执行时间
     hasDelaySubmitTime: {
@@ -230,9 +227,13 @@ export default {
       return config.getDimensionLabel(this.mediaCode, this.formData.adsSubmitDimension)
     },
     submitRuleList() {
-      return this.submitRuleDisabledItemFun(
-        config.getSubmitRuleList(this.mediaCode, this.formData.adsSubmitDimension)
-      )
+      if (this.submitRuleDisabledItemFun) {
+        return this.submitRuleDisabledItemFun(
+          config.getSubmitRuleList(this.mediaCode, this.formData.adsSubmitDimension)
+        )
+      }
+
+      return config.getSubmitRuleList(this.mediaCode, this.formData.adsSubmitDimension)
     },
     submitDimensionList() {
       return config.getSubmitDimensionList(this.mediaCode)
