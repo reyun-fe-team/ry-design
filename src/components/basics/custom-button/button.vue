@@ -27,6 +27,7 @@
       v-if="type === 'illustration'"
       :disabled="disabled"
       :illustration-url="illustrationUrl"
+      :illustration-grade="illustrationGrade"
       :is-drop-down="isDropDown"
       :drop-down-items="dropDownItems"
       :drop-down-props="dropDownProps"
@@ -86,6 +87,14 @@ export default {
     illustrationUrl: {
       type: String,
       default: ''
+    },
+    // 插画按钮等级（插画按钮支持）
+    illustrationGrade: {
+      default: 'primary',
+      validator(value) {
+        // veryImportant 非常重要 primary 主要 secondary 次要
+        return ['veryImportant', 'primary', 'secondary'].includes(value)
+      }
     },
     // Dropdown Props,下拉参数选项
     dropDownProps: {
