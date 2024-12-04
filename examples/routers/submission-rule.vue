@@ -4,7 +4,6 @@
       media-code="toutiao"
       :select-form="selectForm"
       :has-delay-submit-time="false"
-      :submit-rule-disabled-item-fun="submitRuleDisabledItemFun"
       @on-change="handleChange"></rd-submission-rule>
   </div>
 </template>
@@ -14,7 +13,7 @@ export default {
   data() {
     return {
       selectForm: {
-        adsSubmitRule: 'DELAY',
+        adsSubmitRule: 'NOW',
         adsDelaySubmitTime: '2024-11-18 17:43',
         adsBatchStartTime: '2024-11-18 17:43',
         adsSubmitInterval1: 'FIVE_MINUTE',
@@ -35,12 +34,15 @@ export default {
     submitRuleDisabledItemFun(arr) {
       return arr.map(e => {
         let disabled = false
+        let tooltip = e.tooltip
         if (e.value === 'DELAY') {
           disabled = true
+          tooltip = 'asd'
         }
         return {
           ...e,
-          disabled
+          disabled,
+          tooltip
         }
       })
     }
