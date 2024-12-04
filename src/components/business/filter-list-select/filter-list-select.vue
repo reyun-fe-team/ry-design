@@ -185,11 +185,11 @@ export default {
     showImage: Boolean,
     showDescription: Boolean,
     showSubtitle: Boolean,
-    inputPlaceholder: {
+    inputPlaceholder: String,
+    filterPlaceholder: {
       type: String,
       default: '英文,分隔多个'
     },
-    filterPlaceholder: String,
     disabled: {
       type: Boolean,
       default: false
