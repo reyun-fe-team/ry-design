@@ -319,14 +319,15 @@ export default {
     },
     filterData() {
       const query = this.query.trim()
-
       if (this.filterMethod) {
         return this.currentData.filter(item => this.filterMethod(item, query))
       }
+      // 兼容中英文逗号
+      const filterBySplit = [',', '，'].includes(this.filterBySplit) ? /[,，]/ : this.filterBySplit
 
-      let searchTerms = this.filterBySplit
-        ? query.split(this.filterBySplit).filter(val => val)
-        : [query].filter(val => val)
+      let searchTerms = filterBySplit
+        ? query.split(filterBySplit).filter(Boolean)
+        : [query].filter(Boolean)
 
       if (!searchTerms.length) {
         return this.currentData
@@ -335,7 +336,7 @@ export default {
         // filterByCustom : 可以通过label、value、description等多种方式查询
         const labels = this.filterByCustom.map(val => data[val]).filter(Boolean)
         return labels.some(val => {
-          return searchTerms.some(ele => val.toUpperCase().includes(ele.toUpperCase()))
+          return searchTerms.some(ele => val.toUpperCase().includes(ele.trim().toUpperCase()))
         })
       })
     },
