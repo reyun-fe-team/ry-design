@@ -92,7 +92,7 @@
           :group-name-list="groupNameList"
           :group-checkbox="true"
           :is-select-entity="false"
-          :filter-by-custom="['label', 'description']"
+          :filter-by-custom="['label', 'description', 'value']"
           filter-by-split=","
           multiple
           show-action
