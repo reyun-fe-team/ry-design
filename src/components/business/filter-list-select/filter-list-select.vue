@@ -318,31 +318,29 @@ export default {
       return list
     },
     filterData() {
+      const query = this.query.trim()
+
       if (this.filterMethod) {
-        return this.currentData.filter(item => this.filterMethod(item, this.query))
+        return this.currentData.filter(item => this.filterMethod(item, query))
       }
 
       let searchTerms = this.filterBySplit
-        ? this.query.split(this.filterBySplit).filter(val => val)
-        : [this.query].filter(val => val)
+        ? query.split(this.filterBySplit).filter(val => val)
+        : [query].filter(val => val)
 
       if (!searchTerms.length) {
         return this.currentData
       }
       return this.currentData.filter(data => {
-        const labels = this.filterByCustom
-          .reduce((list, val) => {
-            list.push(data[val])
-            return list
-          }, [])
-          .filter(val => val)
+        // filterByCustom : 可以通过label、value、description等多种方式查询
+        const labels = this.filterByCustom.map(val => data[val]).filter(Boolean)
         return labels.some(val => {
           return searchTerms.some(ele => val.toUpperCase().includes(ele.toUpperCase()))
         })
       })
     },
     realData() {
-      let current = Array.isArray(this.value) ? this.value : [this.value]
+      const current = Array.isArray(this.value) ? this.value : [this.value]
       return _cloneDeep(current)
     },
     isCountMax() {
