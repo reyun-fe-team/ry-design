@@ -1,6 +1,7 @@
 <template>
   <div class="edit-row-bid">
     <rd-submission-rule
+      has-submit-type
       media-code="toutiao"
       :select-form="selectForm"
       :has-delay-submit-time="false"
