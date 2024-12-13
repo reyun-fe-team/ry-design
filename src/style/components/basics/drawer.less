@@ -1,49 +1,39 @@
-@modals: ~"@{css-prefix}modals";
-.@{modals} {
-  &-wrapper {
-    // 修改iview原生样式
-    .ivu-modal-header {
-      padding: 14px 24px;
+@drawer: ~'@{css-prefix}drawer';
+
+.@{drawer} {
+  &-footer-border-none {
+    .ivu-drawer-footer {
+      border: none;
     }
-    .ivu-modal-close {
-      right: 15px;
-    }
-    .ivu-modal-footer {
-      padding: 12px 24px;
-      .ivu-btn {
-        min-width: 104px;
-      }
-      .btn-line {
-        float: left;
-        margin-right: 10px;
-        color: #3989fa;
-        font-size: 12px;
-        line-height: 32px;
-        cursor: pointer;
-      }
-    }
-    .ivu-modal-body {
-      // 使用scrollbar-gutter属性预留好滚动条宽度， chrome滚动条宽度为17px
-      padding: 24px 7px 24px 24px;
-      //min-height: 540px;
-      max-height: 80vh;
-      overflow-y: auto;
-      scrollbar-gutter: stable;
-    }
-    &.footer-border-none {
-      .ivu-modal-footer {
-        border: none;
-      }
-      .ivu-modal-body {
-        padding-bottom: 0;
-      }
+    .ivu-drawer-body {
+      padding-bottom: 0;
     }
   }
+
+  // 修改iview原生样式
+  .ivu-drawer-header {
+    padding: 14px 24px;
+  }
+  .ivu-drawer-close {
+    right: 15px;
+  }
+  .ivu-drawer-footer {
+    padding: 12px 24px;
+    .ivu-btn {
+      min-width: 104px;
+    }
+  }
+  .ivu-drawer-body {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
   &-default-header {
     display: flex;
     flex-direction: row;
     align-items: center;
   }
+
   &-title {
     display: flex;
     justify-content: flex-start;
@@ -51,6 +41,7 @@
     font-size: 16px;
     font-weight: 500;
   }
+
   &-subtitle {
     padding-left: 10px;
     color: #b8b9bb;

@@ -7,7 +7,7 @@
     <Button @click="onClickDeep">嵌套弹窗</Button>
     <Button @click="onClickScroll">scroll弹窗</Button>
     <div v-if="modalVisible1">
-      <rd-modals
+      <rd-drawer
         v-model="modalVisible1"
         is-slot-default-header
         is-create
@@ -54,10 +54,10 @@
             </FormItem>
           </Form>
         </div>
-      </rd-modals>
+      </rd-drawer>
     </div>
     <div v-if="modalVisible2">
-      <rd-modals
+      <rd-drawer
         v-model="modalVisible2"
         is-reset
         title="普通弹框"
@@ -101,10 +101,10 @@
             </FormItem>
           </Form>
         </div>
-      </rd-modals>
+      </rd-drawer>
     </div>
     <div v-if="deleteVisible">
-      <rd-modals
+      <rd-drawer
         v-model="deleteVisible"
         :width="400"
         class-name="center-modal mini-scroll-y"
@@ -120,10 +120,10 @@
             </span>
           </rd-delete-modals>
         </div>
-      </rd-modals>
+      </rd-drawer>
     </div>
     <div v-if="deepVisible">
-      <rd-modals
+      <rd-drawer
         v-model="deepVisible"
         :width="400"
         class-name="center-modal mini-scroll-y"
@@ -132,7 +132,7 @@
         <div slot="content">
           <Button @click="onClickDeep1">弹窗</Button>
           <div v-if="deepVisible1">
-            <rd-modals
+            <rd-drawer
               v-model="deepVisible1"
               close-scroll
               :width="400"
@@ -149,13 +149,13 @@
                   </span>
                 </rd-delete-modals>
               </div>
-            </rd-modals>
+            </rd-drawer>
           </div>
         </div>
-      </rd-modals>
+      </rd-drawer>
     </div>
     <div v-if="scrollVisible">
-      <rd-modals
+      <rd-drawer
         v-model="scrollVisible"
         :width="400"
         @on-cancel="onClickDeepCancel"
@@ -163,7 +163,7 @@
         <div slot="content">
           <div style="height: 1000px; background: #2b85e4; width: 100%">我是容器内容</div>
         </div>
-      </rd-modals>
+      </rd-drawer>
     </div>
   </div>
 </template>

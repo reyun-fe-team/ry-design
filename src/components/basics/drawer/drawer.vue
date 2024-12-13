@@ -1,6 +1,6 @@
 <template>
-  <!--  class-name="rd-center-modal mini-scroll-y"-->
-  <Modal
+  <Drawer
+    transfer
     :value="value"
     :class-name="className"
     :class="classes"
@@ -10,77 +10,72 @@
     :lock-scroll="lockScroll"
     :closable="closable"
     :mask-closable="maskClosable"
-    @on-cancel="handleCancel"
+    @on-close="handleCancel"
     @on-visible-change="handleVisibleChange">
-    <div
+    <!-- 默认头部 -->
+    <DefaultHead
       v-if="isSlotDefaultHeader"
       slot="header"
-      :class="`${prefixCls}-default-header`">
-      <span :class="`${prefixCls}-title`">
-        <div>{{ headerObj.title }}</div>
-        <div v-if="headerObj.total">({{ headerObj.titleNum }}/{{ headerObj.total }})</div>
-      </span>
-      <span
-        v-if="headerObj.subTitle"
-        :class="`${prefixCls}-subtitle`">
-        {{ subtitle }}
-      </span>
-    </div>
-    <div
+      :prefix-cls="prefixCls"
+      :header-obj="headerObj"
+      :subtitle="subtitle"></DefaultHead>
+
+    <!-- 自定义头部 -->
+    <slot
       v-if="isSlotHeader"
-      slot="header">
-      <slot name="header"></slot>
+      slot="header"
+      name="header"></slot>
+
+    <!-- 内容 -->
+    <div :class="`${prefixCls}-body`">
+      <slot name="content"></slot>
     </div>
-    <slot name="content"></slot>
-    <div
-      v-if="diySlotFooter"
-      slot="footer">
-      <slot name="footer"></slot>
+
+    <!-- 底部 -->
+    <div :class="`${prefixCls}-footer`">
+      <slot
+        v-if="diySlotFooter"
+        name="footer"></slot>
+
+      <template v-if="!diySlotFooter">
+        <!-- 重置 -->
+        <ResetButton
+          v-if="isReset"
+          :reset-text="resetText"
+          @on-click="handleReset"></ResetButton>
+        <!-- 新建 -->
+        <CreateButton
+          v-if="isCreate"
+          :create-text="createText"
+          @on-click="handleCreate"></CreateButton>
+        <!-- 链接 -->
+        <slot name="link"></slot>
+        <!-- 确认取消 -->
+        <ConfirmCancelButton
+          :loading="modalLoading"
+          @on-confirm="handleOk"
+          @on-cancel="handleCancel"></ConfirmCancelButton>
+      </template>
     </div>
-    <div
-      v-else
-      slot="footer">
-      <Button
-        v-if="isReset"
-        type="default"
-        style="float: left"
-        @click="handleReset">
-        {{ resetText }}
-      </Button>
-      <Button
-        v-if="isCreate"
-        type="primary"
-        ghost
-        style="float: left"
-        @click="handleCreate">
-        <Icon
-          custom="iconfont ry-icon-xinjian"
-          style="vertical-align: inherit"
-          size="12"></Icon>
-        {{ createText }}
-      </Button>
-      <slot name="link"></slot>
-      <Button
-        style="width: 104px"
-        @click="handleCancel">
-        取消
-      </Button>
-      <Button
-        type="primary"
-        style="width: 104px"
-        :loading="modalLoading"
-        @click="handleOk">
-        确定
-      </Button>
-    </div>
-  </Modal>
+  </Drawer>
 </template>
 
 <script>
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'modals'
+import CreateButton from './components/footer/create-button'
+import ResetButton from './components/footer/reset-button'
+import ConfirmCancelButton from './components/footer/confirm-cancel-button'
+import DefaultHead from './components/header/default-head'
+const prefixCls = prefix + 'drawer'
+
 export default {
   name: prefixCls,
+  components: {
+    CreateButton,
+    ResetButton,
+    ConfirmCancelButton,
+    DefaultHead
+  },
   props: {
     value: {
       type: Boolean,
@@ -93,6 +88,10 @@ export default {
     width: {
       type: [Number, String],
       default: 1200
+    },
+    placement: {
+      type: String,
+      default: 'right'
     },
     title: {
       type: String,
@@ -171,12 +170,7 @@ export default {
   },
   computed: {
     classes({ footerBorderNone }) {
-      return [
-        `${prefixCls}-wrapper`,
-        {
-          'footer-border-none': footerBorderNone
-        }
-      ]
+      return [footerBorderNone ? prefixCls + '-footer-border-none' : '']
     },
     subtitle({ headerObj }) {
       const { subNum, subTitle } = headerObj
