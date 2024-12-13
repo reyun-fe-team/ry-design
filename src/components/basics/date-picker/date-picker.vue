@@ -167,17 +167,25 @@ export default {
       }
       // 禁选按钮
       let disabledDate = date => {
-        let config = false
-        if (this.limit) {
-          config = config || date < new Date(this.limit)
+        const stripTime = d => {
+          const newDate = new Date(d)
+          newDate.setHours(0, 0, 0, 0)
+          return newDate
         }
-        if (this.selStart) {
-          config = new Date(this.selStart) > date
+
+        const currentDate = stripTime(date)
+
+        if (this.limit && currentDate < stripTime(new Date(this.limit))) {
+          return true
         }
-        if (this.selEnd) {
-          config = config || date > new Date(this.selEnd)
+        if (this.selStart && stripTime(new Date(this.selStart)) > currentDate) {
+          return true
         }
-        return config
+        if (this.selEnd && currentDate > stripTime(new Date(this.selEnd))) {
+          return true
+        }
+
+        return false
       }
       return {
         disabledDate,
