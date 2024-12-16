@@ -2,7 +2,7 @@
   <Drawer
     transfer
     :value="value"
-    :class-name="className"
+    :class-name="wrapperClass"
     :class="classes"
     :draggable="draggable"
     :width="width"
@@ -49,7 +49,9 @@
           :create-text="createText"
           @on-click="handleCreate"></CreateButton>
         <!-- 链接 -->
-        <slot name="link"></slot>
+        <slot
+          name="link"
+          style="margin-right: 5px"></slot>
         <!-- 确认取消 -->
         <ConfirmCancelButton
           :loading="modalLoading"
@@ -175,6 +177,9 @@ export default {
     subtitle({ headerObj }) {
       const { subNum, subTitle } = headerObj
       return '已选' + subNum + subTitle
+    },
+    wrapperClass() {
+      return `${prefixCls}-wrapper ${this.className}`
     }
   },
   mounted() {
@@ -199,13 +204,13 @@ export default {
     // 兼容写法 - 如果不清除overflow:hidden 手动清除
     handleVisibleChange(val) {
       const value = val || this.closeScroll
-      this.iViewModalVisibleEventRewrite({ val: value, scrollable: !val })
+      this.setBodyOverflow({ val: value, scrollable: !val })
     },
-    iViewModalVisibleEventRewrite({ val, scrollable = false }) {
+    // 设置body的overflow
+    setBodyOverflow({ val, scrollable = false }) {
       const style = 'overflow: hidden;'
-      // this.closeScroll 为true 则 overflow: hidden;
       if (this.closeScroll) {
-        document.body.style.cssText = style
+        document.body.style.overflow = style
       } else {
         document.body.style.cssText = !val ? '' : scrollable ? '' : style
       }
