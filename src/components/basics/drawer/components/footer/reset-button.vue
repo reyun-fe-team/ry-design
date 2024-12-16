@@ -1,7 +1,7 @@
 <template>
   <Button
     type="default"
-    style="float: left"
+    style="margin-right: 5px"
     @click="handleReset">
     {{ resetText }}
   </Button>

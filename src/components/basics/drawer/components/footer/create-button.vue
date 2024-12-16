@@ -2,7 +2,7 @@
   <Button
     type="primary"
     ghost
-    style="float: left"
+    style="margin-right: 5px"
     @click="handleCreate">
     <Icon
       custom="iconfont ry-icon-xinjian"
