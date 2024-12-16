@@ -1,0 +1,50 @@
+@drawer: ~'@{css-prefix}drawer';
+
+.@{drawer} {
+  &-footer-border-none {
+    .ivu-drawer-footer {
+      border: none;
+    }
+    .ivu-drawer-body {
+      padding-bottom: 0;
+    }
+  }
+
+  // 修改iview原生样式
+  .ivu-drawer-header {
+    padding: 14px 24px;
+  }
+  .ivu-drawer-close {
+    right: 15px;
+  }
+  .ivu-drawer-footer {
+    padding: 12px 24px;
+    .ivu-btn {
+      min-width: 104px;
+    }
+  }
+  .ivu-drawer-body {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
+  &-default-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &-title {
+    display: flex;
+    justify-content: flex-start;
+    color: #151b39;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  &-subtitle {
+    padding-left: 10px;
+    color: #b8b9bb;
+    font-size: 12px;
+  }
+}

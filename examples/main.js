@@ -78,6 +78,10 @@ const router = new VueRouter({
       component: resolve => require(['./routers/modals'], resolve)
     },
     {
+      path: '/drawer',
+      component: resolve => require(['./routers/drawer'], resolve)
+    },
+    {
       path: '/edit-row-bid',
       component: resolve => require(['./routers/edit-row-bid'], resolve)
     },
