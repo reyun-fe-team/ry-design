@@ -256,3 +256,28 @@ export const getShortcutsOptionsList = (start, self) => [
     }
   }
 ]
+
+// 获取消除时分秒的日期对象
+export const getDateStripTime = d => {
+  if (!d) {
+    return null
+  }
+
+  if (d instanceof Date) {
+    d.setHours(0, 0, 0, 0)
+    return d
+  }
+
+  if (typeof d === 'string') {
+    const newDate = new Date(d)
+    // 如果日期格式不正确，则返回 null
+    if (isNaN(newDate.getTime())) {
+      return null
+    }
+
+    newDate.setHours(0, 0, 0, 0)
+    return newDate
+  }
+
+  return null
+}
