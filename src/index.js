@@ -8,6 +8,7 @@ import PageHeader from './components/basics/page-header'
 import Breadcrumb from './components/basics/breadcrumb'
 import MultiRadioButton from './components/basics/multi-radio-button'
 import Modals from './components/basics/modals'
+import Drawer from './components/basics/drawer'
 import RadioGroup from './components/basics/radio-group'
 import TableColumns from './components/basics/table-columns/index.js'
 import DraggableCard from './components/basics/draggable-card'
@@ -116,6 +117,7 @@ const components = [
   PageHeaderModule,
   RadioGroup,
   Modals,
+  Drawer,
   EditRowBid,
   TableColumns,
   ReverseButton,
@@ -222,6 +224,7 @@ export default {
   MultiRadioButton,
   PageHeaderModule,
   Modals,
+  Drawer,
   EditRowBid,
   TableColumns,
   ReverseButton,

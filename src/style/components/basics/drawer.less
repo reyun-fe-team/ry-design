@@ -1,0 +1,63 @@
+@drawer: ~'@{css-prefix}drawer';
+
+.@{drawer}-wrapper {
+  .ivu-drawer-body {
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.@{drawer}-body {
+  padding: 14px 16px;
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-gutter: auto;
+}
+
+.@{drawer}-footer {
+  border-top: 1px solid #e5e5e5;
+  min-height: 30px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .ivu-btn {
+    min-width: 104px;
+  }
+}
+
+.@{drawer}-default-header {
+  height: 22px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.@{drawer}-footer-border-none {
+  .ivu-drawer-footer {
+    border: none;
+  }
+
+  .ivu-drawer-body {
+    padding-bottom: 0;
+  }
+}
+
+.@{drawer}-title {
+  display: flex;
+  justify-content: flex-start;
+  color: #151b39;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.@{drawer}-subtitle {
+  padding-left: 10px;
+  color: #b8b9bb;
+  font-size: 12px;
+}
