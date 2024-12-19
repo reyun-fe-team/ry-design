@@ -186,7 +186,10 @@ export default {
     showDescription: Boolean,
     showSubtitle: Boolean,
     inputPlaceholder: String,
-    filterPlaceholder: String,
+    filterPlaceholder: {
+      type: String,
+      default: '英文,分隔多个'
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -225,7 +228,7 @@ export default {
     },
     filterBySplit: {
       type: String,
-      default: ''
+      default: ','
     },
     filterByCustom: {
       type: Array,
@@ -323,31 +326,31 @@ export default {
       if (this.remote) {
         return this.currentData
       }
-      if (this.filterMethod) {
-        return this.currentData.filter(item => this.filterMethod(item, this.query))
-      }
 
-      let searchTerms = this.filterBySplit
-        ? this.query.split(this.filterBySplit).filter(val => val)
-        : [this.query].filter(val => val)
+      const query = this.query.trim()
+      if (this.filterMethod) {
+        return this.currentData.filter(item => this.filterMethod(item, query))
+      }
+      // 兼容中英文逗号
+      const filterBySplit = [',', '，'].includes(this.filterBySplit) ? /[,，]/ : this.filterBySplit
+
+      let searchTerms = filterBySplit
+        ? query.split(filterBySplit).filter(Boolean)
+        : [query].filter(Boolean)
 
       if (!searchTerms.length) {
         return this.currentData
       }
       return this.currentData.filter(data => {
-        const labels = this.filterByCustom
-          .reduce((list, val) => {
-            list.push(data[val])
-            return list
-          }, [])
-          .filter(val => val)
+        // filterByCustom : 可以通过label、value、description等多种方式查询
+        const labels = this.filterByCustom.map(val => data[val]).filter(Boolean)
         return labels.some(val => {
-          return searchTerms.some(ele => val.toUpperCase().includes(ele.toUpperCase()))
+          return searchTerms.some(ele => val.toUpperCase().includes(ele.trim().toUpperCase()))
         })
       })
     },
     realData() {
-      let current = Array.isArray(this.value) ? this.value : [this.value]
+      const current = Array.isArray(this.value) ? this.value : [this.value]
       return _cloneDeep(current)
     },
     isCountMax() {
