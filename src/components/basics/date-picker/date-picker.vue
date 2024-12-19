@@ -26,7 +26,7 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'date-picker'
-import { getShortcutsOptionsList, shortcutsList } from './data'
+import { getShortcutsOptionsList, shortcutsList, getDateStripTime } from './data'
 import date from '@src/util/date'
 import { getKey } from '@src/util/assist'
 export default {
@@ -167,22 +167,27 @@ export default {
       }
       // 禁选按钮
       let disabledDate = date => {
-        const stripTime = d => {
-          const newDate = new Date(d)
-          newDate.setHours(0, 0, 0, 0)
-          return newDate
+        const currentDate = getDateStripTime(date)
+
+        if (this.limit) {
+          const limitDate = getDateStripTime(this.limit)
+          if (limitDate && +currentDate < +limitDate) {
+            return true
+          }
         }
 
-        const currentDate = stripTime(date)
+        if (this.selStart) {
+          const selStartDate = getDateStripTime(this.selStart)
+          if (selStartDate && +selStartDate > +currentDate) {
+            return true
+          }
+        }
 
-        if (this.limit && currentDate < stripTime(new Date(this.limit))) {
-          return true
-        }
-        if (this.selStart && stripTime(new Date(this.selStart)) > currentDate) {
-          return true
-        }
-        if (this.selEnd && currentDate > stripTime(new Date(this.selEnd))) {
-          return true
+        if (this.selEnd) {
+          const selEndDate = getDateStripTime(this.selEnd)
+          if (selEndDate && +selEndDate < +currentDate) {
+            return true
+          }
         }
 
         return false
@@ -337,10 +342,17 @@ export default {
       this.selStart = this.start
       this.selEnd = this.end
 
-      const gt = new Date(this.start) > new Date(date[0])
-      const lt = new Date(this.end) < new Date(date[1])
+      const currentStart = getDateStripTime(date[0])
+      const currentEnd = getDateStripTime(date[1])
+
+      const start = getDateStripTime(this.start)
+      const end = getDateStripTime(this.end)
+
+      const gt = +start > +currentStart
+      const lt = +end < +currentEnd
+
       if (gt || lt) {
-        this.$Message.info('时间范围超出，请确认')
+        this.$Message.warn('选择日期超出范围')
         return false
       }
 
@@ -365,10 +377,17 @@ export default {
         return false
       }
 
-      const gt = new Date(this.start) > new Date(this.selDate[0])
-      const lt = new Date(this.end) < new Date(this.selDate[1])
+      const currentStart = getDateStripTime(this.selDate[0])
+      const currentEnd = getDateStripTime(this.selDate[1])
+
+      const start = getDateStripTime(this.start)
+      const end = getDateStripTime(this.end)
+
+      const gt = +start > +currentStart
+      const lt = +end < +currentEnd
+
       if (gt || lt) {
-        this.$Message.info('时间范围超出，请确认')
+        this.$Message.warn('选择日期超出范围')
         return false
       }
 
