@@ -281,3 +281,29 @@ export const getDateStripTime = d => {
 
   return null
 }
+
+/**
+ * 校验日期范围数组是否有效
+ * @param {Array} dateRange 日期范围数组 [startDate, endDate]
+ * @returns {boolean} 是否有效
+ */
+export function isValidDateRange(dateRange) {
+  // 检查是否为数组且长度为2
+  if (!Array.isArray(dateRange) || dateRange.length !== 2) {
+    return false
+  }
+
+  const [startDate, endDate] = dateRange
+
+  // 检查是否存在空值
+  if (!startDate || !endDate) {
+    return false
+  }
+
+  // 检查是否为无效日期
+  if (startDate === 'Invalid date' || endDate === 'Invalid date') {
+    return false
+  }
+
+  return true
+}
