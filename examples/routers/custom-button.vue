@@ -116,14 +116,23 @@
             :drop-down-menu-style="{ maxWidth: '500px', width: '300px' }"
             :drop-down-props="{ trigger: 'click' }"
             :drop-down-items="dropDownItems"
-            :illustration-url="piliangchuangjian">
-            非常快的极速创建
+            :illustration-url="piliangchuangjian"
+            illustration-grade="primary">
+            主要按钮
           </rd-button>
 
           <rd-button
             type="illustration"
-            :illustration-url="piliangchuangjian">
-            智能创建
+            :illustration-url="piliangchuangjian"
+            illustration-grade="veryImportant">
+            非常重要按钮
+          </rd-button>
+
+          <rd-button
+            type="illustration"
+            :illustration-url="piliangchuangjian"
+            illustration-grade="secondary">
+            次要按钮
           </rd-button>
         </span>
       </div>

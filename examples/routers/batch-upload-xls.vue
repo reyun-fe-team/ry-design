@@ -35,7 +35,8 @@
         :on-error="handleErrorError"
         :is-clear-file="true"
         @tautology="clearDataError"
-        @clearFile="clearFileError">
+        @clearFile="clearFileError"
+        @on-page-change="pageChange">
         <span slot="hintText">
           {{ hintTextError }}
           <i style="color: blue">下载失败数据</i>
@@ -146,6 +147,9 @@ export default {
       ]
       this.isSucceedTypeError = 'portionSucceed'
       this.hintTextError = '上传失败'
+    },
+    pageChange(pager) {
+      console.log('pager: ', pager)
     }
   }
 }

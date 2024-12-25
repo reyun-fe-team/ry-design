@@ -23,6 +23,7 @@
         </label>
         <div :class="prefixCls + '-keyword'">
           <Input
+            ref="keyword-input"
             v-model="keyword"
             :clearable="clearable"
             :disabled="disabled"
@@ -370,10 +371,47 @@ export default {
         }
       }
       if (this.keyword.includes(item.title) || this.keyword.includes(item.reg)) {
-        this.keyword = this.keyword.replace(replaceName, '')
+        this.deleteText(replaceName)
       } else {
-        this.keyword += activeTitle
+        this.insertText(activeTitle)
       }
+    },
+    deleteText(text) {
+      const input = this.$refs['keyword-input'].$refs.input
+      const currentValue = input.value
+      let startPos = currentValue.match(text).index
+      input.value = currentValue.replace(text, '')
+      input.selectionStart = input.selectionEnd = startPos
+      input.focus()
+      this.keyword = input.value
+    },
+    insertText(text) {
+      const input = this.$refs['keyword-input'].$refs.input
+      // 获取光标位置
+      const startPos = input.selectionStart
+      const endPos = input.selectionEnd
+      // 保存当前输入框的值
+      const currentValue = input.value
+      // 需要插入的文本
+      const textToInsert = text
+      // 根据光标位置插入文本
+      if (startPos !== endPos) {
+        // 如果有选中文本，则替换选中的文本
+        input.value =
+          currentValue.substring(0, startPos) +
+          textToInsert +
+          currentValue.substring(endPos, currentValue.length)
+      } else {
+        // 没有选中文本，直接在光标位置插入文本
+        input.value =
+          currentValue.substring(0, startPos) +
+          textToInsert +
+          currentValue.substring(startPos, currentValue.length)
+      }
+      // 设置光标位置
+      input.selectionStart = input.selectionEnd = startPos + textToInsert.length
+      input.focus()
+      this.keyword = input.value
     },
     handleHideMore() {
       this.hideMore = !this.hideMore

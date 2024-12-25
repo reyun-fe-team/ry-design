@@ -6,21 +6,20 @@
 <template>
   <Dropdown
     v-bind="newDropDownProps"
-    :class="[btnClass]">
-    <div :class="btnClass + '-wrap'">
+    :class="[prefixCls]">
+    <div :class="prefixCls + '-wrap'">
       <!-- 按钮 -->
       <Button
-        type="primary"
         :disabled="disabled"
-        :class="[btnClass + '-l', { [btnClass + '-l-b']: showDropdownMenu }]"
+        :class="contentClass"
         @click="handlePrimaryClick">
-        <div :class="btnClass + '-l-c'">
+        <div :class="prefixCls + '-l-c'">
           <!-- 插画图 -->
           <img
             :src="illustrationUrl"
-            :class="btnClass + '-l-i'" />
+            :class="prefixCls + '-l-i'" />
           <!-- 文本 -->
-          <span :class="btnClass + '-l-t'">
+          <span :class="prefixCls + '-l-t'">
             <slot></slot>
           </span>
         </div>
@@ -29,16 +28,15 @@
       <Button
         v-if="showDropdownMenu"
         v-click-outside="onClickoutside"
-        :class="btnClass + '-r'"
-        type="primary"
+        :class="[prefixCls + '-r', gradeClassList[illustrationGrade]]"
         :disabled="disabled"
         @click="handleClick"
         @mouseenter.native="handleMouseenter"
         @mouseleave.native="handleMouseleave">
-        <i :class="btnClass + '-r-line'"></i>
+        <i :class="prefixCls + '-r-line'"></i>
         <rd-icon
           type="ios-arrow-down"
-          :class="btnClass + '-r-icon'"></rd-icon>
+          :class="prefixCls + '-r-icon'"></rd-icon>
       </Button>
     </div>
     <!-- 下拉面板 -->
@@ -95,6 +93,14 @@ export default {
       type: String,
       default: ''
     },
+    // 插画按钮等级
+    illustrationGrade: {
+      default: 'primary',
+      validator(value) {
+        // veryImportant 非常重要 primary 主要 secondary 次要
+        return ['veryImportant', 'primary', 'secondary'].includes(value)
+      }
+    },
     // 下拉属性（插画按钮支持）
     // DropdownItem Props
     // 额外参数： label 文本， render 自定义渲染内容
@@ -119,10 +125,27 @@ export default {
   data() {
     return {
       // 下拉面板展示控制
-      currentVisible: false
+      currentVisible: false,
+      prefixCls
     }
   },
   computed: {
+    // 插画按钮等级
+    gradeClassList() {
+      return {
+        veryImportant: `${prefixCls}-veryImportant`,
+        primary: 'ivu-btn-primary',
+        secondary: `${prefixCls}-secondary`
+      }
+    },
+    // 内容按钮class
+    contentClass() {
+      return [
+        this.prefixCls + '-l',
+        this.gradeClassList[this.illustrationGrade],
+        this.showDropdownMenu ? this.prefixCls + '-l-b' : ''
+      ]
+    },
     // 下拉参数选项（插画按钮支持）
     newDropDownProps() {
       return {
@@ -134,10 +157,6 @@ export default {
         trigger: 'custom',
         visible: this.currentVisible
       }
-    },
-    // 类名class集合
-    btnClass() {
-      return `${prefixCls}`
     },
     // 是否有下拉项
     showDropdownMenu() {

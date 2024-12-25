@@ -20,6 +20,8 @@
       :is-cursor="isCursor"
       :lazy="lazy"
       :auto-play="autoPlay"
+      :low-quality="option.lowQuality"
+      :low-quality-width="lowQualityWidth"
       @on-preview-click="onPreviewClick(option, initialIndex, option._type)"
       @click.native="handleClick(option, initialIndex)"></rd-image>
     <div
@@ -178,7 +180,8 @@ export default {
       type: Number,
       default: 2500
     },
-    autoPlay: Boolean
+    autoPlay: Boolean,
+    lowQualityWidth: [String, Number]
   },
   data() {
     return {
