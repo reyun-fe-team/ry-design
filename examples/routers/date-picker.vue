@@ -3,7 +3,8 @@
     <div>
       开始时间包含今天
       <rd-date-picker
-        v-model="time"
+        v-model="time1"
+        :confirm="false"
         type="datetimerange"
         width="200px"
         format="yyyy-MM-dd HH:mm:ss"
@@ -14,7 +15,7 @@
     <div>
       结束时间包含今天
       <rd-date-picker
-        v-model="time"
+        v-model="time2"
         width="200px"
         start="2024-12-10"
         end="2024-12-13"></rd-date-picker>
@@ -25,7 +26,8 @@
 export default {
   data() {
     return {
-      time: []
+      time1: [],
+      time2: []
     }
   },
   methods: {}
