@@ -27,7 +27,7 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'date-picker'
-import { getShortcutsOptionsList, shortcutsList, getDateStripTime } from './data'
+import { getShortcutsOptionsList, shortcutsList, getDateStripTime, isValidDateRange } from './data'
 import date from '@src/util/date'
 import { getKey } from '@src/util/assist'
 export default {
@@ -361,10 +361,11 @@ export default {
       }
     },
     // 日期发生变化时触发
-    handleChange(date) {
+    handleChange(date = []) {
       // 确认模式时，不处理
-      if (this.confirm) {
-        return
+      // 日期范围无效时，不处理
+      if (this.confirm || !isValidDateRange(date)) {
+        return false
       }
 
       this.selStart = this.start
@@ -391,16 +392,8 @@ export default {
     // 在 confirm 模式下有效，点击确定按钮时触发
     handleOk() {
       // 不是确认模式时，不处理
-      if (!this.confirm) {
-        return
-      }
-
-      let isLength = !this.selDate.length
-      let isInvalid = this.selDate[0] === 'Invalid date' || this.selDate[1] === 'Invalid date'
-      let isEmpty = this.selDate[0] === '' || this.selDate[1] === ''
-
-      if (isLength || isInvalid || isEmpty) {
-        this.$Message.info('时间筛选不能为空')
+      // 日期范围无效时，不处理
+      if (!this.confirm || !isValidDateRange(this.selDate)) {
         return false
       }
 
@@ -429,6 +422,7 @@ export default {
     // 在 confirm 模式或 clearable = true 时有效，在清空日期时触发
     handleClear() {
       const date = []
+      this.selDate = date
       this.$emit('input', date)
       this.$emit('on-ok', date)
       this.$emit('on-clear', date)
