@@ -7,6 +7,7 @@
       :style="styles"
       :type="type"
       :transfer="transfer"
+      :transfer-class-name="transferClassName"
       :confirm="confirm"
       :clearable="clearable"
       :options="getDateOptions"
@@ -197,6 +198,10 @@ export default {
         shortcuts,
         ...options
       }
+    },
+    // 弹出日历的样式
+    transferClassName() {
+      return `${prefixCls}-transfer-wrapper-${this.uid}`
     }
   },
   watch: {
@@ -333,12 +338,35 @@ export default {
       }
       return winter
     },
+    // 移除弹出日历的确认按钮
+    removeWrapperConfirmButton() {
+      try {
+        const transferDom = document.getElementsByClassName(`${this.transferClassName}`)
+        if (transferDom.length > 0) {
+          const confirmDom = transferDom[0].getElementsByClassName('ivu-picker-confirm')
+          confirmDom.length > 0 && confirmDom[0].remove()
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn(`${prefixCls}: 移除弹出日历的确认按钮失败: `, e)
+      }
+    },
     // 弹出日历和关闭日历时触发
-    handleOpenChange(e) {
-      this.$emit('on-open-change', e)
+    handleOpenChange(open) {
+      this.$emit('on-open-change', open)
+      // 弹出日历时，清除确认和清空
+      // 不是确认模式时，清除确认按钮
+      if (open && !this.confirm) {
+        setTimeout(() => this.removeWrapperConfirmButton(), 20)
+      }
     },
     // 日期发生变化时触发
     handleChange(date) {
+      // 确认模式时，不处理
+      if (this.confirm) {
+        return
+      }
+
       this.selStart = this.start
       this.selEnd = this.end
 
@@ -352,18 +380,17 @@ export default {
       const lt = +end < +currentEnd
 
       if (gt || lt) {
-        this.$Message.warn('选择日期超出范围')
+        this.$Message.warning('选择日期超出范围')
         return false
       }
 
       this.selDate = date
-      if (!this.confirm) {
-        this.$emit('input', this.selDate)
-        this.$emit('on-ok', this.selDate)
-      }
+      this.$emit('input', this.selDate)
+      this.$emit('on-ok', this.selDate)
     },
     // 在 confirm 模式下有效，点击确定按钮时触发
     handleOk() {
+      // 不是确认模式时，不处理
       if (!this.confirm) {
         return
       }
@@ -387,7 +414,7 @@ export default {
       const lt = +end < +currentEnd
 
       if (gt || lt) {
-        this.$Message.warn('选择日期超出范围')
+        this.$Message.warning('选择日期超出范围')
         return false
       }
 
@@ -401,8 +428,9 @@ export default {
     },
     // 在 confirm 模式或 clearable = true 时有效，在清空日期时触发
     handleClear() {
-      const date = ['', '']
+      const date = []
       this.$emit('input', date)
+      this.$emit('on-ok', date)
       this.$emit('on-clear', date)
     },
     // 点击外部关闭下拉菜单时触发
