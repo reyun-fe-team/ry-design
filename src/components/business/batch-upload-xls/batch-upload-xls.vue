@@ -133,20 +133,31 @@
           ]">
           <slot name="hintText">{{ hintText }}</slot>
         </p>
-        <div
-          v-if="['portionSucceed', 'error'].includes(isSucceedType) || showErrorTable"
-          :class="prefixCls + '-error-tables'">
-          <Table
-            v-bind="tableOption"
-            :columns="columnsHeader"
-            :data="errorTable"></Table>
-        </div>
+        <template v-if="['portionSucceed', 'error'].includes(isSucceedType) || showErrorTable">
+          <div :class="prefixCls + '-error-tables'">
+            <Table
+              v-bind="tableOption"
+              :max-height="350"
+              :columns="columnsHeader"
+              :data="currentTable.data"></Table>
+          </div>
+          <!-- 分页 -->
+          <rd-page
+            v-if="errorTable.length > 0"
+            :class="prefixCls + '-error-tables-page'"
+            type="m-middle"
+            :current="pager.current"
+            :size="pager.pageSize"
+            :total="errorTable.length"
+            @page-change="handlePageChange"></rd-page>
+        </template>
       </div>
     </div>
   </main>
 </template>
 <script>
 import { prefix } from '@src/config.js'
+import { getTableData } from '@src/util/assist.js'
 const prefixCls = `${prefix}batch-upload-xls`
 export default {
   name: prefixCls,
@@ -305,6 +316,12 @@ export default {
         succeed: '成功',
         portionSucceed: '部分成功',
         error: '失败'
+      },
+      pager: {
+        // 当前页数
+        current: 1,
+        // 每页数量
+        pageSize: 50
       }
     }
   },
@@ -320,6 +337,11 @@ export default {
           this.fileName ? this.fileName : `${this.accept}文件`
         ])
       }
+    },
+    // 计算当前的页数据
+    currentTable() {
+      const { current = 1, pageSize = 50 } = this.pager
+      return getTableData(current, pageSize, this.errorTable)
     }
   },
   watch: {
@@ -414,6 +436,7 @@ export default {
       this.percentage = 0
       this.isSubmitAdvance = false
       this.isTautology = false
+      this.pager = { current: 1, pageSize: 50 }
     },
     // 清除上传文件的内容
     clearFileData() {
@@ -497,6 +520,12 @@ export default {
     // 上传错误回调
     handleError(data, file) {
       this.onError(data, file)
+    },
+    // 分页
+    handlePageChange({ current, size }) {
+      this.pager.current = current
+      this.pager.pageSize = size
+      this.$emit('on-page-change', { current, pageSize: size })
     }
   }
 }

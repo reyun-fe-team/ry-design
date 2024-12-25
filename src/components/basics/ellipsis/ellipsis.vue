@@ -8,6 +8,7 @@
     <slot name="prefix"></slot>
     <!-- 文字 -->
     <span
+      :key="textDomRenderKey"
       ref="text"
       :class="[prefixCls + '-text']">
       {{ text }}
@@ -24,7 +25,7 @@
   </div>
 </template>
 <script>
-import { oneOf, getStyle } from '@src/util/assist.js'
+import { oneOf, getStyle, waitOut, getBase64Code } from '@src/util/assist.js'
 import _throttle from 'lodash/throttle'
 
 const getStrFullLength = (str = '') =>
@@ -158,6 +159,11 @@ export default {
     }
   },
   computed: {
+    // 需要根据传入的文案，计算一个元素的渲染更新的key，dom才能实时渲染，拿到最新的元素高度
+    textDomRenderKey() {
+      return getBase64Code(this.text || '')
+    },
+    // 气泡提示的配置
     tooltipOptions() {
       let { tooltip, text, theme, maxWidth, placement, transfer, delay, oversize } = this
       const options = {
@@ -170,6 +176,7 @@ export default {
       }
       return tooltip && oversize ? options : null
     },
+    // 初始化选项，文字长度计算的追踪属性
     initializedOptions() {
       let { disabled, text, height, lines } = this
       return { disabled, text, height, lines }
@@ -187,67 +194,73 @@ export default {
     this.init()
   },
   methods: {
-    init() {
+    // 等待dom完成更新
+    waitNextTick() {
+      return new Promise(async resolve => {
+        await this.$nextTick()
+        waitOut(resolve)
+      })
+    },
+    async init() {
+      await this.waitNextTick()
       if (!this.disabled && !this.enableCss) {
-        this.$nextTick(() => {
-          this.autoResize ? this.autoComputeText() : this.computeText()
-          this.limitShow()
-        })
+        this.autoResize ? this.autoComputeText() : this.computeText()
+        this.limitShow()
       }
     },
     // 根据配置计算
-    computeText() {
+    async computeText() {
       this.oversize = false
       this.computedReady = false
 
-      this.$nextTick(() => {
-        let $text = this.$refs.text
-        let $el = this.$el
-        let $more = this.$refs.more
-        let n = 1000
-        let text = this.text
-        let height = this.height
-        // 当 height 未定义，且 lines 定义时，计算真实高度，否则使用 this.height
-        if (!height && this.lines) {
-          const lineHeight = parseInt(getStyle($el, 'lineHeight'), 10)
-          height = lineHeight * this.lines
-        }
+      await this.waitNextTick()
 
-        if ($text) {
-          // 指定 length，则按具体字数剪裁
-          if (this.length) {
-            const textLength = this.fullWidthRecognition ? getStrFullLength(text) : text.length
-            if (textLength > this.length) {
-              this.oversize = true
-              $more.style.display = 'inline-block'
-              text = this.fullWidthRecognition
-                ? cutStrByFullLength(text, this.length)
-                : text.slice(0, this.length)
-            }
+      let $text = this.$refs.text
+      let $el = this.$el
+      let $more = this.$refs.more
+      let n = 1000
+      let text = this.text
+      let height = this.height
+      // 当 height 未定义，且 lines 定义时，计算真实高度，否则使用 this.height
+      if (!height && this.lines) {
+        const lineHeight = parseInt(getStyle($el, 'lineHeight'), 10)
+        height = lineHeight * this.lines
+      }
+
+      if ($text) {
+        // 指定 length，则按具体字数剪裁
+        if (this.length) {
+          const textLength = this.fullWidthRecognition ? getStrFullLength(text) : text.length
+          if (textLength > this.length) {
+            this.oversize = true
+            $more.style.display = 'inline-block'
+            text = this.fullWidthRecognition
+              ? cutStrByFullLength(text, this.length)
+              : text.slice(0, this.length)
           }
-          // 按照容器大小
-          else {
-            if ($el.offsetHeight > height) {
-              this.oversize = true
-              $more.style.display = 'inline-block'
+        }
+        // 按照容器大小
+        else {
+          if ($el.offsetHeight > height) {
+            this.oversize = true
+            $more.style.display = 'inline-block'
 
-              while ($el.offsetHeight > height && n > 0) {
-                if ($el.offsetHeight > height * 3) {
-                  $text.innerText = text = text.substring(0, Math.floor(text.length / 2))
-                } else {
-                  $text.innerText = text = text.substring(0, text.length - 1)
-                }
-                n--
+            while ($el.offsetHeight > height && n > 0) {
+              if ($el.offsetHeight > height * 3) {
+                $text.innerText = text = text.substring(0, Math.floor(text.length / 2))
+              } else {
+                $text.innerText = text = text.substring(0, text.length - 1)
               }
+              n--
             }
           }
         }
+      }
 
-        this.computedText = text
-      })
+      this.computedText = text
     },
     // 自动计算，可根据高度动态计算
-    autoComputeText() {
+    async autoComputeText() {
       const canCaclulate = !this.disabled && !this.enableCss
       if (!canCaclulate) {
         return
@@ -255,48 +268,49 @@ export default {
 
       this.oversize = false
       this.computedReady = false
-      this.$nextTick(() => {
-        const $text = this.$refs.text
-        const $el = this.$el
-        const $more = this.$refs.more
-        const height = $el.offsetHeight
 
-        let n = 1000
-        let text = this.autoComputedText
+      await this.waitNextTick()
 
-        // 文字容器超出盒子
-        if ($text.offsetHeight > height) {
-          this.oversize = true
-          $more.style.display = 'inline-block'
+      const $text = this.$refs.text
+      const $el = this.$el
+      const $more = this.$refs.more
+      const height = $el.offsetHeight
 
-          while ($text.offsetHeight > height && n > 0) {
-            $text.innerText = text = text.substring(0, text.length - 1)
-            n--
-          }
+      let n = 1000
+      let text = this.autoComputedText
 
-          // 减去省略符号内容占据的文字个数
-          $text.innerText = text = text.substring(0, text.length - 1 - this.autoResizeMoreTextCount)
-          this.autoComputedText = text
+      // 文字容器超出盒子
+      if ($text.offsetHeight > height) {
+        this.oversize = true
+        $more.style.display = 'inline-block'
+
+        while ($text.offsetHeight > height && n > 0) {
+          $text.innerText = text = text.substring(0, text.length - 1)
+          n--
         }
 
-        this.limitShow()
-      })
+        // 减去省略符号内容占据的文字个数
+        $text.innerText = text = text.substring(0, text.length - 1 - this.autoResizeMoreTextCount)
+        this.autoComputedText = text
+      }
+
+      this.limitShow()
     },
     // 触发显示与隐藏
-    limitShow() {
+    async limitShow() {
       this.computedReady = true
 
-      this.$nextTick(() => {
-        let $text = this.$refs.text
-        let $el = this.$el
+      await this.waitNextTick()
 
-        if ($text) {
-          $text.innerText = this.autoResize ? this.autoComputedText : this.computedText
-          if (!this.autoResize) {
-            $el.offsetHeight > this.height ? this.$emit('on-hide') : this.$emit('on-show')
-          }
+      let $text = this.$refs.text
+      let $el = this.$el
+
+      if ($text) {
+        $text.innerText = this.autoResize ? this.autoComputedText : this.computedText
+        if (!this.autoResize) {
+          $el.offsetHeight > this.height ? this.$emit('on-hide') : this.$emit('on-show')
         }
-      })
+      }
     },
     // 元素宽高
     handleResize: _throttle(function () {

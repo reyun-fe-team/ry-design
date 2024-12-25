@@ -62,21 +62,24 @@ export function getSubmitRuleList(mediaCode, dimension) {
   let label = getDimensionLabel(mediaCode, dimension)
   let planLabel = getPlanLabel(mediaCode)
   return [
-    { label: '立即提交', value: 'NOW' },
+    { label: '立即提交', value: 'NOW', disabled: false },
     {
       label: '定时提交',
       value: 'DELAY',
-      tooltip: '全部广告按下方设置时间提交创建'
+      tooltip: '全部广告按下方设置时间提交创建',
+      disabled: false
     },
     {
       label: '分批提交',
       value: 'BATCH',
-      tooltip: `全部${label}按下方规则分批次提交创建，第一批保存后立即创建`
+      tooltip: `全部${label}按下方规则分批次提交创建，第一批保存后立即创建`,
+      disabled: false
     },
     {
       label: '重复提交',
       value: 'REPEAT',
-      tooltip: `全部${planLabel}按下方规则重复多次创建（为避免创意名称重复，我们将为您自动增加时间后缀）`
+      tooltip: `全部${planLabel}按下方规则重复多次创建（为避免创意名称重复，我们将为您自动增加时间后缀）`,
+      disabled: false
     }
   ]
 }

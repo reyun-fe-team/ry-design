@@ -1,460 +1,369 @@
 <template>
-  <div>
-    {{ commitData }}
-    <h2>filter-list-cascader</h2>
-    <Button @click="fu">赋予</Button>
-    <section>
-      <rd-filter-list-cascader
-        v-model="selectMultiple"
-        :data="options"
-        :width="360"
-        :height="320"
-        filterable
-        multiple
-        show-select-option></rd-filter-list-cascader>
+  <div class="container">
+    <div class="header">
+      <h2>filter-list-cascader</h2>
+      <div class="button-group">
+        <Button
+          class="action-button"
+          @click="fu">
+          赋予
+        </Button>
+        <Button
+          class="action-button"
+          @click="clear">
+          清空
+        </Button>
+      </div>
+    </div>
+    <section class="cascader-section">
+      <section>
+        <rd-filter-list-cascader
+          ref="cascader"
+          v-model="selectMultiple"
+          :data="options"
+          :width="360"
+          :height="320"
+          :input-width="260"
+          :level-key-map="{
+            level0: 'productIds',
+            level1: 'appIds'
+          }"
+          filterable
+          multiple
+          show-select-option
+          @on-hierarchical-change="handleHierarchicalChange"
+          @on-data-loaded="handleDataLoaded"
+          @on-data-error="handleDataError"></rd-filter-list-cascader>
+      </section>
     </section>
+    <!-- ... existing template code ... -->
+    <div class="warning-tip">
+      <i class="warning-icon">ℹ</i>
+      1. 传递本地数据配置rd-filter-list-cascader的data属性即可 2.
+      如需使用接口数据，则去掉data属性配置dataSource属性
+    </div>
+    <div class="code-wrapper">
+      <div class="value-display">
+        <h3>初始值（适用于提交场景呢，只获取叶子结点值）：</h3>
+        <pre><code>{{ JSON.stringify(selectMultiple, null, 2) }}</code></pre>
+      </div>
+      <div class="value-display">
+        <h3>自定义计算值（适用于展示场景，根据层级结构展示）：</h3>
+        <pre><code>{{ JSON.stringify(commitData, null, 2) }}</code></pre>
+      </div>
+      <div class="value-display">
+        <h3>按层级结构计算值（适用于提交场景，获取不同节点的数据）：</h3>
+        <pre><code>{{ JSON.stringify(hierarchicalChangeValue, null, 2) }}</code></pre>
+      </div>
+    </div>
   </div>
 </template>
-
 <script>
 export default {
   data() {
     return {
       selectMultiple: [],
+      // 级联选择器改变的值
+      hierarchicalChangeValue: [],
+      // 本地数据
       options: [
         {
-          label: '编导',
-          value: 'DIRECTOR',
           children: [
             {
-              type: 'DIRECTOR',
-              value: 1,
-              label: '编导1'
+              children: [],
+              label: '历史项目',
+              value: '1161'
             },
             {
-              type: 'DIRECTOR',
-              value: 7,
-              label: 'qweqwe'
+              children: [],
+              label: '京P·OX334',
+              value: '1170'
             },
             {
-              type: 'DIRECTOR',
-              value: 11,
-              label: '宋真棒'
+              children: [],
+              label: '测试项目1',
+              value: '1177'
             },
             {
-              type: 'DIRECTOR',
-              value: 32,
-              label: '新增静静编导'
+              children: [],
+              label: '新建项目组',
+              value: '1199'
             },
             {
-              type: 'DIRECTOR',
-              value: 35,
-              label: '新来的'
+              children: [],
+              label: '千川项目',
+              value: '13062'
+            },
+            {
+              children: [],
+              label: 'zyj',
+              value: '13070'
+            },
+            {
+              children: [],
+              label: 'ma-test1',
+              value: '13103'
+            },
+            {
+              children: [],
+              label: '新建项目-老权限',
+              value: '13128'
             }
-          ]
+          ],
+          label: '历史项目',
+          value: '1'
         },
         {
-          label: '剪辑师',
-          value: 'EDITOR',
           children: [
             {
-              type: 'EDITOR',
-              value: 3,
-              label: '剪辑2'
-            },
-            {
-              type: 'EDITOR',
-              value: 6,
-              label: '剪辑4'
-            },
-            {
-              type: 'EDITOR',
-              value: 9,
-              label: '宋真好'
-            },
-            {
-              type: 'EDITOR',
-              value: 30,
-              label: '新增剪辑'
+              children: [],
+              label: '新建项目搜索',
+              value: '13072'
             }
-          ]
+          ],
+          label: '新建项目搜索',
+          value: '24'
         },
         {
-          label: '摄影师',
-          value: 'CAMERA',
           children: [
             {
-              type: 'CAMERA',
-              value: 2,
-              label: '摄像1'
+              children: [],
+              label: '京N·UT457',
+              value: '1162'
             },
             {
-              type: 'CAMERA',
-              value: 8,
-              label: '宋真强'
+              children: [],
+              label: '京C·97TU1',
+              value: '1167'
             },
             {
-              type: 'CAMERA',
-              value: 29,
-              label: '新增拍摄'
+              children: [],
+              label: '第三二次',
+              value: '1174'
+            },
+            {
+              children: [],
+              label: '新测试',
+              value: '1196'
+            },
+            {
+              children: [],
+              label: '管理员的项目',
+              value: '13094'
+            },
+            {
+              children: [],
+              label: '防出错项目',
+              value: '13097'
+            },
+            {
+              children: [],
+              label: 'ma-test',
+              value: '13101'
+            },
+            {
+              children: [],
+              label: '优化经理-新建项目',
+              value: '13189'
             }
-          ]
+          ],
+          label: '京N·UT457',
+          value: '2'
         },
         {
-          label: '设计师',
-          value: 'DESIGNER',
           children: [
             {
-              type: 'DESIGNER',
-              value: 2534,
-              label: '111'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2544,
-              label: '123'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2535,
-              label: '222'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2477,
-              label: '组长'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2536,
-              label: '333'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2429,
-              label: '设计师'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2614,
-              label: 'dsds发发发'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2504,
-              label: '测试设计师新开'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30357,
-              label: '设计经理041401'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30360,
-              label: '设计经理041404'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30353,
-              label: '设计师0417'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30356,
-              label: '手动添加设计经理'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30019,
-              label: '一级代理商123'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2501,
-              label: '设计师_广点通'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2541,
-              label: '设计经理'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2592,
-              label: 'renlijuan'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2532,
-              label: '设计产品'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2538,
-              label: '设计经理测试'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30017,
-              label: '设计师1'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2432,
-              label: 'shejishi'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2509,
-              label: 'zhangmeng'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2416,
-              label: '宋真帅'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30287,
-              label: '张武'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2480,
-              label: '宋涛-设计'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2522,
-              label: '素材v3设计师'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2581,
-              label: '王辰设计师'
-            },
-            {
-              type: 'DESIGNER',
-              value: 30345,
-              label: 'yubin'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2443,
-              label: 'sadasdasd'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2537,
-              label: 'zhangmeng设计经理'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2568,
-              label: 'Bo'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2531,
-              label: 'zuohaitao13'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2587,
-              label: 'zuo审核设计经理'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2588,
-              label: 'zuo审核设计师'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2599,
-              label: 'zht31'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2524,
-              label: '左海涛7'
-            },
-            {
-              type: 'DESIGNER',
-              value: 2525,
-              label: 'zuohaitao9'
+              children: [],
+              label: '银河系',
+              value: '1197'
             }
-          ]
+          ],
+          label: '银河系',
+          value: '15'
         },
         {
-          label: '项目',
-          value: 'APP',
-          children: []
-        },
-        {
-          label: '标签',
-          value: 'TAG'
-        },
-        {
-          label: '组长',
-          value: 'LEADER',
           children: [
             {
-              type: 'LEADER',
-              value: 4,
-              label: '组长4'
+              children: [],
+              label: '京J·JV7778',
+              value: '1176'
             },
             {
-              type: 'LEADER',
-              value: 5,
-              label: '组长5'
+              children: [],
+              label: 'XXX',
+              value: '1189'
             },
             {
-              type: 'LEADER',
-              value: 10,
-              label: '宋真牛'
+              children: [],
+              label: '素材项目',
+              value: '1200'
             },
             {
-              type: 'LEADER',
-              value: 12,
-              label: '管理员'
+              children: [],
+              label: '123',
+              value: '1216'
             },
             {
-              type: 'LEADER',
-              value: 14,
-              label: '10'
+              children: [],
+              label: 'aaab',
+              value: '13058'
             },
             {
-              type: 'LEADER',
-              value: 15,
-              label: '4'
+              children: [],
+              label: '头条专用项目',
+              value: '13067'
             },
             {
-              type: 'LEADER',
-              value: 23,
-              label: '夏组长'
+              children: [],
+              label: '测试',
+              value: '13069'
             },
             {
-              type: 'LEADER',
-              value: 31,
-              label: '新增组长'
+              children: [],
+              label: '添加项目名称测试',
+              value: '13073'
+            },
+            {
+              children: [],
+              label: '添加项目测试',
+              value: '13074'
+            },
+            {
+              children: [],
+              label: '广告费给',
+              value: '13075'
+            },
+            {
+              children: [],
+              label: '没有所属产品的项目',
+              value: '13076'
+            },
+            {
+              children: [],
+              label: 'Z项目',
+              value: '13080'
+            },
+            {
+              children: [],
+              label: 'XXXX项目',
+              value: '13081'
+            },
+            {
+              children: [],
+              label: '测试带项目管理的项目',
+              value: '13091'
+            },
+            {
+              children: [],
+              label: '得三四点',
+              value: '13099'
+            },
+            {
+              children: [],
+              label: 'ma-test2',
+              value: '13102'
             }
-          ]
+          ],
+          label: '京J·JV7778',
+          value: '-1'
         },
         {
-          label: '外采公司',
-          value: 'OUTER',
           children: [
             {
-              type: 'OUTER',
-              value: 13,
-              label: '测试供应商'
-            },
-            {
-              type: 'OUTER',
-              value: 16,
-              label: '热云股份有限公司测试'
-            },
-            {
-              type: 'OUTER',
-              value: 19,
-              label: '测试供应商牛'
-            },
-            {
-              type: 'OUTER',
-              value: 21,
-              label: '测试公司'
-            },
-            {
-              type: 'OUTER',
-              value: 22,
-              label: '供应商1'
-            },
-            {
-              type: 'OUTER',
-              value: 27,
-              label: '供应商'
-            },
-            {
-              type: 'OUTER',
-              value: 28,
-              label: '123'
-            },
-            {
-              type: 'OUTER',
-              value: 33,
-              label: '新增供应商0106'
-            },
-            {
-              type: 'OUTER',
-              value: 34,
-              label: 'sdf'
-            },
-            {
-              type: 'OUTER',
-              value: 36,
-              label: 'xlf'
+              children: [],
+              label: '测试上传素材',
+              value: '13079'
             }
-          ]
+          ],
+          label: '测试上传素材',
+          value: '5753'
+        },
+        {
+          children: [
+            {
+              children: [],
+              label: '$$$$',
+              value: '1188'
+            }
+          ],
+          label: '$$$$',
+          value: '9'
+        },
+        {
+          children: [
+            {
+              children: [],
+              label: 'test26',
+              value: '13183'
+            }
+          ],
+          label: 'test26',
+          value: '5824'
+        },
+        {
+          children: [
+            {
+              children: [],
+              label: '防出错项目-021',
+              value: '13098'
+            }
+          ],
+          label: '防出错项目-021',
+          value: '5758'
+        },
+        {
+          children: [
+            {
+              children: [],
+              label: '优化经理建的项目',
+              value: '13188'
+            }
+          ],
+          label: '优化经理建的项目',
+          value: '5826'
+        },
+        {
+          children: [
+            {
+              children: [],
+              label: '测试-0624-01',
+              value: '1203'
+            },
+            {
+              children: [],
+              label: '测试头条',
+              value: '1205'
+            },
+            {
+              children: [],
+              label: '测试快手',
+              value: '1207'
+            },
+            {
+              children: [],
+              label: '测试百度',
+              value: '1208'
+            },
+            {
+              children: [],
+              label: '测试增加123',
+              value: '13057'
+            }
+          ],
+          label: '测试-0624-01',
+          value: '21'
         }
       ],
-      options1: [
-        {
-          value: 1,
-          label: '东南',
-          children: [
-            {
-              value: '1-1',
-              label: '上海'
-              // children: [
-              //   { value: 3, label: '普陀' },
-              //   { value: 4, label: '黄埔' },
-              //   { value: 5, label: '徐汇' }
-              // ]
-            },
-            {
-              value: '1-2',
-              label: '江苏'
-              // children: [
-              //   { value: 8, label: '南京' },
-              //   { value: 9, label: '苏州' },
-              //   { value: 10, label: '无锡' }
-              // ]
-            },
-            {
-              value: '1-3',
-              label: '浙江'
-              // children: [
-              //   { value: 13, label: '杭州' },
-              //   { value: 14, label: '宁波' },
-              //   { value: 15, label: '嘉兴' }
-              // ]
-            }
-          ]
-        },
-        {
-          value: 2,
-          label: '西北',
-          children: [
-            {
-              value: '2-1',
-              label: '浙江1'
-              // children: [
-              //   { value: 19, label: '西安' },
-              //   { value: 20, label: '延安' }
-              // ]
-            },
-            {
-              value: '2-2',
-              label: '新疆维吾尔族自治区'
-              // children: [
-              //   { value: 22, label: '乌鲁木齐' },
-              //   { value: 23, label: '克拉玛依' }
-              // ]
-            }
-          ]
+      // 接口数据
+      dataSource: {
+        api: 'http://test-api2.adsdesk.cn/adsdesk/api/user/app/tree',
+        method: 'POST',
+        dataPath: 'data.data',
+        headers: {
+          authorization:
+            'Adsdesk ZXlKaGJHY2lPaUpJVXpVeE1pSjkuZXlKemRXSWlPaUl5TWpZNElpd2ljbUpoWTFabGNuTnBiMjRpT2lJeExqQWlMQ0p5YjJ4bElqb2lUVUZPUVVkRlVpSXNJbTFsWkdsaFVHVnliV2x6YzJsdmJpSTZJbUpoYVdSMUxHSnBiR2xpYVd4cExHZGtkSFl6TUN4cmRXRnBjMmh2ZFN4eGFXRnVZMmgxWVc0c2RHOTFkR2xoYnlJc0ltZHliM1Z3U1dRaU9pSXhNVFV5SWl3aVkzVnpkRzl0WlhKSlpDSTZNVEF3TWpVc0ltUmxjSFJKWkhNaU9sdGRMQ0psYm1SVWFXMWxJanA3SW5sbFlYSWlPakl3T1Rrc0ltMXZiblJvVm1Gc2RXVWlPakV5TENKdGIyNTBhQ0k2SWtSRlEwVk5Ra1ZTSWl3aVpHRjVUMlpOYjI1MGFDSTZNekVzSW1SaGVVOW1XV1ZoY2lJNk16WTFMQ0prWVhsUFpsZGxaV3NpT2lKVVNGVlNVMFJCV1NJc0ltaHZkWElpT2pBc0ltMXBiblYwWlNJNk1Dd2ljMlZqYjI1a0lqb3dMQ0p1WVc1dklqb3dMQ0pqYUhKdmJtOXNiMmQ1SWpwN0ltTmhiR1Z1WkdGeVZIbHdaU0k2SW1semJ6ZzJNREVpTENKcFpDSTZJa2xUVHlKOWZTd2lkWE5sY2tsa0lqb3lNalk0TENKMWRXbGtJam9pUVRsQ1F6QkRRakk0TWtVMk5FTXpRemxDUTBSRk5EY3hNamcyTWpNd01FTWlMQ0psYldGcGJDSTZJbnBvWVc1bmJXVnVaMEJ5WlhsMWJpNWpiMjBpZlEucW1kQlNHZTFQbnpKTlZtWGNhdEpaQWx3TEtBZU9OSFZiSXFlaFpVSHNtX0FvZjVpV0tBNTg3bk55Y25tVDJsLWNKX09Hdk5MQXlDQmtwTkFEZTVWOGc='
         }
-      ]
+      }
     }
   },
   computed: {
@@ -476,9 +385,141 @@ export default {
   methods: {
     fu() {
       setTimeout(() => {
-        this.selectMultiple = [3, 6, 9, 30]
-      }, 2000)
+        this.selectMultiple = ['13098', '13057', '13099', '13075']
+      }, 60)
+    },
+    clear() {
+      this.selectMultiple = []
+    },
+    handleHierarchicalChange(value) {
+      this.hierarchicalChangeValue = value
+    },
+    handleDataLoaded(data) {
+      console.log('handleDataLoaded', data)
+    },
+    handleDataError(error) {
+      console.log('handleDataError', error)
     }
   }
 }
 </script>
+<style scoped>
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+}
+
+.action-button {
+  min-width: 80px;
+}
+
+.code-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.value-display {
+  flex: 1;
+  max-height: 768px; /* Add max height */
+  overflow: auto; /* Enable scrolling */
+}
+
+.value-display h3 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+pre {
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-radius: 6px;
+  overflow: auto;
+  margin: 0;
+  border: 1px solid #eee;
+}
+
+code {
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.cascader-section {
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 代码高亮样式优化 */
+code {
+  .string {
+    color: #e3116c;
+  }
+  .number {
+    color: #0898c0;
+  }
+  .boolean {
+    color: #36acaa;
+  }
+  .null {
+    color: #998;
+  }
+  .key {
+    color: #905;
+  }
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .code-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+}
+
+.warning-tip {
+  background-color: #fff3e0;
+  border-left: 4px solid #ff9800;
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  color: #795548;
+}
+
+.warning-icon {
+  margin-right: 8px;
+  color: #ff9800;
+  font-style: normal;
+  font-weight: bold;
+}
+</style>
