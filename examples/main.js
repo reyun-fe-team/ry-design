@@ -292,6 +292,10 @@ const router = new VueRouter({
     {
       path: '/footer-toolbar',
       component: resolve => require(['./routers/footer-toolbar'], resolve)
+    },
+    {
+      path: '/select-constituency',
+      component: resolve => require(['./routers/select-constituency'], resolve)
     }
   ]
 })
