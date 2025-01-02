@@ -56,6 +56,7 @@ h2 {
 
 .coms {
   margin: 16px;
+
   .com-btn {
     margin-top: 16px;
     margin-right: 16px;
@@ -63,20 +64,21 @@ h2 {
 }
 
 .menu {
-  max-height: 200px;
-  overflow: auto;
+  max-height: 145px;
+  overflow-y: auto;
   // 兼容Firefox
-  scrollbar-width: none;
+  // scrollbar-width: none;
 
   // 兼容Chrome
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  // &::-webkit-scrollbar {
+  //   display: none;
+  // }
 }
 
 .view {
   margin: 16px;
   border-top: 1px dashed #ddd;
+
   .result-desc {
     margin: 16px 0;
   }
