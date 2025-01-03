@@ -6,9 +6,9 @@
     @mousedown="contextMenuVisible = false"
     @contextmenu.prevent="handleClickContextMenuOutside">
     <div :class="prefixCls + '-content'">
-      <div :class="attribute.box"></div>
+      <div :class="[prefixCls + '-select-box', attribute.box]"></div>
       <div
-        :class="attribute.constraint"
+        :class="[prefixCls + '-select-area', attribute.constraint]"
         :style="stylesOperationArea"></div>
       <div
         v-if="showContextMenu"
@@ -75,7 +75,9 @@ export default {
         top: 0,
         left: 0
       },
-      contextMenuVisible: false
+      contextMenuVisible: false,
+      //添加唯一标识
+      uniqueId: `uuid-${Math.random().toString(36).substr(2, 9)}`
     }
   },
   computed: {
@@ -85,8 +87,8 @@ export default {
     attribute() {
       return {
         items: `.${this.containerClassName}`,
-        constraint: `${this.prefixCls}-select-area`,
-        box: `${this.prefixCls}-select-box`
+        constraint: `${this.prefixCls}-select-area-${this.uniqueId}`,
+        box: `${this.prefixCls}-select-box-${this.uniqueId}`
       }
     }
   },

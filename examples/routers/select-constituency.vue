@@ -1,44 +1,39 @@
 <template>
-  <div>
-    selecting:{{ selecting }}
-    <hr />
-    selected:{{ selected }}
-    <div class="material-cord">
-      <rd-select-constituency
-        ref="ref-select-constituency"
-        show-context-menu
-        container-class-name="material-cord-items"
-        @on-selected-change="selected = $event"
-        @on-selecting-change="selecting = $event"
-        @on-mouse-up="addSelectConstituency"
-        @scrollChange="handleScrollChange">
-        <div slot="contextMenu">
-          <p
-            class="demo-context-menu"
-            @click="handleDelete">
-            删除
-          </p>
-          <p class="demo-context-menu">其他</p>
+  <div class="select-constituency-wrap">
+    <rd-select-constituency
+      ref="ref-select-constituency"
+      show-context-menu
+      container-class-name="select-constituency-wrap-items"
+      @on-selected-change="selected = $event"
+      @on-selecting-change="selecting = $event"
+      @on-mouse-up="addSelectConstituency"
+      @scrollChange="handleScrollChange">
+      <div slot="contextMenu">
+        <p
+          class="demo-context-menu"
+          @click="handleDelete">
+          删除
+        </p>
+        <p class="demo-context-menu">其他</p>
+      </div>
+      <div class="select-constituency-wrap-body">
+        <div
+          v-for="(item, index) in data"
+          :key="item.uuid"
+          class="select-constituency-wrap-items"
+          :class="getStatus(item, index)">
+          <rd-image-group
+            :size="1"
+            :width="60"
+            :height="60"
+            lazy
+            background="#eef0f3"
+            :data="[{ src: item.src }]"
+            type="image"></rd-image-group>
         </div>
-        <div class="material-cord-body">
-          <div
-            v-for="(item, index) in data"
-            :key="item.uuid"
-            class="material-cord-items"
-            :class="getStatus(item, index)">
-            <rd-image-group
-              :size="1"
-              :width="60"
-              :height="60"
-              lazy
-              background="#eef0f3"
-              :data="[{ src: item.src }]"
-              type="image"></rd-image-group>
-          </div>
-        </div>
-      </rd-select-constituency>
-      <Button @click="handleReset">重置</Button>
-    </div>
+      </div>
+    </rd-select-constituency>
+    <Button @click="handleReset">重置</Button>
   </div>
 </template>
 
@@ -56,7 +51,7 @@ export default {
     let data = []
     for (let i = 0; i < 50; i++) {
       data.push({
-        src: 'https://file.iviewui.com/images/image-demo-6.jpg',
+        src: 'https://file.iviewui.com/images/image-demo-1.jpg',
         uuid: i
       })
     }
@@ -68,8 +63,8 @@ export default {
       const focus = this.selectedOptions.some(v => v.uuid === val.uuid)
       const selecting = !!this.selecting[index] && !focus
       return {
-        focus,
-        selecting
+        'select-constituency-focus': focus,
+        'select-constituency-selecting': selecting
       }
     },
     addSelectConstituency() {
@@ -100,15 +95,21 @@ export default {
   }
 }
 </script>
-<style scoped lang="less">
-.material-cord {
+<style lang="less" scoped>
+.select-constituency-wrap {
   position: relative;
 
-  &-body {
-    padding: 0 16px;
+  .rd-select-constituency {
+    width: 814px;
+    max-height: 500px;
+    border: 1px solid #ccc;
   }
 
-  &-items {
+  .select-constituency-wrap-body {
+    padding: 16px;
+  }
+
+  .select-constituency-wrap-items {
     display: inline-block;
     width: 60px;
     height: 60px;
@@ -116,18 +117,11 @@ export default {
     background: #ccc;
   }
 
-  .rd-select-constituency {
-    width: 830px;
-    // height: 58vh;
-    height: 300px;
-    border: 1px solid #ccc;
-  }
-
-  .focus {
+  .select-constituency-focus {
     box-shadow: 0 0 0 2px #2096f5, 0 2px 5px 0 rgba(0, 26, 91, 10%);
   }
 
-  .selecting {
+  .select-constituency-selecting {
     transform: scale(0.9);
     box-shadow: 0 0 0 2px orange, 0 2px 5px 0 orange;
     transition: all 0.1s;
