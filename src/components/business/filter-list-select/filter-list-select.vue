@@ -316,9 +316,13 @@ export default {
         size
       ) {
         const findItem = list.find(val => this.current.includes(val.value))
-        list.forEach(val => {
-          val.disabled = val._groupValue !== findItem._groupValue ? true : val.disabled
-        })
+        if (findItem) {
+          list.forEach(val => {
+            val.disabled = val._groupValue !== findItem._groupValue ? true : val.disabled
+          })
+        } else {
+          console.log(new Error(`[rd-filter-Select] 存在异常value请检查 , ${this.current}`))
+        }
       }
       return list
     },
