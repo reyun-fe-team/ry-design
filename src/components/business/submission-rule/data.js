@@ -59,24 +59,51 @@ export const MapSubmitRule = new Map([
 ])
 
 export function getSubmitRuleList(mediaCode, dimension) {
-  let label = getDimensionLabel(mediaCode, dimension)
+  let adLabel = getDimensionLabel(mediaCode, dimension)
   let planLabel = getPlanLabel(mediaCode)
   return [
-    { label: '立即提交', value: 'NOW' },
+    { label: '立即提交', value: 'NOW', disabled: false },
     {
       label: '定时提交',
       value: 'DELAY',
-      tooltip: '全部广告按下方设置时间提交创建'
+      tooltip: '全部广告按下方设置时间提交创建',
+      disabled: false
     },
     {
       label: '分批提交',
       value: 'BATCH',
-      tooltip: `全部${label}按下方规则分批次提交创建，第一批保存后立即创建`
+      tooltip: `全部${adLabel}按下方规则分批次提交创建，第一批保存后立即创建`,
+      disabled: false
     },
     {
       label: '重复提交',
       value: 'REPEAT',
-      tooltip: `全部${planLabel}按下方规则重复多次创建（为避免创意名称重复，我们将为您自动增加时间后缀）`
+      tooltip: `全部${planLabel}按下方规则重复多次创建（为避免${adLabel}名称重复，我们将为您自动增加时间后缀）`,
+      disabled: false
+    }
+  ]
+}
+export function getSubmitTypeList() {
+  // export function getSubmitTypeList(mediaCode, dimension) {
+  // let adLabel = getDimensionLabel(mediaCode, dimension)
+  // let planLabel = getPlanLabel(mediaCode)
+  return [
+    {
+      label: '提交广告并保存模板',
+      value: 'submitAndSaveTemplate',
+      tooltip: '提交广告至媒体，且会保存或更新智能模板'
+    },
+    {
+      label: '仅保存模板',
+      value: 'saveTemplateOnly',
+      tooltip: '广告不会提交至媒体，仅会保存或更新智能模板',
+      disabled: false
+    },
+    {
+      label: '仅提交广告',
+      value: 'submitAdOnly',
+      tooltip: '仅提交广告至媒体，不会保存或更新智能模板',
+      disabled: false
     }
   ]
 }

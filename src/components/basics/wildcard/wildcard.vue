@@ -23,6 +23,7 @@
         </label>
         <div :class="prefixCls + '-keyword'">
           <Input
+            ref="keyword-input"
             v-model="keyword"
             :clearable="clearable"
             :disabled="disabled"
@@ -56,6 +57,7 @@
               </Tooltip>
             </span>
             <p
+              ref="resizeElement"
               :class="prefixCls + '-list-name-rule-item-wrap'"
               @click="handleNameItem">
               <i
@@ -83,6 +85,7 @@
               </i>
             </p>
             <div
+              v-if="hasMore"
               :class="prefixCls + '-list-name-rule-action'"
               @click="handleHideMore">
               {{ hideMore ? '更多' : '收起' }}
@@ -205,7 +208,8 @@ export default {
       mergeOptions: {},
       mergeWildcardLabelConfig: {},
       list: [],
-      hideMore: true
+      hideMore: true,
+      hasMore: false
     }
   },
   computed: {
@@ -213,7 +217,6 @@ export default {
       return [`${prefixCls}`]
     },
     classesList() {
-      // :class="prefixCls + '-list'"
       return [
         `${prefixCls}-list`,
         {
@@ -232,6 +235,7 @@ export default {
       immediate: true,
       handler(now) {
         this.initData(now)
+        this.updateMoreStatus()
       }
     },
     value() {
@@ -241,7 +245,14 @@ export default {
       this.emitData()
     }
   },
-  mounted() {},
+  mounted() {
+    this.updateMoreStatus()
+  },
+  beforeDestroy() {
+    if (this.resizeObserver) {
+      this.resizeObserver.unobserve(this.$refs.resizeElement)
+    }
+  },
   methods: {
     handleNameItem(e) {
       let title = e.target.getAttribute('data-value')
@@ -299,6 +310,15 @@ export default {
     onSaveRuleChange(val) {
       this.$emit('on-save-rule', val)
     },
+    updateMoreStatus() {
+      this.$nextTick(() => {
+        if (this.$refs.resizeElement) {
+          if (this.$refs.resizeElement.scrollHeight > 40) {
+            this.hasMore = true
+          }
+        }
+      })
+    },
     // #utils
     initData(data) {
       this.keyword = this.value
@@ -351,10 +371,47 @@ export default {
         }
       }
       if (this.keyword.includes(item.title) || this.keyword.includes(item.reg)) {
-        this.keyword = this.keyword.replace(replaceName, '')
+        this.deleteText(replaceName)
       } else {
-        this.keyword += activeTitle
+        this.insertText(activeTitle)
       }
+    },
+    deleteText(text) {
+      const input = this.$refs['keyword-input'].$refs.input
+      const currentValue = input.value
+      let startPos = currentValue.match(text).index
+      input.value = currentValue.replace(text, '')
+      input.selectionStart = input.selectionEnd = startPos
+      input.focus()
+      this.keyword = input.value
+    },
+    insertText(text) {
+      const input = this.$refs['keyword-input'].$refs.input
+      // 获取光标位置
+      const startPos = input.selectionStart
+      const endPos = input.selectionEnd
+      // 保存当前输入框的值
+      const currentValue = input.value
+      // 需要插入的文本
+      const textToInsert = text
+      // 根据光标位置插入文本
+      if (startPos !== endPos) {
+        // 如果有选中文本，则替换选中的文本
+        input.value =
+          currentValue.substring(0, startPos) +
+          textToInsert +
+          currentValue.substring(endPos, currentValue.length)
+      } else {
+        // 没有选中文本，直接在光标位置插入文本
+        input.value =
+          currentValue.substring(0, startPos) +
+          textToInsert +
+          currentValue.substring(startPos, currentValue.length)
+      }
+      // 设置光标位置
+      input.selectionStart = input.selectionEnd = startPos + textToInsert.length
+      input.focus()
+      this.keyword = input.value
     },
     handleHideMore() {
       this.hideMore = !this.hideMore

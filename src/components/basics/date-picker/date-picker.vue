@@ -5,8 +5,9 @@
       ref="rd-date-picker-inner"
       v-model="selDate"
       :style="styles"
-      type="daterange"
+      :type="type"
       :transfer="transfer"
+      :transfer-class-name="transferClassName"
       :confirm="confirm"
       :clearable="clearable"
       :options="getDateOptions"
@@ -26,12 +27,19 @@
 <script>
 import { prefix } from '@src/config.js'
 const prefixCls = prefix + 'date-picker'
-import { getShortcutsOptionsList, shortcutsList } from './data'
+import { getShortcutsOptionsList, shortcutsList, getDateStripTime, isValidDateRange } from './data'
 import date from '@src/util/date'
 import { getKey } from '@src/util/assist'
 export default {
   name: prefixCls,
   props: {
+    type: {
+      // daterange datetimerange
+      default: 'daterange',
+      validator(value) {
+        return ['daterange', 'datetimerange'].includes(value)
+      }
+    },
     value: {
       type: Array,
       default: () => []
@@ -85,7 +93,7 @@ export default {
     },
     end: {
       type: String,
-      request: true,
+      require: true,
       default: () => {
         return date.getMoment(new Date())
       }
@@ -160,23 +168,40 @@ export default {
       }
       // 禁选按钮
       let disabledDate = date => {
-        let config = false
+        const currentDate = getDateStripTime(date)
+
         if (this.limit) {
-          config = config || date < new Date(this.limit)
+          const limitDate = getDateStripTime(this.limit)
+          if (limitDate && +currentDate < +limitDate) {
+            return true
+          }
         }
+
         if (this.selStart) {
-          config = new Date(this.selStart) > date
+          const selStartDate = getDateStripTime(this.selStart)
+          if (selStartDate && +selStartDate > +currentDate) {
+            return true
+          }
         }
+
         if (this.selEnd) {
-          config = config || date > new Date(this.selEnd)
+          const selEndDate = getDateStripTime(this.selEnd)
+          if (selEndDate && +selEndDate < +currentDate) {
+            return true
+          }
         }
-        return config
+
+        return false
       }
       return {
         disabledDate,
         shortcuts,
         ...options
       }
+    },
+    // 弹出日历的样式
+    transferClassName() {
+      return `${prefixCls}-transfer-wrapper-${this.uid}`
     }
   },
   watch: {
@@ -214,11 +239,11 @@ export default {
             endRange = Math.floor((new Date(this.end).getTime() - end.getTime()) / 86400000)
           }
           end.setDate(end.getDate() + endRange)
-          this.selStart = date.getMoment(star)
+          this.selStart = date.getMoment(star, this.format)
           this.selEnd =
             new Date(end).getTime() > new Date().getTime()
-              ? date.getMoment(new Date())
-              : date.getMoment(end)
+              ? date.getMoment(new Date(), this.format)
+              : date.getMoment(end, this.format)
         } else {
           this.selStart = this.start
           this.selEnd = this.end
@@ -313,51 +338,93 @@ export default {
       }
       return winter
     },
+    // 移除弹出日历的确认按钮
+    removeWrapperConfirmButton() {
+      try {
+        const transferDom = document.getElementsByClassName(`${this.transferClassName}`)
+        if (transferDom.length > 0) {
+          const confirmDom = transferDom[0].getElementsByClassName('ivu-picker-confirm')
+          confirmDom.length > 0 && confirmDom[0].remove()
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn(`${prefixCls}: 移除弹出日历的确认按钮失败: `, e)
+      }
+    },
     // 弹出日历和关闭日历时触发
-    handleOpenChange(e) {
-      this.$emit('on-open-change', e)
+    handleOpenChange(open) {
+      this.$emit('on-open-change', open)
+      // 弹出日历时，清除确认和清空
+      // 不是确认模式时，清除确认按钮
+      if (open && !this.confirm) {
+        setTimeout(() => this.removeWrapperConfirmButton(), 20)
+      }
     },
     // 日期发生变化时触发
-    handleChange(date) {
-      this.selStart = this.start
-      this.selEnd = this.end
-      if (new Date(this.start) > new Date(date[0]) || new Date(this.end) < new Date(date[1])) {
-        this.$Message.info('时间范围超出，请确认')
+    handleChange(date = []) {
+      // 确认模式时，不处理
+      // 日期范围无效时，不处理
+      if (this.confirm || !isValidDateRange(date)) {
         return false
       }
-      this.selDate = date
-      if (!this.confirm) {
-        this.$emit('input', this.selDate)
-        this.$emit('on-ok', this.selDate)
+
+      this.selStart = this.start
+      this.selEnd = this.end
+
+      const currentStart = getDateStripTime(date[0])
+      const currentEnd = getDateStripTime(date[1])
+
+      const start = getDateStripTime(this.start)
+      const end = getDateStripTime(this.end)
+
+      const gt = +start > +currentStart
+      const lt = +end < +currentEnd
+
+      if (gt || lt) {
+        this.$Message.warning('选择日期超出范围')
+        return false
       }
+
+      this.selDate = date
+      this.$emit('input', this.selDate)
+      this.$emit('on-ok', this.selDate)
     },
     // 在 confirm 模式下有效，点击确定按钮时触发
     handleOk() {
-      let isLength = !this.selDate.length
-      let isInvalid = this.selDate[0] === 'Invalid date' || this.selDate[1] === 'Invalid date'
-      let isEmpty = this.selDate[0] === '' || this.selDate[1] === ''
+      // 不是确认模式时，不处理
+      // 日期范围无效时，不处理
+      if (!this.confirm || !isValidDateRange(this.selDate)) {
+        return false
+      }
 
-      if (isLength || isInvalid || isEmpty) {
-        this.$Message.info('时间筛选不能为空')
+      const currentStart = getDateStripTime(this.selDate[0])
+      const currentEnd = getDateStripTime(this.selDate[1])
+
+      const start = getDateStripTime(this.start)
+      const end = getDateStripTime(this.end)
+
+      const gt = +start > +currentStart
+      const lt = +end < +currentEnd
+
+      if (gt || lt) {
+        this.$Message.warning('选择日期超出范围')
         return false
       }
-      if (
-        new Date(this.start) > new Date(this.selDate[0]) ||
-        new Date(this.end) < new Date(this.selDate[1])
-      ) {
-        this.$Message.info('时间范围超出，请确认')
-        return false
-      }
-      if (this.format === 'yyyy-MM-dd') {
-        this.selDate = [date.getMoment(this.selDate[0]), date.getMoment(this.selDate[1])]
-      }
+
+      this.selDate = [
+        date.getMoment(this.selDate[0], this.format),
+        date.getMoment(this.selDate[1], this.format)
+      ]
+
       this.$emit('input', this.selDate)
       this.$emit('on-ok', this.selDate)
     },
     // 在 confirm 模式或 clearable = true 时有效，在清空日期时触发
     handleClear() {
-      const date = ['', '']
+      const date = []
+      this.selDate = date
       this.$emit('input', date)
+      this.$emit('on-ok', date)
       this.$emit('on-clear', date)
     },
     // 点击外部关闭下拉菜单时触发

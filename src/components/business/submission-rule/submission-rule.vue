@@ -2,144 +2,158 @@
   <div :class="[prefixCls]">
     <Form
       ref="formData"
+      label-position="left"
       :label-width="110"
       :class="[prefixCls + '-form']"
       :model="formData">
       <FormItem
-        label="提交方式"
-        :class="[prefixCls + '-rule']">
+        v-if="hasSubmitType"
+        label="提交类型">
         <rd-radio-group
-          v-model="formData.adsSubmitRule"
-          :class="[prefixCls + '-rule-group']"
-          :default-list="submitRuleList"
-          @on-change="handleSubmitRule"></rd-radio-group>
+          v-model="formData.submitType"
+          :default-list="submitTypeList"></rd-radio-group>
       </FormItem>
-
-      <template v-if="formData.adsSubmitRule === 'DELAY'">
-        <FormItem label="执行时间">
-          <DatePicker
-            v-model="formData.adsDelaySubmitTime"
-            :class="[prefixCls + '-date-picker']"
-            style="width: 200px"
-            type="datetime"
-            :editable="false"
-            format="yyyy-MM-dd HH:mm"
-            :options="dateOptions"
-            :clearable="false"
-            placeholder="请选择定时提交日期时间"
-            @on-ok="handleStartTime('adsDelaySubmitTime')"
-            @on-clickoutside="handleStartTime('adsDelaySubmitTime')"></DatePicker>
-        </FormItem>
-      </template>
-      <template v-if="formData.adsSubmitRule === 'BATCH'">
-        <FormItem label="执行时间">
-          <DatePicker
-            v-model="formData.adsBatchStartTime"
-            :class="[prefixCls + '-date-picker']"
-            style="width: 200px"
-            type="datetime"
-            :editable="false"
-            format="yyyy-MM-dd HH:mm"
-            :options="dateOptions"
-            :clearable="false"
-            placeholder="请选择定时提交日期时间"
-            @on-ok="handleStartTime('adsBatchStartTime')"
-            @on-clickoutside="handleStartTime('adsBatchStartTime')"></DatePicker>
-        </FormItem>
-        <FormItem label="时间间隔">
-          <div :class="[prefixCls + '-setting-item']">
-            <Select
-              v-model="formData.adsSubmitInterval1"
-              style="width: 200px"
-              :class="[prefixCls + '-interval-select']">
-              <Option
-                v-for="item in timeList"
-                :key="item.value"
-                :value="item.value"
-                :label="item.label"></Option>
-            </Select>
-          </div>
-        </FormItem>
-        <FormItem label="提交维度">
+      <template v-if="hasSubmitRule">
+        <FormItem
+          label="提交方式"
+          :class="[prefixCls + '-rule']">
           <rd-radio-group
-            v-model="formData.adsSubmitDimension"
+            v-model="formData.adsSubmitRule"
             :class="[prefixCls + '-rule-group']"
-            :default-list="submitDimensionList"
-            @on-change="handelDimensionChange"></rd-radio-group>
+            :default-list="submitRuleList"></rd-radio-group>
         </FormItem>
-        <FormItem label="多账户同时提交">
-          <rd-radio-group
-            v-model="formData.adsMoreAccount"
-            :class="[prefixCls + '-rule-group']"
-            :default-list="adsMoreAccountList"></rd-radio-group>
-        </FormItem>
-        <FormItem>
-          <label slot="label">
-            {{ '每次提交' + dimensionLabel }}
-            <Tooltip
-              placement="top"
-              max-width="200"
-              theme="light"
-              content="多账户同时提交开启时，设置数量为每个账户每次提交数量；多账户同时提交关闭时，设置数量为每次提交数量。">
-              <Icon
-                type="ios-help-circle-outline"
-                size="16"
-                class="cursor-pointer icon-question tip-icon"></Icon>
-            </Tooltip>
-          </label>
-          <div :class="[prefixCls + '-setting-item']">
-            <InputNumber
-              v-model="formData.adsSubmitNum1"
+        <template v-if="formData.adsSubmitRule === 'DELAY'">
+          <FormItem
+            v-if="hasDelaySubmitTime"
+            label="执行时间">
+            <DatePicker
+              v-model="formData.adsDelaySubmitTime"
+              :class="[prefixCls + '-date-picker']"
               style="width: 200px"
-              :class="[prefixCls + '-adnum']"
-              :min="1"
-              :max="maxLimit"
-              :active-change="false"
-              :precision="0"></InputNumber>
-          </div>
-        </FormItem>
-      </template>
-      <template v-if="formData.adsSubmitRule === 'REPEAT'">
-        <FormItem label="执行时间">
-          <DatePicker
-            v-model="formData.adsRepeatSubmitTime"
-            :class="[prefixCls + '-date-picker']"
-            style="width: 200px"
-            type="datetime"
-            :editable="false"
-            format="yyyy-MM-dd HH:mm"
-            :options="dateOptions"
-            :clearable="false"
-            placeholder="请选择定时提交日期时间"
-            @on-ok="handleStartTime('adsRepeatSubmitTime')"
-            @on-clickoutside="handleStartTime('adsRepeatSubmitTime')"></DatePicker>
-        </FormItem>
-        <FormItem label="时间间隔">
-          <div :class="[prefixCls + '-setting-item']">
-            <Select
-              v-model="formData.adsSubmitInterval2"
+              type="datetime"
+              :editable="false"
+              format="yyyy-MM-dd HH:mm"
+              :options="dateOptions"
+              :clearable="false"
+              placeholder="请选择定时提交日期时间"
+              @on-ok="handleStartTime('adsDelaySubmitTime')"
+              @on-clickoutside="handleStartTime('adsDelaySubmitTime')"></DatePicker>
+          </FormItem>
+        </template>
+        <template v-if="formData.adsSubmitRule === 'BATCH'">
+          <FormItem
+            v-if="hasDelaySubmitTime"
+            label="执行时间">
+            <DatePicker
+              v-model="formData.adsBatchStartTime"
+              :class="[prefixCls + '-date-picker']"
               style="width: 200px"
-              :class="[prefixCls + '-interval-select']">
-              <Option
-                v-for="item in timeList"
-                :key="item.value"
-                :value="item.value"
-                :label="item.label"></Option>
-            </Select>
-          </div>
-        </FormItem>
-        <FormItem label="重复次数">
-          <div :class="[prefixCls + '-setting-item']">
-            <InputNumber
-              v-model="formData.adsSubmitNum2"
+              type="datetime"
+              :editable="false"
+              format="yyyy-MM-dd HH:mm"
+              :options="dateOptions"
+              :clearable="false"
+              placeholder="请选择定时提交日期时间"
+              @on-ok="handleStartTime('adsBatchStartTime')"
+              @on-clickoutside="handleStartTime('adsBatchStartTime')"></DatePicker>
+          </FormItem>
+          <FormItem label="时间间隔">
+            <div :class="[prefixCls + '-setting-item']">
+              <Select
+                v-model="formData.adsSubmitInterval1"
+                style="width: 200px"
+                :class="[prefixCls + '-interval-select']">
+                <Option
+                  v-for="item in timeList"
+                  :key="item.value"
+                  :value="item.value"
+                  :label="item.label"></Option>
+              </Select>
+            </div>
+          </FormItem>
+          <FormItem label="提交维度">
+            <rd-radio-group
+              v-model="formData.adsSubmitDimension"
+              :class="[prefixCls + '-rule-group']"
+              :default-list="submitDimensionList"
+              @on-change="handelDimensionChange"></rd-radio-group>
+          </FormItem>
+          <FormItem label="多账户同时提交">
+            <rd-radio-group
+              v-model="formData.adsMoreAccount"
+              :class="[prefixCls + '-rule-group']"
+              :default-list="adsMoreAccountList"></rd-radio-group>
+          </FormItem>
+          <FormItem>
+            <label slot="label">
+              {{ '每次提交' + dimensionLabel }}
+              <Tooltip
+                placement="top"
+                max-width="200"
+                theme="light"
+                content="多账户同时提交开启时，设置数量为每个账户每次提交数量；多账户同时提交关闭时，设置数量为每次提交数量。">
+                <Icon
+                  type="ios-help-circle-outline"
+                  size="16"
+                  class="cursor-pointer icon-question tip-icon"></Icon>
+              </Tooltip>
+            </label>
+            <div :class="[prefixCls + '-setting-item']">
+              <InputNumber
+                v-model="formData.adsSubmitNum1"
+                style="width: 200px"
+                :class="[prefixCls + '-adnum']"
+                :min="1"
+                :max="maxLimit"
+                :active-change="false"
+                :precision="0"></InputNumber>
+            </div>
+          </FormItem>
+        </template>
+        <template v-if="formData.adsSubmitRule === 'REPEAT'">
+          <FormItem
+            v-if="hasDelaySubmitTime"
+            label="执行时间">
+            <DatePicker
+              v-model="formData.adsRepeatSubmitTime"
+              :class="[prefixCls + '-date-picker']"
               style="width: 200px"
-              :class="[prefixCls + '-ad-num']"
-              :min="1"
-              :max="10"
-              :active-change="false"
-              :precision="0"></InputNumber>
-          </div>
-        </FormItem>
+              type="datetime"
+              :editable="false"
+              format="yyyy-MM-dd HH:mm"
+              :options="dateOptions"
+              :clearable="false"
+              placeholder="请选择定时提交日期时间"
+              @on-ok="handleStartTime('adsRepeatSubmitTime')"
+              @on-clickoutside="handleStartTime('adsRepeatSubmitTime')"></DatePicker>
+          </FormItem>
+          <FormItem label="时间间隔">
+            <div :class="[prefixCls + '-setting-item']">
+              <Select
+                v-model="formData.adsSubmitInterval2"
+                style="width: 200px"
+                :class="[prefixCls + '-interval-select']">
+                <Option
+                  v-for="item in timeList"
+                  :key="item.value"
+                  :value="item.value"
+                  :label="item.label"></Option>
+              </Select>
+            </div>
+          </FormItem>
+          <FormItem label="重复次数">
+            <div :class="[prefixCls + '-setting-item']">
+              <InputNumber
+                v-model="formData.adsSubmitNum2"
+                style="width: 200px"
+                :class="[prefixCls + '-ad-num']"
+                :min="1"
+                :max="10"
+                :active-change="false"
+                :precision="0"></InputNumber>
+            </div>
+          </FormItem>
+        </template>
       </template>
     </Form>
   </div>
@@ -147,6 +161,8 @@
 <script>
 import moment from 'moment'
 import { prefix } from '../../../config.js'
+import _debounce from 'lodash/debounce'
+import _isEmpty from 'lodash/isEmpty'
 const prefixCls = prefix + 'submission-rule'
 
 import * as config from './data.js'
@@ -160,12 +176,33 @@ export default {
     maxConfig: {
       type: Object,
       default: () => ({ CAMPAIGN: 100, PLAN: 100 })
+    },
+    // 已选择数据
+    selectForm: {
+      type: Object,
+      default: null
+    },
+    // 提交方式禁用函数
+    submitRuleDisabledItemFun: {
+      type: Function
+    },
+    // 是否包含执行时间
+    hasDelaySubmitTime: {
+      type: Boolean,
+      default: true
+    },
+    // 是否包含提交类型
+    hasSubmitType: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       prefixCls,
       formData: {
+        // 提交类型
+        submitType: 'submitAndSaveTemplate',
         // 提交规则
         adsSubmitRule: 'NOW',
         // 定时提交的 开始时间
@@ -200,11 +237,23 @@ export default {
     }
   },
   computed: {
+    hasSubmitRule() {
+      return this.formData.submitType !== 'saveTemplateOnly'
+    },
     dimensionLabel() {
       return config.getDimensionLabel(this.mediaCode, this.formData.adsSubmitDimension)
     },
     submitRuleList() {
+      if (this.submitRuleDisabledItemFun) {
+        return this.submitRuleDisabledItemFun(
+          config.getSubmitRuleList(this.mediaCode, this.formData.adsSubmitDimension)
+        )
+      }
+
       return config.getSubmitRuleList(this.mediaCode, this.formData.adsSubmitDimension)
+    },
+    submitTypeList() {
+      return config.getSubmitTypeList(this.mediaCode, this.formData.adsSubmitDimension)
     },
     submitDimensionList() {
       return config.getSubmitDimensionList(this.mediaCode)
@@ -224,36 +273,38 @@ export default {
 
       return this.maxConfig[adsSubmitDimension]
     },
-
     emitData() {
       return {
         formData: this.formData,
         labelData: this.getLabelData(),
         submitData: this.getSubmitData()
       }
+    },
+    emitDataString() {
+      return JSON.stringify(this.emitData)
     }
   },
   watch: {
-    emitData: {
-      deep: true,
-      immediate: true,
+    emitDataString: {
       handler(n, o) {
-        if (JSON.stringify(n) !== JSON.stringify(o)) {
-          this.$emit('on-change', n)
+        if (n !== o) {
+          this.handleChange()
         }
       }
     }
   },
   created() {
-    this.$nextTick(() => {
-      this.$emit('on-change', this.emitData)
-    })
+    // 有值
+    if (this.selectForm && !_isEmpty(this.selectForm)) {
+      this.formData = Object.assign({}, this.formData, this.selectForm)
+    }
+    this.handleChange()
   },
   methods: {
-    // change
-    handleSubmitRule() {
-      //
-    },
+    // 防抖 更新最后一次结果
+    handleChange: _debounce(function () {
+      this.$emit('on-change', this.emitData)
+    }, 20),
     handelDimensionChange() {
       this.formData.adsSubmitNum1 = 1
     },
@@ -345,6 +396,10 @@ export default {
         result.adsSubmitNum = this.formData.adsSubmitNum2
       }
 
+      //  如果不包含执行时间，那么删除该参数
+      if (!this.hasDelaySubmitTime) {
+        delete result.adsDelaySubmitTime
+      }
       return result
     },
     getLabelData() {

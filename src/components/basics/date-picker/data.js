@@ -3,6 +3,7 @@ export const shortcutsList = [
   '-1day',
   '-7day',
   '-30day',
+  '-365day',
   '0week',
   '-1week',
   '0month',
@@ -240,5 +241,69 @@ export const getShortcutsOptionsList = (start, self) => [
       }
       return [date1, date]
     }
+  },
+  {
+    id: '-365day',
+    text: '近一年',
+    value() {
+      const date = new Date()
+      let date1 = new Date()
+      date1.setTime(date1.getTime() - 364 * 3600 * 1000 * 24)
+      if (start && new Date(start) > date1) {
+        date1 = new Date(new Date(start).getTime() + 3600 * 1000 * 24)
+      }
+      return [date1, date]
+    }
   }
 ]
+
+// 获取消除时分秒的日期对象
+export const getDateStripTime = d => {
+  if (!d) {
+    return null
+  }
+
+  if (d instanceof Date) {
+    d.setHours(0, 0, 0, 0)
+    return d
+  }
+
+  if (typeof d === 'string') {
+    const newDate = new Date(d)
+    // 如果日期格式不正确，则返回 null
+    if (isNaN(newDate.getTime())) {
+      return null
+    }
+
+    newDate.setHours(0, 0, 0, 0)
+    return newDate
+  }
+
+  return null
+}
+
+/**
+ * 校验日期范围数组是否有效
+ * @param {Array} dateRange 日期范围数组 [startDate, endDate]
+ * @returns {boolean} 是否有效
+ */
+export function isValidDateRange(dateRange) {
+  // 检查是否为数组且长度为2
+  if (!Array.isArray(dateRange) || dateRange.length !== 2) {
+    return false
+  }
+
+  const [startDate, endDate] = dateRange
+
+  // 检查是否存在空值
+  if (!startDate || !endDate) {
+    return false
+  }
+
+  // 检查是否为无效日期
+  if (startDate === 'Invalid date' || endDate === 'Invalid date') {
+    return false
+  }
+
+  return true
+}

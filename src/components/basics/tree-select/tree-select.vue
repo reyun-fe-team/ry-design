@@ -122,7 +122,6 @@ export default {
       type: [String, Number],
       default: ''
     },
-    selectItemHeight: [String, Number],
     optionWidth: [String, Number],
     filterable: Boolean,
     showSelectOption: Boolean,
@@ -544,7 +543,7 @@ export default {
           values = this.storeValue
         }
       } else {
-        values = this.storeValue[0]
+        values = this.storeValue[0] || ''
       }
       const halfCheckedKeys = this.getHalfCheckedKeys()
       const halfAndCheckedKeys = [...values, ...halfCheckedKeys]
