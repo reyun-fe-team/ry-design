@@ -193,9 +193,13 @@ export default {
       return [`${prefixCls}`]
     },
     // 是否需要自动计算下拉面板的宽度与input panel 等宽
-    // 没有值就是自适应
+    // 1.没有传inputWidth
+    // 2.没有传 width
+    // 就是自适应
     dropDownSameWidthAsPanel() {
-      return [undefined, null, '', 0].includes(this.inputWidth)
+      const inputWidthEmpty = [undefined, null, '', 0].includes(this.inputWidth)
+      const widthEmpty = [undefined, null, '', 0].includes(this.width)
+      return inputWidthEmpty && widthEmpty
     },
     panelStyle() {
       // 是否需要自动计算下拉面板的宽度与input panel 等宽
