@@ -23,7 +23,7 @@
       :input-width="inputWidth"
       :input-height="inputHeight"
       :option-width="optionWidth"
-      :width="width"
+      :width="panelWidth"
       :height="height"
       :max-height="maxHeight"
       :min-height="minHeight"
@@ -268,12 +268,13 @@ export default {
       })
       return list
     },
+    // 面板宽度
+    panelWidth() {
+      return this.maxWidth || this.width
+    },
     panelStyle() {
       let style = {}
-      if (this.maxWidth) {
-        const maxWidth = parseInt(this.maxWidth)
-        style.maxWidth = `${maxWidth}px`
-      }
+
       if (this.maxHeight) {
         const maxHeight = parseInt(this.maxHeight)
         style.maxHeight = `${maxHeight}px`

@@ -161,10 +161,12 @@ export default {
       }
     },
     closeDropdown() {
-      this.$refs['list-panel'].closeDropdown()
+      const ref = this.$refs['list-panel']
+      ref && ref.closeDropdown()
     },
     updateDropdown() {
-      this.$refs['list-panel'].updateDropdown()
+      const ref = this.$refs['list-panel']
+      ref && ref.updateDropdown()
     }
   }
 }

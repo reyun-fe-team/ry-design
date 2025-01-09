@@ -127,25 +127,24 @@ export default {
       type: String,
       default: '无匹配数据'
     },
-    inputWidth: {
-      type: [String, Number],
-      default: 200
-    },
+
+    // ----尺寸设置----
+    // 输入框宽度 有值就是按照值来设置宽度 没有值就是自适应
+    inputWidth: [String, Number],
+    // 输入框高度
     inputHeight: [String, Number],
-    width: {
-      type: [String, Number],
-      default: ''
-    },
+    // 下拉面板宽度
+    width: [String, Number],
+    // 下拉面板高度
     height: [Number, String],
-    maxHeight: {
-      type: [Number, String],
-      default: 320
-    },
+    // 下拉面板最大高度
+    maxHeight: { type: [Number, String], default: 320 },
+    // 下拉面板最小高度
     minHeight: [Number, String],
-    optionWidth: {
-      type: [String, Number],
-      default: 200
-    },
+    // 选项宽度
+    optionWidth: { type: [String, Number], default: 200 },
+    // ----尺寸设置----
+
     filterable: {
       type: Boolean,
       default: false
@@ -184,14 +183,30 @@ export default {
       observeTarget: null,
       intersectionObserver: null,
       animationFrameId: null,
-      lastTargetProps: { top: 0, left: 0, width: 0, height: 0 }
+      lastTargetProps: { top: 0, left: 0, width: 0, height: 0 },
+      // 下拉面板宽度与input panel 等宽
+      sameWidthAsPanelStyle: { minWidth: null }
     }
   },
   computed: {
     classes() {
       return [`${prefixCls}`]
     },
+    // 是否需要自动计算下拉面板的宽度与input panel 等宽
+    // 1.没有传inputWidth
+    // 2.没有传 width
+    // 就是自适应
+    dropDownSameWidthAsPanel() {
+      const inputWidthEmpty = [undefined, null, '', 0].includes(this.inputWidth)
+      const widthEmpty = [undefined, null, '', 0].includes(this.width)
+      return inputWidthEmpty && widthEmpty
+    },
     panelStyle() {
+      // 是否需要自动计算下拉面板的宽度与input panel 等宽
+      if (this.dropDownSameWidthAsPanel) {
+        return this.sameWidthAsPanelStyle
+      }
+
       let style = {}
       if (this.width) {
         const width = parseInt(this.width)
@@ -251,18 +266,6 @@ export default {
     showFooter() {
       return this.$scopedSlots.footer
     }
-    // styleFooter() {
-    //   let width = parseInt(this.inputWidth)
-    //   if (this.width) {
-    //     width = parseInt(this.width)
-    //   }
-    //   if (this.showSelectOption && this.optionWidth) {
-    //     width = width + parseInt(this.optionWidth)
-    //   }
-    //   return {
-    //     width: `${width}px`
-    //   }
-    // }
   },
   watch: {
     value: {
@@ -282,6 +285,20 @@ export default {
     this.closeElementObserver()
   },
   methods: {
+    // 下拉面板宽度与input panel 等宽
+    getDropDownSameWidthAsPanelStyle() {
+      if (!this.dropDownSameWidthAsPanel) {
+        this.sameWidthAsPanelStyle = { minWidth: null }
+        return
+      }
+      // 自动获取
+      const inputPanel = this.$refs['list-panel']
+      if (inputPanel) {
+        const inputPanelElement = inputPanel.$el
+        const inputPanelRect = inputPanelElement.getBoundingClientRect()
+        this.sameWidthAsPanelStyle = { minWidth: parseInt(inputPanelRect.width) + 'px' }
+      }
+    },
     // 关闭监测
     closeElementObserver() {
       if (this.observeTarget) {
@@ -360,14 +377,22 @@ export default {
       if (!val) {
         this.queryValue = ''
       }
+
       if (val && this.showSelectOption) {
         this.$nextTick(() => {
           this.refHeight = this.$refs['filter-list-option'].getHeaderHeight()
         })
       }
-      this.$emit('on-visible-change', val)
 
+      // 在打开下拉面板之前更新下拉面板宽度
+      // 当前下拉面板未打开，下一步需要打开下拉面板，更新下拉面板宽度
+      if (!this.showDropdownPanel && val) {
+        this.getDropDownSameWidthAsPanelStyle()
+      }
+
+      this.$emit('on-visible-change', val)
       this.showDropdownPanel = val
+
       this.$nextTick(() => {
         // 打开 ？ 开启监测 ： 关闭监测
         this.showDropdownPanel ? this.openElementObserver() : this.closeElementObserver()
@@ -397,7 +422,13 @@ export default {
     },
     // 更新下拉面板
     updateDropdown() {
-      this.$refs['list-panel'].updateDropdown()
+      const ref = this.$refs['list-panel']
+      ref && ref.updateDropdown()
+
+      // 下拉面板宽度与input panel 等宽
+      if (this.showDropdownPanel) {
+        this.getDropDownSameWidthAsPanelStyle()
+      }
     }
   }
 }
