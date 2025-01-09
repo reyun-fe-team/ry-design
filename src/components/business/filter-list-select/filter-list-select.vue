@@ -151,31 +151,26 @@ export default {
         return oneOf(value, ['always-save', 'leave-save'])
       }
     },
-    width: {
-      type: [String, Number],
-      default: ''
-    },
-    height: [Number, String],
-    maxHeight: {
-      type: [Number, String],
-      default: 290
-    },
-    minHeight: [Number, String],
+
+    // ----尺寸设置----
+    // 输入框宽度 有值就是按照值来设置宽度 没有值就是自适应
     inputWidth: [String, Number],
-    inputHeight: {
-      type: [String, Number],
-      default: ''
-    },
+    // 输入框高度
+    inputHeight: [String, Number],
+    // 下拉面板宽度
+    width: [String, Number],
+    // 下拉面板高度
+    height: [Number, String],
+    // 下拉面板最大高度
+    maxHeight: { type: [Number, String], default: 290 },
+    // 下拉面板最小高度
+    minHeight: [Number, String],
+    // 选项宽度
+    optionWidth: { type: [String, Number], default: 200 },
+    // 选项高度
     selectItemHeight: [String, Number],
-    optionWidth: [String, Number],
+    // ----尺寸设置----
     filterMethod: Function,
-    // filterMethod: {
-    //   type: Function,
-    //   default(data, query) {
-    //     const type = 'label' in data ? 'label' : 'value'
-    //     return data[type].indexOf(query) > -1
-    //   }
-    // },
     labelMethod: {
       type: Function,
       default(data) {
@@ -566,7 +561,8 @@ export default {
       this.$emit('on-action-ok', val)
     },
     updateDropdown() {
-      this.$refs['filter-list'].updateDropdown()
+      const ref = this.$refs['filter-list']
+      ref && ref.updateDropdown()
     },
     toggleSelectAll(status) {
       let values = this.filterData.filter(data => !data.disabled).map(data => data.value)
