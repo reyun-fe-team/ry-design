@@ -1,7 +1,7 @@
 <template>
   <div
     ref="scrollBox"
-    :class="prefixCls"
+    :class="[prefixCls, 'small-scroll-y']"
     :style="styles"
     @mousedown="contextMenuVisible = false"
     @contextmenu.prevent="handleClickContextMenuOutside">
