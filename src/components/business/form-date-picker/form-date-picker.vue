@@ -3,11 +3,15 @@
     :class="classes"
     :style="styles">
     <div
-      v-if="label && label.trim()"
+      v-if="label && label.trim() && !$slots.label"
       ref="prefixRef"
       :class="prefixCls + '-label'">
       <span>{{ `${label}` }}</span>
     </div>
+    <slot
+      v-if="$slots.label"
+      name="label"
+      :class="prefixCls + '-label'"></slot>
     <div :class="prefixCls + '-body'">
       <rd-date-picker
         v-model="time"
