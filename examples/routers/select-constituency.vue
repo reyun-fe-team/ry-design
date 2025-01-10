@@ -101,7 +101,7 @@ export default {
 
   .rd-select-constituency {
     width: 814px;
-    max-height: 500px;
+    max-height: 300px;
     border: 1px solid #ccc;
   }
 
