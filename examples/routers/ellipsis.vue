@@ -1,117 +1,150 @@
 <template>
-  <div>
-    <h2 class="">示例6-表格中使用-css方式</h2>
-    <Table
-      :columns="column"
-      :data="body"
-      border>
-      <template
-        slot="trackName"
-        slot-scope="{ row }">
-        <div style="display: flex; align-items: center">
-          <rd-ellipsis
-            :text="row.actionTrackUrl"
-            :lines="2"
-            :enable-css="false"
-            tooltip
-            transfer></rd-ellipsis>
-          <Icon type="md-create" />
-        </div>
-      </template>
-    </Table>
-
-    <h1>div 宽300 padding 10</h1>
-    <h2>示例1-按照字符数省略 40字符</h2>
-    <div class="content">
-      <rd-ellipsis
-        :text="text"
-        :length="40"
-        theme="light"
-        tooltip />
-    </div>
-    <h2>示例2-按照高度省略 100px 高</h2>
-    <div class="content">
-      <rd-ellipsis
-        :text="text"
-        :height="100"
-        tooltip />
-    </div>
-    <h2>示例3-按照行数省略 2行</h2>
-    <div class="content">
-      <rd-ellipsis
-        :text="text"
-        :lines="2"
-        tooltip />
-    </div>
-    <h2>示例4-slot 前缀 自定义省略 后缀</h2>
-    <div class="content">
-      <rd-ellipsis
-        :text="text"
-        :length="40"
-        tooltip>
-        <span slot="prefix">
-          前缀-
-          <Icon type="md-bulb" />
-        </span>
-        <span
-          slot="more"
-          style="color: red">
-          ...更多
-        </span>
-        <Icon
-          slot="suffix"
-          type="md-copy" />
-      </rd-ellipsis>
-    </div>
-    <h2>示例5-表格中使用</h2>
-    <Table
-      style="width: 300px"
-      :max-height="350"
-      :columns="column"
-      :data="currentTable.data"
-      border>
-      <template
-        slot="trackName"
-        slot-scope="{ row }">
+  <Tabs v-model="activeName">
+    <TabPane
+      label="示例1-按照字符数省略 40字符"
+      name="1">
+      <div
+        v-if="activeName === '1'"
+        class="content">
         <rd-ellipsis
-          :text="row.actionTrackUrl"
-          :lines="2"
-          tooltip
-          transfer></rd-ellipsis>
-      </template>
-    </Table>
-    <rd-page
-      style="width: 300px"
-      type="m-middle"
-      :current="pager.current"
-      :size="pager.pageSize"
-      :total="body.length"
-      @page-change="handlePageChange"></rd-page>
-
-    <h2>示例7-宽高变了，自动计算</h2>
-    <div>
-      <Button @click="setHeightPx">改变高度</Button>
-      <div style="margin: 10px 0">
-        <rd-ellipsis
-          style="width: 200px; line-height: 25px; background-color: #f00"
-          auto-resize
-          :style="{ height: height + 'px' }"
           :text="text"
+          :length="40"
+          theme="light"
           tooltip />
       </div>
-      <div>
-        <Button @click="setWidthPx">改变宽度</Button>
+    </TabPane>
+    <TabPane
+      label="示例2-按照高度省略 100px 高"
+      name="2">
+      <div
+        v-if="activeName === '2'"
+        class="content">
+        <rd-ellipsis
+          :text="text"
+          :height="100"
+          tooltip />
+      </div>
+    </TabPane>
+    <TabPane
+      label="示例3-按照行数省略 2行"
+      name="3">
+      <div
+        v-if="activeName === '3'"
+        class="content">
+        <rd-ellipsis
+          :text="text"
+          :lines="2"
+          tooltip />
+      </div>
+    </TabPane>
+    <TabPane
+      label="示例4-slot 前缀 自定义省略 后缀"
+      name="4">
+      <div
+        v-if="activeName === '4'"
+        class="content">
+        <rd-ellipsis
+          :text="text"
+          :length="40"
+          tooltip>
+          <span slot="prefix">
+            前缀-
+            <Icon type="md-bulb" />
+          </span>
+          <span
+            slot="more"
+            style="color: red">
+            ...更多
+          </span>
+          <Icon
+            slot="suffix"
+            type="md-copy" />
+        </rd-ellipsis>
+      </div>
+    </TabPane>
+    <TabPane
+      label="示例5-表格中使用"
+      name="5">
+      <div
+        v-if="activeName === '5'"
+        class="content">
+        <Table
+          style="width: 300px"
+          :max-height="350"
+          :columns="column"
+          :data="currentTable.data"
+          border>
+          <template
+            slot="trackName"
+            slot-scope="{ row }">
+            <rd-ellipsis
+              :text="row.actionTrackUrl"
+              :lines="2"
+              tooltip
+              transfer></rd-ellipsis>
+          </template>
+        </Table>
+        <rd-page
+          style="width: 300px"
+          type="m-middle"
+          :current="pager.current"
+          :size="pager.pageSize"
+          :total="body.length"
+          @page-change="handlePageChange"></rd-page>
+      </div>
+    </TabPane>
+    <TabPane
+      label="示例6-表格中使用-css方式"
+      name="6">
+      <Table
+        v-if="activeName === '6'"
+        :columns="column"
+        :data="body"
+        border>
+        <template
+          slot="trackName"
+          slot-scope="{ row }">
+          <div style="display: flex; align-items: center">
+            <rd-ellipsis
+              :text="row.actionTrackUrl"
+              :lines="2"
+              :enable-css="true"
+              tooltip
+              transfer></rd-ellipsis>
+            <Icon type="md-create" />
+          </div>
+        </template>
+      </Table>
+    </TabPane>
+    <TabPane
+      label="示例7-宽高变了，自动计算"
+      name="7">
+      <div
+        v-if="activeName === '7'"
+        class="content">
+        <Button @click="setHeightPx">改变高度</Button>
         <div style="margin: 10px 0">
           <rd-ellipsis
+            style="width: 200px; line-height: 25px; background-color: #f00"
             auto-resize
-            style="height: 25px; line-height: 25px; background-color: #f00"
-            :style="{ width: width + 'px' }"
+            :style="{ height: height + 'px' }"
             :text="text"
             tooltip />
         </div>
+        <div>
+          <Button @click="setWidthPx">改变宽度</Button>
+          <div style="margin: 10px 0">
+            <rd-ellipsis
+              auto-resize
+              style="height: 25px; line-height: 25px; background-color: #f00"
+              :style="{ width: width + 'px' }"
+              :text="text"
+              tooltip />
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </TabPane>
+  </Tabs>
 </template>
 
 <script>
@@ -120,6 +153,7 @@ import { getTableData } from '@src/util/assist.js'
 export default {
   data() {
     return {
+      activeName: '1',
       pager: {
         // 当前页数
         current: 1,
