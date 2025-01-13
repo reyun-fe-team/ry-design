@@ -158,7 +158,24 @@ export default {
     },
     // 气泡提示的配置
     tooltipOptions() {
-      let { tooltip, text, theme, maxWidth, placement, transfer, delay, oversize } = this
+      let {
+        tooltip,
+        disabled,
+        text,
+        theme,
+        maxWidth,
+        placement,
+        transfer,
+        delay,
+        oversize,
+        enableCss
+      } = this
+
+      // 禁用 || 不开启 tooltip
+      if (disabled || !tooltip) {
+        return null
+      }
+
       const options = {
         content: text,
         theme: theme,
@@ -167,15 +184,22 @@ export default {
         transfer: transfer,
         delay: delay
       }
-      return tooltip && oversize ? options : null
+
+      // 开启 tooltip. 开启 css 或者 超出省略
+      if (enableCss || oversize) {
+        return options
+      }
+
+      return null
     },
     // 初始化选项，文字长度计算的追踪属性
     initializedOptions() {
-      let { disabled, text, height, lines } = this
-      return { disabled, text, height, lines }
+      let { disabled, text, height, lines, enableCss } = this
+      return { disabled, text, height, lines, enableCss }
     }
   },
   watch: {
+    // 初始化选项，文字长度计算的追踪属性
     initializedOptions: {
       deep: true,
       handler() {
