@@ -66,9 +66,9 @@ export default {
       type: Number
     },
     // 限制行数，将换算为 height。如果设置了 height，则直接使用 height 计算
-    // eslint-disable-next-line vue/require-default-prop
     lines: {
-      type: Number
+      type: Number,
+      default: 1
     },
     // 按照指定长度截取
     // eslint-disable-next-line vue/require-default-prop

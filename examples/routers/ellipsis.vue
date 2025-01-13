@@ -34,6 +34,7 @@
         <rd-ellipsis
           :text="text"
           :lines="2"
+          enable-css
           tooltip />
       </div>
     </TabPane>
@@ -80,6 +81,7 @@
             <rd-ellipsis
               :text="row.actionTrackUrl"
               :lines="2"
+              enable-css
               tooltip
               transfer></rd-ellipsis>
           </template>
