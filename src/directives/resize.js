@@ -1,27 +1,32 @@
-import elementResizeDetectorMaker from 'element-resize-detector'
-import _isEqual from 'lodash/isEqual'
+const isResizeObserver = 'ResizeObserver' in window
 
 function removeListen(el) {
-  el.__observer__ && el.__observer__.removeListener(el, el.__resizeHandler__)
+  el.__observer__ && el.__observer__.unobserve(el)
   delete el.__resizeHandler__
   delete el.__observer__
   delete el.__resizeRecorder__
 }
 
 function addListen(el, binding) {
+  if (!isResizeObserver) {
+    return
+  }
+
   if (binding.value && typeof binding.value === 'function') {
     // resize handler
-    el.__resizeHandler__ = element => {
-      let data = { width: '', height: '', element }
-
-      if (element && element === el) {
-        data.width = element.offsetWidth
-        data.height = element.offsetHeight
-      }
+    el.__resizeHandler__ = entries => {
+      const ResizeObserverEntry = entries[0]
+      const element = ResizeObserverEntry.target
+      const contentRect = ResizeObserverEntry.contentRect
+      let data = { width: contentRect.width, height: contentRect.height, element }
 
       // 数据变了
-      if (element.__resizeRecorder__ && !_isEqual(element.__resizeRecorder__, data)) {
-        binding.value(data)
+      if (element.__resizeRecorder__) {
+        const { width, height } = element.__resizeRecorder__
+        const { width: newWidth, height: newHeight } = data
+        if (width !== newWidth || height !== newHeight) {
+          binding.value(data)
+        }
       }
 
       // 存在记录器更新值
@@ -33,11 +38,10 @@ function addListen(el, binding) {
         element.__resizeRecorder__ = data
       }
     }
-
     // 创建一个元素大小调整检测器实例
-    el.__observer__ = elementResizeDetectorMaker()
+    el.__observer__ = new ResizeObserver(el.__resizeHandler__)
     // 监听
-    el.__observer__.listenTo(el, el.__resizeHandler__)
+    el.__observer__.observe(el)
   }
 
   // 移除

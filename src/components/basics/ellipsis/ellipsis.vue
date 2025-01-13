@@ -1,6 +1,5 @@
 <template>
   <div
-    v-resize="autoResize ? handleResize : null"
     v-line-clamp="enableCss ? lines : null"
     v-tooltip="tooltipOptions"
     :class="[prefixCls, { [prefixCls + '-hidden']: !computedReady && !enableCss }]">
@@ -10,6 +9,7 @@
     <span
       :key="textDomRenderKey"
       ref="text"
+      v-resize="autoResize ? handleResize : null"
       :class="[prefixCls + '-text']">
       {{ text }}
     </span>
@@ -25,8 +25,11 @@
   </div>
 </template>
 <script>
-import { oneOf, getStyle, waitOut, getBase64Code } from '@src/util/assist.js'
+import { oneOf, getStyle, getBase64Code } from '@src/util/assist.js'
 import _throttle from 'lodash/throttle'
+import { prefix } from '@src/config.js'
+
+const prefixCls = prefix + 'ellipsis'
 
 const getStrFullLength = (str = '') =>
   str.split('').reduce((pre, cur) => {
@@ -52,8 +55,7 @@ const cutStrByFullLength = (str = '', maxLength) => {
     return pre
   }, '')
 }
-import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'ellipsis'
+
 export default {
   name: prefixCls,
   props: {
@@ -88,6 +90,7 @@ export default {
     },
     // 是否自动根据外层宽度动态改变
     // 宽度变了，自动计算
+    // @TODO: 需要优化,不要使用
     autoResize: {
       type: Boolean,
       default: false
@@ -153,9 +156,7 @@ export default {
       // 先隐形计算，计算好后，再根据配置显示
       computedReady: false,
       // 计算后的 text 内容
-      computedText: this.text,
-      // 自动计算后的 text 内容
-      autoComputedText: this.text
+      computedText: this.text
     }
   },
   computed: {
@@ -196,16 +197,15 @@ export default {
   methods: {
     // 等待dom完成更新
     waitNextTick() {
+      // eslint-disable-next-line no-async-promise-executor
       return new Promise(async resolve => {
         await this.$nextTick()
-        waitOut(resolve)
+        window.requestAnimationFrame(() => resolve())
       })
     },
     async init() {
-      await this.waitNextTick()
       if (!this.disabled && !this.enableCss) {
-        this.autoResize ? this.autoComputeText() : this.computeText()
-        this.limitShow()
+        this.computeText()
       }
     },
     // 根据配置计算
@@ -217,6 +217,11 @@ export default {
 
       let $text = this.$refs.text
       let $el = this.$el
+
+      // 更新元素宽高
+      // 动态修改元素的样式。返回最新的尺寸
+      $el.getBoundingClientRect()
+
       let $more = this.$refs.more
       let n = 1000
       let text = this.text
@@ -258,55 +263,17 @@ export default {
       }
 
       this.computedText = text
-    },
-    // 自动计算，可根据高度动态计算
-    async autoComputeText() {
-      const canCaclulate = !this.disabled && !this.enableCss
-      if (!canCaclulate) {
-        return
-      }
-
-      this.oversize = false
-      this.computedReady = false
-
-      await this.waitNextTick()
-
-      const $text = this.$refs.text
-      const $el = this.$el
-      const $more = this.$refs.more
-      const height = $el.offsetHeight
-
-      let n = 1000
-      let text = this.autoComputedText
-
-      // 文字容器超出盒子
-      if ($text.offsetHeight > height) {
-        this.oversize = true
-        $more.style.display = 'inline-block'
-
-        while ($text.offsetHeight > height && n > 0) {
-          $text.innerText = text = text.substring(0, text.length - 1)
-          n--
-        }
-
-        // 减去省略符号内容占据的文字个数
-        $text.innerText = text = text.substring(0, text.length - 1 - this.autoResizeMoreTextCount)
-        this.autoComputedText = text
-      }
-
       this.limitShow()
     },
     // 触发显示与隐藏
     async limitShow() {
       this.computedReady = true
 
-      await this.waitNextTick()
-
       let $text = this.$refs.text
       let $el = this.$el
 
       if ($text) {
-        $text.innerText = this.autoResize ? this.autoComputedText : this.computedText
+        $text.innerText = this.computedText
         if (!this.autoResize) {
           $el.offsetHeight > this.height ? this.$emit('on-hide') : this.$emit('on-show')
         }
@@ -314,7 +281,7 @@ export default {
     },
     // 元素宽高
     handleResize: _throttle(function () {
-      this.autoComputeText()
+      this.computeText()
     }, 150)
   }
 }
