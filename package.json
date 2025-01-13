@@ -1,7 +1,7 @@
 {
   "name": "ry-design",
   "main": "dist/ry-design.min.js",
-  "version": "2.18.51-alpha.7",
+  "version": "2.18.51-alpha.1",
   "repository": {
     "type": "git",
     "url": "git@github.com:reyun-fe-team/ry-design.git"
