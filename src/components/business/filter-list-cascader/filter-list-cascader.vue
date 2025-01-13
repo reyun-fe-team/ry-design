@@ -36,7 +36,8 @@
         v-if="!isSearching"
         v-model="current"
         :styles="mainStyles"
-        :data="filterData"></filter-list-cascader-panel>
+        :data="filterData"
+        :max="max"></filter-list-cascader-panel>
       <!-- 搜索结果面板 -->
       <filter-list-cascader-result-panel
         v-else
@@ -152,7 +153,11 @@ export default {
       type: Boolean,
       default: false
     },
-    transfer: Boolean
+    transfer: Boolean,
+    max: {
+      type: Number,
+      default: 0
+    }
   },
   data() {
     return {

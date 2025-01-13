@@ -3,6 +3,14 @@
     <div class="header">
       <h2>filter-list-cascader</h2>
       <div class="button-group">
+        <div>
+          设置最大数
+          <InputNumber
+            v-model="max"
+            :max="100"
+            :min="0" />
+        </div>
+
         <Button
           class="action-button"
           @click="fu">
@@ -26,6 +34,7 @@
             level0: 'productIds',
             level1: 'appIds'
           }"
+          :max="max"
           filterable
           multiple
           show-select-option
@@ -361,7 +370,8 @@ export default {
           authorization:
             'Adsdesk ZXlKaGJHY2lPaUpJVXpVeE1pSjkuZXlKemRXSWlPaUl5TWpZNElpd2ljbUpoWTFabGNuTnBiMjRpT2lJeExqQWlMQ0p5YjJ4bElqb2lUVUZPUVVkRlVpSXNJbTFsWkdsaFVHVnliV2x6YzJsdmJpSTZJbUpoYVdSMUxHSnBiR2xpYVd4cExHZGtkSFl6TUN4cmRXRnBjMmh2ZFN4eGFXRnVZMmgxWVc0c2RHOTFkR2xoYnlJc0ltZHliM1Z3U1dRaU9pSXhNVFV5SWl3aVkzVnpkRzl0WlhKSlpDSTZNVEF3TWpVc0ltUmxjSFJKWkhNaU9sdGRMQ0psYm1SVWFXMWxJanA3SW5sbFlYSWlPakl3T1Rrc0ltMXZiblJvVm1Gc2RXVWlPakV5TENKdGIyNTBhQ0k2SWtSRlEwVk5Ra1ZTSWl3aVpHRjVUMlpOYjI1MGFDSTZNekVzSW1SaGVVOW1XV1ZoY2lJNk16WTFMQ0prWVhsUFpsZGxaV3NpT2lKVVNGVlNVMFJCV1NJc0ltaHZkWElpT2pBc0ltMXBiblYwWlNJNk1Dd2ljMlZqYjI1a0lqb3dMQ0p1WVc1dklqb3dMQ0pqYUhKdmJtOXNiMmQ1SWpwN0ltTmhiR1Z1WkdGeVZIbHdaU0k2SW1semJ6ZzJNREVpTENKcFpDSTZJa2xUVHlKOWZTd2lkWE5sY2tsa0lqb3lNalk0TENKMWRXbGtJam9pUVRsQ1F6QkRRakk0TWtVMk5FTXpRemxDUTBSRk5EY3hNamcyTWpNd01FTWlMQ0psYldGcGJDSTZJbnBvWVc1bmJXVnVaMEJ5WlhsMWJpNWpiMjBpZlEucW1kQlNHZTFQbnpKTlZtWGNhdEpaQWx3TEtBZU9OSFZiSXFlaFpVSHNtX0FvZjVpV0tBNTg3bk55Y25tVDJsLWNKX09Hdk5MQXlDQmtwTkFEZTVWOGc='
         }
-      }
+      },
+      max: 0
     }
   },
   computed: {
@@ -404,8 +414,8 @@ export default {
 <style scoped>
 .container {
   max-width: 1200px;
+  padding: 0;
   margin: 0 auto;
-  padding: 0px;
 }
 
 .header {
@@ -426,13 +436,13 @@ export default {
 
 .code-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
+  padding: 20px;
   margin-bottom: 32px;
   background: #fff;
-  padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 10%);
 }
 
 .value-display {
@@ -442,33 +452,33 @@ export default {
 }
 
 .value-display h3 {
-  margin: 0 0 12px 0;
-  color: #333;
+  margin: 0 0 12px;
   font-size: 16px;
   font-weight: 500;
+  color: #333;
 }
 
 pre {
-  background-color: #f8f9fa;
   padding: 16px;
-  border-radius: 6px;
-  overflow: auto;
   margin: 0;
+  overflow: auto;
+  background-color: #f8f9fa;
   border: 1px solid #eee;
+  border-radius: 6px;
 }
 
 code {
-  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-family: Monaco, Menlo, Consolas, monospace;
   font-size: 14px;
   line-height: 1.5;
   color: #333;
 }
 
 .cascader-section {
-  background: #fff;
   padding: 24px;
+  background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 10%);
 }
 
 /* 代码高亮样式优化 */
@@ -476,15 +486,19 @@ code {
   .string {
     color: #e3116c;
   }
+
   .number {
     color: #0898c0;
   }
+
   .boolean {
     color: #36acaa;
   }
+
   .null {
     color: #998;
   }
+
   .key {
     color: #905;
   }
@@ -504,20 +518,20 @@ code {
 }
 
 .warning-tip {
-  background-color: #fff3e0;
-  border-left: 4px solid #ff9800;
+  display: flex;
   padding: 12px 16px;
   margin: 16px 0;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
   color: #795548;
+  background-color: #fff3e0;
+  border-radius: 4px;
+  border-left: 4px solid #ff9800;
+  align-items: center;
 }
 
 .warning-icon {
   margin-right: 8px;
-  color: #ff9800;
   font-style: normal;
   font-weight: bold;
+  color: #ff9800;
 }
 </style>
