@@ -6,29 +6,21 @@
     <!-- 前缀 -->
     <slot name="prefix"></slot>
     <!-- 文字 -->
-    <span
-      :key="textDomRenderKey"
+    <div
       ref="text"
-      v-resize="autoResize ? handleResize : null"
+      :key="renderKey"
       :class="[prefixCls + '-text']">
       {{ text }}
-    </span>
-    <!-- ...符号 -->
-    <span
-      v-show="oversize"
-      ref="more"
-      :class="[prefixCls + '-more']">
-      <slot name="more">...</slot>
-    </span>
+    </div>
     <!-- 后缀 -->
     <slot name="suffix"></slot>
   </div>
 </template>
 <script>
+import Vue from 'vue'
 import { oneOf, getStyle, getBase64Code } from '@src/util/assist.js'
 import _throttle from 'lodash/throttle'
 import { prefix } from '@src/config.js'
-
 const prefixCls = prefix + 'ellipsis'
 
 const getStrFullLength = (str = '') =>
@@ -74,9 +66,9 @@ export default {
       type: Number
     },
     // 限制行数，将换算为 height。如果设置了 height，则直接使用 height 计算
-    // eslint-disable-next-line vue/require-default-prop
     lines: {
-      type: Number
+      type: Number,
+      default: 1
     },
     // 按照指定长度截取
     // eslint-disable-next-line vue/require-default-prop
@@ -161,12 +153,29 @@ export default {
   },
   computed: {
     // 需要根据传入的文案，计算一个元素的渲染更新的key，dom才能实时渲染，拿到最新的元素高度
-    textDomRenderKey() {
+    renderKey() {
       return getBase64Code(this.text || '')
     },
     // 气泡提示的配置
     tooltipOptions() {
-      let { tooltip, text, theme, maxWidth, placement, transfer, delay, oversize } = this
+      let {
+        tooltip,
+        disabled,
+        text,
+        theme,
+        maxWidth,
+        placement,
+        transfer,
+        delay,
+        oversize,
+        enableCss
+      } = this
+
+      // 禁用 || 不开启 tooltip
+      if (disabled || !tooltip) {
+        return null
+      }
+
       const options = {
         content: text,
         theme: theme,
@@ -175,15 +184,22 @@ export default {
         transfer: transfer,
         delay: delay
       }
-      return tooltip && oversize ? options : null
+
+      // 开启 tooltip. 开启 css 或者 超出省略
+      if (enableCss || oversize) {
+        return options
+      }
+
+      return null
     },
     // 初始化选项，文字长度计算的追踪属性
     initializedOptions() {
-      let { disabled, text, height, lines } = this
-      return { disabled, text, height, lines }
+      let { disabled, text, height, lines, enableCss } = this
+      return { disabled, text, height, lines, enableCss }
     }
   },
   watch: {
+    // 初始化选项，文字长度计算的追踪属性
     initializedOptions: {
       deep: true,
       handler() {
@@ -220,9 +236,8 @@ export default {
 
       // 更新元素宽高
       // 动态修改元素的样式。返回最新的尺寸
-      $el.getBoundingClientRect()
+      let wrapperHeight = $el.getBoundingClientRect().height
 
-      let $more = this.$refs.more
       let n = 1000
       let text = this.text
       let height = this.height
@@ -238,7 +253,6 @@ export default {
           const textLength = this.fullWidthRecognition ? getStrFullLength(text) : text.length
           if (textLength > this.length) {
             this.oversize = true
-            $more.style.display = 'inline-block'
             text = this.fullWidthRecognition
               ? cutStrByFullLength(text, this.length)
               : text.slice(0, this.length)
@@ -246,16 +260,18 @@ export default {
         }
         // 按照容器大小
         else {
-          if ($el.offsetHeight > height) {
+          if (wrapperHeight > height) {
             this.oversize = true
-            $more.style.display = 'inline-block'
 
-            while ($el.offsetHeight > height && n > 0) {
-              if ($el.offsetHeight > height * 3) {
-                $text.innerText = text = text.substring(0, Math.floor(text.length / 2))
+            while (wrapperHeight > height && n > 0) {
+              if (wrapperHeight > height * 3) {
+                text = text.substring(0, Math.floor(text.length / 2))
               } else {
-                $text.innerText = text = text.substring(0, text.length - 1)
+                text = text.substring(0, text.length - 1)
               }
+
+              this.renderTextContent(text)
+              wrapperHeight = $el.getBoundingClientRect().height
               n--
             }
           }
@@ -273,11 +289,38 @@ export default {
       let $el = this.$el
 
       if ($text) {
-        $text.innerText = this.computedText
+        this.renderTextContent(this.computedText)
         if (!this.autoResize) {
           $el.offsetHeight > this.height ? this.$emit('on-hide') : this.$emit('on-show')
         }
       }
+    },
+    // 创建省略号
+    createEllipsisIcon() {
+      let dom = null
+      if (this.oversize) {
+        const instance = new Vue({
+          el: document.createElement('div'),
+          render: h => {
+            const child = this.$slots.more || '...'
+            return h('span', { class: [prefixCls + '-more'] }, [child])
+          }
+        })
+        dom = instance.$el
+      }
+
+      return dom
+    },
+    // 渲染文本元素的内容
+    renderTextContent(text) {
+      // 清空文本
+      this.$refs.text.innerHTML = ''
+      // 文本
+      const textNode = document.createTextNode(text)
+      this.$refs.text.appendChild(textNode)
+      // ..符号
+      const ellipsisIcon = this.createEllipsisIcon()
+      this.$refs.text.appendChild(ellipsisIcon)
     },
     // 元素宽高
     handleResize: _throttle(function () {
