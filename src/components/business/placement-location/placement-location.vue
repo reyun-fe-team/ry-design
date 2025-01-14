@@ -16,12 +16,12 @@
         v-model="option.checked"
         :label="option.label"
         :show-checkbox="showCheckbox"
-        :disabled="option._disabled || option.disabled"
+        :disabled="getGroupTitleDisabled(option)"
         :multiple="multiple"
         :class="classesTitle(titleIndex)"
         :row="option"
         :item-width="itemWidth"
-        @on-change="handlTitleChange(option)">
+        @on-change="handleTitleChange(option)">
         <template
           slot="select-item"
           slot-scope="{ row }">
@@ -134,12 +134,23 @@ export default {
     return {
       prefixCls: prefixCls,
       selectAll: false,
-      disabledCheckedAll: false,
+      // disabledCheckedAll: false,
       currentValue: value,
       isChangeValueInTree: false // 如果是点击 Tree 里改变的数据，临时置为 true，避免在 watch 的 value 中重复修改 Select 数据
     }
   },
   computed: {
+    disabledCheckedAll() {
+      return this.data.some(item => {
+        if (this.getDisabled(item)) {
+          return true
+        } else if (item.children && item.children) {
+          return item.children.some(val => this.getDisabled(val))
+        } else {
+          return false
+        }
+      })
+    },
     showEmpty() {
       return !this.data.length
     },
@@ -155,7 +166,7 @@ export default {
             return !item.checked
           })
         } else {
-          return false
+          return !val.checked
         }
       })
       return !valid
@@ -187,6 +198,16 @@ export default {
     this.handleUpdateNodes()
   },
   methods: {
+    getDisabled(val) {
+      return val.disabled || val._disabled
+    },
+    getGroupTitleDisabled(option) {
+      const childrenDisabled =
+        option.children && option.children.length
+          ? option.children.every(val => val.disabled || val._disabled)
+          : false
+      return option._disabled || option.disabled || childrenDisabled
+    },
     classesTitle(index) {
       const weight = this.data.some(val => val.children && val.children.length)
       return [
@@ -199,7 +220,7 @@ export default {
       }
       return this.multiple
     },
-    handlTitleChange(data) {
+    handleTitleChange(data) {
       if (!this.showCheckbox) {
         return
       }
@@ -234,10 +255,11 @@ export default {
           })
         }
       }
+      this.currentValue = this.getCurrentValue()
       const disabledValues = this.getDisabledTitleValues()
       const clearValues = data.clearValues || []
 
-      this.disabledCheckedAll = false
+      // this.disabledCheckedAll = false
       // 处理特殊场景,选中一条指定清除、置灰其他
       this.data.forEach(val => {
         if (val.checked && clearValues.includes(val.value)) {
@@ -251,9 +273,9 @@ export default {
 
         if (!val.disabled) {
           const disabled = disabledValues.includes(val.value)
-          if (disabled) {
-            this.disabledCheckedAll = true
-          }
+          // if (disabled) {
+          //   this.disabledCheckedAll = true
+          // }
           val._disabled = disabled
           if (val.children && val.children.length) {
             val.children.forEach(item => {
@@ -264,7 +286,7 @@ export default {
           }
         }
       })
-
+      this.currentValue = this.getCurrentValue()
       this.handleUpdateSelectValue()
 
       this.$emit('on-title-click', this.currentValue, data)
@@ -295,15 +317,14 @@ export default {
     handleUpdateNodes() {
       const disabledValues = this.getDisabledValues()
       const disabledTitleValues = this.getDisabledTitleValues()
-
       // 初始化处理disabledValues
       this.data.forEach(item => {
         item.checked = this.showCheckbox && this.currentValue.includes(item.value)
 
         const titleDisabled = disabledTitleValues.includes(item.value)
-        if (titleDisabled) {
-          this.disabledCheckedAll = true
-        }
+        // if (titleDisabled) {
+        //   this.disabledCheckedAll = true
+        // }
         item._disabled = titleDisabled
 
         const multiple = this.getChildrenMultiple(item)
@@ -361,19 +382,20 @@ export default {
           data.checked = data.children.some(val => val.checked)
         }
       }
+      this.currentValue = this.getCurrentValue()
       this.handleUpdateSelectValue()
       const disabledValues = this.getDisabledValues()
 
-      this.disabledCheckedAll = false
+      // this.disabledCheckedAll = false
       // 处理特殊场景,选中一条指定置灰其他
       this.data.forEach(val => {
         if (val.children && val.children.length) {
           val.children.forEach(item => {
             if (!item.disabled && multiple) {
               const disabled = disabledValues.includes(item.value)
-              if (disabled) {
-                this.disabledCheckedAll = true
-              }
+              // if (disabled) {
+              //   this.disabledCheckedAll = true
+              // }
               item._disabled = disabled
             }
           })
@@ -385,22 +407,23 @@ export default {
     isUpdateTitle(data) {
       return !data.disabled && this.showCheckbox
     },
-    // 更新value
-    handleUpdateSelectValue() {
-      let list = []
-      this.data.forEach(item => {
+    getCurrentValue() {
+      return this.data.reduce((acc, item) => {
         if (item.checked && item.value) {
-          list.push(item.value)
+          acc.push(item.value)
         }
         if (item.children && item.children.length) {
           item.children.forEach(val => {
             if (val.checked) {
-              list.push(val.value)
+              acc.push(val.value)
             }
           })
         }
-      })
-      this.currentValue = list
+        return acc
+      }, [])
+    },
+    // 更新value
+    handleUpdateSelectValue() {
       this.isChangeValueInTree = true
       this.$emit('input', this.currentValue)
       this.$emit('on-change', this.currentValue)
@@ -428,6 +451,7 @@ export default {
           })
         }
       })
+      this.currentValue = this.getCurrentValue()
       this.handleUpdateSelectValue()
       if (this.showCheckbox) {
         this.$emit('on-select-all', this.currentValue)
