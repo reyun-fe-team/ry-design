@@ -152,7 +152,8 @@ export default {
         maxWidth: maxWidth,
         placement: placement,
         transfer: transfer,
-        delay: delay
+        delay: delay,
+        compUpdatedVisible: this.oversize && this.enableCss
       }
 
       return oversize ? options : null

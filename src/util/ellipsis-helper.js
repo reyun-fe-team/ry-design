@@ -1,6 +1,7 @@
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'ellipsis'
+import { getKey } from './assist'
 
+const prefixCls = prefix + 'ellipsis'
 let measureEl = null
 
 export const getMeasureEl = () => {
@@ -8,8 +9,16 @@ export const getMeasureEl = () => {
     return measureEl
   }
 
+  // 查找页面上是否有对应的measureEl
+  measureEl = document.getElementById(`${prefixCls}-measure-el}`)
+  if (measureEl) {
+    return measureEl
+  }
+
+  // 创建measureEl
   measureEl = document.createElement('span')
-  measureEl.className = `${prefixCls}-measure-el`
+  measureEl.id = `${prefixCls}-measure-el`
+  measureEl.className = `${prefixCls}-measure-el-${getKey()}`
   measureEl.style.visibility = 'hidden'
   measureEl.style.position = 'absolute'
   measureEl.style.top = '-9999px'
@@ -19,6 +28,8 @@ export const getMeasureEl = () => {
 
   // 添加页面卸载时的清理
   window.addEventListener('unload', removeMeasureEl)
+  // 添加hash变化时的清理
+  window.addEventListener('popstate', removeMeasureEl)
 
   return measureEl
 }
@@ -28,6 +39,7 @@ export const removeMeasureEl = () => {
     document.body.removeChild(measureEl)
     measureEl = null
     window.removeEventListener('unload', removeMeasureEl)
+    window.removeEventListener('popstate', removeMeasureEl)
   }
 }
 
