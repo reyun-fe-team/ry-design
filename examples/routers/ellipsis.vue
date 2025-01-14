@@ -180,7 +180,7 @@ export default {
       ],
       body: [
         {
-          actionTrackUrl: 'https://cda.lilisi.com/tracking',
+          actionTrackUrl: 'https://cda.lilisi.com/tracking/asdasdasdsa',
           advertiserId: '不限',
           appPackage: '',
           checkStatus: true,
