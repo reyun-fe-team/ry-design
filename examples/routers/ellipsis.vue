@@ -180,8 +180,7 @@ export default {
       ],
       body: [
         {
-          actionTrackUrl:
-            'https://cda.lilisi.com/tracking?dap_code=c44e947f06344206f20ed59d8d1c6399&trackid=__TRACKID__&creative_id=__CREATIVEID__&os=__OS__&mac=__MAC1__&idfa_md5=__IDFAMD5__&ip=__IP__&ua=__UA__&ts=__TS__&sub1=__CREATIVEID__&caid=__CAID__',
+          actionTrackUrl: 'https://cda.lilisi.com/tracking',
           advertiserId: '不限',
           appPackage: '',
           checkStatus: true,
