@@ -1,7 +1,6 @@
 <template>
   <div
     v-line-clamp="enableCss ? lines : null"
-    v-tooltip="tooltipOptions"
     :class="[prefixCls, { [prefixCls + '-hidden']: !computedReady && !enableCss }]">
     <!-- 前缀 -->
     <slot name="prefix"></slot>
@@ -9,7 +8,9 @@
     <div
       ref="text"
       :key="renderKey"
-      :class="[prefixCls + '-text']">
+      v-tooltip="tooltipOptions"
+      :class="[prefixCls + '-text']"
+      @mouseenter="handleTooltipIn">
       {{ text }}
     </div>
     <!-- 后缀 -->
@@ -20,33 +21,10 @@
 import Vue from 'vue'
 import { oneOf, getStyle, getBase64Code } from '@src/util/assist.js'
 import _throttle from 'lodash/throttle'
+import { getMeasureEl, getStrFullLength, cutStrByFullLength } from '@src/util/ellipsis-helper.js'
 import { prefix } from '@src/config.js'
+
 const prefixCls = prefix + 'ellipsis'
-
-const getStrFullLength = (str = '') =>
-  str.split('').reduce((pre, cur) => {
-    const charCode = cur.charCodeAt(0)
-    if (charCode >= 0 && charCode <= 128) {
-      return pre + 1
-    }
-    return pre + 2
-  }, 0)
-
-const cutStrByFullLength = (str = '', maxLength) => {
-  let showLength = 0
-  return str.split('').reduce((pre, cur) => {
-    const charCode = cur.charCodeAt(0)
-    if (charCode >= 0 && charCode <= 128) {
-      showLength += 1
-    } else {
-      showLength += 2
-    }
-    if (showLength <= maxLength) {
-      return pre + cur
-    }
-    return pre
-  }, '')
-}
 
 export default {
   name: prefixCls,
@@ -148,7 +126,10 @@ export default {
       // 先隐形计算，计算好后，再根据配置显示
       computedReady: false,
       // 计算后的 text 内容
-      computedText: this.text
+      computedText: this.text,
+      // 缓存上次测量的文本内容和结果
+      lastMeasuredText: '',
+      lastMeasuredResult: false
     }
   },
   computed: {
@@ -158,18 +139,7 @@ export default {
     },
     // 气泡提示的配置
     tooltipOptions() {
-      let {
-        tooltip,
-        disabled,
-        text,
-        theme,
-        maxWidth,
-        placement,
-        transfer,
-        delay,
-        oversize,
-        enableCss
-      } = this
+      let { tooltip, disabled, text, theme, maxWidth, placement, transfer, delay, oversize } = this
 
       // 禁用 || 不开启 tooltip
       if (disabled || !tooltip) {
@@ -185,12 +155,7 @@ export default {
         delay: delay
       }
 
-      // 开启 tooltip. 开启 css 或者 超出省略
-      if (enableCss || oversize) {
-        return options
-      }
-
-      return null
+      return oversize ? options : null
     },
     // 初始化选项，文字长度计算的追踪属性
     initializedOptions() {
@@ -321,6 +286,50 @@ export default {
       // ..符号
       const ellipsisIcon = this.createEllipsisIcon()
       this.$refs.text.appendChild(ellipsisIcon)
+    },
+    // 包装函数，进行初步判断
+    handleTooltipIn() {
+      const { disabled, enableCss, tooltip } = this
+      // 禁用 || 不开启css || 不开启tooltip
+      if (disabled || !enableCss || !tooltip) {
+        return
+      }
+      this.handleTooltipInImpl()
+    },
+    // 实际的处理逻辑
+    handleTooltipInImpl() {
+      const $content = this.$refs.text
+      // 没有文本
+      if (!this.text || !$content.childNodes[0]) {
+        return
+      }
+
+      // 如果文本内容没变且已经计算过，直接使用缓存的结果
+      if (this.text === this.lastMeasuredText) {
+        this.oversize = this.lastMeasuredResult
+        return
+      }
+
+      const measureEl = getMeasureEl()
+      const computedStyle = window.getComputedStyle($content)
+
+      // 只在样式发生变化时更新
+      if (this.text !== this.lastMeasuredText) {
+        const stylesToCopy = ['fontSize', 'fontFamily', 'fontWeight', 'letterSpacing']
+        stylesToCopy.forEach(style => {
+          measureEl.style[style] = computedStyle[style]
+        })
+      }
+
+      measureEl.textContent = this.text
+
+      const actualWidth = measureEl.getBoundingClientRect().width
+      const containerWidth = $content.getBoundingClientRect().width
+
+      // 更新缓存
+      this.lastMeasuredText = this.text
+      this.lastMeasuredResult = actualWidth > containerWidth
+      this.oversize = this.lastMeasuredResult
     },
     // 元素宽高
     handleResize: _throttle(function () {
