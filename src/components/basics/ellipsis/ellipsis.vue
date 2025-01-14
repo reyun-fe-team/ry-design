@@ -114,9 +114,9 @@ export default {
       },
       default: 'bottom'
     },
+    // eslint-disable-next-line vue/require-default-prop
     delay: {
-      type: Number,
-      default: 0
+      type: Number
     }
   },
   data() {
@@ -145,14 +145,19 @@ export default {
         return null
       }
 
+      const minDelay = 250
+      delay = !delay ? minDelay : delay < minDelay ? minDelay : delay
+
+      const compUpdatedVisible = this.enableCss && this.enterTooltipInited
+
       const options = {
+        theme,
+        maxWidth,
+        placement,
+        transfer,
+        delay,
         content: text,
-        theme: theme,
-        maxWidth: maxWidth,
-        placement: placement,
-        transfer: transfer,
-        delay: delay,
-        compUpdatedVisible: this.enableCss && this.enterTooltipInited
+        compUpdatedVisible
       }
 
       return oversize ? options : null
@@ -288,7 +293,7 @@ export default {
       this.$refs.text.appendChild(ellipsisIcon)
     },
     // 处理tooltip
-    handleTooltip() {
+    async handleTooltip() {
       const { disabled, enableCss, tooltip } = this
       // 禁用 || 不开启css || 不开启tooltip
       if (disabled || !enableCss || !tooltip) {
@@ -303,8 +308,13 @@ export default {
 
       const measureEl = getMeasureEl($content, this.text)
       const actualWidth = measureEl.getBoundingClientRect().width
+      // 计算容器宽度.适配多行
       const containerWidth = $content.getBoundingClientRect().width
-      const nowOversize = actualWidth > containerWidth
+      const textWidth = containerWidth * (this.lines || 1)
+      const nowOversize = actualWidth > textWidth
+
+      // 等待dom完成更新
+      await this.waitNextTick()
 
       // 第一次计算 && 之前没有溢出 && 现在溢出 => 需要开启组件更新自动打开提示
       if (!this.enterTooltipInited && !this.oversize && nowOversize) {
