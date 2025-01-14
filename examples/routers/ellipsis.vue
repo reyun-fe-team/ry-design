@@ -1,32 +1,34 @@
 <template>
   <Tabs v-model="activeName">
     <TabPane
-      label="示例1-按照字符数省略 40字符"
+      label="示例1-js方式 按照字符数省略 40字符"
       name="1">
       <div
         v-if="activeName === '1'"
         class="content">
         <rd-ellipsis
+          :enable-css="false"
           :text="text"
           :length="40"
           theme="light"
-          tooltip />
+          tooltip></rd-ellipsis>
       </div>
     </TabPane>
     <TabPane
-      label="示例2-按照高度省略 100px 高"
+      label="示例2-js方式 按照高度省略 100px 高"
       name="2">
       <div
         v-if="activeName === '2'"
         class="content">
         <rd-ellipsis
+          :enable-css="false"
           :text="text"
           :height="100"
-          tooltip />
+          tooltip></rd-ellipsis>
       </div>
     </TabPane>
     <TabPane
-      label="示例3-按照行数省略 2行"
+      label="示例3-css方式 按照行数省略 2行"
       name="3">
       <div
         v-if="activeName === '3'"
@@ -35,11 +37,11 @@
           :text="text"
           :lines="2"
           enable-css
-          tooltip />
+          tooltip></rd-ellipsis>
       </div>
     </TabPane>
     <TabPane
-      label="示例4-slot 前缀 自定义省略 后缀"
+      label="示例4-slot js方式 前缀 自定义省略 后缀"
       name="4">
       <div
         v-if="activeName === '4'"
@@ -47,6 +49,7 @@
         <rd-ellipsis
           :text="text"
           :length="40"
+          :enable-css="false"
           tooltip>
           <span slot="prefix">
             前缀-
@@ -64,14 +67,13 @@
       </div>
     </TabPane>
     <TabPane
-      label="示例5-表格中使用"
+      label="示例5-css方式 表格 分页 中使用"
       name="5">
       <div
         v-if="activeName === '5'"
-        class="content">
+        style="width: 300px">
         <Table
-          style="width: 300px"
-          :max-height="350"
+          :max-height="500"
           :columns="column"
           :data="currentTable.data"
           border>
@@ -82,12 +84,10 @@
               :text="row.actionTrackUrl"
               :lines="2"
               enable-css
-              tooltip
-              transfer></rd-ellipsis>
+              tooltip></rd-ellipsis>
           </template>
         </Table>
         <rd-page
-          style="width: 300px"
           type="m-middle"
           :current="pager.current"
           :size="pager.pageSize"
@@ -96,7 +96,7 @@
       </div>
     </TabPane>
     <TabPane
-      label="示例6-表格中使用-css方式"
+      label="示例6-js方式 表格中使用 无分页"
       name="6">
       <Table
         v-if="activeName === '6'"
@@ -110,41 +110,12 @@
             <rd-ellipsis
               :text="row.actionTrackUrl"
               :lines="2"
-              :enable-css="true"
-              tooltip
-              transfer></rd-ellipsis>
+              :enable-css="false"
+              tooltip></rd-ellipsis>
             <Icon type="md-create" />
           </div>
         </template>
       </Table>
-    </TabPane>
-    <TabPane
-      label="示例7-宽高变了，自动计算"
-      name="7">
-      <div
-        v-if="activeName === '7'"
-        class="content">
-        <Button @click="setHeightPx">改变高度</Button>
-        <div style="margin: 10px 0">
-          <rd-ellipsis
-            style="width: 200px; line-height: 25px; background-color: #f00"
-            auto-resize
-            :style="{ height: height + 'px' }"
-            :text="text"
-            tooltip />
-        </div>
-        <div>
-          <Button @click="setWidthPx">改变宽度</Button>
-          <div style="margin: 10px 0">
-            <rd-ellipsis
-              auto-resize
-              style="height: 25px; line-height: 25px; background-color: #f00"
-              :style="{ width: width + 'px' }"
-              :text="text"
-              tooltip />
-          </div>
-        </div>
-      </div>
     </TabPane>
   </Tabs>
 </template>

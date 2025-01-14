@@ -29,47 +29,39 @@ const prefixCls = prefix + 'ellipsis'
 export default {
   name: prefixCls,
   props: {
+    // ---------------css方式计算配置-----------------
     // css方式，开启后仅支持lines属性，仅支持webkit内核浏览器
     enableCss: {
       type: Boolean,
-      default: false
+      default: true
     },
+    // 文本
     text: {
       type: String,
       default: ''
-    },
-    // 限制高度
-    // eslint-disable-next-line vue/require-default-prop
-    height: {
-      type: Number
     },
     // 限制行数，将换算为 height。如果设置了 height，则直接使用 height 计算
     lines: {
       type: Number,
       default: 1
     },
+    // ---------------css方式计算配置-----------------
+
+    // ---------------js方式计算配置-----------------
+    // 限制高度
+    // eslint-disable-next-line vue/require-default-prop
+    height: [Number],
     // 按照指定长度截取
     // eslint-disable-next-line vue/require-default-prop
-    length: {
-      type: Number
-    },
+    length: [Number],
     // 是否将全角字符的长度视为2来计算字符串长度，适用于 length
     fullWidthRecognition: {
       type: Boolean,
       default: false
     },
-    // 是否自动根据外层宽度动态改变
-    // 宽度变了，自动计算
-    // @TODO: 需要优化,不要使用
-    autoResize: {
-      type: Boolean,
-      default: false
-    },
-    // 自动计算时，省略符号内容占据的文字个数
-    autoResizeMoreTextCount: {
-      type: Number,
-      default: 1
-    },
+    // ---------------js方式计算配置-----------------
+
+    // ---------------tooltip配置-----------------
     // 是否禁用
     disabled: {
       type: Boolean,
@@ -80,22 +72,15 @@ export default {
       type: Boolean,
       default: false
     },
-    // 以下是 tooltip 部分选项
-    transfer: {
-      type: Boolean,
-      default: true
-    },
-    theme: {
-      validator(value) {
-        return oneOf(value, ['dark', 'light'])
-      },
-      default: 'light'
-    },
+    // tooltip最大宽度
     maxWidth: {
       type: [String, Number],
       default: 250
     },
+    // tooltip位置
     placement: {
+      type: String,
+      default: 'bottom',
       validator(value) {
         return oneOf(value, [
           'top',
@@ -111,13 +96,22 @@ export default {
           'right-start',
           'right-end'
         ])
-      },
-      default: 'bottom'
+      }
     },
+    // tooltip延迟时间
     // eslint-disable-next-line vue/require-default-prop
-    delay: {
-      type: Number
+    delay: [Number],
+    // ---------------tooltip配置-----------------
+
+    // ---------------autoResize配置-----------------
+    // @todo 暂不支持
+    // 是否自动根据外层宽度动态改变
+    // 宽度变了，自动计算
+    autoResize: {
+      type: Boolean,
+      default: false
     }
+    // ---------------autoResize配置-----------------
   },
   data() {
     return {
@@ -138,7 +132,7 @@ export default {
     },
     // 气泡提示的配置
     tooltipOptions() {
-      let { tooltip, disabled, text, theme, maxWidth, placement, transfer, delay, oversize } = this
+      let { tooltip, disabled, text, maxWidth, placement, delay, oversize } = this
 
       // 禁用 || 不开启 tooltip
       if (disabled || !tooltip) {
@@ -151,12 +145,11 @@ export default {
       const compUpdatedVisible = this.enableCss && this.enterTooltipInited
 
       const options = {
-        theme,
+        content: text,
         maxWidth,
         placement,
-        transfer,
         delay,
-        content: text,
+
         compUpdatedVisible
       }
 
