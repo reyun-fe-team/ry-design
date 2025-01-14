@@ -4,26 +4,43 @@ import { getKey } from './assist'
 const prefixCls = prefix + 'ellipsis'
 let measureEl = null
 
-export const getMeasureEl = () => {
+export const getMeasureByContentStyle = (measureEl, $content, text) => {
+  const computedStyle = window.getComputedStyle($content)
+  const stylesToCopy = ['fontSize', 'fontFamily', 'fontWeight', 'letterSpacing']
+  stylesToCopy.forEach(style => {
+    measureEl.style[style] = computedStyle[style]
+  })
+
+  measureEl.textContent = text
+
+  return measureEl
+}
+
+export const getMeasureEl = ($content, text) => {
   if (measureEl) {
-    return measureEl
+    return getMeasureByContentStyle(measureEl, $content, text)
   }
 
   // 查找页面上是否有对应的measureEl
   measureEl = document.getElementById(`${prefixCls}-measure-el}`)
   if (measureEl) {
-    return measureEl
+    return getMeasureByContentStyle(measureEl, $content, text)
   }
 
   // 创建measureEl
   measureEl = document.createElement('span')
   measureEl.id = `${prefixCls}-measure-el`
   measureEl.className = `${prefixCls}-measure-el-${getKey()}`
-  measureEl.style.visibility = 'hidden'
-  measureEl.style.position = 'absolute'
-  measureEl.style.top = '-9999px'
-  measureEl.style.left = '-9999px'
-  measureEl.style.whiteSpace = 'nowrap'
+  const styles = {
+    visibility: 'hidden',
+    position: 'absolute',
+    top: '-9999px',
+    left: '-9999px',
+    whiteSpace: 'nowrap'
+  }
+  for (const styleName in styles) {
+    measureEl.style[styleName] = styles[styleName]
+  }
   document.body.appendChild(measureEl)
 
   // 添加页面卸载时的清理
@@ -31,7 +48,7 @@ export const getMeasureEl = () => {
   // 添加hash变化时的清理
   window.addEventListener('popstate', removeMeasureEl)
 
-  return measureEl
+  return getMeasureByContentStyle(measureEl, $content, text)
 }
 
 export const removeMeasureEl = () => {
