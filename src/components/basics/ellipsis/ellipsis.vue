@@ -10,7 +10,7 @@
       :key="renderKey"
       v-tooltip="tooltipOptions"
       :class="[prefixCls + '-text']"
-      @mouseenter="handleTooltipIn">
+      @mouseenter="handleTooltip">
       {{ text }}
     </div>
     <!-- 后缀 -->
@@ -127,9 +127,8 @@ export default {
       computedReady: false,
       // 计算后的 text 内容
       computedText: this.text,
-      // 缓存上次测量的文本内容和结果
-      lastMeasuredText: '',
-      lastMeasuredResult: false
+      // 开启css && 悬浮事件 第一次计算文案溢出了
+      enterTooltipInited: false
     }
   },
   computed: {
@@ -153,7 +152,7 @@ export default {
         placement: placement,
         transfer: transfer,
         delay: delay,
-        compUpdatedVisible: this.oversize && this.enableCss
+        compUpdatedVisible: this.enableCss && this.enterTooltipInited
       }
 
       return oversize ? options : null
@@ -288,49 +287,36 @@ export default {
       const ellipsisIcon = this.createEllipsisIcon()
       this.$refs.text.appendChild(ellipsisIcon)
     },
-    // 包装函数，进行初步判断
-    handleTooltipIn() {
+    // 处理tooltip
+    handleTooltip() {
       const { disabled, enableCss, tooltip } = this
       // 禁用 || 不开启css || 不开启tooltip
       if (disabled || !enableCss || !tooltip) {
         return
       }
-      this.handleTooltipInImpl()
-    },
-    // 实际的处理逻辑
-    handleTooltipInImpl() {
+
       const $content = this.$refs.text
       // 没有文本
       if (!this.text || !$content.childNodes[0]) {
         return
       }
 
-      // 如果文本内容没变且已经计算过，直接使用缓存的结果
-      if (this.text === this.lastMeasuredText) {
-        this.oversize = this.lastMeasuredResult
-        return
-      }
-
-      const measureEl = getMeasureEl()
-      const computedStyle = window.getComputedStyle($content)
-
-      // 只在样式发生变化时更新
-      if (this.text !== this.lastMeasuredText) {
-        const stylesToCopy = ['fontSize', 'fontFamily', 'fontWeight', 'letterSpacing']
-        stylesToCopy.forEach(style => {
-          measureEl.style[style] = computedStyle[style]
-        })
-      }
-
-      measureEl.textContent = this.text
-
+      const measureEl = getMeasureEl($content, this.text)
       const actualWidth = measureEl.getBoundingClientRect().width
       const containerWidth = $content.getBoundingClientRect().width
+      const nowOversize = actualWidth > containerWidth
 
-      // 更新缓存
-      this.lastMeasuredText = this.text
-      this.lastMeasuredResult = actualWidth > containerWidth
-      this.oversize = this.lastMeasuredResult
+      // 第一次计算 && 之前没有溢出 && 现在溢出 => 需要开启组件更新自动打开提示
+      if (!this.enterTooltipInited && !this.oversize && nowOversize) {
+        this.enterTooltipInited = true
+      }
+
+      // 之前溢出 && 现在也溢出 => 需要关闭组件更新自动打开提示
+      if (this.oversize && nowOversize) {
+        this.enterTooltipInited = false
+      }
+
+      this.oversize = nowOversize
     },
     // 元素宽高
     handleResize: _throttle(function () {
