@@ -10,7 +10,8 @@
       :key="renderKey"
       v-tooltip="tooltipOptions"
       :class="[prefixCls + '-text']"
-      @mouseenter="handleTooltip">
+      @mouseenter.self="handleTooltipEnter"
+      @mouseleave.self="handleTooltipLeave">
       {{ text }}
     </div>
     <!-- 后缀 -->
@@ -21,6 +22,7 @@
 import Vue from 'vue'
 import { oneOf, getStyle, getBase64Code } from '@src/util/assist.js'
 import _throttle from 'lodash/throttle'
+import _debounce from 'lodash/debounce'
 import { getMeasureEl, getStrFullLength, cutStrByFullLength } from '@src/util/ellipsis-helper.js'
 import { prefix } from '@src/config.js'
 
@@ -75,7 +77,7 @@ export default {
     // tooltip最大宽度
     maxWidth: {
       type: [String, Number],
-      default: 250
+      default: 350
     },
     // tooltip位置
     placement: {
@@ -142,15 +144,12 @@ export default {
       const minDelay = 250
       delay = !delay ? minDelay : delay < minDelay ? minDelay : delay
 
-      const compUpdatedVisible = this.enableCss && this.enterTooltipInited
-
       const options = {
         content: text,
         maxWidth,
         placement,
         delay,
-
-        compUpdatedVisible
+        compUpdatedVisible: this.enableCss && this.enterTooltipInited
       }
 
       return oversize ? options : null
@@ -285,8 +284,8 @@ export default {
       const ellipsisIcon = this.createEllipsisIcon()
       this.$refs.text.appendChild(ellipsisIcon)
     },
-    // 处理tooltip
-    async handleTooltip() {
+    // 进入元素处理tooltip
+    handleTooltipEnter: _debounce(async function () {
       const { disabled, enableCss, tooltip } = this
       // 禁用 || 不开启css || 不开启tooltip
       if (disabled || !enableCss || !tooltip) {
@@ -320,11 +319,15 @@ export default {
       }
 
       this.oversize = nowOversize
-    },
+    }, 250),
+    // 离开元素处理tooltip
+    handleTooltipLeave: _debounce(function () {
+      this.enterTooltipInited = false
+    }, 250),
     // 元素宽高
     handleResize: _throttle(function () {
       this.computeText()
-    }, 150)
+    }, 250)
   }
 }
 </script>
