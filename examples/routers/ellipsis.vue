@@ -168,8 +168,8 @@ export default {
         },
         {
           actionTrackUrl:
-            'https://cda.lilisi.com/tracking?dap_code=7c7bfd3f065e31c055a7bd6fa53b54da&trackid=__TRACKID__&creative_id=__CREATIVEID__&os=__OS__&mac=__MAC1__&idfa_md5=__IDFAMD5__&ip=__IP__&ua=__UA__&ts=__TS__&sub1=__CREATIVEID__&caid=__CAID__',
-          advertiserId: '不限',
+            'https://<a href="https://www.baidu.com">baidu.com</a>cda.lilisi.com/tracking?dap_code=7c7bfd3f065e31c055a7bd6fa53b54da&trackid=__TRACKID__&creative_id=__CREATIVEID__&os=__OS__&mac=__MAC1__&idfa_md5=__IDFAMD5__&ip=__IP__&ua=__UA__&ts=__TS__&sub1=__CREATIVEID__&caid=__CAID__',
+          advertiserId: '123456',
           appPackage: '',
           checkStatus: true,
           commentClickTrackUrl: '',
