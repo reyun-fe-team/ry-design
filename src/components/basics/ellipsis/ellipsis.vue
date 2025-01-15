@@ -1,7 +1,5 @@
 <template>
-  <div
-    v-line-clamp="enableCss ? lines : null"
-    :class="[prefixCls, { [prefixCls + '-hidden']: !computedReady && !enableCss }]">
+  <div :class="[prefixCls, { [prefixCls + '-hidden']: !computedReady && !enableCss }]">
     <!-- 前缀 -->
     <slot name="prefix"></slot>
     <!-- 文字 -->
@@ -9,10 +7,12 @@
       ref="text"
       :key="renderKey"
       v-tooltip="tooltipOptions"
+      v-line-clamp="enableCss ? lines : null"
       :class="[prefixCls + '-text']"
-      @mouseenter.self="handleTooltipEnter"
-      @mouseleave.self="handleTooltipLeave">
-      {{ text }}
+      @mouseenter.self="handleTooltipEnter">
+      <span
+        :class="[prefixCls + '-text-span']"
+        v-html="text"></span>
     </div>
     <!-- 后缀 -->
     <slot name="suffix"></slot>
@@ -122,9 +122,7 @@ export default {
       // 先隐形计算，计算好后，再根据配置显示
       computedReady: false,
       // 计算后的 text 内容
-      computedText: this.text,
-      // 开启css && 悬浮事件 第一次计算文案溢出了
-      enterTooltipInited: false
+      computedText: this.text
     }
   },
   computed: {
@@ -137,22 +135,18 @@ export default {
       let { tooltip, disabled, text, maxWidth, placement, delay, oversize } = this
 
       // 禁用 || 不开启 tooltip
-      if (disabled || !tooltip) {
-        return null
-      }
+      const isDisabled = disabled || !tooltip || !oversize
 
       const minDelay = 250
       delay = !delay ? minDelay : delay < minDelay ? minDelay : delay
 
-      const options = {
-        content: text,
+      return {
+        disabled: isDisabled,
         maxWidth,
         placement,
         delay,
-        compUpdatedVisible: this.enableCss && this.enterTooltipInited
+        contentRender: (...args) => this.renderTooltipContent(...args, text)
       }
-
-      return oversize ? options : null
     },
     // 初始化选项，文字长度计算的追踪属性
     initializedOptions() {
@@ -173,6 +167,11 @@ export default {
     this.init()
   },
   methods: {
+    // 渲染tooltip内容
+    // eslint-disable-next-line
+    renderTooltipContent(h, options, text) {
+      return h('span', { domProps: { innerHTML: text } })
+    },
     // 等待dom完成更新
     waitNextTick() {
       // eslint-disable-next-line no-async-promise-executor
@@ -260,32 +259,41 @@ export default {
     // 创建省略号
     createEllipsisIcon() {
       let dom = null
-      if (this.oversize) {
-        const instance = new Vue({
-          el: document.createElement('div'),
-          render: h => {
-            const child = this.$slots.more || '...'
-            return h('span', { class: [prefixCls + '-more'] }, [child])
-          }
-        })
-        dom = instance.$el
+      if (!this.oversize) {
+        return dom
       }
 
-      return dom
+      const instance = new Vue({
+        el: document.createElement('div'),
+        render: h => {
+          const child = this.$slots.more || '...'
+          return h('span', { class: [prefixCls + '-more'] }, [child])
+        }
+      })
+
+      return instance.$el
+    },
+    // 创建文本元素
+    createTextElement(text) {
+      const textNode = document.createElement('span')
+      textNode.classList.add(prefixCls + '-text-span')
+      textNode.innerHTML = text
+      return textNode
     },
     // 渲染文本元素的内容
     renderTextContent(text) {
       // 清空文本
       this.$refs.text.innerHTML = ''
-      // 文本
-      const textNode = document.createTextNode(text)
-      this.$refs.text.appendChild(textNode)
-      // ..符号
+
+      const textNode = this.createTextElement(text)
       const ellipsisIcon = this.createEllipsisIcon()
-      this.$refs.text.appendChild(ellipsisIcon)
+
+      let appendNodes = [textNode, ellipsisIcon]
+      appendNodes = appendNodes.filter(node => node instanceof Node)
+      appendNodes.forEach(node => this.$refs.text.appendChild(node))
     },
     // 进入元素处理tooltip
-    handleTooltipEnter: _debounce(async function () {
+    handleTooltipEnter: _debounce(function () {
       const { disabled, enableCss, tooltip } = this
       // 禁用 || 不开启css || 不开启tooltip
       if (disabled || !enableCss || !tooltip) {
@@ -303,26 +311,8 @@ export default {
       // 计算容器宽度.适配多行
       const containerWidth = $content.getBoundingClientRect().width
       const textWidth = containerWidth * (this.lines || 1)
-      const nowOversize = actualWidth > textWidth
 
-      // 等待dom完成更新
-      await this.waitNextTick()
-
-      // 第一次计算 && 之前没有溢出 && 现在溢出 => 需要开启组件更新自动打开提示
-      if (!this.enterTooltipInited && !this.oversize && nowOversize) {
-        this.enterTooltipInited = true
-      }
-
-      // 之前溢出 && 现在也溢出 => 需要关闭组件更新自动打开提示
-      if (this.oversize && nowOversize) {
-        this.enterTooltipInited = false
-      }
-
-      this.oversize = nowOversize
-    }, 250),
-    // 离开元素处理tooltip
-    handleTooltipLeave: _debounce(function () {
-      this.enterTooltipInited = false
+      this.oversize = actualWidth > textWidth
     }, 250),
     // 元素宽高
     handleResize: _throttle(function () {

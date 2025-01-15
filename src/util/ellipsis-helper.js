@@ -11,7 +11,7 @@ export const getMeasureByContentStyle = (measureEl, $content, text) => {
     measureEl.style[style] = computedStyle[style]
   })
 
-  measureEl.textContent = text
+  measureEl.innerHTML = text
 
   return measureEl
 }
