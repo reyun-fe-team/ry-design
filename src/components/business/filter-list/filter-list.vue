@@ -1,5 +1,7 @@
 <template>
-  <div :class="classes">
+  <div
+    :class="classes"
+    :style="{ width: inputStyles.width }">
     <filter-list-panel
       ref="list-panel"
       :trigger="trigger"

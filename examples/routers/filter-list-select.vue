@@ -9,7 +9,8 @@
           placement="bottom-end"
           :data="data"
           :height="200"
-          width="200"
+          :width="200"
+          :input-width="200"
           filterable
           transfer
           show-select-option
@@ -27,11 +28,8 @@
           @on-action-ok="handleActionOk"
           @on-change="handleChange"
           @on-item-delete="handleItemDelete">
-          <!-- <div
-            slot="footer"
-            >
-            自定义footer
-          </div> -->
+          <!-- <div slot="footer">自定义footer</div> -->
+          <!-- <div slot="input-label">自定义input-label</div> -->
         </rd-filter-list-select>
       </rd-prefix-container>
       <div
