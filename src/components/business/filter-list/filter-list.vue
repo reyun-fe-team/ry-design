@@ -213,8 +213,8 @@ export default {
       if (this.width) {
         const width = parseInt(this.width)
         style.width = `${width}px`
-      } else if (this.inputWidth) {
-        const width = parseInt(this.inputWidth)
+      } else if (this.computedInputWidth) {
+        const width = parseInt(this.computedInputWidth)
         style.minWidth = `${width}px`
       }
       return style
@@ -234,10 +234,15 @@ export default {
         })
         .filter(val => val)
     },
+    // 没有传入inputWidth 默认200
+    computedInputWidth() {
+      return [undefined, null, ''].includes(this.inputWidth) ? 200 : this.inputWidth
+    },
     inputStyles() {
       let style = {}
-      if (this.inputWidth) {
-        const width = parseInt(this.inputWidth)
+
+      if (this.computedInputWidth) {
+        const width = parseInt(this.computedInputWidth)
         style.width = `${width}px`
       }
       let height = 32
