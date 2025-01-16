@@ -17,7 +17,7 @@
         class-name="center-modal mini-scroll-y"
         @on-cancel="handleCancel1">
         <div slot="content">
-          <div style="height: 1000px; background: #2b85e4; width: 300px"></div>
+          <div style="width: 300px; height: 1000px; background: #2b85e4"></div>
           <Form
             :label-width="72"
             class="form-content"
@@ -161,7 +161,7 @@
         @on-cancel="onClickDeepCancel"
         @on-ok="onClickDeepCancel">
         <div slot="content">
-          <div style="height: 1000px; background: #2b85e4; width: 100%">我是容器内容</div>
+          <div style="width: 100%; height: 1000px; background: #2b85e4">我是容器内容</div>
         </div>
       </rd-drawer>
     </div>
@@ -294,10 +294,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+
   .ivu-modal {
     top: 0;
   }
 }
+
 .mini-scroll-y {
   & ::-webkit-scrollbar {
     width: 4px; //竖轴宽度
@@ -306,17 +308,15 @@ export default {
 
   /* 滚动槽 */
   & ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 8%);
     border-radius: 0;
-
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 25%);
   }
 
   & ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 8%);
     border-radius: 10px;
-
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 25%);
   }
 }
 </style>

@@ -5,6 +5,9 @@
   ],
   "plugins": [
     [
+      "transform-class-properties"
+    ],
+    [
       "transform-runtime"
     ],
     [
