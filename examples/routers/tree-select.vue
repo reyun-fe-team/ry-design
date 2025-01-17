@@ -6,6 +6,7 @@
     <rd-tree-select
       v-if="true"
       v-model="valueRadio1"
+      show-select-option
       label="单选: "
       check-strictly
       clearable

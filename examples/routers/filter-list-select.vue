@@ -2,14 +2,15 @@
   <div>
     <h2>filter-list-select事例 {{ selectMultiple }}</h2>
     <section>
-      <rd-prefix-container v-if="false">
+      <rd-prefix-container>
         <span slot="prepend">投放账户</span>
         <rd-filter-list-select
           v-model="selectMultiple"
           placement="bottom-end"
           :data="data"
           :height="200"
-          width="200"
+          :width="200"
+          :input-width="200"
           filterable
           transfer
           show-select-option
@@ -27,16 +28,13 @@
           @on-action-ok="handleActionOk"
           @on-change="handleChange"
           @on-item-delete="handleItemDelete">
-          <!-- <div
-            slot="footer"
-            >
-            自定义footer
-          </div> -->
+          <!-- <div slot="footer">自定义footer</div> -->
+          <!-- <div slot="input-label">自定义input-label</div> -->
         </rd-filter-list-select>
       </rd-prefix-container>
       <div
         v-if="true"
-        style="display: inline-block">
+        style="display: inline-block; width: 450px">
         多选-宽度自适应 {{ selectMultiple }} 事例：{{ selectMultiple }}
         <rd-filter-list-select
           v-model="selectMultiple"

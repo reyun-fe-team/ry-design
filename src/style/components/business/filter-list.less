@@ -1,17 +1,25 @@
-@filter-list: ~"@{css-prefix}filter-list";
-@filter-list-input: ~"@{css-prefix}filter-list-input";
-@filter-list-panel: ~"@{css-prefix}filter-list-panel";
-@filter-list-option: ~"@{css-prefix}filter-list-option";
-@filter-list-describe: ~"@{css-prefix}filter-list-describe";
-@select-item-prefix-cls: ~"@{css-prefix}select-item";
+@filter-list: ~'@{css-prefix}filter-list';
+@filter-list-input: ~'@{css-prefix}filter-list-input';
+@filter-list-panel: ~'@{css-prefix}filter-list-panel';
+@filter-list-option: ~'@{css-prefix}filter-list-option';
+@filter-list-describe: ~'@{css-prefix}filter-list-describe';
+@select-item-prefix-cls: ~'@{css-prefix}select-item';
 
 .@{filter-list} {
+  .@{filter-list-panel} {
+    min-width: 120px;
+
+    // 内容适应外部宽度
+    .ivu-dropdown {
+      display: block;
+    }
+  }
+
   &-body {
     display: flex;
 
     &-panel {
       border-right: 1px solid #eee;
-     
 
       &-search {
         border-bottom: 1px solid #eee;
@@ -20,7 +28,7 @@
         height: 40px;
 
         .ivu-input-wrapper {
-          flex: 1
+          flex: 1;
         }
 
         .ivu-input {
@@ -120,8 +128,9 @@
   cursor: not-allowed;
   background-color: #f3f3f3;
   opacity: 1;
-  .@{filter-list-input}-operate-arrow,.@{filter-list-input}-body-placeholder {
-    color: #ccc
+  .@{filter-list-input}-operate-arrow,
+  .@{filter-list-input}-body-placeholder {
+    color: #ccc;
   }
   .@{css-prefix}filter-list-describe-body-description {
     color: #ccc;
@@ -130,7 +139,7 @@
 
 .@{filter-list-panel} {
   .ivu-select-dropdown {
-    padding: 0
+    padding: 0;
   }
 }
 .@{filter-list-option} {
