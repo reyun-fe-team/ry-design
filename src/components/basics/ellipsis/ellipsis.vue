@@ -1,105 +1,69 @@
 <template>
-  <div
-    v-line-clamp="enableCss ? lines : null"
-    v-tooltip="tooltipOptions"
-    :class="[prefixCls, { [prefixCls + '-hidden']: !computedReady && !enableCss }]">
+  <div :class="[prefixCls, { [prefixCls + '-hidden']: !computedReady && !enableCss }]">
     <!-- 前缀 -->
     <slot name="prefix"></slot>
     <!-- 文字 -->
-    <span
-      :key="textDomRenderKey"
+    <div
       ref="text"
-      v-resize="autoResize ? handleResize : null"
-      :class="[prefixCls + '-text']">
-      {{ text }}
-    </span>
-    <!-- ...符号 -->
-    <span
-      v-show="oversize"
-      ref="more"
-      :class="[prefixCls + '-more']">
-      <slot name="more">...</slot>
-    </span>
+      :key="renderKey"
+      v-tooltip="tooltipOptions"
+      v-line-clamp="enableCss ? lines : null"
+      :class="[prefixCls + '-text']"
+      @mouseenter.self="handleTooltipEnter">
+      <span
+        :class="[prefixCls + '-text-span']"
+        v-html="text"></span>
+    </div>
     <!-- 后缀 -->
     <slot name="suffix"></slot>
   </div>
 </template>
 <script>
+import Vue from 'vue'
 import { oneOf, getStyle, getBase64Code } from '@src/util/assist.js'
 import _throttle from 'lodash/throttle'
+import _debounce from 'lodash/debounce'
+import { getMeasureEl, getStrFullLength, cutStrByFullLength } from '@src/util/ellipsis-helper.js'
 import { prefix } from '@src/config.js'
 
 const prefixCls = prefix + 'ellipsis'
 
-const getStrFullLength = (str = '') =>
-  str.split('').reduce((pre, cur) => {
-    const charCode = cur.charCodeAt(0)
-    if (charCode >= 0 && charCode <= 128) {
-      return pre + 1
-    }
-    return pre + 2
-  }, 0)
-
-const cutStrByFullLength = (str = '', maxLength) => {
-  let showLength = 0
-  return str.split('').reduce((pre, cur) => {
-    const charCode = cur.charCodeAt(0)
-    if (charCode >= 0 && charCode <= 128) {
-      showLength += 1
-    } else {
-      showLength += 2
-    }
-    if (showLength <= maxLength) {
-      return pre + cur
-    }
-    return pre
-  }, '')
-}
-
 export default {
   name: prefixCls,
   props: {
+    // ---------------css方式计算配置-----------------
     // css方式，开启后仅支持lines属性，仅支持webkit内核浏览器
     enableCss: {
       type: Boolean,
-      default: false
+      default: true
     },
+    // 文本
     text: {
       type: String,
       default: ''
     },
+    // 限制行数，将换算为 height。如果设置了 height，则直接使用 height 计算
+    lines: {
+      type: Number,
+      default: 1
+    },
+    // ---------------css方式计算配置-----------------
+
+    // ---------------js方式计算配置-----------------
     // 限制高度
     // eslint-disable-next-line vue/require-default-prop
-    height: {
-      type: Number
-    },
-    // 限制行数，将换算为 height。如果设置了 height，则直接使用 height 计算
-    // eslint-disable-next-line vue/require-default-prop
-    lines: {
-      type: Number
-    },
+    height: [Number],
     // 按照指定长度截取
     // eslint-disable-next-line vue/require-default-prop
-    length: {
-      type: Number
-    },
+    length: [Number],
     // 是否将全角字符的长度视为2来计算字符串长度，适用于 length
     fullWidthRecognition: {
       type: Boolean,
       default: false
     },
-    // 是否自动根据外层宽度动态改变
-    // 宽度变了，自动计算
-    // @TODO: 需要优化,不要使用
-    autoResize: {
-      type: Boolean,
-      default: false
-    },
-    // 自动计算时，省略符号内容占据的文字个数
-    autoResizeMoreTextCount: {
-      type: Number,
-      default: 1
-    },
+    // ---------------js方式计算配置-----------------
+
+    // ---------------tooltip配置-----------------
     // 是否禁用
     disabled: {
       type: Boolean,
@@ -110,22 +74,15 @@ export default {
       type: Boolean,
       default: false
     },
-    // 以下是 tooltip 部分选项
-    transfer: {
-      type: Boolean,
-      default: true
-    },
-    theme: {
-      validator(value) {
-        return oneOf(value, ['dark', 'light'])
-      },
-      default: 'light'
-    },
+    // tooltip最大宽度
     maxWidth: {
       type: [String, Number],
-      default: 250
+      default: 350
     },
+    // tooltip位置
     placement: {
+      type: String,
+      default: 'bottom',
       validator(value) {
         return oneOf(value, [
           'top',
@@ -141,13 +98,22 @@ export default {
           'right-start',
           'right-end'
         ])
-      },
-      default: 'bottom'
+      }
     },
-    delay: {
-      type: Number,
-      default: 0
+    // tooltip延迟时间
+    // eslint-disable-next-line vue/require-default-prop
+    delay: [Number],
+    // ---------------tooltip配置-----------------
+
+    // ---------------autoResize配置-----------------
+    // @todo 暂不支持
+    // 是否自动根据外层宽度动态改变
+    // 宽度变了，自动计算
+    autoResize: {
+      type: Boolean,
+      default: false
     }
+    // ---------------autoResize配置-----------------
   },
   data() {
     return {
@@ -161,29 +127,35 @@ export default {
   },
   computed: {
     // 需要根据传入的文案，计算一个元素的渲染更新的key，dom才能实时渲染，拿到最新的元素高度
-    textDomRenderKey() {
+    renderKey() {
       return getBase64Code(this.text || '')
     },
     // 气泡提示的配置
     tooltipOptions() {
-      let { tooltip, text, theme, maxWidth, placement, transfer, delay, oversize } = this
-      const options = {
-        content: text,
-        theme: theme,
-        maxWidth: maxWidth,
-        placement: placement,
-        transfer: transfer,
-        delay: delay
+      let { tooltip, disabled, text, maxWidth, placement, delay, oversize } = this
+
+      // 禁用 || 不开启 tooltip
+      const isDisabled = disabled || !tooltip || !oversize
+
+      const minDelay = 250
+      delay = !delay ? minDelay : delay < minDelay ? minDelay : delay
+
+      return {
+        disabled: isDisabled,
+        maxWidth,
+        placement,
+        delay,
+        contentRender: (...args) => this.renderTooltipContent(...args, text)
       }
-      return tooltip && oversize ? options : null
     },
     // 初始化选项，文字长度计算的追踪属性
     initializedOptions() {
-      let { disabled, text, height, lines } = this
-      return { disabled, text, height, lines }
+      let { disabled, text, height, lines, enableCss } = this
+      return { disabled, text, height, lines, enableCss }
     }
   },
   watch: {
+    // 初始化选项，文字长度计算的追踪属性
     initializedOptions: {
       deep: true,
       handler() {
@@ -195,6 +167,11 @@ export default {
     this.init()
   },
   methods: {
+    // 渲染tooltip内容
+    // eslint-disable-next-line
+    renderTooltipContent(h, options, text) {
+      return h('span', { domProps: { innerHTML: text } })
+    },
     // 等待dom完成更新
     waitNextTick() {
       // eslint-disable-next-line no-async-promise-executor
@@ -220,9 +197,8 @@ export default {
 
       // 更新元素宽高
       // 动态修改元素的样式。返回最新的尺寸
-      $el.getBoundingClientRect()
+      let wrapperHeight = $el.getBoundingClientRect().height
 
-      let $more = this.$refs.more
       let n = 1000
       let text = this.text
       let height = this.height
@@ -238,7 +214,6 @@ export default {
           const textLength = this.fullWidthRecognition ? getStrFullLength(text) : text.length
           if (textLength > this.length) {
             this.oversize = true
-            $more.style.display = 'inline-block'
             text = this.fullWidthRecognition
               ? cutStrByFullLength(text, this.length)
               : text.slice(0, this.length)
@@ -246,16 +221,18 @@ export default {
         }
         // 按照容器大小
         else {
-          if ($el.offsetHeight > height) {
+          if (wrapperHeight > height) {
             this.oversize = true
-            $more.style.display = 'inline-block'
 
-            while ($el.offsetHeight > height && n > 0) {
-              if ($el.offsetHeight > height * 3) {
-                $text.innerText = text = text.substring(0, Math.floor(text.length / 2))
+            while (wrapperHeight > height && n > 0) {
+              if (wrapperHeight > height * 3) {
+                text = text.substring(0, Math.floor(text.length / 2))
               } else {
-                $text.innerText = text = text.substring(0, text.length - 1)
+                text = text.substring(0, text.length - 1)
               }
+
+              this.renderTextContent(text)
+              wrapperHeight = $el.getBoundingClientRect().height
               n--
             }
           }
@@ -273,16 +250,74 @@ export default {
       let $el = this.$el
 
       if ($text) {
-        $text.innerText = this.computedText
+        this.renderTextContent(this.computedText)
         if (!this.autoResize) {
           $el.offsetHeight > this.height ? this.$emit('on-hide') : this.$emit('on-show')
         }
       }
     },
+    // 创建省略号
+    createEllipsisIcon() {
+      let dom = null
+      if (!this.oversize) {
+        return dom
+      }
+
+      const instance = new Vue({
+        el: document.createElement('div'),
+        render: h => {
+          const child = this.$slots.more || '...'
+          return h('span', { class: [prefixCls + '-more'] }, [child])
+        }
+      })
+
+      return instance.$el
+    },
+    // 创建文本元素
+    createTextElement(text) {
+      const textNode = document.createElement('span')
+      textNode.classList.add(prefixCls + '-text-span')
+      textNode.innerHTML = text
+      return textNode
+    },
+    // 渲染文本元素的内容
+    renderTextContent(text) {
+      // 清空文本
+      this.$refs.text.innerHTML = ''
+
+      const textNode = this.createTextElement(text)
+      const ellipsisIcon = this.createEllipsisIcon()
+
+      let appendNodes = [textNode, ellipsisIcon]
+      appendNodes = appendNodes.filter(node => node instanceof Node)
+      appendNodes.forEach(node => this.$refs.text.appendChild(node))
+    },
+    // 进入元素处理tooltip
+    handleTooltipEnter: _debounce(function () {
+      const { disabled, enableCss, tooltip } = this
+      // 禁用 || 不开启css || 不开启tooltip
+      if (disabled || !enableCss || !tooltip) {
+        return
+      }
+
+      const $content = this.$refs.text
+      // 没有文本
+      if (!this.text || !$content.childNodes[0]) {
+        return
+      }
+
+      const measureEl = getMeasureEl($content, this.text)
+      const actualWidth = measureEl.getBoundingClientRect().width
+      // 计算容器宽度.适配多行
+      const containerWidth = $content.getBoundingClientRect().width
+      const textWidth = containerWidth * (this.lines || 1)
+
+      this.oversize = actualWidth > textWidth
+    }, 250),
     // 元素宽高
     handleResize: _throttle(function () {
       this.computeText()
-    }, 150)
+    }, 250)
   }
 }
 </script>
