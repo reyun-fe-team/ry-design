@@ -11,9 +11,9 @@
         :value="groupCheckObj[source.value].check"
         @click="handleGroupClick(source)"></Checkbox>
       <div
-        :title="groupNameList[source.value]"
+        :title="groupCheckObj[source.value].groupName"
         :class="prefixCls + '-group-name-item-text'">
-        {{ groupNameList[source.value] }}
+        {{ groupCheckObj[source.value].groupName }}
       </div>
     </div>
 
@@ -63,7 +63,6 @@ export default {
       default: () => {}
     },
     index: Number,
-    groupNameList: Object,
     current: {
       type: Array,
       default: () => {
@@ -86,7 +85,7 @@ export default {
   },
   computed: {
     showGroupName() {
-      return this.groupNameList[this.source.value]
+      return this.groupCheckObj[this.source.value]
     },
     showGroupCheckbox() {
       return this.multiple && this.groupCheckbox
@@ -100,7 +99,7 @@ export default {
     checkboxItemStyle() {
       return {
         margin:
-          this.groupNameList && Object.keys(this.groupNameList).length && this.showGroupCheckbox
+          this.groupCheckObj && Object.keys(this.groupCheckObj).length && this.showGroupCheckbox
             ? '0 0 0 24px'
             : '0 0 0 10px'
       }

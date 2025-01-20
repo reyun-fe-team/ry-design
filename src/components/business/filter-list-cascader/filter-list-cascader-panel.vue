@@ -40,7 +40,11 @@ export default {
         return []
       }
     },
-    styles: Object
+    styles: Object,
+    max: {
+      type: Number,
+      default: 0
+    }
   },
   data() {
     return {
@@ -69,6 +73,11 @@ export default {
       }
     },
     current(val) {
+      this.setDisabled()
+      if (val.length > this.max && this.max > 0) {
+        val = val.slice(0, this.max)
+      }
+
       this.$emit('input', val)
     }
   },
@@ -107,6 +116,7 @@ export default {
           value,
           label,
           checked,
+          disabled: false,
           indeterminate,
           children
         }
@@ -172,6 +182,30 @@ export default {
         return
       }
       this.selectedMenus = item.children
+      this.setDisabled()
+    },
+    setDisabled() {
+      if (this.value.length >= this.max && this.max > 0) {
+        this.selectedMenus.forEach(node => {
+          if (!this.value.includes(node.value)) {
+            node.disabled = true
+          }
+        })
+
+        this.menus.forEach(node => {
+          if (!this.value.includes(node.value)) {
+            node.disabled = true
+          }
+        })
+      } else {
+        this.selectedMenus.forEach(node => {
+          node.disabled = false
+        })
+
+        this.menus.forEach(node => {
+          node.disabled = false
+        })
+      }
     }
   }
 }

@@ -293,6 +293,10 @@ const router = new VueRouter({
     {
       path: '/filter-dropdown-input',
       component: resolve => require(['./routers/filter-dropdown-input'], resolve)
+    },
+    {
+      path: '/select-constituency',
+      component: resolve => require(['./routers/select-constituency'], resolve)
     }
   ]
 })

@@ -51,7 +51,6 @@
       data-key="uid"
       :data-sources="filterData"
       :extra-props="{
-        groupNameList,
         current,
         multiple,
         renderItem,
@@ -189,7 +188,7 @@ export default {
     inputPlaceholder: String,
     filterPlaceholder: {
       type: String,
-      default: '英文,分隔多个'
+      default: '逗号分隔'
     },
     disabled: {
       type: Boolean,
@@ -317,9 +316,13 @@ export default {
         size
       ) {
         const findItem = list.find(val => this.current.includes(val.value))
-        list.forEach(val => {
-          val.disabled = val._groupValue !== findItem._groupValue ? true : val.disabled
-        })
+        if (findItem) {
+          list.forEach(val => {
+            val.disabled = val._groupValue !== findItem._groupValue ? true : val.disabled
+          })
+        } else {
+          console.log(new Error(`[rd-filter-Select] 存在异常value请检查 , ${this.current}`))
+        }
       }
       return list
     },
@@ -412,10 +415,14 @@ export default {
           }
           const indeterminate = !check && groups.some(val => this.current.includes(val.value))
           const disabled = groups.length ? groups.every(val => val.disabled) : true
-          params[key] = {
-            check,
-            disabled,
-            indeterminate
+          const groupFirstKey = groups.length ? groups[0].value : key
+          if (groupFirstKey) {
+            params[groupFirstKey] = {
+              check,
+              disabled,
+              indeterminate,
+              groupName: this.groupNameList[key]
+            }
           }
         })
       }
@@ -488,14 +495,16 @@ export default {
       }
       this.movementChange()
     },
-    handleGroupClick({ value }) {
+    handleGroupClick(data) {
       if (!this.multiple) {
         return
       }
-      const groups = this.filterData.filter(val => val._groupValue === value && !val.disabled)
+      const groups = this.filterData.filter(
+        val => val._groupValue === data._groupValue && !val.disabled
+      )
       const values = groups.map(val => val.value)
 
-      const check = !this.groupCheckObj[value].check
+      const check = !this.groupCheckObj[data.value].check
       values.forEach(value => {
         if (
           check &&
@@ -523,14 +532,14 @@ export default {
       this.$emit('on-visible-change', val)
     },
     movementChange() {
-      const value = this.geteEmitValue()
+      const value = this.getEmitValue()
       this.$emit('before-change', value)
       if (this.saveType === 'always-save' || !this.multiple) {
         // console.log('时时触发-emitChange')
         this.emitChange()
       }
     },
-    geteEmitValue() {
+    getEmitValue() {
       let emitValue = this.multiple ? _cloneDeep(this.current) : this.current[0]
       // Form 重置时，如果初始值是 null，也置为 null，而不是 []
       if (
@@ -543,7 +552,7 @@ export default {
     },
     emitChange() {
       // console.log('更新-emitChange')
-      const value = this.geteEmitValue()
+      const value = this.getEmitValue()
       this.$emit('input', value)
       this.dispatch('FormItem', 'on-form-change', value)
       this.$nextTick(() => {

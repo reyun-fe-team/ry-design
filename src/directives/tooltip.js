@@ -128,7 +128,8 @@ export default function (Vue) {
       }
 
       // 自动展开或关闭（组件更新时触发）
-      if (binding.value && 'compUpdatedVisible' in binding.value) {
+      const hasCompUpdatedVisible = binding.value ? 'compUpdatedVisible' in binding.value : false
+      if (hasCompUpdatedVisible) {
         next(() => {
           const isShow = binding.value.compUpdatedVisible === true
           isShow ? showTooltip({ target: el }) : hideTooltip({ target: el })
