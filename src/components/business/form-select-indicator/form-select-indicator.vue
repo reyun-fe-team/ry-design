@@ -22,6 +22,7 @@
             :class="prefixCls + '-form'">
             <rd-filter-list-select
               v-model="currentValue.selectData[index]"
+              :drop-down-same-width-as-panel="dropDownSameWidthAsPanel"
               :max-height="256"
               :input-width="160"
               :filterable="filterable"
@@ -70,6 +71,7 @@
             :disabled="formData.indexIsUnion.disabled"></Checkbox>
           <rd-filter-list-select
             v-model="formData.indexIsUnion.indexIsUnion"
+            :drop-down-same-width-as-panel="dropDownSameWidthAsPanel"
             :input-width="240"
             :width="200"
             :option-width="200"
@@ -92,6 +94,10 @@ import _isEmpty from 'lodash/isEmpty'
 export default {
   name: prefixCls,
   props: {
+    dropDownSameWidthAsPanel: {
+      type: Boolean,
+      default: false
+    },
     value: {
       type: Object,
       default: () => {
