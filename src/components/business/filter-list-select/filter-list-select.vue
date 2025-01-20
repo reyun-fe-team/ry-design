@@ -182,7 +182,7 @@ export default {
     inputPlaceholder: String,
     filterPlaceholder: {
       type: String,
-      default: '英文,分隔多个'
+      default: '逗号分隔'
     },
     disabled: {
       type: Boolean,
