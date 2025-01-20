@@ -9,6 +9,7 @@
       :trigger="trigger"
       :query="query"
       :not-found-text="notFoundText"
+      :drop-down-same-width-as-panel="dropDownSameWidthAsPanel"
       :input-width="inputWidth"
       :input-height="inputHeight"
       :option-width="optionWidth"
@@ -119,6 +120,11 @@ export default {
       validator(value) {
         return oneOf(value, ['always-save', 'leave-save'])
       }
+    },
+    // 是否需要自动计算下拉面板的宽度与input panel 等宽
+    dropDownSameWidthAsPanel: {
+      type: Boolean,
+      default: false
     },
     width: {
       type: [String, Number],

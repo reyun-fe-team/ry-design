@@ -1,7 +1,5 @@
 <template>
-  <div
-    :class="classes"
-    :style="{ width: inputStyles.width }">
+  <div :class="classes">
     <filter-list-panel
       ref="list-panel"
       :trigger="trigger"
@@ -10,6 +8,7 @@
       :placement="placement"
       @on-visible-change="handleVisibleChange">
       <filter-list-input
+        ref="list-input"
         :value="inputData"
         :label="label"
         :styles="inputStyles"
@@ -131,20 +130,38 @@ export default {
     },
 
     // ----尺寸设置----
+    // 是否需要自动计算下拉面板的宽度与input panel 等宽
+    dropDownSameWidthAsPanel: {
+      type: Boolean,
+      default: false
+    },
     // 输入框宽度 有值就是按照值来设置宽度 没有值就是自适应
-    inputWidth: [String, Number],
+    inputWidth: {
+      type: [String, Number],
+      default: 200
+    },
     // 输入框高度
+    // eslint-disable-next-line
     inputHeight: [String, Number],
     // 下拉面板宽度
+    // eslint-disable-next-line
     width: [String, Number],
     // 下拉面板高度
+    // eslint-disable-next-line
     height: [Number, String],
     // 下拉面板最大高度
-    maxHeight: { type: [Number, String], default: 320 },
+    maxHeight: {
+      type: [Number, String],
+      default: 320
+    },
     // 下拉面板最小高度
+    // eslint-disable-next-line
     minHeight: [Number, String],
     // 选项宽度
-    optionWidth: { type: [String, Number], default: 200 },
+    optionWidth: {
+      type: [String, Number],
+      default: 200
+    },
     // ----尺寸设置----
 
     filterable: {
@@ -194,15 +211,6 @@ export default {
     classes() {
       return [`${prefixCls}`]
     },
-    // 是否需要自动计算下拉面板的宽度与input panel 等宽
-    // 1.没有传inputWidth
-    // 2.没有传 width
-    // 就是自适应
-    dropDownSameWidthAsPanel() {
-      const inputWidthEmpty = [undefined, null, '', 0].includes(this.inputWidth)
-      const widthEmpty = [undefined, null, '', 0].includes(this.width)
-      return inputWidthEmpty && widthEmpty
-    },
     panelStyle() {
       // 是否需要自动计算下拉面板的宽度与input panel 等宽
       if (this.dropDownSameWidthAsPanel) {
@@ -213,8 +221,8 @@ export default {
       if (this.width) {
         const width = parseInt(this.width)
         style.width = `${width}px`
-      } else if (this.computedInputWidth) {
-        const width = parseInt(this.computedInputWidth)
+      } else if (this.inputWidth) {
+        const width = parseInt(this.inputWidth)
         style.minWidth = `${width}px`
       }
       return style
@@ -234,15 +242,11 @@ export default {
         })
         .filter(val => val)
     },
-    // 没有传入inputWidth 默认200
-    computedInputWidth() {
-      return [undefined, null, ''].includes(this.inputWidth) ? 200 : this.inputWidth
-    },
     inputStyles() {
       let style = {}
 
-      if (this.computedInputWidth) {
-        const width = parseInt(this.computedInputWidth)
+      if (this.inputWidth) {
+        const width = parseInt(this.inputWidth)
         style.width = `${width}px`
       }
       let height = 32
@@ -299,7 +303,7 @@ export default {
         return
       }
       // 自动获取
-      const inputPanel = this.$refs['list-panel']
+      const inputPanel = this.$refs['list-input']
       if (inputPanel) {
         const inputPanelElement = inputPanel.$el
         const inputPanelRect = inputPanelElement.getBoundingClientRect()

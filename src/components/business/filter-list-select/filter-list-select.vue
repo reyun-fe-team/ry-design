@@ -9,6 +9,7 @@
     :query="query"
     :not-found-text="notFoundText"
     :not-found="!filterData.length"
+    :drop-down-same-width-as-panel="dropDownSameWidthAsPanel"
     :input-width="inputWidth"
     :input-height="inputHeight"
     :option-width="optionWidth"
@@ -153,6 +154,11 @@ export default {
     },
 
     // ----尺寸设置----
+    // 是否需要自动计算下拉面板的宽度与input panel 等宽
+    dropDownSameWidthAsPanel: {
+      type: Boolean,
+      default: false
+    },
     // 输入框宽度 有值就是按照值来设置宽度 没有值就是自适应
     inputWidth: [String, Number],
     // 输入框高度

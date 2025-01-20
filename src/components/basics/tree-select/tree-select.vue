@@ -21,6 +21,7 @@
       :not-found-text="notFoundText"
       :not-found="false"
       :input-width="inputWidth"
+      :drop-down-same-width-as-panel="dropDownSameWidthAsPanel"
       :input-height="inputHeight"
       :option-width="optionWidth"
       :width="panelWidth"
@@ -107,6 +108,11 @@ export default {
     },
     trigger: String,
     notFoundText: String,
+    // 是否需要自动计算下拉面板的宽度与input panel 等宽
+    dropDownSameWidthAsPanel: {
+      type: Boolean,
+      default: false
+    },
     width: {
       type: [String, Number],
       default: ''
