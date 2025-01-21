@@ -8,6 +8,7 @@
           v-model="selectMultiple"
           placement="bottom-end"
           :data="data"
+          drop-down-same-width-as-panel
           :height="200"
           :width="200"
           :input-width="200"
@@ -38,6 +39,8 @@
         多选-宽度自适应 {{ selectMultiple }} 事例：{{ selectMultiple }}
         <rd-filter-list-select
           v-model="selectMultiple"
+          drop-down-same-width-as-panel
+          input-width="400"
           clearable
           show-select-option
           :data="data"
