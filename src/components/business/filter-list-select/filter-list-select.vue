@@ -349,7 +349,11 @@ export default {
         // filterByCustom : 可以通过label、value、description等多种方式查询
         const labels = this.filterByCustom.map(val => data[val]).filter(Boolean)
         return labels.some(val => {
-          return searchTerms.some(ele => val.toUpperCase().includes(ele.trim().toUpperCase()))
+          //  val转成字符串
+          const valStr =
+            typeof val === 'object' || ['', null, undefined].includes(val) ? '' : `${val}`
+
+          return searchTerms.some(ele => valStr.toUpperCase().includes(ele.trim().toUpperCase()))
         })
       })
     },
