@@ -20,6 +20,7 @@
       :is-cursor="isCursor"
       :lazy="lazy"
       :auto-play="autoPlay"
+      :video-auto-play="videoAutoPlay"
       :low-quality="option.lowQuality"
       :low-quality-width="lowQualityWidth"
       @on-preview-click="onPreviewClick(option, initialIndex, option._type)"
@@ -57,6 +58,7 @@
         :current="currentImage"
         thumbnail-key="src"
         :auto-play="autoPlay"
+        :video-auto-play="videoAutoPlay"
         :audio-url="audioUrl"></rd-carousel-previewer>
     </template>
   </div>
@@ -181,6 +183,10 @@ export default {
       default: 2500
     },
     autoPlay: Boolean,
+    videoAutoPlay: {
+      type: Boolean,
+      default: true
+    },
     lowQualityWidth: [String, Number]
   },
   data() {
