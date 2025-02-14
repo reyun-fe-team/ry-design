@@ -70,6 +70,7 @@
         thumbnail-key="src"
         :url-key="urlKey"
         :auto-play="autoPlay"
+        :video-auto-play="videoAutoPlay"
         poster-key="src"></rd-carousel-previewer>
     </template>
   </div>
@@ -179,6 +180,7 @@ export default {
       default: ''
     },
     autoPlay: Boolean,
+    videoAutoPlay: Boolean,
     // 低质图标
     lowQuality: {
       type: Boolean,

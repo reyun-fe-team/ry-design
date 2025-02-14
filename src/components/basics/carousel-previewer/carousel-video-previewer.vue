@@ -123,7 +123,9 @@ export default {
     },
     // 视频暂停
     pauseVideo() {
-      this.$refs.video.pause()
+      if (this.$refs.video) {
+        this.$refs.video.pause()
+      }
       this.isPlay = false
     },
     // 加载失败
