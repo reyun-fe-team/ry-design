@@ -1,173 +1,154 @@
 <template>
   <div>
-    <h2>filter-list-select事例 {{ selectMultiple }}</h2>
-    <section>
-      <rd-prefix-container>
-        <span slot="prepend">投放账户</span>
-        <rd-filter-list-select
-          v-model="selectMultiple"
-          placement="bottom-end"
-          :data="data"
-          drop-down-same-width-as-panel
-          :height="200"
-          :width="200"
-          :input-width="200"
-          filterable
-          transfer
-          show-select-option
-          clearable
-          multiple
-          show-action
-          action-text="若没找到您所投放的小游戏，可"
-          action-button-text="添加小游戏"
-          :action-rule-validate="actionRuleValidate"
-          :action-count="actionCountFn"
-          :action-total="actionTotal"
-          show-item-delete
-          :action-hide-total="false"
-          :before-action-ok="beforeActionOk"
-          @on-action-ok="handleActionOk"
-          @on-change="handleChange"
-          @on-item-delete="handleItemDelete">
-          <!-- <div slot="footer">自定义footer</div> -->
-          <!-- <div slot="input-label">自定义input-label</div> -->
-        </rd-filter-list-select>
-      </rd-prefix-container>
-      <div
-        v-if="true"
-        style="display: inline-block; width: 450px">
-        多选-宽度自适应 {{ selectMultiple }} 事例：{{ selectMultiple }}
-        <rd-filter-list-select
-          v-model="selectMultiple"
-          drop-down-same-width-as-panel
-          input-width="400"
-          clearable
-          show-select-option
-          :data="data"
-          multiple
-          filterable
-          :filter-by-custom="['label', 'newLabel']"
-          :label-method="labelMethod"
-          select-all
-          @on-input-clear="handleInputClear"
-          @on-change="handleChange">
-          <!-- <div
+    <h3>投放账户</h3>
+    <rd-prefix-container>
+      <span slot="prepend">投放账户</span>
+      <rd-filter-list-select
+        v-model="selectMultiple"
+        placement="bottom-end"
+        :data="data"
+        drop-down-same-width-as-panel
+        :height="200"
+        :width="200"
+        :input-width="200"
+        filterable
+        transfer
+        show-select-option
+        clearable
+        multiple
+        show-action
+        action-text="若没找到您所投放的小游戏，可"
+        action-button-text="添加小游戏"
+        :action-rule-validate="actionRuleValidate"
+        :action-count="actionCountFn"
+        :action-total="actionTotal"
+        show-item-delete
+        :action-hide-total="false"
+        :before-action-ok="beforeActionOk"
+        @on-action-ok="handleActionOk"
+        @on-change="handleChange"
+        @on-item-delete="handleItemDelete">
+        <!-- <div slot="footer">自定义footer</div> -->
+        <!-- <div slot="input-label">自定义input-label</div> -->
+      </rd-filter-list-select>
+    </rd-prefix-container>
+
+    <h3>多选-宽度自适应</h3>
+    <rd-filter-list-select
+      v-model="selectMultiple"
+      drop-down-same-width-as-panel
+      input-width="400"
+      clearable
+      show-select-option
+      :data="data"
+      multiple
+      filterable
+      :filter-by-custom="['label', 'newLabel']"
+      :label-method="labelMethod"
+      select-all
+      @on-input-clear="handleInputClear"
+      @on-change="handleChange">
+      <!-- <div
             slot="select-item"
             slot-scope="{ row, index }"
             style="line-height: 40px">
             自定义item {{ index }} : {{ row.label }}
           </div> -->
-          <div slot="search-operate">
-            <span style="color: #3989faff">刷新</span>
-            <span style="margin-right: 10px; color: #3989faff">应用管理</span>
-          </div>
-
-          <div
-            v-if="!row.disabled"
-            slot="describe-operate"
-            slot-scope="{ row, index }">
-            <div
-              v-if="!row.isDefault"
-              @click.stop="setDefault(row, index)">
-              设为默认
-            </div>
-            <div v-if="row.isDefault">默认</div>
-          </div>
-        </rd-filter-list-select>
+      <div slot="search-operate">
+        <span style="color: #3989faff">刷新</span>
+        <span style="margin-right: 10px; color: #3989faff">应用管理</span>
       </div>
 
       <div
-        v-if="true"
-        style="display: inline-block; margin-left: 380px">
-        多选组 事例：{{ formData.selectMultiple }}
-        <rd-filter-list-select
-          v-model="formData.selectMultiple"
-          :max="2"
-          transfer
-          clearable
-          placement="bottom-start"
-          select-all
-          filterable
-          show-select-option
-          :data="data"
-          :group-name-list="groupNameList"
-          :group-checkbox="true"
-          :is-select-entity="false"
-          :filter-by-custom="['label']"
-          filter-by-split=","
-          multiple
-          show-action
-          action-button-text="添加小游戏"
-          :action-rule-validate="actionRuleValidate"
-          :action-count="actionCountFn"
-          :action-total="actionTotal"
-          @on-click="handleClick"
-          @on-change="handleChange"
-          @on-action-ok="handleActionOk">
-          <template slot="input-label">
-            <!-- 多选 -->
-            <Icon type="md-cloud" />
-          </template>
-          <div slot="search-operate">
-            <span style="color: #3989faff">刷新</span>
-            <span style="margin-right: 10px; color: #3989faff">应用管理</span>
-          </div>
-        </rd-filter-list-select>
+        v-if="!row.disabled"
+        slot="describe-operate"
+        slot-scope="{ row, index }">
+        <div
+          v-if="!row.isDefault"
+          @click.stop="setDefault(row, index)">
+          设为默认
+        </div>
+        <div v-if="row.isDefault">默认</div>
       </div>
-    </section>
+    </rd-filter-list-select>
 
-    <section
-      v-if="true"
-      style="margin-top: 400px">
-      <div style="display: inline-block">
-        单选{{ selectRadio }}--{{ typeof selectRadio }}==
-        <rd-filter-list-select
-          v-model="selectRadio"
-          disabled
-          :max-height="256"
-          :width="200"
-          :data="data"
-          clearable
-          filterable
-          label="单选"
-          show-image
-          show-subtitle
-          show-description>
-          <div slot="search-operate">
-            <span style="color: #3989faff">刷新</span>
-            <span style="margin-right: 10px; color: #3989faff">应用管理</span>
-          </div>
-        </rd-filter-list-select>
+    <h3>多选组</h3>
+    <rd-filter-list-select
+      v-model="formData.selectMultiple"
+      :max="2"
+      transfer
+      clearable
+      placement="bottom-start"
+      select-all
+      filterable
+      show-select-option
+      :data="data"
+      :group-name-list="groupNameList"
+      :group-checkbox="true"
+      :is-select-entity="false"
+      :filter-by-custom="['label']"
+      filter-by-split=","
+      multiple
+      show-action
+      action-button-text="添加小游戏"
+      :action-rule-validate="actionRuleValidate"
+      :action-count="actionCountFn"
+      :action-total="actionTotal"
+      @on-click="handleClick"
+      @on-change="handleChange"
+      @on-action-ok="handleActionOk">
+      <template slot="input-label">
+        <!-- 多选 -->
+        <Icon type="md-cloud" />
+      </template>
+      <div slot="search-operate">
+        <span style="color: #3989faff">刷新</span>
+        <span style="margin-right: 10px; color: #3989faff">应用管理</span>
       </div>
-      <div style="display: inline-block; margin-left: 380px">
-        单选{{ selectRadio }}
-        <rd-filter-list-select
-          v-model="selectRadio"
-          :max-height="256"
-          show-item-delete
-          clearable
-          filterable
-          show-image
-          :data="data"
-          save-type="leave-save"
-          label="单选-leave-save"
-          @on-item-delete="handleItemDeleteRadio"></rd-filter-list-select>
-      </div>
+    </rd-filter-list-select>
 
-      <div style="display: inline-block; margin-left: 380px">
-        单选组 selectRadio:{{ selectRadio }}
-        <rd-filter-list-select
-          v-model="selectRadio"
-          :group-name-list="groupNameList"
-          :data="data"
-          label="单选"></rd-filter-list-select>
+    <h3>单选</h3>
+    <rd-filter-list-select
+      v-model="selectRadio"
+      disabled
+      :max-height="256"
+      :width="200"
+      :data="data"
+      clearable
+      filterable
+      label="单选"
+      show-image
+      show-subtitle
+      show-description>
+      <div slot="search-operate">
+        <span style="color: #3989faff">刷新</span>
+        <span style="margin-right: 10px; color: #3989faff">应用管理</span>
       </div>
-    </section>
+    </rd-filter-list-select>
 
+    <h3>单选-leave-save</h3>
+    <rd-filter-list-select
+      v-model="selectRadio"
+      :max-height="256"
+      show-item-delete
+      clearable
+      filterable
+      show-image
+      :data="data"
+      save-type="leave-save"
+      label="单选-leave-save"
+      @on-item-delete="handleItemDeleteRadio"></rd-filter-list-select>
+
+    <h3>单选组</h3>
+    <rd-filter-list-select
+      v-model="selectRadio"
+      :group-name-list="groupNameList"
+      :data="data"
+      label="单选"></rd-filter-list-select>
+
+    <h3>表单</h3>
     <Form
-      v-if="true"
       ref="formValidate"
-      style="margin-top: 250px"
       :model="formValidate"
       :rules="ruleValidate"
       :label-width="80">
@@ -196,7 +177,6 @@
       <FormItem
         label="应用多选"
         prop="app1">
-        {{ formValidate.app1 }}
         <rd-filter-list-select
           v-model="formValidate.app1"
           filterable

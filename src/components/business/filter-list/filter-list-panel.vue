@@ -8,7 +8,9 @@
       :transfer="transfer"
       @on-visible-change="handleVisibleChange"
       @on-clickoutside="onClickoutside">
-      <div @click="handleClick">
+      <div
+        :class="prefixCls + '-rel'"
+        @click="handleClick">
         <slot></slot>
       </div>
       <DropdownMenu
