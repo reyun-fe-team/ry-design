@@ -1,5 +1,6 @@
 <template>
   <Drawer
+    v-lock-body-scroll
     transfer
     :value="value"
     :class-name="wrapperClass"
