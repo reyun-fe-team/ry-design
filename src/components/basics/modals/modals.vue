@@ -1,6 +1,7 @@
 <template>
   <!--  class-name="rd-center-modal mini-scroll-y"-->
   <Modal
+    v-lock-body-scroll
     :value="value"
     :class-name="className"
     :class="classes"
