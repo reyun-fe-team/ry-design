@@ -70,36 +70,49 @@ export default {
     filedsConfigs() {
       return {
         promotedObjectType: {
-          name: 'promotedObjectType',
-          hide: false,
-          hideValue: null,
+          key: 'promotedObjectType',
+          hidden: false,
+          hiddenDefaultValue: null,
           defaultValue: '2',
           model: this.form,
-          emitUpdate: this.emitUpdate
+          emitUpdate: this.emitUpdate,
+          linkage: [
+            {
+              key: 'deliveryMode',
+              value: '0',
+              trigger: 'UPDATED'
+            }
+          ]
         },
         adType: {
-          name: 'adType',
-          hide: model => model.promotedObjectType === '7',
-          hideValue: null,
+          key: 'adType',
+          hidden: model => model.promotedObjectType === '7',
+          hiddenDefaultValue: null,
           defaultValue: '0',
           model: this.form,
-
-          emitUpdate: this.emitUpdate
+          emitUpdate: this.emitUpdate,
+          linkage: [
+            {
+              key: 'deliveryMode',
+              value: '0',
+              trigger: 'HIDDEN'
+            }
+          ]
         },
         deliveryMode: {
-          name: 'deliveryMode',
-          hide: false,
+          key: 'deliveryMode',
+          hidden: false,
           // 重置依赖项
           resetDeps: model => [model.promotedObjectType],
-          hideValue: null,
+          hiddenDefaultValue: null,
           defaultValue: '0',
           model: this.form,
           emitUpdate: this.emitUpdate
         },
         promotionScene: {
-          name: 'promotionScene',
-          hide: false,
-          hideValue: null,
+          key: 'promotionScene',
+          hidden: false,
+          hiddenDefaultValue: null,
           defaultValue: '1',
           model: this.form,
           emitUpdate: this.emitUpdate
