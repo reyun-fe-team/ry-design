@@ -90,21 +90,15 @@ export default {
           hiddenDefaultValue: null,
           defaultValue: '0',
           model: this.form,
-          emitUpdate: this.emitUpdate,
-          linkage: [
-            {
-              key: 'deliveryMode',
-              value: '0',
-              trigger: 'HIDDEN'
-            }
-          ]
+          emitUpdate: this.emitUpdate
+          // linkage: [{ key: 'deliveryMode', value: '1', trigger: 'HIDDEN' }]
         },
         deliveryMode: {
           key: 'deliveryMode',
-          hidden: false,
+          hidden: model => [null, '1'].includes(model.adType),
           // 重置依赖项
           resetDeps: model => [model.promotedObjectType],
-          hiddenDefaultValue: null,
+          hiddenDefaultValue: '1',
           defaultValue: '0',
           model: this.form,
           emitUpdate: this.emitUpdate

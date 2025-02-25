@@ -5,6 +5,7 @@ import _isEqual from 'lodash/isEqual'
 import _isEmpty from 'lodash/isEmpty'
 import _isArray from 'lodash/isArray'
 import _get from 'lodash/get'
+import _isNil from 'lodash/isNil'
 const prefixCls = prefix + 'dynamic-render'
 
 const defaultConfig = {
@@ -61,9 +62,20 @@ const componentOptions = {
       return _isFunction(defaultValue) ? defaultValue(model) : defaultValue
     },
     // 元素的隐藏时的值
-    elementHideValue() {
+    elementHiddenValue() {
       const { hiddenDefaultValue, model = {} } = this.config
       return _isFunction(hiddenDefaultValue) ? hiddenDefaultValue(model) : hiddenDefaultValue
+    },
+    // 元素当前的值
+    elementCurrentValue() {
+      const { model = {}, key: elementKey } = this.config
+      let currentValue = _get(model, elementKey, null)
+      return _isNil(currentValue) ? null : currentValue
+    }
+  },
+  data() {
+    return {
+      elementWatchers: []
     }
   },
   created() {
@@ -84,25 +96,26 @@ const componentOptions = {
     // 设置表单数据
     setFormData() {
       const { key = '', emitUpdate = null } = this.config
-      const value = !this.elementHidden ? this.elementDefaultValue : this.elementHideValue
+      const value = !this.elementHidden ? this.elementDefaultValue : this.elementHiddenValue
       const params = { key, value }
       emitUpdate && emitUpdate(params)
     },
     // 初始化 watcher
     initWatcher() {
       const watcher = [
-        { prop: this.elementResetDeps, handle: this.setFormData },
-        { prop: this.elementHidden, handle: this.setFormData }
+        { prop: 'elementResetDeps', handle: this.setFormData },
+        { prop: 'elementHidden', handle: this.setFormData }
       ]
       watcher.forEach(o => {
         const { prop, handle } = o
         const cb = (nv, ov) => !_isEqual(nv, ov) && handle()
-        this.$watch(() => prop, cb, { deep: true })
+        const unwatch = this.$watch(prop, cb, { deep: true })
+        this.elementWatchers.push(unwatch)
       })
     },
     // 初始化 联动
     initLinkage() {
-      const { linkage = [], model = {}, key: elementKey } = this.config
+      const { linkage = [] } = this.config
       if (!_isArray(linkage) || _isEmpty(linkage)) {
         return
       }
@@ -110,29 +123,40 @@ const componentOptions = {
       for (let index = 0; index < linkage.length; index++) {
         const { key, value, trigger } = Object.assign({}, linkageConfig, linkage[index])
         const params = { key, value }
+
         // 更新了
         if (trigger === 'UPDATED') {
-          const cb = (nv, ov) => !_isEqual(nv, ov) && this.setLinkageFiled(params, trigger)
-          this.$watch(() => _get(model, elementKey), cb, { deep: true })
+          const cb = (nv, ov) => !_isEqual(nv, ov) && this.setLinkageFiled(params)
+          const unwatch = this.$watch('elementCurrentValue', cb, { deep: true })
+          this.elementWatchers.push(unwatch)
         }
+
         // 隐藏了
         if (trigger === 'HIDDEN') {
           const cb = (nv, ov) => {
+            // true - false 隐藏
             const toHidden = ov && !nv
-            !_isEqual(nv, ov) && toHidden && this.setLinkageFiled(params, trigger)
+            !_isEqual(nv, ov) && toHidden && this.setLinkageFiled(params)
           }
-          this.$watch(() => this.elementHidden, cb, { deep: true })
+          const unwatch = this.$watch('elementHidden', cb, { deep: true })
+          this.elementWatchers.push(unwatch)
         }
+
         // 显示了
         if (trigger === 'DISPLAYED') {
           const cb = (nv, ov) => {
-            const toDisplayed = !nv && ov
-            !_isEqual(nv, ov) && toDisplayed && this.setLinkageFiled(params, trigger)
+            // false - true 显示
+            const toDisplayed = !ov && nv
+            !_isEqual(nv, ov) && toDisplayed && this.setLinkageFiled(params)
           }
-          this.$watch(() => this.elementHidden, cb, { deep: true })
+          const unwatch = this.$watch('elementHidden', cb, { deep: true })
+          this.elementWatchers.push(unwatch)
         }
       }
     }
+  },
+  beforeDestroy() {
+    this.elementWatchers.forEach(unwatch => unwatch())
   },
   render(h) {
     const props = { class: prefixCls }
