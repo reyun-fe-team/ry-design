@@ -1,3 +1,7 @@
+// iview 样式
+import 'view-design/dist/styles/iview.css'
+// 全局样式
+import './style/index.less'
 // umy-ui table 组件
 export { UTable, UTableColumn } from 'umy-ui'
 // basics

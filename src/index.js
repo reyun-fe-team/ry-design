@@ -5,10 +5,6 @@ import * as Components from './components'
 import ViewUI from 'view-design'
 // 组件包
 import Package from '../package.json'
-// iview 样式
-import 'view-design/dist/styles/iview.css'
-// 全局样式
-import './style/index.less'
 // 初始化指令
 import initDirectives from './directives'
 // 初始化全局API
