@@ -49,7 +49,7 @@ const componentOptions = {
     // 根据props计算是否显示
     elementHidden() {
       const { hidden, model = {} } = this.config
-      return _isBoolean(hidden) ? hidden : _isFunction(hidden) ? hidden(model) : true
+      return _isBoolean(hidden) ? hidden : _isFunction(hidden) ? hidden(model) : !_isNil(hidden)
     },
     // 元素重置的依赖项
     elementResetDeps() {
