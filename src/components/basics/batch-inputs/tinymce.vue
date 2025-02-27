@@ -2,7 +2,7 @@
   <div :class="[prefixCls]">
     <div
       ref="Input"
-      contenteditable
+      :contenteditable="!disabled"
       style="width: 100%"
       :placeholder="placeholder"
       :class="prefixCls + '-rich'"
@@ -15,12 +15,17 @@
       @paste="handlerPaste"></div>
 
     <div
-      v-if="showLimit && value.length > 0"
+      v-if="value.length > 0"
       :class="[prefixCls + '-ln-wrap']">
       <!-- 字数 -->
-      <div :class="[prefixCls + '-ln-wrap-l']">{{ totalln }}/{{ maxLength }}</div>
+      <div
+        v-if="showLimit"
+        :class="[prefixCls + '-ln-wrap-l']">
+        {{ totalln }}/{{ maxLength }}
+      </div>
       <!-- 清空 -->
       <Icon
+        v-if="!disabled"
         :class="[prefixCls + '-ln-wrap-r']"
         type="md-close"
         @click="handleClear"></Icon>
@@ -37,6 +42,10 @@ const prefixCls = prefix + 'batch-inputs-tinymce'
 export default {
   name: prefixCls,
   props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     value: {
       require: true,
       type: String,
