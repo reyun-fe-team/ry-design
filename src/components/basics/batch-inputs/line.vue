@@ -9,9 +9,10 @@
       </div>
       <!-- 输入 -->
       <div :class="prefixCls + '-right-list'">
-        <tinymce
+        <Tinymce
           ref="Input"
           :key="index"
+          :disabled="disabled"
           :type="type"
           :show-limit="showLimit"
           :value="value[index]"
@@ -26,13 +27,13 @@
           @on-keydown="val => handlerKeydown(val, index)"
           @on-clear="handlerClear(index)"
           @on-paste="val => handlerPaste(val, index)"
-          @on-error="val => handleError(val, index)"></tinymce>
+          @on-error="val => handleError(val, index)"></Tinymce>
 
         <!-- 每一行的最尾端 slot -->
         <div
           v-if="endSlotProps.renderFunction"
           :class="[prefixCls + '-btn-wrap']">
-          <end-slot v-bind="endSlotProps"></end-slot>
+          <RowEnd v-bind="endSlotProps"></RowEnd>
         </div>
       </div>
     </div>
@@ -41,8 +42,8 @@
 
 <script>
 import { prefix } from '@src/config.js'
-import tinymce from './tinymce'
-import endSlot from './slots/end'
+import Tinymce from './tinymce'
+import RowEnd from './row-end'
 import { deepCopy, waitOut } from '@src/util/assist'
 
 const prefixCls = prefix + 'batch-inputs'
@@ -51,11 +52,15 @@ const EnterIconValue = '\\'
 export default {
   name: prefixCls + '-line',
   components: {
-    tinymce,
-    endSlot
+    Tinymce,
+    RowEnd
   },
   inject: ['root'],
   props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     source: {
       type: Object,
       default: () => {}

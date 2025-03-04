@@ -83,6 +83,9 @@ export default {
       }
     }
   },
+  created() {
+    console.warn('ry-design: [rd-text-input-list] 已废弃，请使用 rd-batch-inputs 代替')
+  },
   methods: {
     middleChange(middle) {
       this.middle = middle

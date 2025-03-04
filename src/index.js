@@ -42,7 +42,8 @@ import Tree from './components/basics/tree'
 import CollapseTransition from './components/basics/transitions/collapse-transition'
 import FooterToolbar from './components/basics/footer-toolbar'
 import SelectConstituency from './components/basics/select-constituency'
-
+import DynamicRender from './components/basics/dynamic-render'
+import Fragment from './components/basics/fragment'
 // business
 import BatchUploadXls from './components/business/batch-upload-xls'
 import PageHeaderModule from './components/business/page-header-module'
@@ -86,6 +87,7 @@ import clickOutside from './directives/click-out-side'
 import transferDom from './directives/transfer-dom'
 import resize from './directives/resize'
 import lockBodyScroll from './directives/lock-body-scroll'
+import frag from './directives/frag'
 // directivesCreateFuncs
 import createTooltip from './directives/tooltip'
 import createDragging from './directives/dragging'
@@ -182,7 +184,9 @@ const components = [
   FilterAreaTemplateList,
   FooterToolbar,
   FilterDropdownInput,
-  SelectConstituency
+  SelectConstituency,
+  DynamicRender,
+  Fragment
 ]
 
 // 对象式-指令
@@ -191,7 +195,8 @@ const directives = {
   'click-outside': clickOutside,
   'transfer-dom': transferDom,
   resize: resize,
-  'lock-body-scroll': lockBodyScroll
+  'lock-body-scroll': lockBodyScroll,
+  frag: frag
 }
 
 // 函数式-创建指令对象
@@ -282,6 +287,9 @@ export default {
   ManageBatchSelected,
   FilterArea,
   FilterAreaTemplateList,
+  FooterToolbar,
   FilterDropdownInput,
-  FooterToolbar
+  SelectConstituency,
+  DynamicRender,
+  Fragment
 }

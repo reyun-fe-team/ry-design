@@ -19,7 +19,7 @@
       v-model="list"
       type="PlainText"
       :height="200"
-      show-limit
+      :show-limit="false"
       :max-line="maxLine">
       <template #end="{ insertNode }">
         <div style="display: flex; align-items: center">

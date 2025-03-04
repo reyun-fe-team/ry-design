@@ -304,6 +304,10 @@ const router = new VueRouter({
     {
       path: '/select-constituency',
       component: resolve => require(['./routers/select-constituency'], resolve)
+    },
+    {
+      path: '/dynamic-render',
+      component: resolve => require(['./routers/dynamic-render'], resolve)
     }
   ]
 })

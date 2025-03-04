@@ -1,5 +1,5 @@
 import { prefix } from '@src/config.js'
-const prefixCls = prefix + 'batch-inputs-end-slot'
+const prefixCls = prefix + 'batch-inputs-row-end'
 
 export default {
   name: prefixCls,

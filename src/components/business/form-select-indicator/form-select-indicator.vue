@@ -26,6 +26,7 @@
               :max-height="256"
               :input-width="160"
               :filterable="filterable"
+              :transfer="transfer"
               :data="getFilteredDataList(index)"
               @on-click="handleStop"
               @on-change="changeData(index)"></rd-filter-list-select>
@@ -37,6 +38,7 @@
               :show-clear-icon="false"
               :unit="getUnit(index)"
               :width="182"
+              :transfer="transfer"
               :indicator-rule="indicatorRule"
               :styles="{ width: '240px' }"
               @on-change="changeIndicator" />
@@ -76,6 +78,7 @@
             :width="200"
             :option-width="200"
             label="数据筛选方式 :"
+            :transfer="transfer"
             :multiple="false"
             name="indexIsUnion"
             :data="filterItemsValue"
@@ -178,6 +181,10 @@ export default {
     filterable: {
       type: Boolean,
       defualt: true
+    },
+    transfer: {
+      type: Boolean,
+      defualt: false
     }
   },
   data() {

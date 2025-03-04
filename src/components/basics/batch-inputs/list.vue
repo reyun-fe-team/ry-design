@@ -68,6 +68,10 @@ export default {
     }
   },
   props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     // 类型 只能是文本 PlainText 支持的html内容 Html
     type: {
       type: String,
