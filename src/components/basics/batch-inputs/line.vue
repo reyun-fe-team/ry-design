@@ -31,7 +31,7 @@
 
         <!-- 每一行的最尾端 slot -->
         <div
-          v-if="endSlotProps.renderFunction"
+          v-if="endSlotProps.renderFunction && middle.activeClass === index"
           :class="[prefixCls + '-btn-wrap']">
           <RowEnd v-bind="endSlotProps"></RowEnd>
         </div>
