@@ -110,6 +110,11 @@ export default {
       type: Function,
       default: null
     },
+    // 自动验证长度
+    autoValidateLength: {
+      type: Boolean,
+      default: true
+    },
     // 错误校验方法
     validFn: {
       type: Function,
@@ -323,14 +328,16 @@ export default {
 
       // 长度(有长度才能校验)
       let lengthError = []
-      if (!isNaN(ln) && (ln > this.maxLength || ln < this.minLength)) {
-        lengthError.push('lengthError')
+      if (this.autoValidateLength) {
+        if (!isNaN(ln) && (ln > this.maxLength || ln < this.minLength)) {
+          lengthError.push('lengthError')
+        }
       }
 
       // 其他
       let otherError = []
       if (typeof this.validFn === 'function') {
-        otherError = this.validFn(value, this.index)
+        otherError = this.validFn(value, this.index, ln)
       }
 
       return [...lengthError, ...otherError]

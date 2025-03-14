@@ -115,6 +115,11 @@ export default {
       type: Function,
       default: null
     },
+    // 自动验证长度
+    autoValidateLength: {
+      type: Boolean,
+      default: true
+    },
     validFn: {
       type: Function,
       default: null

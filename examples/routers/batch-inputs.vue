@@ -18,9 +18,11 @@
       ref="BatchInputs"
       v-model="list"
       type="PlainText"
+      :auto-validate-length="true"
       :height="200"
       :show-limit="false"
-      :max-line="maxLine">
+      :max-line="maxLine"
+      :valid-fn="validFn">
       <template #end="{ insertNode }">
         <div style="display: flex; align-items: center">
           <Button @click="insertWord(insertNode)">插入动态词包</Button>
@@ -303,6 +305,10 @@ export default {
     }
   },
   methods: {
+    validFn(value, index, ln) {
+      console.log(value, index, ln)
+      return []
+    },
     contentRender(h, data) {
       const { emojiList, insertFace, insertNode } = data
       return h(AddEmojiWrapper, { props: { emojiList, insertFace, insertNode } })
@@ -319,7 +325,7 @@ export default {
     },
     getPlainTextValues() {
       let ref = this.$refs.BatchInputs
-      this.plainTextValues = ref.getPlainTextValues()
+      this.plainTextValues = ref.getPlainTextValues(this.list)
     },
     addDynamicWord(t) {
       let ref = this.$refs.BatchInputs
