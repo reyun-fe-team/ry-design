@@ -18,9 +18,9 @@
       ref="BatchInputs"
       v-model="list"
       type="PlainText"
-      :auto-validate-length="true"
+      :auto-validate-length="false"
       :height="200"
-      :show-limit="false"
+      :show-limit="true"
       :max-line="maxLine"
       :valid-fn="validFn">
       <template #end="{ insertNode }">
@@ -70,18 +70,7 @@ export default {
       AddEmoji,
       AddLineFeed,
       plainTextValues: '',
-      list: [
-        '一步登顶修仙路，一斧砍尽千年树',
-        '模拟经营小游戏，穿越回古代，轻松种田，逆袭人生！',
-        '一斧光阴一斧梦，梦醒时分已是王。',
-        '1月26日起，轻松解压的益智小游戏，随时随地玩，休闲又有趣',
-        '梦幻西游网页版，手机也能玩西游了，无级别武器登录送！',
-        '无需下载不占内存，点开即玩的微信小游戏！十分钟就上头！',
-        '是兄弟，就来一把紧张刺激的抓大鹅！',
-        '脚踏阴阳定乾坤，风云再起，挑战你的极限！',
-        '全新修仙碰撞，小猪妖登场，让你的眼睛发光！',
-        '1月26日全新武侠《无名江湖》公测！10倍爆率，装备靠打！'
-      ],
+      list: [],
       emojiList: [
         {
           value: '[666]',

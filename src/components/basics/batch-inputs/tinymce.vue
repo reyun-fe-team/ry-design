@@ -124,7 +124,10 @@ export default {
   watch: {
     value() {
       this.$nextTick(() => {
-        this.setInputValue(this.value)
+        // 只有当不是用户主动输入时才更新输入框的值
+        if (this.value !== this.currentValue) {
+          this.setInputValue(this.value)
+        }
       })
     },
     currentValue() {
@@ -251,7 +254,8 @@ export default {
     },
     // 设置inputValue
     setInputValue(value = '') {
-      if (value !== this.currentValue) {
+      if (value !== this.currentValue && !this.isFounded) {
+        // 只有在非聚焦状态下才重新设置输入框的值
         this.currentValue = value || ''
         // 光标丢失，无法保存
         if (this.type === 'Html') {
