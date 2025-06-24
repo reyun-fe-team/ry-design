@@ -3,8 +3,9 @@
 ## 介绍
 
 
-热云 ads 组件库 github
-官网地址 https://web.adsdesk.cn
+热云adsDesk 广告投放-组件库
+
+官网地址 https://design.adsdesk.cn/#/home
 
 Npm 地址
 https://www.npmjs.com/package/ry-design 
